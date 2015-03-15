@@ -139,7 +139,7 @@ Class api extends Config {
 			'location' => 'news.v2.class.php', // action location
 			'classname' => 'News', // class name
 			'method' => 'array_showLatestNews', // method name
-			'disabled' => '1',
+			'disabled' => '0',
 			'description' => 'Shows the Latest News for the site.'
 		),
 	);

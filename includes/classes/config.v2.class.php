@@ -485,6 +485,11 @@ class Config {
 					'Message' => '[Has Data]',
 					'Explanation' => 'This option will return the Token for the user that is logged in and Authenticated.'
 				),
+				'201' => array(
+					'Status' => '201',
+					'Message' => 'Requested Completed Successfully.',
+					'Explanation' => 'This is a generic message to indicate that the command completed successfully and data was returned.'
+				),
 				'400' => array(
 					'Status' => '400',
 					'Message' => 'The Data was formatted incorrectly, something went wrong somewhere.',
