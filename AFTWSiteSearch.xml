@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>AnimeFTW.tv Site Search</ShortName>
+  <Description>Search the Anime Library for AnimeFTW.tv</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image height="16" width="16" type="image/x-icon">http://www.animeftw.tv/favicon.ico</Image>
+  <Url type="application/x-suggestions+json" method="GET"
+     template="http://www.animeftw.tv/search/r/{searchTerms}" />
+  <Url type="text/html" method="GET" template="http://www.animeftw.tv/search?q={searchTerms}" />
+  <SearchForm>http://www.animeftw.tv/search</SearchForm>
+</OpenSearchDescription>

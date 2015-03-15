@@ -1,0 +1,211 @@
+ErrorDocument 403 /index.php?node=error&subnode=403
+ErrorDocument 404 /index.php?node=error&subnode=404
+ErrorDocument 500 /index.php?node=error&subnode=500
+ErrorDocument 502 /index.php?node=error&subnode=502
+ErrorDocument 503 /index.php?node=error&subnode=503
+ErrorDocument 504 /index.php?node=error&subnode=504
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^animeftw\.tv$ [NC]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule .? http://www.%1animeftw.tv%{REQUEST_URI} [R=301,L]
+
+RewriteRule ^/?about$ index.php?node=about [L]
+RewriteRule ^/?advanced-signup$ secure.php?node=advanced-signup [L]
+RewriteRule ^/?aftw.css$ style.css.php [L]
+RewriteRule ^/?amvs/(.+)/$ videos.php?node=video&ep=-10&eid=$1 [L]
+RewriteRule ^/?amvs/(.+)$ videos.php?node=video&ep=-10&eid=$1 [L]
+RewriteRule ^/?anime/age/(.+)/$ videos.php?node=age&type=anime&param=$1 [L]
+RewriteRule ^/?anime/age/(.+)$ videos.php?node=age&type=anime&param=$1 [L]
+RewriteRule ^/?anime/age/$ videos.php?node=age&type=anime [L]
+RewriteRule ^/?anime/age$ videos.php?node=age&type=anime [L]
+RewriteRule ^/?anime/sort/(.+)$ videos.php?node=sort&type=anime&param=$1 [L]
+RewriteRule ^/?anime/sort/(.+)$ videos.php?node=sort&type=anime&param=$1 [L]
+RewriteRule ^/?anime/sort/$ videos.php?node=sort&type=anime [L]
+RewriteRule ^/?anime/sort$ videos.php?node=sort&type=anime [L]
+RewriteRule ^/?anime/type/(.+)$ videos.php?node=sort&type=anime&vtype=$1 [L]
+RewriteRule ^/?anime/(.+)/ep-(.+)$ videos.php?node=video&type=anime&seo=$1&eid=$2 [L]
+RewriteRule ^/?anime/(.+)/movie-(.+)$ videos.php?node=video&type=anime&seo=$1&mid=$2 [L]
+RewriteRule ^/?anime/(.+)/ova-(.+)$ videos.php?node=video&type=anime&seo=$1&oid=$2 [L]
+RewriteRule ^/?anime/(.+)/ref=eblast$ videos.php?node=video&type=anime&seo=$1&ref=eblast [L]
+RewriteRule ^/?anime/(.+)/$ videos.php?node=video&type=anime&seo=$1 [L]
+RewriteRule ^/?anime/(.+)$ videos.php?node=video&type=anime&seo=$1 [L]
+RewriteRule ^/?anime/$ videos.php?node=list&type=anime [L]
+RewriteRule ^/?anime$ videos.php?node=list&type=anime [L]
+RewriteRule ^/?christmas.css$ style.css.php?theme=christmas [L]
+
+## Legacy code for /videos
+RewriteRule ^/?videos/(.+)/$ videos.php?node=video&type=anime&seo=$1 [L]
+RewriteRule ^/?videos/(.+)$ videos.php?node=video&type=anime&seo=$1 [L]
+RewriteRule ^/?videos/$ videos.php?node=list&type=anime [L]
+RewriteRule ^/?videos$ videos.php?node=list&type=anime [L]
+
+RewriteRule ^/?api/v1/show$ api-backend.php [L]
+RewriteRule ^/?api/v2/$ apiv2.php [L]
+RewriteRule ^/?api/v2$ apiv2.php [L]
+RewriteRule ^/?banned$ index.php?node=banned [L]
+RewriteRule ^/?birthdays$ index.php?node=birthdays [L]
+RewriteRule ^/?blogs/(.+)/add-entry$ blogs.php?view=$1&node=add [L]
+RewriteRule ^/?blogs/(.+)/(.+)-(.+)/$ blogs.php?view=$1&eid=$2 [L]
+RewriteRule ^/?blogs/(.+)/(.+)-(.+)$ blogs.php?view=$1&eid=$2 [L]
+RewriteRule ^/?blogs/(.+)/$ blogs.php?view=$1 [L]
+RewriteRule ^/?blogs/(.+)$ blogs.php?view=$1 [L]
+RewriteRule ^/?blogs/$ blogs.php [L]
+RewriteRule ^/?blogs$ blogs.php [L]
+RewriteRule ^/?confirm$ confirm.php [L]
+RewriteRule ^/?confirm-password/(.+)/(.+)$ secure.php?node=password-confirm&ID=$1&new=$2 [L]
+RewriteRule ^/?confirm-password$ secure.php?node=password-confirm [L]
+RewriteRule ^/?contact-us$ index.php?node=contact [L]
+RewriteRule ^/?copyright$ index.php?node=copyright [L]
+RewriteRule ^/?donate/thank-you$ secure.php?node=donate&subnode=thank-you [L]
+RewriteRule ^/?donate/$ secure.php?node=donate [L]
+RewriteRule ^/?donate$ secure.php?node=donate [L]
+RewriteRule ^/?download/(.+)$ downloader.php?f=$1 [L]
+RewriteRule ^/?drama/(.+)/ep-(.+)$ videos.php?node=drama&seo=$1&ep=$2 [L]
+RewriteRule ^/?drama/(.+)/$ videos.php?node=video&seo=$1 [L]
+RewriteRule ^/?drama/(.+)$ videos.php?node=video&seo=$1 [L]
+RewriteRule ^/?drama/$ videos.php?node=list&type=drama [L]
+RewriteRule ^/?drama$ videos.php?node=list&type=drama [L]
+RewriteRule ^/?email-resend$ secure.php?node=email-resend [L]
+RewriteRule ^/?email-resend/$ secure.php?node=email-resend [L]
+RewriteRule ^/?faq/(.+)/$ index.php?node=faq/$1 [L]
+RewriteRule ^/?faq/(.+)$ index.php?node=faq/$1 [L]
+RewriteRule ^/?faq$ index.php?node=faq [L]
+RewriteRule ^/?forgot-password$ secure.php?node=forgot-password [L]
+RewriteRule ^/?forgot-password/$ secure.php?node=forgot-password [L]
+RewriteRule ^/?forums/active-topics/$ forums.php?action=activetopics [L]
+RewriteRule ^/?forums/active-topics$ forums.php?action=activetopics [L]
+RewriteRule ^/?forums/modaction/$ forums.php?action=modaction [L]
+RewriteRule ^/?forums/modaction$ forums.php?action=modaction [L]
+RewriteRule ^/?forums/find/thread-(.+)$ forums.php?view=findpost&thread=$1 [L]
+RewriteRule ^/?forums/find/post-(.+)$ forums.php?view=findpost&post=$1 [L]
+RewriteRule ^/?forums/post/reply-(.+)$ forums.php?action=post&treply=$1 [L]
+RewriteRule ^/?forums/post/topic-(.+)$ forums.php?action=post&tstart=$1 [L]
+RewriteRule ^/?forums/edit/post-(.+)$ forums.php?action=post&pedit=$1 [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)/s-(.+)/showlastpost$ forums.php?forum=$1&thread=$2&s=$3&view=lastpost [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)/s-(.+)/$ forums.php?forum=$1&thread=$2&s=$3 [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)/s-(.+)$ forums.php?forum=$1&thread=$2&s=$3 [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)/showlastpost$ forums.php?forum=$1&thread=$2&view=lastpost [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)/$ forums.php?forum=$1&thread=$2 [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)$ forums.php?forum=$1&thread=$2 [L]
+RewriteRule ^/?forums/(.+)/topic-(.+)/(.+)$ forums.php?forum=$1&thread=$2 [L]
+RewriteRule ^/?forums/(.+)/s-(.+)/$ forums.php?forum=$1&s=$2 [L]
+RewriteRule ^/?forums/(.+)/s-(.+)$ forums.php?forum=$1&s=$2 [L]
+RewriteRule ^/?forums/(.+)/$ forums.php?forum=$1 [L]
+RewriteRule ^/?forums/(.+)$ forums.php?forum=$1 [L]
+RewriteRule ^/?forums/$ forums.php [L]
+RewriteRule ^/?forums$ forums.php [L]
+RewriteRule ^/?history$ index.php?node=history [L]
+RewriteRule ^/?images/resize/(.+)/(.+)/(.+)\.(.+)$ resize.php?picture=$2&imgname=$3&type=$4 [L]
+RewriteRule ^/?irc$ chat.php [L]
+RewriteRule ^/?jobs$ index.php?node=jobs [L]
+RewriteRule ^/?logout$ logout.php [L]
+RewriteRule ^/?login$ secure.php?node=login [L]
+RewriteRule ^/?login/$ secure.php?node=login [L]
+RewriteRule ^/?manage/assets/management.js$ manage/includes/manager-js.class.php [L]
+RewriteRule ^/?nikey-test-video$ index.php?node=nikey-test-video [L]
+RewriteRule ^/?pm$ messages.php [L]
+RewriteRule ^/?pm/$ messages.php [L]
+RewriteRule ^/?pm/inbox$ messages.php?do=inbox [L]
+RewriteRule ^/?pm/inbox/$ messages.php?do=inbox [L]
+RewriteRule ^/?pm/inbox/(.+)$ messages.php?do=inbox&p=$1 [L]
+RewriteRule ^/?pm/inbox/(.+)/$ messages.php?do=inbox&p=$1 [L]
+RewriteRule ^/?pm/sent$ messages.php?do=sent [L]
+RewriteRule ^/?pm/sent/$ messages.php?do=sent [L]
+RewriteRule ^/?pm/sent/(.+)$ messages.php?do=sent&p=$1 [L]
+RewriteRule ^/?pm/sent/(.+)/$ messages.php?do=sent&p=$1 [L]
+RewriteRule ^/?pm/drafts$ messages.php?do=drafts [L]
+RewriteRule ^/?pm/drafts/$ messages.php?do=drafts [L]
+RewriteRule ^/?pm/drafts/(.+)$ messages.php?do=drafts&p=$1 [L]
+RewriteRule ^/?pm/drafts/(.+)/$ messages.php?do=drafts&p=$1 [L]
+RewriteRule ^/?pm/compose$ messages.php?do=compose [L]
+RewriteRule ^/?pm/compose/$ messages.php?do=compose [L]
+RewriteRule ^/?pm/compose/(.+)/(.+)$ messages.php?do=compose&to=$1&subj=$2 [L]
+RewriteRule ^/?pm/compose/(.+)/(.+)/$ messages.php?do=compose&to=$1&subj=$2 [L]
+RewriteRule ^/?pm/compose/(.+)$ messages.php?do=compose&to=$1 [L]
+RewriteRule ^/?pm/compose/(.+)/$ messages.php?do=compose&to=$1 [L]
+RewriteRule ^/?pm/read/(.+)$ messages.php?do=read&id=$1 [L]
+RewriteRule ^/?pm/read/(.+)/$ messages.php?do=read&id=$1 [L]
+RewriteRule ^/?privacy$ index.php?node=privacy [L]
+RewriteRule ^/?rss/episodes$ rss.php?type=episodes [L]
+RewriteRule ^/?rss/series$ rss.php?type=series [L]
+RewriteRule ^/?rss$ rss.php [L]
+RewriteRule ^/?search/r/(.+)$ search.php?remote=yes&q=$1 [L]
+RewriteRule ^/?search/?=(.+)$ search.php?$1 [L]
+RewriteRule ^/?search?=(.+)$ search.php?$1 [L]
+RewriteRule ^/?search/$ search.php [L]
+RewriteRule ^/?search$ search.php [L]
+RewriteRule ^/?server-stats$ index.php?node=server-stats [L]
+RewriteRule ^/?staff/applications/security-test$ index.php?node=staff&subnode=sectest [L]
+RewriteRule ^/?staff/applications/security-test/$ index.php?node=staff&subnode=sectest [L]
+RewriteRule ^/?staff/applications/step-(.+)$ index.php?node=staff&subnode=apps&step=$1 [L]
+RewriteRule ^/?staff/applications$ index.php?node=staff&subnode=apps [L]
+RewriteRule ^/?staff/applications/$ index.php?node=staff&subnode=apps [L]
+RewriteRule ^/?staff$ index.php?node=staff&subnode=show [L]
+RewriteRule ^/?stats$ index.php?node=stats [L]
+RewriteRule ^/?store/notify/paypal$ scripts.php?view=cart [L]
+RewriteRule ^/?store$ index.php?node=store [L]
+RewriteRule ^/?store/(.+)$ index.php?node=store&options=$1 [L]
+RewriteRule ^/?top-series$ index.php?node=topseries [L]
+RewriteRule ^/?tos$ index.php?node=tos [L]
+RewriteRule ^/?images/tracker-sig/([a-zA-Z0-9'@_-]+)/([a-zA-Z0-9'@_-]+).gif$ /tracker-sig/tracker-sig.php?background=$1&username=$2 [L]
+RewriteRule ^/?tracker-sig/([a-zA-Z0-9'@_-]+)/([a-zA-Z0-9'@_-]+).gif$ tracker-sig.php?background=$1&username=$2 [L]
+RewriteRule ^/?register$ secure.php?node=register [L]
+RewriteRule ^/?register/$ secure.php?node=register [L]
+RewriteRule ^/?reviews/$ secure.php?node=reviews [L]
+RewriteRule ^/?reviews$ secure.php?node=reviews [L]
+RewriteRule ^/?resources/$ index.php?node=resources [L]
+RewriteRule ^/?resources$ index.php?node=resources [L]
+RewriteRule ^/?reviews/series-(.+)/$ secure.php?node=reviews&subnode=review&sid=$1 [L]
+RewriteRule ^/?reviews/series-(.+)$ secure.php?node=reviews&subnode=review&sid=$1 [L]
+RewriteRule ^/?reviews/submitted/$ secure.php?node=reviews&subnode=submit [L]
+RewriteRule ^/?reviews/submitted$ secure.php?node=reviews&subnode=submit [L]
+RewriteRule ^/?rules$ index.php?node=rules [L]
+RewriteRule ^/?uploads$ projects.php [L]
+RewriteRule ^/?uploads/$ projects.php [L]
+RewriteRule ^/?user/(.+)/notifications$ users.php?username=$1&show=notifications [L]
+RewriteRule ^/?user/(.+)/notifications/$ users.php?username=$1&show=notifications [L]
+RewriteRule ^/?user/(.+)$ users.php?username=$1 [L]
+RewriteRule ^/?user/(.+)/$ users.php?username=$1 [L]
+RewriteRule ^/?what-is-the-aftw-html5-player$ index.php?node=what-is-the-aftw-html5-player [L]
+
+
+## MOBILE REWRITES
+RewriteRule ^/?m/register$ mobile.register.php [L]
+RewriteRule ^/?m/register/activate/(.+)$ mobile.register.php?activate=$1 [L]
+RewriteRule ^/?restricted-crap-for-brad$ index.php?node=restricted-crap-for-brad [L]
+
+
+## LEGACY RULES (WILL BE TAKEN OUT OVER TIME)
+# RewriteRule ^/?profile/(.+)/$ users.php?username=$1 [L]
+# RewriteRule ^/?profile/(.+)$ users.php?username=$1 [L]
+
+
+
+
+## USER IP BANNING
+<Limit GET POST>
+ order allow,deny
+deny from 38.99.13.121
+deny from 38.99.13.122
+deny from 38.99.13.124
+deny from 38.99.13.126
+deny from 38.99.44.101
+deny from 38.99.44.102
+deny from 38.99.44.103
+deny from 38.99.44.104
+deny from 38.99.44.105
+deny from 38.99.44.106
+deny from 64.1.215.166
+deny from 64.1.215.165
+deny from 64.1.215.164
+deny from 64.1.215.163
+deny from 64.1.215.162
+deny from 208.36.144.6
+deny from 208.36.144.7
+deny from 208.36.144.8
+deny from 208.36.144.9
+deny from 208.36.144.10
+deny from 66.82.9.
+deny from 189.27.
+ allow from all
+</Limit>

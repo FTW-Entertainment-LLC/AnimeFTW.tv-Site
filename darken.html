@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Turn off the lights - demo | JankoAtWarpSpeed</title>
+    <style type="text/css">
+        body {font-family:Arial, Sans-Serif; font-size:13px; text-align:center; margin:0px; position:relative;}
+        #container { width:960px; margin:0px auto; text-align:left; overflow:hidden; position:relative;}
+        #movie {border:solid 1px #dcdcdc; float:left; width:560px; text-align:left; margin-right:20px; position:relative; z-index:102;}
+        #description { float:left; width:320px;border:solid 1px #dcdcdc; padding: 10px 20px;}
+        #command { position:relative; height:25px; display:block; margin: 25px 0 0 0;}
+        .lightSwitcher {position:absolute; z-index:101; background-image:url(light_bulb_off.png); 
+                        background-repeat:no-repeat; background-position:left; padding: 0 0 0 20px; outline:none; text-decoration:none;}
+        .lightSwitcher:hover {text-decoration:underline;}
+        #shadow {background-image:url(shade1x1.png); position:absolute; left:0; top:0; width:100%; z-index:100;}
+        .turnedOff {color:#ffff00; background-image:url(light_bulb.png);}
+	  #clickHere {position:absolute; top: -25px; left:130px;}
+    </style>
+    <script type="text/javascript" src="jquery-1.3.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#shadow").css("height", $(document).height()).hide();
+            $(".lightSwitcher").click(function(){
+                $("#shadow").toggle();
+                if ($("#shadow").is(":hidden"))
+                    $(this).html("Turn off the lights").removeClass("turnedOff");
+                 else
+                    $(this).html("Turn on the lights").addClass("turnedOff");
+            });
+            
+        });
+    </script>
+</head>
+<body>
+
+    <div id="container">
+        <div id="header">
+            <h1>Janko At Warp Speed</h1>
+            <h2><a href="http://www.jankoatwarpspeed.com/post/2009/05/17/Use-jQuery-to-turn-off-the-lights-while-watching-videos.aspx">Turn off the lights</a> - demo</h2>
+            <div id="command"><img src="click_here.png" alt="" id="clickHere" /><a class="lightSwitcher" href="#">Turn off the lights</a></div>
+        </div>
+
+        <div id="movie">
+           <object classid="clsid:67DABFBF-D0AB-41fa-9C46-CC0F21721616" width="704" height="416" codebase="http://go.divx.com/plugin/DivXBrowserPlugin.cab">
+									<param name="custommode" value="Stage6" />
+									<param name="autoPlay" value="false" />
+									<param name="allowContextMenu" value="false" /><param name="src" value="http://static.ftw-cdn.com/videos1/bleach/bleach_271_ns.divx" />
+									<embed id="compman" type="video/divx" src="http://static.ftw-cdn.com/videos1/bleach/bleach_271_ns.divx" custommode="Stage6" width="704" height="416"autoPlay="false" allowContextMenu="false" pluginspage="http://go.divx.com/plugin/download/\">
+									</embed>
+									</object>
+        </div>
+
+        <div id="description">
+            <p>Some clips on YouTube have a cool feature called "Turn lights down". This is an 
+            example of how it can be implemented using jQuery. When you click on "Turn off the lights"
+            link, shadow covers entire page, except the movie and the link (which changes to 
+            "Turn on the lights").</p>
+            <p>I think it's very simple, don't you?</p>
+            <p>Ah, and yes - this works only if you listen to this song while cliking ;)</p>
+            <p>Some other songs from Metallica:<br />
+                > <a href="http://www.youtube.com/watch?v=Wdqo9aO0fyo" target="_blank">Fuel</a><br />
+
+                > <a href="http://www.youtube.com/watch?v=WEQnzs8wl6E" target="_blank">Fade to Black</a><br />
+                > <a href="http://www.youtube.com/watch?v=LihCeR-DoNs" target="_blank">The Unforgiven II</a><br />
+                > <a href="http://www.youtube.com/watch?v=WEQnzs8wl6E" target="_blank">Fade to Black</a><br />
+                > <a href="http://www.youtube.com/watch?v=ch80ySEJcsk" target="_blank">Until It Sleeps</a>
+           </p>
+
+        </div>
+    </div>
+    <div id="shadow"></div>
+</body>
+</html>

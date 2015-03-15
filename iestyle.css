@@ -1,0 +1,32 @@
+@charset "utf-8";
+/* InterNet Explorer Style Sheet, because MS never plays nice. */
+
+.search-box {
+}
+.header-nav-left a:hover {
+	padding: 17px 12px 21px 15px;
+	height: 49px;
+}
+.header-nav-left .current {
+	padding: 19px 12px 21px 15px;
+	height: 49px;
+}
+#socialbar {
+	float:right;
+	margin-top: 3px;
+	margin-right: -10px;
+	width: 355px;
+	height:28px;
+	padding: 6px 0px 0px 5px;
+	background: url("http://cdn.animeftw.tv/site-images/social-background.png") no-repeat 0 0;
+}
+div.newnavbar{
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC000000, endColorstr=#CC000000)";
+}
+.pane-subnav-subdiv{
+	display:block;
+	width:150px;
+}
+.popbox{
+	display:block;
+}

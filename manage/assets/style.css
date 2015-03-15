@@ -1,0 +1,339 @@
+
+body{
+	max-width:100%;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:11px;
+	color:#000;
+	background:#e8e8e8;
+	margin:auto;
+}
+
+a {
+	text-decoration:none;
+}
+#hov-msg {
+    width: 40%;
+    position: fixed;
+	display: none;
+    left: 35%;
+	font-size:14px;
+	color:#000;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	-moz-border-radius-bottomleft:5px;
+	-moz-border-radius-bottomright:5px;
+	-moz-box-shadow:0 8px 20px 0 #262626;
+    z-index: 10;
+	margin-top:-10px;
+}
+.msg-green {
+	padding: 3px 7px 4px !important;
+	background-color:#85e76b;
+	border:1px solid #85e76b;
+	color:white;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	-moz-border-radius-bottomleft:5px;
+	-moz-border-radius-bottomright:5px;
+	-moz-box-shadow: 3px 3px 9px #666;
+	-webkit-box-shadow: 3px 3px 9px #666;
+	box-shadow: 3px 3px 9px #666;
+}
+.msg-red {
+	padding: 3px 7px 4px !important;
+	background-color:#e76b6b;
+	border:1px solid #e76b6b;
+	color:white;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	-moz-border-radius-bottomleft:5px;
+	-moz-border-radius-bottomright:5px;
+	-moz-box-shadow: 3px 3px 9px #666;
+	-webkit-box-shadow: 3px 3px 9px #666;
+	box-shadow: 3px 3px 9px #666;
+}
+#welcome-wrapper {
+	margin:auto;
+	margin-top:10%;	
+	color:#000;
+	border:1px solid #dbdbdb;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 8px 20px 0 #262626;
+	background: #f3f3f3;
+	text-align: center;
+	font-size: 14px;
+	width: 300px;
+	height: 100%;
+	text-align:center;
+}
+.welcome-row {
+	width:100%;
+	padding:0 0 20px 10px;
+}
+.welcome-text-mini {
+	text-align:left;
+	font-size:10px;
+	margin-left:50px;
+	color:#a4a4a4;
+}
+.form-text-input {
+	border:1px solid #dbdbdb;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	padding:2px;
+}
+.form-text-input:hover, .form-text-input:focus {
+	border: 1px solid #11B4E9;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+            box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+}
+.welcome-submit {
+	padding: 8px 12px 9px !important;
+	font-size: 15px !important;
+	background-color: #11B4E9;
+	font-weight: bold;
+	text-shadow: 1px 1px #11B4E9;
+	color: #ffffff;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #11B4E9;
+	cursor: pointer;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+#welcome-error {
+	padding: 3px 7px 4px !important;
+	font-size: 10px !important;
+	background-color: #ff5353;
+	border: 1px solid #ff5353;
+	color:white;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	width:90%;
+}
+#welcome-msg {
+	padding: 3px 7px 4px !important;
+	font-size: 10px !important;
+	background-color: #76cd3b;
+	border: 1px solid #76cd3b;
+	color:white;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	width:90%;
+}
+#manager-wrapper {
+	margin:auto;
+	width:1130px;
+}
+#header-wrapper {
+	margin-top:10px;
+	width:100%;
+	color:#000;
+	border:1px solid #dbdbdb;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 8px 20px 0 #262626;
+	background: #f3f3f3;
+}
+#body-wrapper {
+	margin-top:10px;
+	width:100%;
+	min-height:680px;
+	color:#000;
+	border:1px solid #dbdbdb;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 8px 20px 0 #262626;
+	background: #f3f3f3;
+}
+#nav-wrapper {
+	padding:10px 5px 5px 5px;
+	left: 0px;
+	position: relative;
+	margin:auto;
+	width: 280px;
+}
+#sub-nav-wrapper {
+  position: absolute;
+  top: 0;
+  /* just used to show how to include the margin in the effect */
+  padding-top: 10px;
+}
+
+#sub-nav-wrapper.fixed {
+  position: fixed;
+  top: 0;
+}
+.nav-item {
+	text-align:middle;
+	border:1px solid #ccc;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 8px 20px 0 #262626;
+	background-color:#77d5f4;
+	width:150px;
+}
+.nav-item:hover, .nav-item-active {
+	color:white;
+	background-color:#11b4e9;
+}
+.nav-text {
+	display:inline-block;
+	height:100%;
+	vertical-align:top;
+	margin-top:4px;
+	padding-right:2px;
+	font-size:14px;
+	color:black;
+}
+.nav-image {
+	display:inline-block;
+	padding-left:4px;
+}
+#left-column {
+	display:inline-block;
+	width:15%;
+	vertical-align:top;
+	margin-left:5px;
+}
+#right-column {
+	display:inline-block;
+	width:80%;
+	height:100%;
+	vertical-align:top;
+	margin-top:5px;
+}
+.body-message {
+	width:98%;
+	background-color:#e76b6b;
+	border:1px solid #e76b6b;
+	color:white;
+	padding:5px;
+	margin:5px;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+}
+.body-message a {
+	text-decoration:underline;
+	color:white;
+}
+.body-container {
+	background-color:#eeebea;
+	border: 1px solid #eeebea;
+	padding:5px;
+	margin:5px;
+}
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('/manage/assets/manage-preloader.gif') 
+                50% 50% 
+                no-repeat;
+}
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+.FormError {
+	display: none;
+	float:right;
+	width:200px;
+	color:#000;
+}
+.srightcol{
+	display:inline-block;
+	width:400px;
+	max-width:620px;
+	margin-top:5px;
+	background-color:c8c8c8;
+	vertical-align:top;
+}
+.sleftcol{
+	display:inline-block;
+	width:210px;
+	max-width:250px;
+}
+.sfarrightcol {
+	vertical-align:top;
+	display:inline-block;
+	width: 200px;
+}
+.srow{
+	padding:8px;
+	background-color:#fff;
+}
+.srow2{
+	padding:8px;
+}
+.sactive{
+	background-color:#4eff08;
+	}
+.sinactive{
+	background-color:#ff0000;
+}
+#pageselected{
+	font-weight:bold;
+}
+.series-form-row {
+	padding:5px;
+}
+.series-form-left {
+	vertical-align:top;
+	display:inline-block;
+	width:300px;
+}
+.series-form-right {
+	vertical-align:middle;
+	display:inline-block;
+	width:450px;
+}
+.text-input2 {
+	border:1px solid #CCC;
+	color:#5A5655;
+	font:13px Verdana,Arial,Helvetica,sans-serif;
+	padding:2px;
+}
+.text-input2:focus {
+	border:1px solid #0C90BB;
+}
+.notification-bar {
+	position:fixed;
+	bottom:0;
+	right:0;
+	width:350px;
+}
+.notification-bubble {
+	border:1px solid #ccc;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0 8px 20px 0 #262626;
+	background-color:#77d5f4;
+	width:300px;
+	bottom:0;
+	margin:10px;
+	padding:2px;
+}

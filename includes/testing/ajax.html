@@ -1,0 +1,19 @@
+<html>
+<head>
+<!-- For ease i'm just using a JQuery version hosted by JQuery- you can download any version and link to it locally -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+  $(document).ready(function() {
+ 	 $("#notesprite").load("http://www.animeftw.tv/scripts.php?view=notifications&show=sprite");
+   var refreshId = setInterval(function() {
+      $("#notesprite").load('http://www.animeftw.tv/scripts.php?view=notifications&show=sprite&randval='+ Math.random());
+   }, 30000);
+   $.ajaxSetup({ cache: false });
+});
+</script>
+</head>
+<body>
+ 
+<div id="notesprite">
+</div>
+</body>

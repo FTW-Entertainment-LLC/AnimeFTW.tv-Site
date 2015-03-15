@@ -1,0 +1,1252 @@
+./nocover.jpg: JPEG image data, JFIF standard 1.01
+./background.jpg: JPEG image data, JFIF standard 1.02
+./cross.jpg: PNG image data, 22 x 22, 8-bit/color RGBA, non-interlaced
+./internalamdownload.jpg: JPEG image data, JFIF standard 1.01
+./birthday/AnimeFTW_Birthday_Logo.jpg: JPEG image data, EXIF standard
+./birthday/AnimeFTW_Birthday_Avatar_Hat.jpg: JPEG image data, JFIF standard 1.02
+./birthday/AnimeFTW_Birthday.jpg: JPEG image data, EXIF standard
+./birthday/AnimeFTW_FooterFolks_Party.jpg: JPEG image data, EXIF standard
+./android_logo.jpg: JPEG image data, JFIF standard 1.01
+./noscreen.jpg: JPEG image data, JFIF standard 1.01
+./editor/keys.jpg: JPEG image data, JFIF standard 1.02
+./forumimages/useredit.jpg: JPEG image data, JFIF standard 1.01
+./forumimages/fastreply.jpg: JPEG image data, JFIF standard 1.01
+./forumimages/posttopic.jpg: JPEG image data, JFIF standard 1.01
+./forumimages/postreply.jpg: JPEG image data, JFIF standard 1.01
+./forumimages/closed.jpg: JPEG image data, JFIF standard 1.01
+./Upgrade_In_Progress.jpg: JPEG image data, EXIF standard
+./holiday/christmas/footer-mascot.jpg: JPEG image data, JFIF standard 1.02
+./footer-mascot.jpg: JPEG image data, JFIF standard 1.02
+./Upgrade_In_Progress_bg.jpg: JPEG image data, EXIF standard
+./manager.jpg: JPEG image data, EXIF standard
+./dropdownamoptions.jpg: JPEG image data, JFIF standard 1.01
+./error-mascot.jpg: JPEG image data, JFIF standard 1.02, comment: "Paint Tool -SAI- JPEG Encoder v"
+./externalamdownload.jpg: JPEG image data, JFIF standard 1.01
+./thumb.jpg: JPEG image data, JFIF standard 1.01
+./ratings/18+.jpg: JPEG image data, JFIF standard 1.01
+./ratings/12+.jpg: JPEG image data, JFIF standard 1.01
+./ratings/15+.jpg: JPEG image data, JFIF standard 1.01
+./ratings/e.jpg: JPEG image data, JFIF standard 1.01
+./series-images/541.jpg: JPEG image data, JFIF standard 1.02
+./series-images/515.jpg: JPEG image data, JFIF standard 1.01
+./series-images/514.jpg: JPEG image data, JFIF standard 1.02
+./series-images/507.jpg: JPEG image data, JFIF standard 1.02
+./series-images/485.jpg: JPEG image data, JFIF standard 1.01
+./series-images/486.jpg: JPEG image data, JFIF standard 1.02
+./series-images/469.jpg: JPEG image data, JFIF standard 1.01
+./series-images/487.jpg: JPEG image data, JFIF standard 1.01
+./series-images/532.jpg: JPEG image data, EXIF standard
+./series-images/491.jpg: JPEG image data, JFIF standard 1.01
+./series-images/495.jpg: JPEG image data, JFIF standard 1.02
+./series-images/508.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./series-images/477.jpg: JPEG image data, JFIF standard 1.02
+./series-images/540.jpg: JPEG image data, JFIF standard 1.02
+./series-images/526.jpg: JPEG image data, JFIF standard 1.02
+./series-images/535.jpg: JPEG image data, EXIF standard
+./series-images/475.jpg: JPEG image data, JFIF standard 1.01
+./series-images/510.jpg: JPEG image data, JFIF standard 1.02
+./series-images/494.jpg: JPEG image data, JFIF standard 1.02
+./series-images/547.jpg: JPEG image data, JFIF standard 1.01
+./series-images/481.jpg: JPEG image data, JFIF standard 1.01
+./series-images/523.jpg: JPEG image data, JFIF standard 1.02
+./series-images/536.jpg: JPEG image data, JFIF standard 1.01
+./series-images/533.jpg: JPEG image data, JFIF standard 1.01
+./series-images/537.jpg: JPEG image data, JFIF standard 1.01
+./series-images/496.jpg: JPEG image data, JFIF standard 1.02
+./series-images/497.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./series-images/480.jpg: JPEG image data, JFIF standard 1.01
+./series-images/511.jpg: JPEG image data, JFIF standard 1.01
+./series-images/490.jpg: JPEG image data, JFIF standard 1.01
+./series-images/503.jpg: JPEG image data, JFIF standard 1.01
+./series-images/521.jpg: JPEG image data, JFIF standard 1.02
+./series-images/538.jpg: JPEG image data, JFIF standard 1.02
+./series-images/513.jpg: JPEG image data, EXIF standard
+./series-images/512.jpg: JPEG image data, JFIF standard 1.01
+./series-images/519.jpg: JPEG image data, JFIF standard 1.01
+./series-images/502.jpg: JPEG image data, EXIF standard
+./series-images/506.jpg: JPEG image data, EXIF standard
+./series-images/468.jpg: JPEG image data, EXIF standard
+./series-images/516.jpg: JPEG image data, JFIF standard 1.02
+./series-images/500.jpg: JPEG image data, JFIF standard 1.01
+./series-images/524.jpg: JPEG image data, EXIF standard
+./series-images/518.jpg: JPEG image data, JFIF standard 1.01
+./series-images/482.jpg: JPEG image data, EXIF standard
+./series-images/473.jpg: JPEG image data, EXIF standard
+./series-images/479.jpg: JPEG image data, JFIF standard 1.01
+./series-images/534.jpg: JPEG image data, JFIF standard 1.01
+./series-images/543.jpg: JPEG image data, JFIF standard 1.01
+./series-images/492.jpg: JPEG image data, JFIF standard 1.02
+./series-images/476.jpg: JPEG image data, JFIF standard 1.02
+./series-images/545.jpg: JPEG image data, EXIF standard
+./series-images/484.jpg: JPEG image data, JFIF standard 1.02
+./series-images/471.jpg: JPEG image data, JFIF standard 1.02
+./series-images/498.jpg: JPEG image data, EXIF standard
+./series-images/539.jpg: JPEG image data, JFIF standard 1.01
+./series-images/493.jpg: JPEG image data, JFIF standard 1.02
+./series-images/528.jpg: JPEG image data, JFIF standard 1.01
+./series-images/489.jpg: JPEG image data, JFIF standard 1.01
+./series-images/483.jpg: JPEG image data, JFIF standard 1.01
+./series-images/595.jpg: JPEG image data, JFIF standard 1.01
+./series-images/520.jpg: JPEG image data, JFIF standard 1.02
+./series-images/544.jpg: JPEG image data, JFIF standard 1.01
+./series-images/525.jpg: JPEG image data, JFIF standard 1.01
+./series-images/470.jpg: JPEG image data, JFIF standard 1.02
+./series-images/499.jpg: JPEG image data, JFIF standard 1.01
+./series-images/529.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./series-images/466.jpg: JPEG image data, JFIF standard 1.01
+./series-images/504.jpg: JPEG image data, JFIF standard 1.02
+./series-images/478.jpg: JPEG image data, JFIF standard 1.02
+./series-images/527.jpg: JPEG image data, JFIF standard 1.02
+./series-images/472.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./series-images/509.jpg: JPEG image data, JFIF standard 1.02
+./series-images/501.jpg: JPEG image data, JFIF standard 1.02
+./series-images/522.jpg: JPEG image data, JFIF standard 1.01
+./series-images/505.jpg: JPEG image data, JFIF standard 1.01
+./series-images/488.jpg: JPEG image data, JFIF standard 1.01
+./series-images/530.jpg: JPEG image data, JFIF standard 1.01
+./series-images/542.jpg: JPEG image data, JFIF standard 1.01
+./series-images/517.jpg: JPEG image data, JFIF standard 1.01
+./series-images/531.jpg: JPEG image data, JFIF standard 1.01
+./series-images/474.jpg: JPEG image data, JFIF standard 1.01
+./uploads/background_user1.jpg: JPEG image data, JFIF standard 1.01
+./uploads/MJV-ART.ORG_-_28946-2500x1858-tengen+toppa+gurren+lagann-kamina.jpg: JPEG image data, JFIF standard 1.02
+./uploads/Konachan.com - 33577 kamina simon tengen_toppa_gurren_lagann.jpg: JPEG image data, JFIF standard 1.01
+./check.jpg: PNG image data, 22 x 22, 8-bit/color RGBA, non-interlaced
+./admin.jpg: JPEG image data, JFIF standard 1.01
+./storeimages/item1.jpg: JPEG image data, JFIF standard 1.02
+./storeimages/animeftw-black-tshirt.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user56129.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user92704.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1806.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user147.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user39265.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user5544.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9555.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user5297.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4336.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user102937.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3369.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7603.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33416.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16926.jpg: JPEG image data, EXIF standard
+./avatars/user839.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user51348.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user70222.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user29419.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user2214.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user748.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user26978.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user784.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16553.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user92654.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15759.jpg: JPEG image data, JFIF standard 1.01, comment: "Image Resized at http://www.shr"
+./avatars/user6295.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user13940.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user3095.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user3901.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30672.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9534.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30422.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15221.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11074.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11903.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2255.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user14347.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30838.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user91854.jpg: JPEG image data, JFIF standard 1.00, comment: "LEAD Technologies Inc. V1.01"
+./avatars/user973.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8309.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user13518.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user124.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user8092.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user7564.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1038.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user20430.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1738.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user423.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24625.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user94464.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user28641.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5694.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2748.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user55294.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7817.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user46688.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user29365.jpg: JPEG image data, EXIF standard
+./avatars/user70.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user3289.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user35709.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33381.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user23609.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10516.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user50.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20901.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user24662.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user358.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7085.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user23844.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user89.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user55100.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user50603.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user62214.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user21725.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user32704.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user9293.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11900.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3740.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user23108.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21486.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user83082.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user62982.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4891.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10629.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12742.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user85257.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8493.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21896.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7944.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user29324.jpg: JPEG image data, EXIF standard
+./avatars/user19227.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user36810.jpg: JPEG image data, JFIF standard 1.01, comment: "AppleMark"
+./avatars/user8690.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4621.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1499.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21420.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user101236.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user14362.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user775.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user15428.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24442.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4681.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user31247.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16084.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user14107.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user34466.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user62110.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user42111.jpg: JPEG image data, EXIF standard
+./avatars/user5766.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user283.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1929.jpg: JPEG image data, EXIF standard
+./avatars/user697.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user73094.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user90006.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1695.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user10.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user60445.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user20151.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2706.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user37556.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16456.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user200.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user59.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user17302.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15085.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10776.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30637.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5150.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user10199.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user490.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2735.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user12750.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4366.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user11670.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9174.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5677.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user54478.jpg: JPEG image data, EXIF standard
+./avatars/user33837.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user103.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user359.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user36.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1895.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user68380.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user36850.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11140.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user1099.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30561.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2819.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user43591.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user27985.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user31268.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1216.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user31842.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user60955.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user14973.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11109.jpg: JPEG image data, JFIF standard 1.01, comment: "*\377\002ICC_PROFILE"
+./avatars/user52778.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user5923.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user38854.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user644.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user24424.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24222.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user19319.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user73.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16834.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user100138.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3950.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user253.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user64167.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3861.jpg: JPEG image data, JFIF standard 1.01, comment: "File written by Adobe Photoshop"
+./avatars/user23549.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20563.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user26550.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user10760.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user506.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user38862.jpg: JPEG image data, JFIF standard 1.01, comment: "*"
+./avatars/user3256.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30940.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user768.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2050.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3561.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user22461.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user77090.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33186.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user8427.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user32554.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user4662.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4338.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user29079.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10013.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9921.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user23099.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user13382.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user18674.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1143.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user42864.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2541.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user50795.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12791.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user37044.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user18150.jpg: JPEG image data, EXIF standard
+./avatars/user37545.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user29735.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4706.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user97815.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8888.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user17450.jpg: JPEG image data, EXIF standard
+./avatars/user5849.jpg: JPEG image data, JFIF standard 1.02, baseline, precision 0, 4360x100
+./avatars/user24559.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user17343.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3126.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user20436.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user81872.jpg: JPEG image data, JFIF standard 1.00, comment: "LEAD Technologies Inc. V1.01"
+./avatars/user16412.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user91.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user728.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user197.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2380.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20680.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user325.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10547.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user454.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4598.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user78435.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3576.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20175.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8802.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20374.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4450.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user25323.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user58629.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3711.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user262.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7733.jpg: JPEG image data, JFIF standard 1.01, comment: "Lavc51.9.0"
+./avatars/user7937.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user9778.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3160.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1411.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user38035.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6665.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24998.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11251.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1980.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8936.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user5488.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33696.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9247.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1780.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1526.jpg: JPEG image data, EXIF standard, baseline, precision 0, 4360x99
+./avatars/user9915.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user24477.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user341.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5268.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user28510.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12494.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user24065.jpg: JPEG image data, JFIF standard 1.00, comment: "LEAD Technologies Inc. V1.01"
+./avatars/user3921.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user21161.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP"
+./avatars/user9609.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user38977.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user102609.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12827.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10983.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user929.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user38923.jpg: JPEG image data, EXIF standard
+./avatars/user8054.jpg: JPEG image data, EXIF standard, comment: "Image Resized at http://www.shr"
+./avatars/user8374.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user29859.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3606.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1174.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1356.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1507.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9935.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1734.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user23698.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11679.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1300.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user31421.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user28998.jpg: JPEG image data, EXIF standard
+./avatars/user3551.jpg: JPEG image data, EXIF standard
+./avatars/user5554.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user79106.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user6908.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user72372.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2320.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user1771.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user134.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user84736.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user37657.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user304.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user86908.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30280.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6816.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16125.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2360.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15769.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user3872.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5794.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user9940.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP\377"
+./avatars/user30445.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1319.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user18155.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1971.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21235.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1175.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user922.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12331.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user263.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user58458.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16983.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user8969.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user10372.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user315.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user37504.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user84534.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15518.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11339.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user27858.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4220.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user11761.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user31656.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user15307.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user15051.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2846.jpg: GIF image data, version 89a, 80 x 93
+./avatars/user19346.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user48111.jpg: JPEG image data, EXIF standard
+./avatars/user6720.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1685.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8276.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user94153.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7027.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12721.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6869.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8143.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2071.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7103.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3815.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user71216.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20829.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user61702.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8748.jpg: JPEG image data, EXIF standard
+./avatars/user12203.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2294.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15267.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user32442.jpg: JPEG image data, EXIF standard
+./avatars/user24126.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1552.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user8028.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user16587.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user13576.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user11793.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user36631.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user53336.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user42247.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user302.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user14277.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP\377"
+./avatars/user21037.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1773.jpg: JPEG image data, JFIF standard 1.00, comment: "LEAD Technologies Inc. V1.01"
+./avatars/user70344.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4601.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user20793.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user3969.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7844.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3585.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user14620.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1197.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user16506.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3437.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user5595.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user53933.jpg: JPEG image data, JFIF standard 1.01, comment: "ACD Systems Digital Imaging"
+./avatars/user7546.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1870.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user67394.jpg: JPEG image data, EXIF standard
+./avatars/user926.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user20593.jpg: JPEG image data, EXIF standard
+./avatars/user1269.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user71.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10043.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11554.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6213.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1976.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1657.jpg: JPEG image data, EXIF standard
+./avatars/user34082.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30592.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4311.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9433.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2700.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1985.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2941.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5248.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user69479.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33975.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3893.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7836.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1210.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15144.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user1416.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4685.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user22960.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8923.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user27652.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20536.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user33580.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user38266.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user1227.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2166.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3158.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user28259.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user65504.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15761.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user23412.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16021.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user8023.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user88592.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21703.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8640.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6694.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user28494.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2730.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user32627.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user30757.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user36370.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user312.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user35225.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user3747.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user39589.jpg: PHP script text
+./avatars/user9097.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user17774.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user10941.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user98957.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user95494.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4608.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7776.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP\377"
+./avatars/user43.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user18134.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user19592.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user43401.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15073.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user22865.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user85409.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user66981.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33821.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user24343.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user7848.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1057.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5073.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2970.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user112.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user1514.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3094.jpg: JPEG image data, EXIF standard 2.2
+./avatars/user20349.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user38179.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user980.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33726.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user6340.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user17673.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user39065.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user35401.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user12780.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user4709.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user418.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user103594.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user59062.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user104780.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user927.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user67784.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user292.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2738.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user406.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user14114.jpg: JPEG image data, EXIF standard
+./avatars/user22920.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20444.jpg: JPEG image data, JFIF standard 1.01, comment: "*"
+./avatars/user23975.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user15607.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7841.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user3587.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11389.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3139.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user36646.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user2841.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user13737.jpg: JPEG image data, JFIF standard 1.01
+./avatars/default.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8663.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user13875.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user38742.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user81285.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4799.jpg: JPEG image data, EXIF standard 2.2
+./avatars/user29622.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user52659.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user20264.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24948.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3653.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1105.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user69053.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21271.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user37594.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12137.jpg: JPEG image data, JFIF standard 1.01, comment: "File written by Adobe Photoshop"
+./avatars/user56378.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user753.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user17165.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user13445.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user746.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user18362.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8390.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user88575.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user35100.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20132.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user50580.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24510.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user92169.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user183.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4444.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user33992.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20686.jpg: JPEG image data, EXIF standard, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user10423.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user52423.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1966.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP\377"
+./avatars/user66260.jpg: JPEG image data, EXIF standard
+./avatars/user317.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user29995.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3871.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user60645.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user37382.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user7796.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user142.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5157.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user20433.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1960.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6234.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user62217.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user109367.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user88734.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user769.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user2.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user20429.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user7876.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user90344.jpg: JPEG image data, JFIF standard 1.01, comment: "*"
+./avatars/user21910.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user139.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16091.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user90363.jpg: JPEG image data, EXIF standard, comment: "AppleMark"
+./avatars/user1909.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user5131.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user16143.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user22992.jpg: JPEG image data, JFIF standard 1.02, baseline, precision 0, 4360x100
+./avatars/user2973.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user17798.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5062.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6280.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user84218.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user23918.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user7406.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user8315.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user57.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user6063.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user9993.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4987.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user6239.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user301.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user70644.jpg: JPEG image data, JFIF standard 1.00, comment: "LEAD Technologies Inc. V1.01"
+./avatars/user15503.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user227.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user24266.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user42534.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user368.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user34775.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user4453.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user9962.jpg: JPEG image data, JFIF standard 1.01, comment: "Image Resized at http://www.shr"
+./avatars/user6363.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user34068.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user17072.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user79518.jpg: JPEG image data, EXIF standard
+./avatars/user520.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user3377.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user39090.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user66039.jpg: JPEG image data, EXIF standard
+./avatars/user15721.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user39044.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user27671.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user2086.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user12516.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user26062.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5866.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP\377"
+./avatars/user18303.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20480.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user32903.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user11404.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user18925.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user29529.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user7130.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user198.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user634.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user159.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2774.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5922.jpg: JPEG image data, EXIF standard, baseline, precision 0, 4360x100
+./avatars/user40885.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user28101.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user31011.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user11149.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user22312.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4182.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user75184.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user20407.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user81795.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user16347.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user48696.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user9495.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6620.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user1556.jpg: JPEG image data, EXIF standard, baseline, precision 0, 4360x100
+./avatars/user11386.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user26.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user15181.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user20387.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user34839.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user84486.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user32824.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user22633.jpg: PC bitmap, Windows 3.x format, 96 x 96 x 24
+./avatars/user2229.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user962.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user14072.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6158.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user544.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user933.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user1413.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user21511.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2301.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user6610.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user3466.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user699.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user42322.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user4423.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user2224.jpg: JPEG image data, JFIF standard 1.02
+./avatars/user29458.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user5097.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user35508.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./avatars/user15577.jpg: JPEG image data, JFIF standard 1.01
+./avatars/user2691.jpg: JPEG image data, JFIF standard 1.01, comment: "Created with GIMP\377"
+./stafficons/admin.jpg: JPEG image data, JFIF standard 1.01
+./stafficons/groupmanager.jpg: JPEG image data, JFIF standard 1.01
+./stafficons/adminjames.jpg: JPEG image data, JFIF standard 1.01
+./stafficons/staff.jpg: JPEG image data, JFIF standard 1.01
+./404.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/83.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/390.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/79.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/86.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/421.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/107.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/378.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/169.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/507.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/485.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/164.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/394.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/56.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/62.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/389.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/486.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/271.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/82.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/469.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/260.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/35.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/487.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/238.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/460.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/329.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/279.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/27.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/138.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/37.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/383.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/252.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/444.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/424.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/491.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/241.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/294.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/123.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/264.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/206.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/168.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/7.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/248.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/453.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/145.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/105.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/451.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/367.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/247.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/403.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/464.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/293.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/296.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/495.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/187.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/361.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/410.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/436.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/449.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/312.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/77.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/188.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/73.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/5.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/85.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/180.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/36.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/277.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/395.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/173.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/276.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/178.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/87.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/29.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/309.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/441.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/222.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/68.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/508.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/212.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/265.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/435.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/129.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/477.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/334.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/120.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/207.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/347.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/372.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/362.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/429.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/10.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/411.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/172.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/319.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/475.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/249.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/323.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/95.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/510.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/13.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/18.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/228.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/32.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/353.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/236.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/438.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/150.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/359.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/101.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/494.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/217.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/437.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/401.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/396.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/364.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/250.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/463.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/42.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/203.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/224.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/40.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/350.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/414.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/335.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/417.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/481.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/142.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/373.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/233.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/352.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/9.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/135.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/209.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/59.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/256.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/139.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/193.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/275.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/167.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/12.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/126.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/432.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/419.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/412.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/213.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/496.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/218.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/269.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/161.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/497.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/382.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/84.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/325.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/274.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/165.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/480.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/511.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/211.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/450.jpg: JPEG image data, EXIF standard
+./seriesimages/200.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/326.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/459.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/439.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/490.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/22.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/365.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/1.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/430.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/47.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/503.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/34.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/320.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/119.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/175.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/336.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/151.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/333.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/391.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/356.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/384.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/118.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/257.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/306.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/332.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/2.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/317.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/70.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/136.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/78.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/357.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/204.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/454.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/220.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/201.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/263.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/144.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/242.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/324.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/393.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/376.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/448.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/458.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/240.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/103.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/205.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/311.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/330.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/146.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/143.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/399.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/259.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/65.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/303.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/374.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/184.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/223.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/502.jpg: JPEG image data, EXIF standard
+./seriesimages/198.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/310.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/327.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/506.jpg: JPEG image data, EXIF standard
+./seriesimages/447.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/221.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/122.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/468.jpg: JPEG image data, EXIF standard
+./seriesimages/25.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/307.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/500.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/295.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/93.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/440.jpg: JPEG image data, EXIF standard
+./seriesimages/110.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/398.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/81.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/48.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/227.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/174.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/63.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/371.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/289.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/337.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/208.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/50.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/482.jpg: JPEG image data, EXIF standard
+./seriesimages/318.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/462.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/60.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/57.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/54.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/254.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/351.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/3.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/346.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/43.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/433.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/214.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/345.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/185.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/225.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/158.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/55.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/235.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/61.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/215.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/177.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/133.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/28.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/428.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/331.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/128.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/134.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/338.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/75.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/473.jpg: JPEG image data, EXIF standard
+./seriesimages/245.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/270.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/52.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/8.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/24.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/354.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/33.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/479.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/304.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/155.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/467.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/111.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/17.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/21.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/69.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/272.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/244.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/406.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/232.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/368.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/492.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/80.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/426.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/114.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/127.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/476.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/251.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/20.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/484.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/471.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/380.jpg: JPEG image data, EXIF standard
+./seriesimages/186.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/26.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/115.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/299.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/418.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/498.jpg: JPEG image data, EXIF standard
+./seriesimages/266.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/41.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/141.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/255.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/147.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/305.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/423.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/132.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/15.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/219.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/385.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/202.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/64.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/431.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/461.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/493.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/104.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/392.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/316.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/369.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/159.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/113.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/226.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/46.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/489.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/190.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/446.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/45.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/328.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/44.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/112.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/74.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/409.jpg: JPEG image data, EXIF standard
+./seriesimages/166.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/6-sm.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/125.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/67.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/94.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/375.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/49.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/258.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/89.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/405.jpg: JPEG image data, EXIF standard
+./seriesimages/483.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/230.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/302.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/366.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/415.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/420.jpg: JPEG image data, EXIF standard
+./seriesimages/189.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/387.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/197.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/124.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/237.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/6.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/196.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/267.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/14.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/341.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/131.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/216.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/246.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/98.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/137.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/358.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/108.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/106.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/191.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/470.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/160.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/171.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/72.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/297.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/413.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/377.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/416.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/348.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/400.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/402.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/58.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/154.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/170.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/499.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/322.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/355.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/199.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/445.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/19.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/181.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/97.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/434.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/360.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/321.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/466.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/504.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/300.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/229.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/397.jpg: JPEG image data, EXIF standard
+./seriesimages/478.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/76.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/96.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/183.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/313.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/278.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/253.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/16.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/130.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/457.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/425.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/287.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/71.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/339.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/404.jpg: JPEG image data, EXIF standard
+./seriesimages/472.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/31.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/388.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/427.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/39.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/156.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/90.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/308.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/443.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/291.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/381.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/408.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/176.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/102.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/210.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/314.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/4.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/116.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/66.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/38.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/363.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/386.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/509.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/140.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/344.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/501.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/292.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/505.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/234.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/92.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/53.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/343.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/157.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/239.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/465.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/488.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/301.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/340.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/407.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/288.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/243.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/455.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/442.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/148.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/109.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/273.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/11.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/121.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/379.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/195.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/23.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/342.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/452.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/422.jpg: JPEG image data, JFIF standard 1.02
+./seriesimages/117.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/298.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/179.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/456.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/99.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/182.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/349.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./seriesimages/474.jpg: JPEG image data, JFIF standard 1.01
+./seriesimages/194.jpg: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+./staff.jpg: JPEG image data, JFIF standard 1.01

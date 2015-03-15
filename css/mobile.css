@@ -1,0 +1,75 @@
+HTML,BODY {
+	background: #e8e8e8;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	margin:auto;
+}
+.header {
+	background:#000;
+	padding:10px;
+}
+.message {
+	width:90%;
+	background:#FFE0E0;
+	color:#5a5655;
+	border:1px solid #ccc;
+	border-radius:3px;
+	padding:10px;
+	margin-top:20px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.content {
+	width:90%;
+	background:#F0F0F0;
+	border:1px solid #ccc;
+	border-radius:3px;
+	padding:10px;
+	margin-top:20px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.chead {
+	background:#eeebea;
+	color:#5a5655;
+	font-weight:bold;
+	border-radius:3px;
+	padding:5px;
+	margin-bottom:10px;
+}
+.form {
+}
+.input {
+	width:100%;
+	display:block;
+	margin: 0px auto 8px auto;
+	padding:10px;
+	font-size:18px;
+	border:1px solid #333;
+	border-radius:5px;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+}
+SELECT.input {
+	height:42px;
+	padding:0px;
+}
+.question {
+	background:#F8F8F8;
+	margin-top:15px;
+	margin-bottom:15px;
+	padding:10px;
+	border:1px solid #333;
+	border-radius:3px;
+}
+.bottom {
+	margin-bottom:15px;
+}
+.submit {
+	background:#0c90bb;
+	color:#FFF;
+	font-weight:bold;
+}
+.message {
+	display:none;
+}

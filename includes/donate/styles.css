@@ -1,0 +1,211 @@
+*{
+	/* Universal page reset */
+	margin:0;
+	padding:0;
+}
+
+body{
+	/* Setting default text color, background and a font stack */
+	font-size:13px;
+	color:#9bb370;
+	background-color:#f9faf7;
+	font-family:Rockwell, 'Courier New', Courier, Georgia, serif;
+}
+
+p{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:20px;
+}
+
+h1{
+	border-bottom:1px solid #E3EBD2;
+	color:#639600;
+	font-size:70px;
+	line-height:1;
+	margin-left:-20px;
+	padding:0 0 0 30px;
+}
+
+h2{
+	border-left:1px solid #E3EBD2;
+	color:#ABC084;
+	font-size:35px;
+	height:35px;
+	line-height:75px;
+	margin:-70px 0 0;
+	padding:55px 0 0 10px;
+}
+
+h3{
+	color:#639600;
+	font-size:38px;
+}
+
+.donors{
+	margin-top:70px;
+}
+
+.donors h3{
+	border-bottom:1px solid #E3EBD2;
+	color:#639600;
+	font-size:50px;
+	line-height:1;
+	margin-left:-20px;
+	padding:0 0 0 30px;
+}
+
+.donors h4{
+	border-left:1px solid #E3EBD2;
+	color:#ABC084;
+	font-size:25px;
+	height:35px;
+	line-height:65px;
+	margin:-60px 0 0;
+	padding:45px 0 0 10px;
+}
+
+#main{
+	/* The main container div */
+	margin:40px auto;
+	padding:0 0 0 20px;
+	position:relative;
+	width:860px;
+}
+
+.payPalForm{
+	padding:20px;
+	text-align:center;
+}
+
+.lightSection{
+	background-color:#EEF3E6;
+	margin:100px 0 70px;
+	padding:15px 20px;
+}
+
+.lightSection p{ padding:10px 0;}
+
+.chart{
+	margin:0 0 0 300px;
+	text-indent:-300px;
+	width:200px;
+}
+
+.donations,.chart{
+	color:#ABC084;
+	font-size:50px;
+	font-weight:bold;
+	float:left;
+	height:200px;
+	line-height:200px;
+}
+
+.donations{	text-align:right; width:340px;}
+
+.comments{ margin-top:60px; }
+
+.entry{margin-bottom:50px;}
+
+.comment{
+	background-color:#edf2e4;
+	padding:20px;
+	position:relative;
+	margin-bottom:20px;
+}
+
+.name{
+	color:#639600;
+	font-size:24px;
+	font-style:italic;
+	font-weight:bold;
+	position:relative;
+}
+
+.name a.url{
+	color:#C0D39C;
+	font-weight:normal;
+	padding-left:10px;
+}
+
+.tip{
+	width:0;
+	height:0;
+	bottom:-40px;
+	left:20px;
+	
+	border:20px solid #f9faf7;
+	border-width:20px 15px;
+	border-top-color:#edf2e4;
+	position:absolute;
+	
+}
+
+select{
+	bottom:7px;
+	color:#777777;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	position:relative;
+	right:7px;
+	width:80px;
+}
+
+.clear{
+	/* This class clears the floated elements */
+	clear:both;
+}
+
+
+a, a:visited {
+	color:#0196e3;
+	text-decoration:none;
+	outline:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+a img{
+	border:none;
+}
+
+label{
+	display:block;
+	font-size:20px;
+	font-style:italic;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.thankyouPage input,
+.thankyouPage textarea{
+	border:1px solid #88B335;
+	margin:3px 0 10px;
+	padding:4px 6px;
+	width:250px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#888;
+	font-weight:bold;
+}
+
+.thankyouPage input[type=submit]{
+	width:120px;
+	cursor:pointer;
+}
+
+.thankyouPage textarea{
+	width:350px;
+}
+
+p.error{
+	color:#CC3300;
+	font-size:15px;
+	font-weight:bold;
+}
+
+p.success{
+	color:#09F;
+	font-size:15px;
+	font-weight:bold;
+}

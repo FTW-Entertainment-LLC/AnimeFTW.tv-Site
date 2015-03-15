@@ -1,0 +1,14 @@
+User-agent: Spinn3r
+Disallow: /
+
+User-agent: Tailrank
+Disallow: /
+
+User-agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1; aggregator:Spinn3r (Spinn3r 3.0); http://spinn3r.com/robot) Gecko/20021130
+Disallow: /
+
+User-agent: CrazyWebCrawler-Spider
+Disallow: / 
+
+User-agent: *
+Disallow: /

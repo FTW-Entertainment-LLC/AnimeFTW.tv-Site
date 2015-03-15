@@ -1,0 +1,425 @@
+<html>
+<head>
+<title>DateClass</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body>
+<h1>DateClass</h1>
+<p>Author: Steve Powell<br>
+  Copyright: (c) 2004 ScrimpNet.com<br>
+  License: GNU Lesser General Public License</p>
+<h3>Description</h3>
+<blockquote> 
+  <p>This class allows you to add a period to a date. You can also retrieve periods 
+    such as begin/end of month, begin/end of week, and begin/end of quarters.</p>
+</blockquote>
+<h3>Member Summary</h3>
+<blockquote>
+  <p>Public member functions. See class source for more detailed descriptions.</p>
+</blockquote>
+<table width="100%" border="0" cellspacing="3" cellpadding="0">
+  <tr> 
+    <td width="34%" bgcolor="#000000"> <div align="center"><font color="#FFFFFF">Member 
+        / Function</font></div></td>
+    <td width="21%" bgcolor="#000000"> <div align="center"><font color="#FFFFFF">Return 
+        Type</font></div></td>
+    <td width="45%" bgcolor="#000000">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td height="31" valign="top"> <pre>DateClass([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass 
+        (constructor)</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Create 
+      a new instance of the class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Add($datepart,$adjustValue,<br>[$dateTime])</pre></td>
+    <td valign="top"> <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td><p><font size="2" face="Arial, Helvetica, sans-serif">Returns reference 
+        to this class after adding &lt;$adjustValue&gt; periods. Periods are set 
+        in $datePart. If &lt;$adjustValue&gt; is negative value is subtracted 
+        from class.</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">&lt;$datePart&gt; 
+        can be common keys for php.date() and php.getdate().</font></p>
+      <blockquote> 
+        <pre><font size="2">year | years | y</font>
+months | month | mon
+days | day | mday
+hours | hour | g
+minutes | minute | i
+seconds | second | s</pre>
+      </blockquote>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">For more valid periods 
+        see function comments.</font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>SetDate([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Changes 
+      class date and returns reference to class. If &lt;$dateTime&gt; is not provided 
+      then defaults to current time().</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>DatePart($datePart,[$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">mixed</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Returns 
+      the php.getdate() value for this class. &lt;$datePart&gt; must be a valid 
+      parameter for getdate().</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Year([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      year for class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Month([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      month of year for class (1-12)</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Day([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      day of month for class (1-31)</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Hours([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      hours past midnight for class (0-23)</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Minutes([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"> <p><font size="2" face="Arial, Helvetica, sans-serif">Return 
+        minutes past the hour for class (0-59)</font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Seconds([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      seconds past the minute for class (0-59)</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>TimeStamp([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      PHP timestamp value for class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>BOW([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif"><strong>Beginning 
+      of Week</strong><br>
+      Return first day of week based on date value of class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>EOW([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><p><font size="2" face="Arial, Helvetica, sans-serif"><strong>End 
+        of Week</strong><br>
+        Return last day of week based on date value of class</font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>BOM([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Beginning 
+        of Month</strong><br>
+        Return first day of month based on date value of class</font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>EOM([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif"><strong>End 
+      of Month</strong><br>
+      Return last day of month based on date value of class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>Quarter([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      calendar quarter date value of class is in. (1-4)</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>BOQ([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Beginning 
+        of Quarter</strong><br>
+        Return first day of quarter based on date value of class</font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>EOQ([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif"><strong>End 
+      of Quarter</strong><br>
+      Return last day of quarter based on date value of class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>BOY([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif"><strong>Beginning 
+      of Year</strong><br>
+      Return first day of calendar year based on date value of class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>EOY([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif"><strong>End 
+      of Year</strong><br>
+      Return last day of calendar year based on date value of class</font></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>ToString([$format],[$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><p><font size="2" face="Arial, Helvetica, sans-serif">Return 
+        a formatted string of the date value of class. Use &lt;$format&gt; if 
+        provided. If not provided then use last provided format or default format 
+        set during class initialization.</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">The following predefined 
+        formats are available:</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">&quot;RFC822&quot; 
+        Mon, 17 May 2004 20:55:42 -0400<br>
+        &quot;RSS_1.0&quot; 2004-05-17T20:55:42-0400<br>
+        &quot;HTTP&quot; Mon, 17 May 2004 20:55:42 GMT<br>
+        &quot;RFC1123&quot; Mon, 17 May 2004 20:55:42 GMT</font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top"> <pre>UTC([$dateTime])</pre></td>
+    <td valign="top"><div align="center"><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+    <td valign="top"><font size="2" face="Arial, Helvetica, sans-serif">Return 
+      UTC equivelent time for date value of class</font></td>
+  </tr>
+</table>
+<h3>Notes</h3>
+<blockquote> 
+  <p>Most functions take an optional &lt;$dateTime&gt; parameter. If this parameter 
+    is<br>
+    used it will adjust the class value to &lt;$dateTime&gt; before performing 
+    the<br>
+    requested action. &lt;$dateTime&gt; can be:</p>
+  <blockquote> 
+    <table width="75%" border="0" cellspacing="3" cellpadding="0">
+      <tr> 
+        <td width="10%"><font size="2" face="Arial, Helvetica, sans-serif">string</font></td>
+        <td width="21%"><font size="2" face="Arial, Helvetica, sans-serif">14-JAN-2004<br>
+          5/15/2004 <br>
+          2004-03-12 17:35 </font></td>
+        <td width="69%"><font size="2" face="Arial, Helvetica, sans-serif">any 
+          format that can be parsed by PHP.strtotime() using GNU date syntax. 
+          These are only examples</font></td>
+      </tr>
+      <tr> 
+        <td><font size="2" face="Arial, Helvetica, sans-serif">integer</font></td>
+        <td><font size="2" face="Arial, Helvetica, sans-serif">1072879687</font></td>
+        <td><font size="2" face="Arial, Helvetica, sans-serif">PHP timestamp</font></td>
+      </tr>
+      <tr> 
+        <td><font size="2" face="Arial, Helvetica, sans-serif">object</font></td>
+        <td><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></td>
+        <td><font size="2" face="Arial, Helvetica, sans-serif">existing DateClass 
+          object</font></td>
+      </tr>
+    </table>
+  </blockquote>
+</blockquote>
+<h3>Customization Hints &amp; Ideas</h3>
+<ol>
+  <ol>
+    <li>This source code contains many functions you may not need and the code 
+      is <br>
+      thoroughly commented. You are free to remove any function or comments you<br>
+      don't need but you MAY NOT remove the licensing or copyright information.</li>
+    <li>The _parseDate() function is responsible for taking input and converting<br>
+      it into a PHP timestamp value. Modify this routine to allow class to<br>
+      be able to handle more date formats</li>
+    <li> Expand class to have better UTC or timezone awareness</li>
+    <li> Allow class to handle years that begin on different months<br>
+      i.e. Fiscal year starting 4/1/xxxx or 10/1/xxxx </li>
+    <li>Customize your own predefined string formats</li>
+  </ol>
+</ol>
+<hr noshade>
+<h1>DateSpanClass</h1>
+<p>Author: Steve Powell<br>
+  Copyright: (c) 2004 ScrimpNet.com<br>
+  License: GNU Lesser General Public License</p>
+<h3>Description</h3>
+<blockquote> 
+  <p>This class allows you to determine the span between two dates. The span can 
+    be a wide variety of different kinds of periods including year, month, week, 
+    weekdays, &amp; quarters.</p>
+</blockquote>
+<h3>Prerequisites</h3>
+<blockquote> 
+  <p>This class depends on access to DateClass</p>
+</blockquote>
+<h3>Member Functions</h3>
+<blockquote> 
+  <p>Public member functions. See class source for more detailed descriptions.</p>
+  <table width="100%" border="0" cellspacing="3" cellpadding="0">
+    <tr> 
+      <td width="34%" bgcolor="#000000"> <div align="center"> <font color="#FFFFFF"><strong>Member 
+          / Function</strong></font></div></td>
+      <td width="21%" bgcolor="#000000"> <div align="center"><font color="#FFFFFF"><strong>Return 
+          Type</strong></font></div></td>
+      <td width="45%" bgcolor="#000000">&nbsp;</td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre><font color="#000000" size="2">DateSpanClass([$dateStart],[$dateStop])</font></pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">(constructor)</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Create 
+        a DateSpan to calculate difference between two dates. Usually optional 
+        parameters are not supplied during class construction. Instead the target 
+        dates are supplied when calling one of the accessor functions.</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Span($period,[$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">mixed</font></div></td>
+      <td><p><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Calculate 
+          span between two dates. Returned value is determined by &lt;$period&gt;. 
+          Numbers can be integer or float depending on result.</font></p>
+        <p><font size="2" face="Arial, Helvetica, sans-serif">&lt;$period&gt; 
+          can be common keys for php.date() and php.getdate().</font></p>
+        <blockquote> 
+          <pre><font size="2">year | years | y</font>
+quarters | q
+months | month | mon
+weeks | w
+weekdays | wday
+days | day | mday | d
+hours | hour | g
+minutes | minute | i
+seconds | second | s</pre>
+        </blockquote></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>StartDate (property)</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        DateClass of starting date in span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>StopDate (property)</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">DateClass</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        DateClass of stopping date in span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Years([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">numeric</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of years covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Quarters([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of quarter boundries crossed in span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Months([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of month boundries crossed in span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Weeks([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">numeric</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of 7-day periods covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>WeekDays([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of weekdays (M-F) covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Days([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">numeric</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of days covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Hours([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">numeric</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of hours covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Minutes([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">numeric</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of minutes covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>Seconds([$dateStart],[$dateStop])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">integer</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        number of seconds covered by span</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td><pre>ToString([$format])</pre></td>
+      <td><div align="center"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">string</font></div></td>
+      <td><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">Return 
+        formatted string of the current timestamp. Use default format until &lt;$format&gt; 
+        is provided then use new format for each call.</font></td>
+    </tr>
+  </table>
+  <p>Most functions take optional &lt;$startDate&gt; and &lt;$stopDate&gt; parameters. 
+    If these parameters are<br>
+    provided, the span will adjust to these new end points before returning any 
+    value. If no parameters are passed the existing span will be used.</p>
+  <table width="75%" border="0" cellspacing="3" cellpadding="0">
+    <tr> 
+      <td width="10%"><font size="2" face="Arial, Helvetica, sans-serif">string</font></td>
+      <td width="21%"><font size="2" face="Arial, Helvetica, sans-serif">14-JAN-2004<br>
+        5/15/2004 <br>
+        2004-03-12 17:35 </font></td>
+      <td width="69%"><font size="2" face="Arial, Helvetica, sans-serif">any format 
+        that can be parsed by PHP.strtotime() using GNU date syntax. These are 
+        only examples</font></td>
+    </tr>
+    <tr> 
+      <td><font size="2" face="Arial, Helvetica, sans-serif">integer</font></td>
+      <td><font size="2" face="Arial, Helvetica, sans-serif">1072879687</font></td>
+      <td><font size="2" face="Arial, Helvetica, sans-serif">PHP timestamp</font></td>
+    </tr>
+    <tr> 
+      <td><font size="2" face="Arial, Helvetica, sans-serif">object</font></td>
+      <td><font size="2" face="Arial, Helvetica, sans-serif">DateClass</font></td>
+      <td><font size="2" face="Arial, Helvetica, sans-serif">existing DateClass 
+        object</font></td>
+    </tr>
+  </table>
+</blockquote>
+<h3>Notes</h3>
+<ol>
+  <ol>
+    <li>This source code contains many functions you may not need and the code 
+      is <br>
+      thoroughly commented. You are free to remove any function or comments you<br>
+      don't need but you MAY NOT remove the licensing or copyright information.<br>
+    </li>
+    <li> Functions return positive value when StartDate &lt; StopDate. Functions<br>
+      return negative values when StartDate &gt; StopDate.<br>
+    </li>
+    <li> For performance reasons, multiple calls to the class with the same<br>
+      span-start/span-stop dates (and/or times) are not recalculated.</li>
+  </ol>
+</ol>
+<h3>Customization Hints &amp; Ideas</h3>
+<ol>
+  <ol>
+    <li> Expand class to have better UTC or timezone awareness</li>
+    <li> Allow class to handle years that begin on different months<br>
+      i.e. Fiscal year starting 4/1/xxxx or 10/1/xxxx </li>
+    <li>Customize your own predefined string formats</li>
+  </ol>
+  <p>&nbsp;</p>
+</ol>
+</body>
+</html>

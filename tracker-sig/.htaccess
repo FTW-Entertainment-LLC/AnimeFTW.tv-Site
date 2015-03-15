@@ -1,0 +1,4 @@
+Options -Indexes +MultiViews +FollowSymlinks
+
+RewriteEngine on
+RewriteRule ^/?([a-zA-Z0-9'@_-]+)/([a-zA-Z0-9'@_-]+).gif$ tracker-sig.php?background=$1&username=$2 [L]
