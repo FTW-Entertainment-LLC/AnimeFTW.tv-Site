@@ -95,7 +95,7 @@ if (isset($_GET['rf'])){
 			$pbody = stripslashes($pbody);
 	
 			echo "<div class='side-body-bg'>\n";
-			echo "<span class='scapmain'><a href='/forums/".$row1['fseo']."/topic-".$tid."/'>".$ttitle."</a></span>\n";
+			echo "<span class='scapmain'><a href='/forums/".$fseo."/topic-".$tid."/'>".$ttitle."</a></span>\n";
 			echo "<br />\n";
 			echo "<span class='poster'>Posted on ".date("m.d.y",$tdate)." by ".checkUserNameNumber($tpid)."</span>\n";
 			echo "</div>\n";
