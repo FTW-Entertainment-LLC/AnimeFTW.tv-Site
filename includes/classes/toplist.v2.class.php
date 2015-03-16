@@ -10,9 +10,16 @@
 
 class toplist extends Config {
 
-	public function __construct()
+	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+
+	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
 	{
 		parent::__construct();
+		$this->Data = $Data;
+		$this->UserID = $UserID;
+		$this->DevArray = $DevArray;
+		$this->AccessLevel = $AccessLevel;
+		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 	}
 	
 	// Parses through script variables sent via the scripts.php file
@@ -27,6 +34,47 @@ class toplist extends Config {
 		{
 			echo 'That was not the function you were looking for..';
 		}
+	}
+	
+	public function array_showTopAnime($count = NULL)
+	{
+		$returnarray = array();
+		if($count == NULL && isset($_GET['count']))
+		{
+			$count = $_GET['count'];
+		}
+		else if($count != NULL && !isset($_GET['count']))
+		{
+			$count = $count;
+		}
+		else
+		{
+			$count = 25;
+		}
+		$query = "SELECT `site_topseries`.`seriesId`, `site_topseries`.`lastPosition`, `site_topseries`.`currentPosition`, `series`.`fullSeriesName` FROM `site_topseries`, `series` WHERE `series`.`id`=`site_topseries`.`seriesId` ORDER BY `site_topseries`.`currentPosition` ASC LIMIT 0, " . $this->mysqli->real_escape_string($count);
+		$result = $this->mysqli->query($query);
+		
+		if($result)
+		{
+			$returnarray['status'] = $this->MessageCodes["Result Codes"]["201"]["Status"];
+			$returnarray['message'] = $this->MessageCodes["Result Codes"]["201"]["Message"];
+			$returnarray['count'] = $count;
+			$i=0;
+			while($row = $result->fetch_assoc())
+			{
+				$returnarray['results'][$i]['id'] = $row['seriesId'];
+				$returnarray['results'][$i]['name'] = stripslashes($row['fullSeriesName']);
+				$returnarray['results'][$i]['last-position'] = $row['lastPosition'];
+				$returnarray['results'][$i]['current-position'] = $row['currentPosition'];
+				$i++;
+			}
+		}
+		else
+		{
+			$returnarray['status'] = $this->MessageCodes["Result Codes"]["05-400"]["Status"];
+			$returnarray['message'] = $this->MessageCodes["Result Codes"]["05-400"]["Message"];
+		}
+		return $returnarray;
 	}
 	
 	// Will take an episode id and record it in the toplist records.

@@ -142,6 +142,14 @@ Class api extends Config {
 			'disabled' => '0',
 			'description' => 'Shows the Latest News for the site.'
 		),
+		'top-series' => array(
+			'action' => 'top-series',
+			'location' => 'toplist.v2.class.php', // action location
+			'classname' => 'toplist', // class name
+			'method' => 'array_showTopAnime', // method name
+			'disabled' => '0',
+			'description' => 'Shows the top X series in the listing'
+		),
 	);
 
 	// class constructor method

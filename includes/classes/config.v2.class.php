@@ -487,7 +487,7 @@ class Config {
 				),
 				'201' => array(
 					'Status' => '201',
-					'Message' => 'Requested Completed Successfully.',
+					'Message' => 'Request Completed Successfully.',
 					'Explanation' => 'This is a generic message to indicate that the command completed successfully and data was returned.'
 				),
 				'400' => array(
@@ -594,6 +594,11 @@ class Config {
 					'Status' => '04-404',
 					'Message' => 'Malformed request, missing a type and id.',
 					'Explanation' => 'A comment type and id must be supplied to return data.'
+				),
+				'05-400' => array(
+					'Status' => '05-400',
+					'Message' => 'No results found.',
+					'Explanation' => 'There were zero results found for the tracker.'
 				),
 			)
 		);
