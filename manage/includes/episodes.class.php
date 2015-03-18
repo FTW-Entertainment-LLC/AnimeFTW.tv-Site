@@ -246,19 +246,14 @@ class Episodes extends Config {
 		</div>
 		<div class="series-form-row">
 			<div class="series-form-left">
-				From Episode
+				Episodes
 			</div>
 			<div class="series-form-right">
-				<input name="fromep" id="addfromnum" type="text" size="25" value="" class="text-input2" />
+				From:
+				<input name="fromep" id="addfromnum" type="number" value="" class="text-input2" style="width:73px;"/>
 				<label for="fromep" id="addfromnumError" class="form-labels FormError">Starting Value is Required</label>
-			</div>
-		</div>
-		<div class="series-form-row">
-			<div class="series-form-left">
-				To Episode
-			</div>
-			<div class="series-form-right">
-				<input name="toep" id="addtonum" type="text" size="25" value="" class="text-input2" />
+				To:
+				<input name="toep" id="addtonum" type="number" value="" class="text-input2" style="width:74px;"/>
 				<label for="toep" id="addtonumError" class="form-labels FormError">End Value is Required</label>
 			</div>
 		</div>
@@ -477,13 +472,14 @@ class Episodes extends Config {
 							$("input#epnumber").focus();
 							return false;
 						}
+						var epname = $("input#epname").val();
+						if (epname == "") {
+							$("label#epnameError").show();
+							$("input#epname").focus();
+							return false;
+						}
 					}
-					var epname = $("input#epname").val();
-					if (epname == "") {
-						$("label#epnameError").show();
-						$("input#epname").focus();
-						return false;
-					}
+					
 					var vidwidth = $("input#vidwidth").val();
 					if (vidwidth == "") {
 						$("label#vidwidthError").show();
