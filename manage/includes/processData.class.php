@@ -2,8 +2,9 @@
 /****************************************************************\
 ## FileName: processData.class.php									 
 ## Author: Brad Riemann										 
+## Edits by: Hani Mayahi
 ## Usage: All POST and GET Data is thrown to this class
-## Copywrite 2011-2013 FTW Entertainment LLC, All Rights Reserved
+## Copywrite 2011-2015 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class processData extends Config {
@@ -12,6 +13,7 @@ class processData extends Config {
 	public function __construct()
 	{
 		parent::__construct();
+		include("includes/anidb.class.php");
 		$this->processPostedData();
 	}
 	
@@ -593,62 +595,7 @@ class processData extends Config {
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
-				$epnumber = mysql_real_escape_string($_POST['epnumber']);
-				$sid = mysql_real_escape_string($_POST['sid']);
-				$epname = mysql_real_escape_string(urldecode($_POST['epname']));
-				$vidheight = mysql_real_escape_string($_POST['vidheight']);
-				$vidwidth = mysql_real_escape_string($_POST['vidwidth']);
-				$epprefix = mysql_real_escape_string($_POST['epprefix']);
-				$subGroup = mysql_real_escape_string($_POST['subGroup']);
-				$Movie = mysql_real_escape_string($_POST['Movie']);
-				$Remember = mysql_real_escape_string($_POST['Remember']);
-				$Changed = mysql_real_escape_string($_POST['Changed']);
-				$addtime = mysql_real_escape_string($_POST['date']);
-				$videotype =mysql_real_escape_string( $_POST['videotype']);
-				$hd = mysql_real_escape_string($_POST['hd']);
-				$html5 =mysql_real_escape_string( $_POST['html5']);
-				if($addtime == '0')
-				{
-					$addtime = '0';
-				}
-				else
-				{
-					$addtime = time();
-				}
-				$NextEp = $epnumber+1;
-				
-				// ADDED: 8/13/14 - robotman321
-				// Queries the database to make sure that 
-				
-				$query = "INSERT INTO `episode` (`sid`, `epnumber`, `epname`, `seriesname`, `vidheight`, `vidwidth`, `subGroup`, `epprefix`, `Movie`, `date`, `videotype`, `uid`, `hd`, `html5`) VALUES ('$sid', '$epnumber', '$epname', 'unknown', '$vidheight', '$vidwidth', '$subGroup', '$epprefix', '$Movie', '$addtime', '$videotype', '" . $this->UserArray[1] . "', '" . $hd . "', '" . $html5 . "')";
-				$query;
-				$results = mysql_query($query);
-				if(!$results)
-				{
-					echo 'There was an error processing that request, error num #1001: ' . mysql_error();
-					exit;
-				}
-				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;width:100%;">Episode #' . $epnumber . ' Added, titled: ' . $epname . ' Added Successfully.<div>';
-				// now we check to see if we can use: RecordNotification($sid,$eid)
-				$airingCheck = mysql_query("SELECT episode.id AS epid, series.id AS sid, series.stillRelease, series.fullSeriesName FROM series, episode WHERE series.id = '".$sid."' AND episode.sid = series.id AND episode.epnumber = '".$epnumber."'");
-				$ar = mysql_fetch_array($airingCheck);
-				if($ar['stillRelease'] == 'yes')
-				{
-					// put the notification in the system that the end user needs to check their notifications!
-					$this->recordNotification($ar['sid'],$ar['epid']);
-					
-					//If a series is still releasing, add the entry to the email database.
-					// v1 is the episode id, for matching in the system when an email needs to go out.
-					mysql_query("INSERT INTO email (`id`, `date`, `sid`, `v1`, `v2`) VALUES (NULL,'" . time() . "', '" . $ar['sid'] . "', '" . $ar['epid'] . "', '1');");
-				}							
-				$this->ModRecord('Add Episode #'.$epnumber.' to  '.$ar['fullSeriesName']);
-				
-				if($Changed == 'on')
-				{
-					// changed entry is on, we need to update the uploads board
-					mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_GET['ueid']));
-					$this->Mod("Removed Notifications for Entry " . $_GET['ueid'] . ' in the Uploads Board');
-				}
+				$this->addEpisode();
 			}
 			else
 			{
@@ -690,7 +637,82 @@ class processData extends Config {
 			echo 'You posted a method of: '.$_POST['method'].' And it has not been setup yet.';
 		}
 	}
-	
+	private function addEpisode(){
+		$auto = FALSE;
+		$AniDB;
+		if(isset($_POST['anidbid'])&&$_POST['anidbid']!=""&&isset($_POST['fromep'])&&$_POST['fromep']!=""&&isset($_POST['toep'])&&$_POST['toep']!=""){
+			$auto = TRUE;
+			$AniDB  = new AniDB();
+		}
+		$anidbid = $_POST['anidbid'];
+		$fromep = $_POST['fromep'];
+		$toep = $_POST['toep'];
+		$epnumber = mysql_real_escape_string($_POST['epnumber']);
+		$sid = mysql_real_escape_string($_POST['sid']);
+		$epname = mysql_real_escape_string(urldecode($_POST['epname']));
+		$vidheight = mysql_real_escape_string($_POST['vidheight']);
+		$vidwidth = mysql_real_escape_string($_POST['vidwidth']);
+		$epprefix = mysql_real_escape_string($_POST['epprefix']);
+		$subGroup = mysql_real_escape_string($_POST['subGroup']);
+		$Movie = mysql_real_escape_string($_POST['Movie']);
+		$Remember = mysql_real_escape_string($_POST['Remember']);
+		$Changed = mysql_real_escape_string($_POST['Changed']);
+		$addtime = mysql_real_escape_string($_POST['date']);
+		$videotype =mysql_real_escape_string( $_POST['videotype']);
+		$hd = mysql_real_escape_string($_POST['hd']);
+		$html5 =mysql_real_escape_string( $_POST['html5']);
+		if($addtime == '0')
+		{
+			$addtime = '0';
+		}
+		else
+		{
+			$addtime = time();
+		}
+		
+		if($auto==FALSE){
+			$fromep = $epnumber;
+			$toep = $epnumber;
+		}
+		for($i=$fromep;$i<=$toep;$i++){
+			$epnumber = mysql_real_escape_string($i);
+			if($auto){
+				$epname = $AniDB->getEpisodeTitle($anidbid, $i);
+			}
+			$NextEp = $i+1;
+			// ADDED: 8/13/14 - robotman321
+			// Queries the database to make sure that 
+			$query = "INSERT INTO `episode` (`sid`, `epnumber`, `epname`, `seriesname`, `vidheight`, `vidwidth`, `subGroup`, `epprefix`, `Movie`, `date`, `videotype`, `uid`, `hd`, `html5`) VALUES ('$sid', '$epnumber', '$epname', 'unknown', '$vidheight', '$vidwidth', '$subGroup', '$epprefix', '$Movie', '$addtime', '$videotype', '" . $this->UserArray[1] . "', '" . $hd . "', '" . $html5 . "')";
+			$query;
+			$results = mysql_query($query);
+			if(!$results)
+			{
+				echo 'There was an error processing that request, error num #1001: ' . mysql_error();
+				exit;
+			}
+			echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;width:100%;">Episode #' . $epnumber . ' Added, titled: ' . $epname . ' Added Successfully.<div>';
+			// now we check to see if we can use: RecordNotification($sid,$eid)
+			$airingCheck = mysql_query("SELECT episode.id AS epid, series.id AS sid, series.stillRelease, series.fullSeriesName FROM series, episode WHERE series.id = '".$sid."' AND episode.sid = series.id AND episode.epnumber = '".$epnumber."'");
+			$ar = mysql_fetch_array($airingCheck);
+			if($ar['stillRelease'] == 'yes')
+			{
+				// put the notification in the system that the end user needs to check their notifications!
+				$this->recordNotification($ar['sid'],$ar['epid']);
+				
+				//If a series is still releasing, add the entry to the email database.
+				// v1 is the episode id, for matching in the system when an email needs to go out.
+				mysql_query("INSERT INTO email (`id`, `date`, `sid`, `v1`, `v2`) VALUES (NULL,'" . time() . "', '" . $ar['sid'] . "', '" . $ar['epid'] . "', '1');");
+			}							
+			$this->ModRecord('Add Episode #'.$epnumber.' to  '.$ar['fullSeriesName']);
+			
+			if($Changed == 'on')
+			{
+				// changed entry is on, we need to update the uploads board
+				mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_GET['ueid']));
+				$this->Mod("Removed Notifications for Entry " . $_GET['ueid'] . ' in the Uploads Board');
+			}
+		}
+	}
 	private function updatePreSequel($sid, $prequelto, $sequelto)
 	{
 		if($prequelto != 0)//If the prequel is updated, we update that series sequel to this one.

@@ -17,15 +17,25 @@ getEpisodeTitle($aid, $epno);
 
 \****************************************************************/
 
-class AniDB() extends Config{
-
+class AniDB extends Config{
+	private $rootdirectory;
 	public function __construct()
 	{
 		parent::__construct();
+		if($_SERVER['HTTP_HOST'] == 'dev.animeftw.tv'||$_SERVER['HTTP_HOST'] == 'animeftw.tv.local')
+		{
+			$this->rootdirectory = $_SERVER['DOCUMENT_ROOT'];
+		}
+		else
+		{
+			$this->rootdirectory = '/home/mainaftw/public_html';
+		}
+		
 	}
 	
 	private function cacheFile($aid){
-		$filename = $rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml'; //check if file exists
+		
+		$filename = $this->rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml'; //check if file exists
 		if ( file_exists($filename) ){ 
 			//echo "XML for this anime is already cached.<br>";
 			//echo "$filename<br>";
@@ -35,10 +45,10 @@ class AniDB() extends Config{
 			$difhours = (intval($dif->format("%a"))*24) + intval($dif->format("%h"));
 			//echo $difhours." hours since it's been updated.";
 			if($difhours > 24){
-				fetchAnidbXML($filename, $aid);
+				$this->fetchAnidbXML($filename, $aid);
 			}
 		} else { 
-			fetchAnidbXML($filename, $aid);
+			$this->fetchAnidbXML($filename, $aid);
 		}
 	}
 	
@@ -83,7 +93,7 @@ class AniDB() extends Config{
 	}
 	
 	public function getName($lang,$aid){
-		$xml = getxml($aid);
+		$xml = $this->getxml($aid);
 		$found = null;
 		$priority = 0;
 		foreach($xml->titles->title->xpath('//titles/title[@xml:lang = "'.$lang.'"]') as $i){ //Loop through the titles
@@ -109,13 +119,13 @@ class AniDB() extends Config{
 		return $found;
 	}
 	public function getDescription($aid){ //Gets the description of the anime
-		$xml = getxml($aid);
+		$xml = $this->getxml($aid);
 		foreach($xml->description as $i){
 			return $i;
 		}
 	}
 	public function getCategories($aid){ //Returns a string of the categories, seperated by a comma and a space bar.
-		$xml = getxml($aid);
+		$xml = $this->getxml($aid);
 		$categories = ""; //Create the variable to store the categories..
 		foreach($xml->categories->category as $i){  //Loop through them
 			$categories = $categories.$i->name.", "; //Add them to the variable
@@ -124,7 +134,7 @@ class AniDB() extends Config{
 		return $categories;
 	}
 	public function getEpisodeTitle($aid, $epno){ //Returns the title of the episode.
-		$xml = getxml($aid);
+		$xml = $this->getxml($aid);
 		foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
 			if($i->epno==$epno){ //If it's the one we're looking for
 				return $i->title[1];
@@ -133,12 +143,12 @@ class AniDB() extends Config{
 		}
 	}
 	public function getEpisodeCount($aid){
-		$xml = getxml($aid);
+		$xml = $this->getxml($aid);
 		return $xml->episodecount;
 	}
 	private function getxml($aid){
-		cacheFile($aid); //Check to see if this file needs to update, and do so if it does.
-		return simplexml_load_file($rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml');
+		$this->cacheFile($aid); //Check to see if this file needs to update, and do so if it does.
+		return simplexml_load_file($this->rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml');
 	}
 
 }
