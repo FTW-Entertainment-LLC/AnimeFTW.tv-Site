@@ -235,7 +235,17 @@ class Episodes extends Config {
 		' . $options . '
 		<input type="hidden" name="uid" value="' . $this->UserArray[1] . '" />
 		<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />
+		<div class="series-form-row"> <!--This is not part of the manual mode, here only for testing purpose -->
+			<div class="series-form-left">
+				Anidb ID
+			</div>
+			<div class="series-form-right">
+				<input name="anidbid" id="anidbidnum" type="text" size="25" value="" class="text-input2" />
+				<label for="anidbid" id="anidbError" class="form-labels FormError">AniDB I is Required</label>
+			</div>
+		</div>
 		<div class="series-form-row">
+			
 			<div class="series-form-left">
 				Episode #
 			</div>
@@ -286,6 +296,7 @@ class Episodes extends Config {
 			<div class="series-form-right">
 				<input name="epprefix" id="epprefix" type="text" size="25" value="' . $epprefix . '" class="text-input2" />
 				<label for="epprefix" id="epprefixError" class="form-labels FormError">An Episode Prefix is required.</label>
+				<input type="submit" class="SubmitForm" id="submit" name="submit" value=" Add Episode ">
 			</div>
 		</div>
 		<div class="series-form-row">
