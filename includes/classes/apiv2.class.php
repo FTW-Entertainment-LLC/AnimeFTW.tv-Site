@@ -150,6 +150,14 @@ Class api extends Config {
 			'disabled' => '0',
 			'description' => 'Shows the top X series in the listing'
 		),
+		'rate-episode' => array(
+			'action' => 'rate-episode',
+			'location' => 'rating.v2.class.php', // action location
+			'classname' => 'Rating', // class name
+			'method' => 'bool_submitEpisodeRating', // method name
+			'disabled' => '0',
+			'description' => 'Rate an episode 1-5 stars.'
+		),
 	);
 
 	// class constructor method

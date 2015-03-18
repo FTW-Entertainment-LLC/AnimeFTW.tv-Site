@@ -9,10 +9,17 @@
 \****************************************************************/
 
 class Rating extends Config {
-	
-	public function __construct()
+
+	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+
+	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
 	{
 		parent::__construct();
+		$this->Data = $Data;
+		$this->UserID = $UserID;
+		$this->DevArray = $DevArray;
+		$this->AccessLevel = $AccessLevel;
+		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 	}
 	
 	public function array_ratingsInformation($id, $UserID=0,$type=0)
@@ -61,5 +68,28 @@ class Rating extends Config {
 		// the user rated on this episode already.
 		$returnarray['user-rated'] = $rated;
 		return $returnarray;
+	}
+	
+	public function bool_submitEpisodeRating()
+	{
+		if(!isset($this->Data['id']) || !isset($this->Data['star']))
+		{
+			// there was an issue with the data..
+			return array('status' => $this->MessageCodes["Result Codes"]["06-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["06-401"]["Message"]);
+		}
+		else
+		{
+			// the data is valid.. let's add it to the site.
+			$query = "INSERT INTO `ratings` (`id`, `rating_id`, `rating_num`, `IP`, `v1`) VALUES (NULL, 'v" . $this->Data['id'] . "', '" . $this->Data['star'] . "', '" . $this->UserID . "', NULL)";
+			$result = $this->mysqli->query($query);
+			if(!$result)
+			{
+				return array('status' => $this->MessageCodes["Result Codes"]["06-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["06-400"]["Message"]);
+			}
+			else
+			{
+				return array('status' => $this->MessageCodes["Result Codes"]["201"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+			}
+		}
 	}
 }

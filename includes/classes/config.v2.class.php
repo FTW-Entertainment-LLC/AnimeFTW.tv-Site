@@ -600,6 +600,16 @@ class Config {
 					'Message' => 'No results found.',
 					'Explanation' => 'There were zero results found for the tracker.'
 				),
+				'06-400' => array(
+					'Status' => '06-400',
+					'Message' => 'Error Processing Rating.',
+					'Explanation' => 'An error appeared when the query tried to run.'
+				),
+				'06-401' => array(
+					'Status' => '06-401',
+					'Message' => 'Missing Data, Unable to proceed.',
+					'Explanation' => 'Data was formatted incorrectly, we were unable to proceed.'
+				),
 			)
 		);
 	}
