@@ -228,8 +228,11 @@ class Episodes extends Config {
 			$options = '';
 			$Type = 'add';
 		}
-		echo '<div id="form_results" class="form_results">&nbsp;</div>';
+		echo '<div class="body-message">Update: If you enter the anidb and episode fields, you won\'t have to enter anything in the "Episode #" and "Episode Name" fields. The same goes the other way around.<br>
+		Keep in mind that this does not add the special episodes on AniDB.</div>
+		<div id="form_results" class="form_results">&nbsp;</div>';
 		echo '
+		
 		<form method="POST" action="#" id="EpisodeForm">
 		' . $FormMethod . '
 		' . $options . '

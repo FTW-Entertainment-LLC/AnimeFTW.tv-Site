@@ -661,6 +661,12 @@ class processData extends Config {
 		$videotype =mysql_real_escape_string( $_POST['videotype']);
 		$hd = mysql_real_escape_string($_POST['hd']);
 		$html5 =mysql_real_escape_string( $_POST['html5']);
+		if($auto){
+			if(!is_numeric($anidbid)){
+				echo 'Error: Anidb value is not numeric.';
+				exit;
+			}
+		}
 		if($addtime == '0')
 		{
 			$addtime = '0';
@@ -676,9 +682,13 @@ class processData extends Config {
 			$toep = $epnumber;
 		}
 		if($fromep<0||$toep<0){ //If someone writes in negative values for whatever reason..
-				echo 'Error: Negative episode numbers';
-				exit;
-			}
+			echo 'Error: Negative episode numbers';
+			exit;
+		}
+		if($toep>$AniDB->getEpisodeCount($anidbid)){
+			echo 'Error: Max episode is higher than AniDB\'s episode.';
+			exit;
+		}
 		for($i=$fromep;$i<=$toep;$i++){
 			$epnumber = mysql_real_escape_string($i);
 			if($auto){
