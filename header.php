@@ -152,7 +152,7 @@ session_start();
 	<script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery.qtip.js"></script>
 	<script type="text/javascript" src="/scripts/search-bar.js"></script>
-    <?
+    <?php
 	if($profileArray[8] == 1)
 	{
 		echo '
@@ -297,8 +297,8 @@ session_start();
 		echo "	<script type=\"text/javascript\" src=\"/scripts/aftw-register.js\"></script>\n";
 	}
 	?>
-    <title><?=$PageTitle;?></title>
-    <?
+    <title><?php=$PageTitle;?></title>
+    <?php
 	if($_SERVER['PHP_SELF'] == '/users.php'){
 		if($u->nVar('ID') == 1){
 	?>
@@ -312,7 +312,7 @@ body {
 		
 }
 </style>
-<?
+<?php
 		}
 	}
 	if($_SERVER['REQUEST_URI'] == '/donate'){
@@ -335,7 +335,7 @@ body {
 		eval(function(p,a,c,k,e,d){e=function(c){return c};if(!''.replace(/^/,String)){while(c--){d[c]=k[c]||c}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('1.2.5.0="3-4.0";',6,6,'swf|videojs|options|video|js|flash'.split('|'),0,{}))
 		eval(function(p,a,c,k,e,d){e=function(c){return c};if(!''.replace(/^/,String)){while(c--){d[c]=k[c]||c}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('2(0($){$("1").3("4",0(5){7 6})});',8,8,'function|video|jQuery|bind|contextmenu|e|false|return'.split('|'),0,{}))
 		</script>
-		<?
+		<?php
 	}
 	?>
     <script type="text/javascript">

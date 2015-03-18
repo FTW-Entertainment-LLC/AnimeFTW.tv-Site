@@ -1,3 +1,4 @@
 *.log
 error_log
 images/avatars/
+includes/config_site.php

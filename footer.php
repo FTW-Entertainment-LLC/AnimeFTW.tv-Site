@@ -17,7 +17,7 @@ if($_SERVER['PHP_SELF'] == '/videos.php'){
 }
 ?>
 </body>
-<?
+<?php
 if($_SERVER['PHP_SELF'] == '/forums.php' && ($profileArray[2] != 0 || $profileArray[2] != 3)){
 	echo '<script language="javascript">
 $(function(){

@@ -201,7 +201,7 @@ if (isset($_GET['rf'])){
         	<div class="date"></div>
        		<h2>Latest 15 Episodes</h2>
             <br />
-<?
+<?php
 			if($profileArray[2] != 0 && $profileArray[2] !=3)
 			{
 			$query = "SELECT episode.id, episode.seriesname, episode.epname, episode.epnumber FROM episode, series WHERE episode.seriesname=series.seriesName AND series.active = 'yes' ORDER BY episode.id DESC LIMIT 0, 15";
@@ -260,7 +260,7 @@ if (isset($_GET['rf'])){
 		   ?>
            <div class="mpart">
            <div align="center">You are being connected to irc.ftwirc.com, FTW Entertainment's personal IRC server.<br />To change your nick type /nick (nickhere)</div>
-                    <?
+                    <?php
 					
 				if ( $Logged == 1 )
 							{
@@ -274,7 +274,7 @@ if (isset($_GET['rf'])){
 				?>
 				<div class="date"></div>
 				</div>
-           <?
+           <?php
 	   }
 	   else if($_GET['node'] == 'donate')
 	   {
@@ -298,7 +298,7 @@ if (isset($_GET['rf'])){
                             	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal" name="paypal">
       <input type="hidden" name="cmd" value="_donations" />
       <input type="hidden" name="business" value="donate@animeftw.tv" />
-      <?
+      <?php
 	  if($Logged == 0)
 	  {
 		  echo '
@@ -318,8 +318,8 @@ if (isset($_GET['rf'])){
 	  ?>
       <input type="hidden" name="page_style" value="PayPal" />
       <input type="hidden" name="no_shipping" value="1" />
-      <input type="hidden" name="return" value="http://<?=$siteroot;?>/donation-accepted" />
-      <input type="hidden" name="cancel_return" value="http://<?=$siteroot;?>/donation-cancelled" />
+      <input type="hidden" name="return" value="http://<?php=$siteroot;?>/donation-accepted" />
+      <input type="hidden" name="cancel_return" value="http://<?php=$siteroot;?>/donation-cancelled" />
       <input type="hidden" name="currency_code" value="USD" />
       <input type="hidden" name="tax" value="0" />
       <input type="hidden" name="lc" value="US" />
@@ -334,7 +334,7 @@ if (isset($_GET['rf'])){
 		//include('donations/index.php');
 		?>
                            </td>
-                            <td align="center" height="100px"> <?
+                            <td align="center" height="100px"> <?php
 													
 							 $query   = "SELECT mc_gross, first_name, reg_date
 											FROM donation_paypal 
@@ -350,7 +350,7 @@ if (isset($_GET['rf'])){
                     </table>
                     <div class="date"></div>
                     </div>
-					<?
+					<?php
 	   }
 	   else if($_GET['node'] == 'banned')
 	   {
@@ -545,5 +545,5 @@ if (isset($_GET['rf'])){
 	echo "</tr>\n</table>\n";
 	// End Main BG
 		
-include('footer.php')
+include('footer.php');
 ?>
