@@ -25,7 +25,7 @@ class AniDB() extends Config{
 	}
 	
 	private function cacheFile($aid){
-		$filename = $rootdirectory.'/anidbcache_xml/'.$aid.'.xml'; //check if file exists
+		$filename = $rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml'; //check if file exists
 		if ( file_exists($filename) ){ 
 			//echo "XML for this anime is already cached.<br>";
 			//echo "$filename<br>";
@@ -138,7 +138,7 @@ class AniDB() extends Config{
 	}
 	private function getxml($aid){
 		cacheFile($aid); //Check to see if this file needs to update, and do so if it does.
-		return simplexml_load_file("anidbcache_xml/".$aid.".xml");
+		return simplexml_load_file($rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml');
 	}
 
 }
