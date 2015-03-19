@@ -318,8 +318,8 @@ if (isset($_GET['rf'])){
 	  ?>
       <input type="hidden" name="page_style" value="PayPal" />
       <input type="hidden" name="no_shipping" value="1" />
-      <input type="hidden" name="return" value="http://<?php=$siteroot;?>/donation-accepted" />
-      <input type="hidden" name="cancel_return" value="http://<?php=$siteroot;?>/donation-cancelled" />
+      <input type="hidden" name="return" value="http://<?=$siteroot;?>/donation-accepted" />
+      <input type="hidden" name="cancel_return" value="http://<?=$siteroot;?>/donation-cancelled" />
       <input type="hidden" name="currency_code" value="USD" />
       <input type="hidden" name="tax" value="0" />
       <input type="hidden" name="lc" value="US" />

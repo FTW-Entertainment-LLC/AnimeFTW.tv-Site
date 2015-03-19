@@ -297,7 +297,7 @@ session_start();
 		echo "	<script type=\"text/javascript\" src=\"/scripts/aftw-register.js\"></script>\n";
 	}
 	?>
-    <title><?php=$PageTitle;?></title>
+    <title><?=$PageTitle;?></title>
     <?php
 	if($_SERVER['PHP_SELF'] == '/users.php'){
 		if($u->nVar('ID') == 1){
