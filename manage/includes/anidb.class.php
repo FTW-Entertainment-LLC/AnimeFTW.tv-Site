@@ -82,7 +82,7 @@ class AniDB extends Config{
 		
 		
 
-		$string = curl_exec($ch) or die(curl_error());
+		$string = curl_exec($ch) or die(curl_error($ch));
 
 		curl_close($ch);
 

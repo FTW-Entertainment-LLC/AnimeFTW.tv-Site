@@ -229,7 +229,7 @@ class Episodes extends Config {
 			$Type = 'add';
 		}
 		echo '<div class="body-message">Update: If you enter the anidb and episode fields, you won\'t have to enter anything in the "Episode #" and "Episode Name" fields. The same goes the other way around.<br>
-		Keep in mind that this does not add the special episodes on AniDB.</div>
+		Keep in mind that this does not add the special episodes on AniDB.<br></div>
 		<div id="form_results" class="form_results">&nbsp;</div>';
 		echo '
 		
@@ -238,7 +238,7 @@ class Episodes extends Config {
 		' . $options . '
 		<input type="hidden" name="uid" value="' . $this->UserArray[1] . '" />
 		<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />
-		<div class="series-form-row">
+		<div class="series-form-row" style="border: 1px solid #eeebea;border-bottom: none;">
 			<div class="series-form-left">
 				Anidb ID
 			</div>
@@ -247,7 +247,7 @@ class Episodes extends Config {
 				<label for="anidbid" id="anidbError" class="form-labels FormError">AniDB ID is Required</label>
 			</div>
 		</div>
-		<div class="series-form-row">
+		<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
 			<div class="series-form-left">
 				Episodes
 			</div>
@@ -260,7 +260,14 @@ class Episodes extends Config {
 				<label for="toep" id="addtonumError" class="form-labels FormError">End Value is Required</label>
 			</div>
 		</div>
-		<div class="series-form-row">
+		<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
+			<div class="series-form-left">
+			</div>
+			<div class="series-form-right">
+				<span style="display: block;width: 224px;text-align: center;">OR</span>
+			</div>
+		</div>
+		<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
 			<div class="series-form-left">
 				Episode #
 			</div>
@@ -269,7 +276,7 @@ class Episodes extends Config {
 				<label for="epnumber" id="epnumberError" class="form-labels FormError">Episode Number is Required</label>
 			</div>
 		</div>
-		<div class="series-form-row">
+		<div class="series-form-row" style="border: 1px solid #eeebea;border-top: none">
 			<div class="series-form-left">
 				Episode Name
 			</div>
@@ -278,7 +285,7 @@ class Episodes extends Config {
 				<label for="epname" id="epnameError" class="form-labels FormError">An episode Name is required</label>
 			</div>
 		</div>
-		<div class="series-form-row">
+		<div class="series-form-row" >
 			<div class="series-form-left">
 				Video Width
 			</div>
