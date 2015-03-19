@@ -17,7 +17,7 @@ getEpisodeTitle($aid, $epno);
 
 \****************************************************************/
 
-class AniDB extends Config{
+class AniDB{
 	private $rootdirectory;
 	public function __construct()
 	{
