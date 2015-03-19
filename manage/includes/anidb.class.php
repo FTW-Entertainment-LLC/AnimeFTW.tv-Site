@@ -21,7 +21,7 @@ class AniDB{
 	private $rootdirectory;
 	public function __construct()
 	{
-		if($_SERVER['HTTP_HOST'] == 'dev.animeftw.tv'||$_SERVER['HTTP_HOST'] == 'animeftw.tv.local')
+		if($_SERVER['HTTP_HOST'] == 'dev.animeftw.tv')
 		{
 			$this->rootdirectory = $_SERVER['DOCUMENT_ROOT'];
 		}
