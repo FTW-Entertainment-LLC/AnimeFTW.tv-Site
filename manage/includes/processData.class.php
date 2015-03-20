@@ -655,8 +655,12 @@ class processData extends Config {
 		$epprefix = mysql_real_escape_string($_POST['epprefix']);
 		$subGroup = mysql_real_escape_string($_POST['subGroup']);
 		$Movie = mysql_real_escape_string($_POST['Movie']);
-		$Remember = mysql_real_escape_string($_POST['Remember']);
-		$Changed = mysql_real_escape_string($_POST['Changed']);
+		$Remember = NULL; //This gave an annoying undefined index error everytime these fields were unchecked.
+		if(isset($_POST['Remember']))
+			$Remember = mysql_real_escape_string($_POST['Remember']);
+		$Changed = NULL;
+		if(isset($_POST['Changed']))
+			$Changed = mysql_real_escape_string($_POST['Changed']);
 		$addtime = mysql_real_escape_string($_POST['date']);
 		$videotype =mysql_real_escape_string( $_POST['videotype']);
 		$hd = mysql_real_escape_string($_POST['hd']);
@@ -725,8 +729,8 @@ class processData extends Config {
 			if($Changed == 'on')
 			{
 				// changed entry is on, we need to update the uploads board
-				mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_GET['ueid']));
-				$this->Mod("Removed Notifications for Entry " . $_GET['ueid'] . ' in the Uploads Board');
+				mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_POST['ueid']));
+				$this->ModRecord("Removed Notifications for Entry " . $_POST['ueid'] . ' in the Uploads Board');
 			}
 		}
 	}

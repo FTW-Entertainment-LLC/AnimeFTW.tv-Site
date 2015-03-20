@@ -282,7 +282,7 @@ class Episodes extends Config {
 				Episode Name
 			</div>
 			<div class="series-form-right">
-				<input name="epname" id="epname" type="text" size="25" value="' . $epname . '" class="text-input2" />
+				<input name="epname" id="epname" type="text" size="25" value="" class="text-input2" />
 				<label for="epname" id="epnameError" class="form-labels FormError">An episode Name is required</label>
 			</div>
 		</div>
@@ -362,7 +362,10 @@ class Episodes extends Config {
 				Silent Episode?
 			</div>
 			<div class="series-form-right">
-				<select name="date" class="text-input2">
+				<select name="date" class="text-input2">';
+					
+					//These $addtime variables doesn't seem to exist, so they always return a underfined variable notice. Doesn't seem to be needed anyway but I'm not sure if I should remove them. /Hani
+					echo '
 					<option value="1"'; if($addtime == '1'){echo ' selected="selected"';} echo'>No</option>
 					<option value="0"'; if($addtime == '0'){echo ' selected="selected"';} echo'>Yes</option>
 				</select>
@@ -414,8 +417,8 @@ class Episodes extends Config {
 					// if the upload entry is set, we need to give the option to remove the notification mark from the entry.
 					echo '
 					<div>
-						<input type="checkbox" name="Checked" id="Checked" class="text-input2" />
-						<label for="Checked">Remove the Notification in the Uploads Board?</label>&nbsp;&nbsp;
+						<input type="checkbox" name="Changed" id="Changed" class="text-input2" />
+						<label for="Changed">Remove the Notification in the Uploads Board?</label>&nbsp;&nbsp;
 					</div>
 					<input type="hidden" name="ueid" value="' . $_GET['ueid'] . '" />';
 				}
@@ -541,12 +544,15 @@ class Episodes extends Config {
 					if($Type == 'add')
 					{
 						echo '
-								if($(\'#Remember\').is(":checked"))
+								if($(\'#Remember\').is(":checked")&&$("input#anidbidnum").val() == "")
 								{
 									var epnum = parseInt($("#epnumber").val());
 									var epnum2 = epnum+1;
 									$("#epnumber").val(epnum2);	
 									$("#epname").val("");									
+								}
+								else if($(\'#Remember\').is(":checked")){
+									
 								}
 								else
 								{
