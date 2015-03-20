@@ -656,11 +656,13 @@ class processData extends Config {
 		$subGroup = mysql_real_escape_string($_POST['subGroup']);
 		$Movie = mysql_real_escape_string($_POST['Movie']);
 		$Remember = NULL; //This gave an annoying undefined index error everytime these fields were unchecked.
-		if(isset($_POST['Remember']))
+		if(isset($_POST['Remember'])){
 			$Remember = mysql_real_escape_string($_POST['Remember']);
+		}
 		$Changed = NULL;
-		if(isset($_POST['Changed']))
+		if(isset($_POST['Changed'])){
 			$Changed = mysql_real_escape_string($_POST['Changed']);
+		}
 		$addtime = mysql_real_escape_string($_POST['date']);
 		$videotype =mysql_real_escape_string( $_POST['videotype']);
 		$hd = mysql_real_escape_string($_POST['hd']);
