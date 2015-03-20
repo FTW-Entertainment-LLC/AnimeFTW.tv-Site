@@ -184,7 +184,7 @@ class Episodes extends Config {
 		{
 			if(isset($_GET['ueid']))
 			{
-				$query = mysql_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']));
+				$query = mysql_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix`, `anidbsid` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']));
 				$row = mysql_fetch_assoc($query);
 				$query = mysql_query("SELECT `episode`.`sid`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`videotype`, `episode`.`vidwidth`, `episode`.`hd`, `episode`.`html5`, series.seriesname FROM episode, series WHERE episode.sid=series.id AND series.id = " . $row['sid'] . " ORDER BY epnumber DESC LIMIT 0, 1");
 				$row2 = mysql_fetch_assoc($query);
@@ -195,7 +195,7 @@ class Episodes extends Config {
 				// Allows for first episodes to be populated correctly.
 				if($epnumber == 1)
 				{ 
-					$epname = 'Episode 1'; 
+					$epname = '';
 					$dimmensions = explode("x",$row['resolution']);
 					$vidheight = $dimmensions[1]; 
 					$vidwidth = $dimmensions[0];
@@ -212,6 +212,7 @@ class Episodes extends Config {
 				$sid = $row2['sid']; 
 				$seriesName = $row2['seriesname']; 
 				$subGroup = $row['fansub']; 
+				$aniDBid = $row['anidbsid']; 
 				$Movie = ''; 
 				$videotype = $row2['videotype'];
 				$uesid = $row['sid'];
@@ -243,7 +244,7 @@ class Episodes extends Config {
 				Anidb ID
 			</div>
 			<div class="series-form-right">
-				<input name="anidbid" id="anidbidnum" type="text" size="25" value="" class="text-input2" />
+				<input name="anidbid" id="anidbidnum" type="text" size="25" value="' . $aniDBid . '" class="text-input2" />
 				<label for="anidbid" id="anidbError" class="form-labels FormError">AniDB ID is Required</label>
 			</div>
 		</div>
@@ -253,10 +254,10 @@ class Episodes extends Config {
 			</div>
 			<div class="series-form-right">
 				From:
-				<input name="fromep" id="addfromnum" type="number" value="" class="text-input2" style="width:73px;"/>
+				<input name="fromep" id="addfromnum" type="number" value="' . $epnumber . '" class="text-input2" style="width:73px;"/>
 				<label for="fromep" id="addfromnumError" class="form-labels FormError">Starting Value is Required</label>
 				To:
-				<input name="toep" id="addtonum" type="number" value="" class="text-input2" style="width:74px;"/>
+				<input name="toep" id="addtonum" type="number" value="' . $epnumber . '" class="text-input2" style="width:74px;"/>
 				<label for="toep" id="addtonumError" class="form-labels FormError">End Value is Required</label>
 			</div>
 		</div>
@@ -272,7 +273,7 @@ class Episodes extends Config {
 				Episode #
 			</div>
 			<div class="series-form-right">
-				<input name="epnumber" id="epnumber" type="text" size="25" value="' . $epnumber . '" class="text-input2" />
+				<input name="epnumber" id="epnumber" type="text" size="25" value="" class="text-input2" />
 				<label for="epnumber" id="epnumberError" class="form-labels FormError">Episode Number is Required</label>
 			</div>
 		</div>
@@ -326,9 +327,9 @@ class Episodes extends Config {
 				Series Name
 			</div>
 			<div class="series-form-right">
-				<select name="sid" class="text-input2" id="sid">
+				<select name="sid" class="text-input2" id="sid" style="width: 550px;">
 				<option value="0">-Choose Series-</option>';
-				$this->SeriesList();
+				$this->SeriesList($sid, $uesid);
 			echo '
 				</select>
 			</div>
@@ -569,7 +570,7 @@ class Episodes extends Config {
 			});
 		</script>';
 	}
-	private function SeriesList(){
+	private function SeriesList($sid, $uesid){
 		$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
 		$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 		while(list($id,$fullSeriesName) = mysql_fetch_array($result2, MYSQL_NUM))
