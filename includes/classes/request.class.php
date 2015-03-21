@@ -721,6 +721,10 @@ class AnimeRequest extends Config{
 		});
 		</script>';
 	}
+	public function getStatus($status){
+		$msg = array("Pending", "Claimed", "Live", "Denied");
+		return $msg[$status-1];
+	}
 	private function status($status, $id){
 		$msg = array("Pending", "Claimed", "Live", "Denied");
 		if(!$this->editmode)
@@ -824,6 +828,7 @@ class AnimeRequest extends Config{
 			$this->ModRecord("Marked an Anime Request (".$arid.") as Claimed."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
 		}
 		
+		
 	}
 	
 	private function subtractVote($arid)
@@ -856,6 +861,7 @@ class AnimeRequest extends Config{
 			echo "The field 'Details' is empty";
 			return;
 		}
+		
 		$query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=".$anidb.""; //check if it already exist
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$res = mysql_result($result, 0);
@@ -880,16 +886,6 @@ class AnimeRequest extends Config{
 			$ptid3 = $row006['tid'];
 			$pistopic = 1;
 			$userIp = @$_SERVER['REMOTE_ADDR'];
-			$query2 = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, pistopic, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($ptid3),
-				mysql_real_escape_string($this->UserArray[1]),
-				mysql_real_escape_string($this->fid),
-				mysql_real_escape_string($submittitle),
-				mysql_real_escape_string($date),
-				mysql_real_escape_string($details),
-				mysql_real_escape_string($pistopic),
-				mysql_real_escape_string($userIp));
-			mysql_query($query2) or die('Could not connect, way to go retard:' . mysql_error());
 			$query = sprintf("INSERT INTO `requests` (`name`, `status`, `type`, `episodes`, `anidb`, `user_id`, `date`, `details`, `tid`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($name),
 				mysql_real_escape_string("1"),
@@ -901,7 +897,19 @@ class AnimeRequest extends Config{
 				mysql_real_escape_string($details),
 				mysql_real_escape_string($ptid3));
 			mysql_query($query) or die('Error : ' . mysql_error());
-			echo "Success ".mysql_insert_id();
+			$reqid = mysql_insert_id();
+			echo "Success ".$reqid;
+			$details = "[animerequest]".$reqid."[/animerequest]"; //We change the details on the forum to the dynamic version
+			$query2 = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, pistopic, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+				mysql_real_escape_string($ptid3),
+				mysql_real_escape_string($this->UserArray[1]),
+				mysql_real_escape_string($this->fid),
+				mysql_real_escape_string($submittitle),
+				mysql_real_escape_string($date),
+				mysql_real_escape_string($details),
+				mysql_real_escape_string($pistopic),
+				mysql_real_escape_string($userIp));
+			mysql_query($query2) or die('Could not connect, way to go retard:' . mysql_error());
 		}
 		else
 		{
