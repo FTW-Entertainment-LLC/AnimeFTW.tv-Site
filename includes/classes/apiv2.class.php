@@ -22,6 +22,14 @@ Class api extends Config {
 			'disabled' => '0',
 			'description' => 'Displays all of the episodes for a series with a given id, must have the id of the series to view all episodes.'
 		),
+		'record-episode' => array(
+			'action' => 'record-episode',
+			'location' => 'episode.v2.class.php', // action location
+			'classname' => 'Episode', // class name
+			'method' => 'array_recordEpisodeTime', // method name
+			'disabled' => '0',
+			'description' => 'Records the current time in seconds that an episode is currently at. Useful for starting a video at a certain point.'
+		),
 		'display-single-episode' => array(
 			'action' => 'display-single-episode',
 			'location' => 'episode.v2.class.php', // action location

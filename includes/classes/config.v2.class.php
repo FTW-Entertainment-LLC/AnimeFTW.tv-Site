@@ -500,6 +500,11 @@ class Config {
 					'Message' => 'No Developer Key given, access is denied.',
 					'Explanation' => 'No Application key was supplied, without this information, API access will be revoked.'
 				),
+				'402' => array(
+					'Status' => '402',
+					'Message' => 'There was an error with the query, please try again.',
+					'Explanation' => 'The request was not processed due to a database error.'
+				),
 				'403' => array(
 					'Status' => '403',
 					'Message' => 'The Developer Key used was invalid or not active, please contact support for help.',
@@ -569,6 +574,11 @@ class Config {
 					'Status' => '02-401',
 					'Message' => 'No Episodes are available.',
 					'Explanation' => 'There were no episodes available, please try a different range.'
+				),
+				'03-402' => array(
+					'Status' => '02-402',
+					'Message' => 'Invalid Data, some items were missing.',
+					'Explanation' => 'A piece of requested data was missing.'
 				),
 				'04-400' => array(
 					'Status' => '04-400',

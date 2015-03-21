@@ -213,4 +213,56 @@ class Episode extends Config {
 		$row = $result->fetch_assoc();
 		return $row['count'];
 	}
+	
+	public function array_recordEpisodeTime()
+	{
+		// check to make sure the ID is set, this would be of the episode.
+		// also check for a time variable, it MUST be in seconds.
+		if(isset($this->Data['id']) && is_numeric($this->Data['id']) && isset($this->Data['time']) && is_numeric($this->Data['time']))
+		{
+			$query = "SELECT `id` FROM `episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+			$result = $this->mysqli->query($query);
+			if(!$result)
+			{
+				return array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["401"]["Message"]);
+			}
+			else
+			{
+				$count = mysqli_num_rows($result);
+				if($count > 0)
+				{
+					// there are rows... lets update.
+					$query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . " WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+					$result = $this->mysqli->query($query);
+					if(!$result)
+					{
+						return array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["401"]["Message"]);
+					}
+					else
+					{
+						return array('status' => $this->MessageCodes["Result Codes"]["201"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+					}
+				}
+				else
+				{
+					// all data is present, we need to record in the episode table.
+					$query = "INSERT INTO `episode_timer` (`id`, `uid`, `eid`, `time`) VALUES (NULL, " . $this->UserID . ", " . $this->mysqli->real_escape_string($this->Data['id']) . ", " . $this->mysqli->real_escape_string($this->Data['time']) . ")";
+					$result = $this->mysqli->query($query);
+					if(!$result)
+					{
+						return array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["401"]["Message"]);
+					}
+					else
+					{
+						return array('status' => $this->MessageCodes["Result Codes"]["201"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+					}
+				}
+			}
+		}
+		else
+		{
+			// missing some of the data.
+			return array('status' => $this->MessageCodes["Result Codes"]["03-402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-402"]["Message"]);
+		}
+	}
 }
