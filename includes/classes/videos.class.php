@@ -522,8 +522,18 @@ class AFTWVideos extends Config{
 		<script>
 			var timerCheck = setInterval(function(){
 				var current_time = $(\'#aftw-player\').find(\'video\').get(0).currentTime;
-				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration
-							
+				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration;
+				var int_val = 0;
+				
+				if(Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time))
+				{
+					$.ajax({
+						url: "/scripts.php?view=check-episode&id=' . $EpisodeArray[15] . '&time=" + Math.round(current_time) + "&max=" + Math.round(durration),
+						cache: false
+					});
+					int_val = Math.round(current_time);
+				}
+				
 				if(((current_time/durration)*100) >= 65)
 				{
 					clearInterval(timerCheck);
@@ -556,7 +566,7 @@ class AFTWVideos extends Config{
 		echo '
 					return;
 				}
-			},500);
+			},1000);
 		</script>
 		<script>
 		$(document).ready(function(){
