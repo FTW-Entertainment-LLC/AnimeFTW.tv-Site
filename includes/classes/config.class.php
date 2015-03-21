@@ -492,6 +492,10 @@ class Config {
 					$i++;
 				}
 			}
+			else
+			{
+				$this->RecentEps[] = 0;
+			}
 		}
 	}
 }
