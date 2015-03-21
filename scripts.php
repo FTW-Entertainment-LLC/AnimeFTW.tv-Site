@@ -782,6 +782,31 @@ if(isset($_GET['view']) && $_GET['view'] == 'episodes')
 		$V->NextEpisodesV2();
 	}
 }
+if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
+{
+	include("includes/classes/config.v2.class.php");
+	include("includes/classes/episode.v2.class.php");
+	if(!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['time']))
+	{
+		echo 'We were unable to process your request.';
+	}
+	else
+	{
+		// let's process the request because they at least gave us some decent information.
+		$Episode = new Episode($_GET);
+		$output = $Episode->array_recordEpisodeTime();
+		if($output['status'] == 201)
+		{
+			// the output indicated a success, return true.
+			echo 'Success';
+		}
+		else
+		{
+			// failure.. just failure..
+			echo 'Failure';
+		}
+	}
+}
 if(isset($_GET['view']) && $_GET['view'] == 'commentsv2')
 {
 	

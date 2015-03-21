@@ -11,6 +11,7 @@ class AFTWVideos extends Config{
 	var $ssl;
 	var $CDNHost;
 	var $UserArray; //added 8/4/2014 by robotman321
+	var $RecentEps; //added 3/21/2015 by robotman321
 	var $watchListSelection;
 	var $Categories = array(); // added 10/10/2014 by robotman321
 	
@@ -456,7 +457,25 @@ class AFTWVideos extends Config{
 		}
 		else
 		{
-			$vidPosition = '';
+			// we first check to see if the user has watched this, to be in the timer array.
+			if(array_key_exists($EpisodeArray[15],$this->RecentEps))
+			{
+				echo '<!-- key exists -->';
+				// success. However, we need to check the timestamp against our current time, if its > 4 weeks or is more than 95% of the way through the video, let's just let it go.
+				if($this->RecentEps[$EpisodeArray[15]]['updated'] < (time()-2419200) || (is_numeric($this->RecentEps[$EpisodeArray[15]]['max']) && ($this->RecentEps[$EpisodeArray[15]]['time']/$this->RecentEps[$EpisodeArray[15]]['max'])*100 > 95))
+				{
+					// sorry.. your time was too far off, or you already watched through this video before.. so we will just let it ride out without a stamp.
+					$vidPosition = '';
+				}
+				else
+				{
+					$vidPosition = '#t=' . $this->RecentEps[$EpisodeArray[15]]['time'];
+				}
+			}
+			else
+			{
+				$vidPosition = '';
+			}
 		}
 		if($this->UserArray[2] == 3)
 		{
@@ -522,8 +541,18 @@ class AFTWVideos extends Config{
 		<script>
 			var timerCheck = setInterval(function(){
 				var current_time = $(\'#aftw-player\').find(\'video\').get(0).currentTime;
-				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration
-							
+				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration;
+				var int_val = 0;
+				
+				if(Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time))
+				{
+					$.ajax({
+						url: "/scripts.php?view=check-episode&id=' . $EpisodeArray[15] . '&time=" + Math.round(current_time) + "&max=" + Math.round(durration),
+						cache: false
+					});
+					int_val = Math.round(current_time);
+				}
+				
 				if(((current_time/durration)*100) >= 65)
 				{
 					clearInterval(timerCheck);
@@ -556,7 +585,7 @@ class AFTWVideos extends Config{
 		echo '
 					return;
 				}
-			},500);
+			},1000);
 		</script>
 		<script>
 		$(document).ready(function(){

@@ -19,7 +19,7 @@ include($rootdirectory . "/includes/config_site.php");
 include($rootdirectory . "/includes/newsOpenDb.php");
 
 class Config {
-	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB;
+	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array();
 
 	public function __construct(){
 		$this->BuildUser(); // build our user array
@@ -41,6 +41,9 @@ class Config {
 		
 		// build the site default settings..
 		$this->array_buildDefaultSiteSettings();
+		
+		// generate the list of recently viewed videos.
+		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
 	private function BuildUser(){
@@ -464,5 +467,35 @@ class Config {
 			$returnArray = array(FALSE,"0");
 		}		
 		return $returnArray;
+	}
+	
+	private function array_buildRecentlyWatchedEpisodes()
+	{
+		$query = "SELECT `eid`, `time`, `updated`, `max` FROM `episode_timer` WHERE `uid` = " . $this->UserArray[1];
+		$result = mysql_query($query);
+		
+		if(!$result)
+		{
+			echo 'There was an issue with the communications.';
+		}
+		else
+		{
+			$count = mysql_num_rows($result);
+			if($count > 0)
+			{
+				$i = 0;
+				while($row = mysql_fetch_assoc($result))
+				{
+					$this->RecentEps[$row['eid']]['time'] = $row['time'];
+					$this->RecentEps[$row['eid']]['updated'] = $row['updated'];
+					$this->RecentEps[$row['eid']]['max'] = $row['max'];			
+					$i++;
+				}
+			}
+			else
+			{
+				$this->RecentEps[] = 0;
+			}
+		}
 	}
 }

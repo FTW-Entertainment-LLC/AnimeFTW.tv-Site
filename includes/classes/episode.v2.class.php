@@ -14,9 +14,25 @@ class Episode extends Config {
 	{
 		parent::__construct();
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		// check if the data is null, we will override settings that would normally be reserved for the API.
+		if($UserID == NULL)
+		{
+			$this->UserID = $this->UserArray['ID'];
+		}
+		else
+		{
+			$this->UserID = $UserID;
+		}
 		$this->DevArray = $DevArray;
-		$this->AccessLevel = $AccessLevel;
+		// again, for non-api driven model, we want to use the same information, per-say, so let's override this.
+		if($AccessLevel == NULL)
+		{
+			$this->AccessLevel = $this->UserArray['Level_access'];
+		}
+		else
+		{	
+			$this->AccessLevel = $AccessLevel;
+		}
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 	}
 	
@@ -218,7 +234,7 @@ class Episode extends Config {
 	{
 		// check to make sure the ID is set, this would be of the episode.
 		// also check for a time variable, it MUST be in seconds.
-		if(isset($this->Data['id']) && is_numeric($this->Data['id']) && isset($this->Data['time']) && is_numeric($this->Data['time']))
+		if(isset($this->Data['id']) && is_numeric($this->Data['id']) && isset($this->Data['time']) && is_numeric($this->Data['time']) && $this->AccessLevel != 0)
 		{
 			$query = "SELECT `id` FROM `episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
 			$result = $this->mysqli->query($query);
@@ -232,7 +248,7 @@ class Episode extends Config {
 				if($count > 0)
 				{
 					// there are rows... lets update.
-					$query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . " WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+					$query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . ", `updated` = " . time() . " WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
 					$result = $this->mysqli->query($query);
 					if(!$result)
 					{
@@ -245,8 +261,16 @@ class Episode extends Config {
 				}
 				else
 				{
+					// for those times we want to get the full length of the video to store in seconds.
+					$maxdurration = "";
+					$maxvalue = "";
+					if(isset($this->Data['max']) && is_numeric($this->Data['max']))
+					{
+						$maxdurration = ", `max`";
+						$maxvalue = ", " . $this->Data['max'];
+					}
 					// all data is present, we need to record in the episode table.
-					$query = "INSERT INTO `episode_timer` (`id`, `uid`, `eid`, `time`) VALUES (NULL, " . $this->UserID . ", " . $this->mysqli->real_escape_string($this->Data['id']) . ", " . $this->mysqli->real_escape_string($this->Data['time']) . ")";
+					$query = "INSERT INTO `episode_timer` (`id`, `uid`, `eid`, `time`, `updated`" . $maxdurration . ") VALUES (NULL, " . $this->UserID . ", " . $this->mysqli->real_escape_string($this->Data['id']) . ", " . $this->mysqli->real_escape_string($this->Data['time']) . ", " . time() . $maxvalue .")";
 					$result = $this->mysqli->query($query);
 					if(!$result)
 					{
