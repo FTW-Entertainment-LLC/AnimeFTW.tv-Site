@@ -837,7 +837,8 @@ class Uploads extends Config {
 	
 	private function array_entryStatus()
 	{
-		$query = "SELECT `value` FROM `mainaftw_anime`.`settings` WHERE `id` = 12";
+		$dbname = $this->SingleVarQuery("SELECT DATABASE()","DATABASE()");
+		$query = "SELECT `value` FROM `".$dbname."`.`settings` WHERE `id` = 12";
 		$result = mysql_query($query);
 		$row = mysql_fetch_assoc($result);
 		$EntryStatus = explode("|", $row['value']);
