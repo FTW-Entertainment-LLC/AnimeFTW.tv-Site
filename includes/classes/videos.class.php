@@ -539,12 +539,13 @@ class AFTWVideos extends Config{
 		// or getting past the 65% point..
 		echo '
 		<script>
+			var int_val = 0;
+			var submit_check = "FALSE";
 			var timerCheck = setInterval(function(){
 				var current_time = $(\'#aftw-player\').find(\'video\').get(0).currentTime;
 				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration;
-				var int_val = 0;
 				
-				if(Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time))
+				if((Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time)) || current_time == durration)
 				{
 					$.ajax({
 						url: "/scripts.php?view=check-episode&id=' . $EpisodeArray[15] . '&time=" + Math.round(current_time) + "&max=" + Math.round(durration),
@@ -553,9 +554,9 @@ class AFTWVideos extends Config{
 					int_val = Math.round(current_time);
 				}
 				
-				if(((current_time/durration)*100) >= 65)
+				if(((current_time/durration)*100) >= 65 && submit_check == "FALSE")
 				{
-					clearInterval(timerCheck);
+					submit_check = "TRUE";
 					$.ajax({
 						url: "/scripts.php?view=toplist&action=record&epid=' . $EpisodeArray[15] . '",
 						cache: false

@@ -8,7 +8,7 @@
 
 class Config {
 	
-	public $UserArray = array(), $PermArray, $ImageHost, $StatsDB, $MainDB, $MessageCodes, $SettingsArray, $DefaultSettingsArray;
+	public $UserArray = array(), $PermArray, $ImageHost, $StatsDB, $MainDB, $MessageCodes, $SettingsArray, $DefaultSettingsArray, $RecentEps=array();
 
 	public function __construct()
 	{
@@ -37,6 +37,9 @@ class Config {
 		
 		// build the site default settings..
 		$this->array_buildDefaultSiteSettings();
+		
+		// generate the list of recently viewed videos.
+		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
 	#----------------------------------------------------------------
@@ -472,6 +475,36 @@ class Config {
 			break;
 			case 'unique' : return md5(uniqid(mt_rand()));
 			break;
+		}
+	}
+	
+	private function array_buildRecentlyWatchedEpisodes()
+	{
+		$query = "SELECT `eid`, `time`, `updated`, `max` FROM `episode_timer` WHERE `uid` = " . $this->UserArray['ID'];
+		$result = $this->mysqli->query($query);
+		
+		if(!$result)
+		{
+			echo 'There was an issue with the communications.';
+		}
+		else
+		{
+			$count = mysqli_num_rows($result);
+			if($count > 0)
+			{
+				$i = 0;
+				while($row = $result->fetch_assoc())
+				{
+					$this->RecentEps[$row['eid']]['time'] = $row['time'];
+					$this->RecentEps[$row['eid']]['updated'] = $row['updated'];
+					$this->RecentEps[$row['eid']]['max'] = $row['max'];				
+					$i++;
+				}
+			}
+			else
+			{
+				$this->RecentEps[] = 0;
+			}
 		}
 	}
 	
