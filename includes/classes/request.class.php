@@ -227,12 +227,15 @@ class AnimeRequest extends Config{
 				echo '
 				<div class="col" style="width: 60px;">'.$rvotes.' <div id="reqlink'.$i.'" style="display:inline-block">';
 				if($status<3){
-					echo '(';
-					echo '<a id="voteclick_'.$id.'" href="#">+</a>';
+					if($this->maxvotes-$this->votes>0||$rvotes>0)
+						echo '(';
+					if($this->maxvotes-$this->votes>0)
+						echo '<a id="voteclick_'.$id.'" href="#">+</a>';
 					if($rvotes>0){
-						echo '<a id="votedeleteclick_'.$id.'" href="#"> -</a>';
+						echo '<a id="votedeleteclick_'.$id.'" href="#">-</a>';
 					}
-					echo ')';
+					if($this->maxvotes-$this->votes>0||$rvotes>0)
+						echo ')';
 				}
 				echo '</div></div>
 				<div class="col" style="width: 60px;">';
@@ -271,7 +274,9 @@ class AnimeRequest extends Config{
 				if($this->editmode){
 					$extra = "margin-top: -10px;";
 				}
-				echo '<div class="ardelete" style="'.$extra.'"><a id = "arclaimlink'.$i.'" href = "javascript:;">Claim request!</a></div>';
+				if($status==1){
+					echo '<div class="ardelete" style="'.$extra.'"><a id = "arclaimlink'.$i.'" href = "/manage">Claim request!</a></div>';
+				}
 			}
 			
 			$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
@@ -684,6 +689,7 @@ class AnimeRequest extends Config{
 			}
 			
 			if($this->canEdit()){
+				//Rediraction to management is not possible in it's current state.
 				echo '
 				$("#arclaimlink'.$i.'").click(function(e){
 					$.ajax({
