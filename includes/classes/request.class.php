@@ -92,6 +92,56 @@ class AnimeRequest extends Config{
 		$this->scripts();
 		
 		echo '
+		<div class="request-filter">
+			<form action="requests" method="get">
+				<div class="table-row">
+					<div class="col">
+						Series name:
+					</div>
+					<div class="col">
+						<input type="text" name="name"></input>
+					</div>
+				</div>
+				<div class="table-row">
+					<div class="col">
+						Status:
+					</div>
+					<div class="col">
+						<input type="text" name="name"></input>
+					</div>
+				</div>
+				<div class="table-row">
+					<div class="col">
+						Type:
+					</div>
+					<div class="col">
+						<input type="text" name="name"></input>
+					</div>
+				</div>
+				<div class="table-row">
+					<div class="col">
+						AniDB ID:
+					</div>
+					<div class="col">
+						<input type="text" name="name"></input>
+					</div>
+				</div>
+				<div class="table-row">
+					<div class="col">
+						Username:
+					</div>
+					<div class="col">
+						<input type="text" name="name"></input>
+					</div>
+				</div>
+				<div class="table-row">
+					<input name="search" type="submit" style="width: 60px;">
+				</div>
+			</form>
+		</div>
+				
+			
+		
 		<div id="dialog-form" title="Anime Request"></div>
 		<div style="font-size: 11px;float: left">
 		<a href="javascript:;" id="requestlink" >Request new anime</a><br />
@@ -112,12 +162,7 @@ class AnimeRequest extends Config{
 			
 		}
 		echo '<div style="float: right;text-align: right" >
-		<form action="requests" method="get">
-		Name: <input type="text" name="name"></input><br>
-		<div id="advsearch" style="display: none">Advanced search context</div>
-		<input name="search" type="submit" style="">
-		</form>
-		<a id="advsearch_button"href="javascript:;">Advanced Search</a>
+		
 		</div>';
 		$originalsort = null;
 		$originaldesc = null;
@@ -546,6 +591,16 @@ class AnimeRequest extends Config{
 		}.ui-widget-content a{
 			color: #007fc8;
 			text-decoration: none;
+		}.request-filter{
+			padding: 20px;
+			width: 600px;
+			margin: 0 auto;
+			border: 1px solid black;
+			margin-bottom: 30px;
+		}.request-filter input{
+			width: 470px;
+		}.request-filter .col{
+			padding-right: 10px;
 		}
 		
 		</style>';
@@ -563,9 +618,6 @@ class AnimeRequest extends Config{
 			//$("#requestlink").click(function(){
 			//	$("#request-anime").slideToggle("fast");
 			//});
-			$("#advsearch_button").click(function(){
-				$("#advsearch").slideToggle("fast");
-			});
 			$("#dialog-form").dialog({
 				autoOpen: false,
 				resizable: false,
