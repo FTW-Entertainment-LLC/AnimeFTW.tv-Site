@@ -257,11 +257,11 @@ class AnimeRequest extends Config{
 				}
 				echo '</div></div>
 				<div class="col" style="width: 60px;">';
-				$this->selectField($msg = array("Pending", "Claimed", "Live", "Denied"), $status, $id, "status", "changeStatus");
+				$this->selectField($msg = array("Pending", "Claimed", "Live", "Denied"), $status, $id, "status", "changestatus");
 				
 				echo '</div>
 				<div class="col" style="width: 50px;">';
-				$this->selectField(array("Series", "OVA", "Movie"), $type, $id, "type", "changeType");
+				$this->selectField(array("Series", "OVA", "Movie"), $type, $id, "type", "changetype");
 				echo '</div>
 				<div class="col" style="width: 80px;">';
 				if($episodes==0){echo '?';}else{echo $episodes;};
@@ -574,7 +574,7 @@ class AnimeRequest extends Config{
 		<script type="text/javascript" src="/scripts/jquery.form.js"></script>
 		
 		<script>';
-		$this->editScripts();
+		$this->editScripts(array("status", "type"));
 		echo '
 		$(document).ready(function(){
 			//$("#requestlink").click(function(){
@@ -771,30 +771,22 @@ class AnimeRequest extends Config{
 			echo '</select>';
 		}
 	}
-	private function editScripts()
+	private function editScripts($values)
 	{
 		if($this->editmode){
-			echo 'function changeStatus(selected){
+			foreach($values as $i){
+			echo 'function change'.$i.'(selected){
 					var val = selected.value;
-					var id = selected.id.replace("status", "");
+					var id = selected.id.replace("'.$i.'", "");
 					$.ajax({
-						url: "scripts.php?view=anime-requests&mode=manage&status="+val+"&id="+id,
+						url: "scripts.php?view=anime-requests&mode=manage&'.$i.'="+val+"&id="+id,
 						success: function(data){
 							location.reload();
 						 }
 					});
-				}
-				function changeType(selected){
-					var val = selected.value;
-					var id = selected.id.replace("type", "");
-					$.ajax({
-						url: "scripts.php?view=anime-requests&mode=manage&type="+val+"&id="+id,
-						success: function(data){
-							location.reload();
-						 }
-					});
-				}
-			';
+				}';
+			}
+				
 		}
 	}
 	
