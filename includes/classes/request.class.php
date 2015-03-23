@@ -106,15 +106,23 @@ class AnimeRequest extends Config{
 		if($this->canEdit()){
 			if($this->editmode){
 				$_GET["edit"] = null;
-				echo '<span style="float: right"><a href="?'.http_build_query($_GET).'">Leave edit mode</a></span>';
+				echo '<span style="float: right"><a href="?'.http_build_query($_GET).'">Leave edit mode</a></span><br>';
 				$_GET["edit"] = TRUE; //Put it back so the next queries have edit mode on if user's still on edit mode.
 			}else{
 				$_GET["edit"] = TRUE;
-				echo '<span style="float: right"><a href="?'.http_build_query($_GET).'">Enter edit mode</a></span>';
+				echo '<span style="float: right"><a href="?'.http_build_query($_GET).'">Enter edit mode</a></span><br>';
 				$_GET["edit"] = null; //Reset so it doesn't put this in the http build querys after this one.
 			}
 			
 		}
+		echo '<div style="float: right;text-align: right" >
+		<form action="requests" method="get">
+		Name: <input type="text" name="name"></input><br>
+		<div id="advsearch" style="display: none">Advanced search context</div>
+		<input name="search" type="submit" style="">
+		</form>
+		<a id="advsearch_button"href="javascript:;">Advanced Search</a>
+		</div>';
 		$originalsort = null;
 		$originaldesc = null;
 		if(isset($_GET["sort"])){
@@ -195,9 +203,19 @@ class AnimeRequest extends Config{
 		}else{
 			$this->page = 1;
 		}
+		$sname = "";
+		$searchquery = "";
+		if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+			$sname = $_GET["name"];
+			if(!empty($sname)){
+				$searchquery = "WHERE user_requests.name LIKE '%".$sname."%' ";
+			}
+		}
 		$query = "SELECT user_requests.*, COUNT(voted_to) AS vote_count
-			FROM user_requests LEFT JOIN request_votes
+			FROM user_requests
+			LEFT JOIN request_votes
 			ON user_requests.id = request_votes.voted_to
+			".$searchquery."
 			GROUP BY user_requests.id
 			ORDER BY $sort
 			LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
@@ -239,21 +257,11 @@ class AnimeRequest extends Config{
 				}
 				echo '</div></div>
 				<div class="col" style="width: 60px;">';
-				$this->status($status, $id);
+				$this->selectField($msg = array("Pending", "Claimed", "Live", "Denied"), $status, $id, "status", "changeStatus");
 				
 				echo '</div>
 				<div class="col" style="width: 50px;">';
-				switch($type){
-					case 1:
-						echo 'Series';
-						break;
-					case 2:
-						echo 'OVA';
-						break;
-					case 3:
-						echo 'Movie';
-						break;
-				}
+				$this->selectField(array("Series", "OVA", "Movie"), $type, $id, "type", "changeType");
 				echo '</div>
 				<div class="col" style="width: 80px;">';
 				if($episodes==0){echo '?';}else{echo $episodes;};
@@ -293,8 +301,14 @@ class AnimeRequest extends Config{
 		$this->PrintPages();
 
 		echo "</div><br>";
-		if($i==0){
-			echo '<div class = "reqinfo" style="background-color: #fff;text-align: center;padding: 20px; width: 96%">Request an anime to display!</div>';
+		$messg = "";
+		if($i==0&&!isset($_GET["search"])){
+			$messg = 'Request an anime to display!';
+		}else if($i==0&&isset($_GET["search"])&&$_GET["search"]=="Submit"){
+			$messg = 'No anime was found!';
+		}
+		if(!empty($messg)){
+			echo '<div class = "reqinfo" style="background-color: #fff;text-align: center;padding: 20px; width: 96%">'.$messg.'</div>';
 		}
 	}
 	
@@ -313,10 +327,15 @@ class AnimeRequest extends Config{
 		{
 			$this->vote($_GET["id"]);
 		}
-		//This is when a manager updates the status. I'll make it more modular to make it possible to update other fields too.
+		//This is when a manager updates the status.
 		else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['status']) && is_numeric($_GET["status"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
 		{
-			$this->updateStatus($_GET["status"], $_GET["id"]);
+			$this->changeRequestValue($_GET["status"], $_GET["id"], "status");
+		}
+		//This is when a manager updates the type.
+		else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['type']) && is_numeric($_GET["type"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
+		{
+			$this->changeRequestValue($_GET["type"], $_GET["id"], "type");
 		}
 		//This is when a mod deletes an entry.
 		else if(isset($_GET["mode"]) && $_GET["mode"]=="delete" && (isset($_GET["id"]) && is_numeric($_GET["id"])) && isset($_GET["reason"]))
@@ -433,7 +452,7 @@ class AnimeRequest extends Config{
 				<div class="table-row">
 					<div class="col">Type:</div>
 					<div class="col">
-					<select name="requestanimetype" id="requestanimetype">
+						<select name="requestanimetype" id="requestanimetype">
 						  <option value="1">Series</option>
 						  <option value="2">OVA</option>
 						  <option value="3">Movie</option>
@@ -555,12 +574,15 @@ class AnimeRequest extends Config{
 		<script type="text/javascript" src="/scripts/jquery.form.js"></script>
 		
 		<script>';
-		$this->changeStatusScript();
+		$this->editScripts();
 		echo '
 		$(document).ready(function(){
 			//$("#requestlink").click(function(){
 			//	$("#request-anime").slideToggle("fast");
 			//});
+			$("#advsearch_button").click(function(){
+				$("#advsearch").slideToggle("fast");
+			});
 			$("#dialog-form").dialog({
 				autoOpen: false,
 				width: 500,
@@ -731,26 +753,25 @@ class AnimeRequest extends Config{
 		$msg = array("Pending", "Claimed", "Live", "Denied");
 		return $msg[$status-1];
 	}
-	private function status($status, $id){
-		$msg = array("Pending", "Claimed", "Live", "Denied");
+	private function selectField($msg, $status, $id, $option, $jsfunction){
 		if(!$this->editmode)
 		{
 			echo $msg[$status-1];
 		}
 		else
 		{
-			$selected = array("", "", "", "");
+			$selected = array_fill(0, count($msg), "");
 			$selstring = "selected = 'selected'";
 			$selected[$status-1]=$selstring;
-			echo '<select id = "status'.$id.'" name="status" onchange="changeStatus(this)">';
-			for($i=0;$i<4;$i++){
+			echo '<select id = "'.$option.''.$id.'" name="'.$option.'" onchange="'.$jsfunction.'(this)">';
+			for($i=0;$i<count($msg);$i++){
 				echo '<option value="'.($i+1).'" '.$selected[$i].'>'.$msg[$i].'</option>';
 			}
 				  
 			echo '</select>';
 		}
 	}
-	private function changeStatusScript()
+	private function editScripts()
 	{
 		if($this->editmode){
 			echo 'function changeStatus(selected){
@@ -762,7 +783,18 @@ class AnimeRequest extends Config{
 							location.reload();
 						 }
 					});
-			}';
+				}
+				function changeType(selected){
+					var val = selected.value;
+					var id = selected.id.replace("type", "");
+					$.ajax({
+						url: "scripts.php?view=anime-requests&mode=manage&type="+val+"&id="+id,
+						success: function(data){
+							location.reload();
+						 }
+					});
+				}
+			';
 		}
 	}
 	
@@ -778,13 +810,13 @@ class AnimeRequest extends Config{
 		}
 	}
 	
-	private function updateStatus($status, $arid)
+	private function changeRequestValue($value, $arid, $option)
 	{
 		if($this->UserArray[2]==1 || $this->UserArray[2]==2 || $this->UserArray[2]==6)
 		{
-			$query = "UPDATE `requests` SET `status` = '" . mysql_real_escape_string($status) . "' WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
+			$query = "UPDATE `requests` SET `".$option."` = '" . mysql_real_escape_string($value) . "' WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
 			mysql_query($query) or die('Error : ' . mysql_error());
-			$this->ModRecord("Updated an Anime Request Status (ID: ".$arid.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
+			$this->ModRecord("Updated an Anime Request ".$option." (ID: ".$arid.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
 		}
 	}
 	
