@@ -10,12 +10,8 @@
 
 
 //TODO:
-//Log everything
-//Add pages
 //Search function
 //Redirect Video Techs to the management board to claim a series(?)
-//To log: $this->ModRecord("Action phrase"); 
-//Add more info (name, anidbid, reason for deleting) about the request in the log before deleting it.
 class AnimeRequest extends Config{
 	var $uid;
 	var $maxvotes;
@@ -430,10 +426,18 @@ class AnimeRequest extends Config{
 	{
 		echo '
 			<script type="text/javascript">
-
+			$("#anidbhelp").dialog({
+				autoOpen: false,
+				resizable: false,
+				width: 300,
+				height: 130
+			});
 			$("#requestanimedetails").redactor({
 				minHeight: 100, 
 				maxHeight: 100
+			});
+			$("#anidbhelplink").click(function() {
+				$("#anidbhelp").dialog( "open" );
 			});
 			function disableEpisodes (checkbox){ //These wont work in the ready function
 				if($(checkbox).is(":checked")) {
@@ -451,7 +455,7 @@ class AnimeRequest extends Config{
 			<form id="requestanimeform" method="get">
 				<div class="table-row">
 					<div class="col">Name: </div>
-					<div class="col"><input type="text" name="requestanimename" id="requestanimename" /></div>
+					<div class="col"><input type="text" name="requestanimename" id="requestanimename"  style="width: 464px;" /></div>
 				</div>
 				<div class="table-row">
 					<div class="col">Type:</div>
@@ -470,11 +474,13 @@ class AnimeRequest extends Config{
 				</div>
 				<div class="table-row">
 					<div class="col">AniDB ID:</div>
-					<div class="col"><input type="number" name="requestanimeanidb" id="requestanimeanidb" /></div>
+					<div class="col"><input type="number" name="requestanimeanidb" id="requestanimeanidb" /> <a href="javascript:;" id="anidbhelplink">?</a></div>
+					<div id="anidbhelp" title="AniDB Help">Go to <a href="http://www.anidb.net" target="_blank">AniDB</a> and search for the anime you\'re trying to request. Look for the AniDB ID, which is usually next to the name in
+					a paranthesis like (<a href="http://www.anidb.net/a4575" target="_blank">a4575</a>). Write <span style="text-decoration: underline">ONLY</span> the numbers.</div>
 				</div>
 				<div class="table-row">
 					<div class="col" style="vertical-align:top;">Details:</div>
-					<div class="col"><textarea rows="45" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;"></textarea></div>
+					<div class="col"><textarea rows="10" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;"></textarea></div>
 				</div>
 				<br>
 			</form>';
@@ -537,6 +543,9 @@ class AnimeRequest extends Config{
 			text-align: right;
 		 }.ui-state-default .ui-icon {
 			background-image: url("/css/images/ui-icons_888888_256x240.png");
+		}.ui-widget-content a{
+			color: #007fc8;
+			text-decoration: none;
 		}
 		
 		</style>';
@@ -635,9 +644,11 @@ class AnimeRequest extends Config{
 					}
 				}
 			});
+			
 			$("#requestlink").click(function() {
 				$("#dialog-form").load("/scripts.php?view=anime-requests&mode=request-anime-vote-form");
 				$("#dialog-form").dialog( "open" );
+				
 			});
 			
 			//$("#dialog-form").load("/scripts.php?view=anime-requests&mode=request-anime-vote-form");
