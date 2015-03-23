@@ -485,7 +485,7 @@ class Config {
 		
 		if(!$result)
 		{
-			echo 'There was an issue with the communications.';
+			//echo 'There was an issue with the communications.';
 		}
 		else
 		{
