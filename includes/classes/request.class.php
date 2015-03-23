@@ -430,7 +430,12 @@ class AnimeRequest extends Config{
 	{
 		echo '
 			<script type="text/javascript">
-			function disableEpisodes (checkbox){
+
+			$("#requestanimedetails").redactor({
+				minHeight: 100, 
+				maxHeight: 100
+			});
+			function disableEpisodes (checkbox){ //These wont work in the ready function
 				if($(checkbox).is(":checked")) {
 					$("#requestanimeepisodes").prop(\'disabled\', true);
 					$("#requestanimeepisodes").val(0);
@@ -444,7 +449,6 @@ class AnimeRequest extends Config{
 				<div class="micro_form_results" style="display:none"></div>
 			</div>
 			<form id="requestanimeform" method="get">
-			<div class="container">
 				<div class="table-row">
 					<div class="col">Name: </div>
 					<div class="col"><input type="text" name="requestanimename" id="requestanimename" /></div>
@@ -470,10 +474,9 @@ class AnimeRequest extends Config{
 				</div>
 				<div class="table-row">
 					<div class="col" style="vertical-align:top;">Details:</div>
-					<div class="col"><textarea rows="8" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;"/></div>
+					<div class="col"><textarea rows="45" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;"></textarea></div>
 				</div>
 				<br>
-			</div>
 			</form>';
 	}
 	
@@ -571,7 +574,6 @@ class AnimeRequest extends Config{
 	{
 		
 		echo '
-		<script type="text/javascript" src="/scripts/jquery.form.js"></script>
 		
 		<script>';
 		$this->editScripts(array("status", "type"));
@@ -585,7 +587,8 @@ class AnimeRequest extends Config{
 			});
 			$("#dialog-form").dialog({
 				autoOpen: false,
-				width: 500,
+				width: 550,
+				height: 400,
 				show: {
 					effect: "blind",
 					duration: 1000

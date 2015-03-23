@@ -196,7 +196,7 @@ session_start();
 		});
 		 </script>';
 	}
-	if($_SERVER['PHP_SELF'] == '/users.php'){
+	if($_SERVER['PHP_SELF'] == '/users.php'||$_SERVER['PHP_SELF'] == '/request.php'){
 	echo '
 	<link rel="stylesheet" href="/css/redactor.css?v=1" />
 	<script src="/scripts/redactor.min.js"></script>
