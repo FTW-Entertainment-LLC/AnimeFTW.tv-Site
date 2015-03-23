@@ -535,38 +535,10 @@ class AnimeRequest extends Config{
 			margin-top: -20px;
 			float: right;
 			text-align: right;
-		 }
-		.ui-dialog{
-			background-color: white;
-			box-shadow: 10px 10px 5px #888888;
-			border: 3px double grey;
-			-webkit-border-radius: 5px;
-			-moz-border-radius: 5px;
-			border-radius: 5px;
-		}.ui-dialog-titlebar{
-			background-color: grey;
-			padding: 10px 0px;
-			-webkit-border-bottom-right-radius: 5px;
-			-webkit-border-bottom-left-radius: 5px;
-			-moz-border-radius-bottomright: 5px;
-			-moz-border-radius-bottomleft: 5px;
-			border-bottom-right-radius: 5px;
-			border-bottom-left-radius: 5px;
-		}.ui-dialog-content{
-			padding: 10px;
-		}.ui-dialog-buttonset{
-			padding: 10px;
-		}.ui-icon-closethick{
-			/*float: right;
-			padding: 4px;
-			color: transparent;
-			background-color: grey;
-			margin-right: 10px;
-			width: 10px;
-			height: 10px;*/
-			visibility: hidden;
-			
+		 }.ui-state-default .ui-icon {
+			background-image: url("/css/images/ui-icons_888888_256x240.png");
 		}
+		
 		</style>';
 	}
 	
@@ -587,8 +559,9 @@ class AnimeRequest extends Config{
 			});
 			$("#dialog-form").dialog({
 				autoOpen: false,
-				width: 550,
-				height: 400,
+				resizable: false,
+				width: 570,
+				height: 450,
 				show: {
 					effect: "blind",
 					duration: 1000

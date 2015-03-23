@@ -199,6 +199,7 @@ session_start();
 	if($_SERVER['PHP_SELF'] == '/users.php'||$_SERVER['PHP_SELF'] == '/request.php'){
 	echo '
 	<link rel="stylesheet" href="/css/redactor.css?v=1" />
+	<link rel="stylesheet" href="/css/jquery-ui.min.css" />
 	<script src="/scripts/redactor.min.js"></script>
 	<script type="text/javascript" src="/scripts/popups.jquery.js"></script>
 	<script language="javascript" type="text/javascript">
