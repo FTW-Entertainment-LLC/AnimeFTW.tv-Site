@@ -123,7 +123,7 @@ class AnimeRequest extends Config{
 							}
 							
 						}
-						$this->getSelect(array("----", "Pending", "Claimed", "Live", "Denied"), $value, null, "status", false);
+						$this->getSelect(array("----", "Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $value, null, "status", false);
 						echo '
 					</div>
 				</div>
@@ -336,7 +336,19 @@ class AnimeRequest extends Config{
 		//echo $query."<br>";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$i = 0;
-		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $details) = mysql_fetch_array($result)) {
+		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
+			//echo $uid;
+			$uploadstatus = null;
+			if($uid&&$status!=9){ //If someone denies this request, then we no longer follow the uploads board status for it.
+				$uploadstatus = $this->SingleVarQuery("SELECT status FROM uestatus WHERE ID=".$uid."", "status");
+				$uploadstatus = $this->getStatusNum(ucfirst($uploadstatus));
+				if($status!=$uploadstatus){
+					//$status in the request database is not the same as the upload boards database.
+					$this->SingleVarQuery("UPDATE requests SET status=".$uploadstatus." WHERE id=".$id."", "");
+					$status = $uploadstatus; //Change it on this current run too.
+				}
+			}
+			
 			$background_color = "";
 			if($i%2==0){
 				$background_color = "#fff";
@@ -359,7 +371,7 @@ class AnimeRequest extends Config{
 				
 				echo '
 				<div class="col" style="width: 60px;">'.$rvotes.' <div id="reqlink'.$i.'" style="display:inline-block">';
-				if($status<3){
+				if($status<9){ //If it's not denied
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
@@ -372,7 +384,7 @@ class AnimeRequest extends Config{
 				}
 				echo '</div></div>
 				<div class="col" style="width: 60px;">';
-				$this->selectField($msg = array("Pending", "Claimed", "Live", "Denied"), $status, $id, "status", "changestatus");
+				$this->selectField(array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $status, $id, "status", "changestatus");
 				
 				echo '</div>
 				<div class="col" style="width: 50px;">';
@@ -861,8 +873,14 @@ class AnimeRequest extends Config{
 		});
 		</script>';
 	}
+	private function getStatusNum($status){
+		$msg = array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied");
+		$index = array_search($status, $msg);
+		
+		return $index+1; //+1 because "Pending" is status 1 in this class.
+	}
 	public function getStatus($status){
-		$msg = array("Pending", "Claimed", "Live", "Denied");
+		$msg = array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied");
 		return $msg[$status-1];
 	}
 	
