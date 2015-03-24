@@ -203,9 +203,6 @@ class AnimeRequest extends Config{
 			}
 			
 		}
-		echo '<div style="float: right;text-align: right" >
-		
-		</div>';
 		$originalsort = null;
 		$originaldesc = null;
 		if(isset($_GET["sort"])){
