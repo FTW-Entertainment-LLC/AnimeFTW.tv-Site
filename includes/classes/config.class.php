@@ -498,4 +498,30 @@ class Config {
 			}
 		}
 	}
+	public function uploadsEntrySelect($upload_id, $extra)
+	{
+		$query = "SELECT ID, series FROM uestatus ORDER BY series ASC";
+		$results = mysql_query($query);
+		
+		if(!$results)
+		{
+			echo 'There was an error with the MySQL Query: ' . mysql_error();
+			exit;
+		}
+		$Data = '<select '.$extra.'name="uploadsEntry" style="color: #000000;width:570px;" class="text-input"><option value="0"> Select an Entry </option>';
+		while($row = mysql_fetch_assoc($results))
+		{
+			// make sure to check if it is numeric, if it is, we can push it to the actual good stuff
+			if($upload_id == $row['ID'])
+			{
+				$Data .= '<option value="' . $row['ID'] . '" selected="selected">' . $row['series'] . '</option>';
+			}
+			else
+			{
+				$Data .= '<option value="' . $row['ID'] . '">' . $row['series'] . '</option>';
+			}
+		}
+		$Data .= '</select>';
+		return $Data;
+	}
 }

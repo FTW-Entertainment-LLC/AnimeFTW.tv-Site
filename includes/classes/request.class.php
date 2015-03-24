@@ -404,6 +404,8 @@ class AnimeRequest extends Config{
 			
 			if($this->editmode){
 				echo '<div class="ardelete"><a id = "ardeletelink'.$i.'" href = "javascript:;">Delete entry</a></div>';
+				$extras = " id='uploadsentry".$id."' onchange='changeuploadsentry(this)'";
+				echo $this->uploadsEntrySelect($uid, $extras)."<br>";
 			}if($this->UserArray[2]==1||$this->UserArray[2]==2||$this->UserArray[2]==5){
 				$extra = "";
 				if($this->editmode){
@@ -470,6 +472,11 @@ class AnimeRequest extends Config{
 		else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['type']) && is_numeric($_GET["type"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
 		{
 			$this->changeRequestValue($_GET["type"], $_GET["id"], "type");
+		}
+		//This is when a manager edits the entry board.
+		else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['uploadsentry']) && is_numeric($_GET["uploadsentry"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
+		{
+			$this->changeRequestValue($_GET["uploadsentry"], $_GET["id"], "uid");
 		}
 		//This is when a mod deletes an entry.
 		else if(isset($_GET["mode"]) && $_GET["mode"]=="delete" && (isset($_GET["id"]) && is_numeric($_GET["id"])) && isset($_GET["reason"]))
@@ -706,7 +713,7 @@ class AnimeRequest extends Config{
 		echo '
 		
 		<script>';
-		$this->editScripts(array("status", "type"));
+		$this->editScripts(array("status", "type", "uploadsentry"));
 		echo '
 		$(document).ready(function(){
 			//$("#requestlink").click(function(){
@@ -811,7 +818,7 @@ class AnimeRequest extends Config{
 		</script>';
 	}
 	private function indScripts($id, $i, $name){
-		$extras = ',#commentslink'.$i.', #status'.$i.', #ardeletelink'.$i.', #arclaimlink'.$i.'';
+		$extras = ',#commentslink'.$i.', #status'.$i.', #ardeletelink'.$i.', #arclaimlink'.$i.', #uploadsentry'.$id.'';
 		echo '
 		<script>
 		$(document).ready(function(){
