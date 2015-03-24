@@ -44,7 +44,7 @@ class AnimeRequest extends Config{
 							 requests, request_votes
 							WHERE 
 							 request_votes.voted_to=requests.id AND
-							 requests.status < 3 AND 
+							 requests.status > 1 AND 
 							 request_votes.voted_by = ".$this->UserArray[1]."");
 		return mysql_result($result, 0);
 	}
@@ -375,9 +375,9 @@ class AnimeRequest extends Config{
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
-						echo '<a id="voteclick_'.$id.'" href="#">+</a>';
+						echo '<a id="voteclick_'.$id.'" href="javascript:;">+</a>';
 					if($rvotes>0){
-						echo '<a id="votedeleteclick_'.$id.'" href="#">-</a>';
+						echo '<a id="votedeleteclick_'.$id.'" href="javascript:;">-</a>';
 					}
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo ')';
@@ -443,6 +443,11 @@ class AnimeRequest extends Config{
 	// and we can centralize in this class file (modular yo!)
 	public function initFunctions()
 	{
+		$status = null;
+		if(isset($_GET["id"]) && is_numeric($_GET["id"])){
+			$status = $this->SingleVarQuery("SELECT status FROM requests WHERE id=".$_GET["id"], "status"); 
+		}
+		
 		// We need to build the form for requesting an anime.
 		if(isset($_GET['mode']) && $_GET['mode'] == 'request-anime-vote-form')
 		{
@@ -452,7 +457,9 @@ class AnimeRequest extends Config{
 		//On votes
 		else if(isset($_GET['mode']) && isset($_GET["id"]) && $_GET['mode'] == 'request-anime-vote')
 		{
-			$this->vote($_GET["id"]);
+			if($status==1){ //dumbproofing, voting shouldn't be possible for any series if it isn't pending.
+				$this->vote($_GET["id"]);
+			}
 		}
 		//This is when a manager updates the status.
 		else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['status']) && is_numeric($_GET["status"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
@@ -478,7 +485,9 @@ class AnimeRequest extends Config{
 		//Needs to be dumbproofed to only be able to subtract votes where the status is neither live nor denied (The votes are returned when they are at that status)
 		else if(isset($_GET["mode"]) && $_GET["mode"]=="subvote" && (isset($_GET["id"]) && is_numeric($_GET["id"])))
 		{
-			$this->subtractVote($_GET["id"]);
+			if($status==1){ //dumbproofing, users shouldn't be able to subtract votes on series that aren't pending.
+				$this->subtractVote($_GET["id"]);
+			}
 		}
 		
 		else if(isset($_GET["mode"]) && $_GET["mode"]=="add" && isset($_GET["name"]) &&isset($_GET["type"]) && (isset($_GET["episodes"]) && is_numeric($_GET["episodes"])) && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])){
