@@ -182,9 +182,6 @@ class AnimeRequest extends Config{
 			</form>
 		</div>
 				
-			
-		
-		<div id="dialog-form" title="Anime Request"></div>
 		<div style="font-size: 11px;float: left">
 		<a href="javascript:;" id="requestlink" >Request new anime</a><br />
 		Votes available: '.($this->maxvotes-$this->votes).'</br>
