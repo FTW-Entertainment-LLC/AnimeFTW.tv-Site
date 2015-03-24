@@ -92,14 +92,22 @@ class AnimeRequest extends Config{
 		$this->scripts();
 		
 		echo '
-		<div class="request-filter">
+		<div class="request-filter side-body-bg">
 			<form action="requests" method="get">
 				<div class="table-row">
 					<div class="col">
 						Series name:
 					</div>
-					<div class="col">
-						<input type="text" name="name"></input>
+					<div class="col">';
+						$value = "";
+						if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+							if(isset($_GET["name"])){
+								$value = ' value="'.$_GET["name"].'"';
+							}
+							
+						}
+						echo '<input type="text" name="name"'.$value.'></input>';
+					echo '
 					</div>
 				</div>
 				<div class="table-row">
@@ -107,7 +115,16 @@ class AnimeRequest extends Config{
 						Status:
 					</div>
 					<div class="col">
-						<input type="text" name="name"></input>
+						';
+						$value = 1;
+						if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+							if(isset($_GET["status"])){
+								$value = $_GET["status"];
+							}
+							
+						}
+						$this->getSelect(array("----", "Pending", "Claimed", "Live", "Denied"), $value, null, "status", false);
+						echo '
 					</div>
 				</div>
 				<div class="table-row">
@@ -115,23 +132,48 @@ class AnimeRequest extends Config{
 						Type:
 					</div>
 					<div class="col">
-						<input type="text" name="name"></input>
+						';
+						$value = 1;
+						if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+							if(isset($_GET["type"])){
+								$value = $_GET["type"];
+							}
+							
+						}
+						$this->getSelect(array("----", "Series", "OVA", "Movie"), $value, null, "type", false);
+						echo '
 					</div>
 				</div>
 				<div class="table-row">
 					<div class="col">
 						AniDB ID:
 					</div>
-					<div class="col">
-						<input type="text" name="name"></input>
+					<div class="col">';
+						$value = "";
+						if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+							if(isset($_GET["anidbid"])){
+								$value = ' value="'.$_GET["anidbid"].'"';
+							}
+							
+						}
+						echo '<input type="text" name="anidbid"'.$value.'></input>';
+					echo '
 					</div>
 				</div>
 				<div class="table-row">
 					<div class="col">
 						Username:
 					</div>
-					<div class="col">
-						<input type="text" name="name"></input>
+					<div class="col">';
+						$value = "";
+						if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+							if(isset($_GET["username"])){
+								$value = ' value="'.$_GET["username"].'"';
+							}
+							
+						}
+						echo '<input type="text" name="username"'.$value.'></input>';
+					echo '
 					</div>
 				</div>
 				<div class="table-row">
@@ -246,10 +288,41 @@ class AnimeRequest extends Config{
 		}
 		$sname = "";
 		$searchquery = "";
-		if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
+		if(isset($_GET["search"])&&$_GET["search"]=="Submit"){ 
 			$sname = $_GET["name"];
+			$sstatus = $_GET["status"];
+			$sstatus = $sstatus-1;
+			$stype = $_GET["type"];
+			$stype = $stype-1;
+			$sanidb = $_GET["anidbid"];
+			$susername = $_GET["username"];
+			if(!empty($sname)||$sstatus>0||$stype>0||!empty($sanidb)||!empty($susername)){
+				$searchquery = "WHERE ";
+			}
 			if(!empty($sname)){
-				$searchquery = "WHERE user_requests.name LIKE '%".$sname."%' ";
+				$searchquery = $searchquery."user_requests.name LIKE '%".$sname."%' ";
+				if($sstatus>0||$stype>0||!empty($sanidb)||!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+					$searchquery = $searchquery."AND ";
+				}
+			}
+			if($sstatus>0){
+				$searchquery = $searchquery."user_requests.status ='".$sstatus."' ";
+				if($stype>0||!empty($sanidb)||!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+					$searchquery = $searchquery."AND ";
+				}
+				
+			}if($stype>0){
+				$searchquery = $searchquery."user_requests.type ='".$stype."' ";
+				if(!empty($sanidb)||!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+					$searchquery = $searchquery."AND ";
+				}
+			}if(!empty($sanidb)){
+				$searchquery = $searchquery."user_requests.anidb = '".$sanidb."' ";
+				if(!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+					$searchquery = $searchquery."AND ";
+				}
+			}if(!empty($susername)){
+				$searchquery = $searchquery."user_requests.Username LIKE '%".$susername."%' ";
 			}
 		}
 		$query = "SELECT user_requests.*, COUNT(voted_to) AS vote_count
@@ -260,6 +333,7 @@ class AnimeRequest extends Config{
 			GROUP BY user_requests.id
 			ORDER BY $sort
 			LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
+		//echo $query."<br>";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$i = 0;
 		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $details) = mysql_fetch_array($result)) {
@@ -324,7 +398,7 @@ class AnimeRequest extends Config{
 					$extra = "margin-top: -10px;";
 				}
 				if($status==1){
-					echo '<div class="ardelete" style="'.$extra.'"><a id = "arclaimlink'.$i.'" href = "/manage">Claim request!</a></div>';
+					echo '<div class="ardelete" style="'.$extra.'"><a id = "arclaimlink'.$i.'" href = "javascript:;">Claim request!</a></div>';
 				}
 			}
 			
@@ -595,7 +669,6 @@ class AnimeRequest extends Config{
 			padding: 20px;
 			width: 600px;
 			margin: 0 auto;
-			border: 1px solid black;
 			margin-bottom: 30px;
 		}.request-filter input{
 			width: 470px;
@@ -792,6 +865,28 @@ class AnimeRequest extends Config{
 		$msg = array("Pending", "Claimed", "Live", "Denied");
 		return $msg[$status-1];
 	}
+	
+	//This function is kind of a mess atm
+	//$msg: Array list of option field.
+	//$status: id of default selected option.
+	//$id: gives the select field a unique id, if there's more than one with the $option name.
+	//$option: name of id
+	//$jsfunction: function name only
+	private function getSelect($msg, $status, $id, $option, $jsfunction){
+		$selected = array_fill(0, count($msg), "");
+		$selstring = "selected = 'selected'";
+		$selected[$status-1]=$selstring;
+		$jsstring = "";
+		if($jsfunction){
+			$jsstring = 'onchange="'.$jsfunction.'(this)"';
+		}
+		echo '<select id = "'.$option.''.$id.'" name="'.$option.'" '.$jsstring.'>';
+		for($i=0;$i<count($msg);$i++){
+			echo '<option value="'.($i+1).'" '.$selected[$i].'>'.$msg[$i].'</option>';
+		}
+			  
+		echo '</select>';
+	}
 	private function selectField($msg, $status, $id, $option, $jsfunction){
 		if(!$this->editmode)
 		{
@@ -799,15 +894,7 @@ class AnimeRequest extends Config{
 		}
 		else
 		{
-			$selected = array_fill(0, count($msg), "");
-			$selstring = "selected = 'selected'";
-			$selected[$status-1]=$selstring;
-			echo '<select id = "'.$option.''.$id.'" name="'.$option.'" onchange="'.$jsfunction.'(this)">';
-			for($i=0;$i<count($msg);$i++){
-				echo '<option value="'.($i+1).'" '.$selected[$i].'>'.$msg[$i].'</option>';
-			}
-				  
-			echo '</select>';
+			$this->getSelect($msg, $status, $id, $option, $jsfunction);
 		}
 	}
 	private function editScripts($values)
