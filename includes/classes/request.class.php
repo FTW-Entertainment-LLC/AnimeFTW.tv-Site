@@ -31,7 +31,7 @@ class AnimeRequest extends Config{
 							 requests, request_votes
 							WHERE 
 							 request_votes.voted_to=requests.id AND
-							 requests.status < 3 AND 
+							 requests.status = 1 AND 
 							 request_votes.voted_by = ".$this->UserArray[1]."");
 		return mysql_result($result, 0);
 	}
@@ -371,7 +371,7 @@ class AnimeRequest extends Config{
 				
 				echo '
 				<div class="col" style="width: 60px;">'.$rvotes.' <div id="reqlink'.$i.'" style="display:inline-block">';
-				if($status<9){ //If it's not denied
+				if($status==1){ //Vote available only if the request is pending
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
