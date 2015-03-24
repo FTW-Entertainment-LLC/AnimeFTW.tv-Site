@@ -211,7 +211,7 @@ class Config {
 		}
 	}
 	
-	public function string_fancyUsername($ID,$Username = NULL,$Active = NULL, $Level_access = NULL, $advancePreffix = NULL,$advanceImage = NULL,$UsernameOnly = NULL)
+	public function string_fancyUsername($ID,$Username = NULL,$Active = NULL, $Level_access = NULL, $advancePreffix = NULL,$advanceImage = NULL,$UsernameOnly = NULL,$ArrayOutput = FALSE)
 	{
 		if($ID == 0)
 		{
@@ -220,7 +220,7 @@ class Config {
 		else
 		{
 			// ID is supplied, we need to give them the goods.
-			$query = 'SELECT `Username`, `display_name`, `Active`, `Level_access`, `advancePreffix`, `advanceImage` FROM `' . $this->MainDB . '`.`users` WHERE `ID` = \'' . $this->mysqli->real_escape_string($ID) . '\'';
+			$query = 'SELECT `Username`, `display_name`, `Active`, `Level_access`, `avatarActivate`, `avatarExtension`, `advancePreffix`, `advanceImage` FROM `' . $this->MainDB . '`.`users` WHERE `ID` = \'' . $this->mysqli->real_escape_string($ID) . '\'';
 			$results = $this->mysqli->query($query);
 			$row = $results->fetch_assoc();
 			$Username = $row['Username'];
@@ -229,6 +229,16 @@ class Config {
 			$Level_access = $row['Level_access'];
 			$advancePreffix = $row['advancePreffix'];
 			$advanceImage = $row['advanceImage'];
+			if($row['avatarActivate'] == 'yes')
+			{
+				// The avatar is considered active in the system.
+				$avatar = $this->ImageHost . '/avatars/user' . $ID . '.' . $row['avatarExtension'];
+			}
+			else
+			{
+				// it's not active..
+				$avatar = $this->ImageHost . '/avatars/default.jpg';
+			}
 		}
 		
 		// Added 8/10/2014 - robotman321
@@ -246,7 +256,7 @@ class Config {
 		// Enables the use of non link username construction.
 		if($UsernameOnly != NULL)
 		{
-			$fixedUsername = $Username;
+			$fixedUsername = $display_name;
 		}
 		else
 		{
@@ -305,6 +315,10 @@ class Config {
 			{
 				$fixedUsername = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $Username . '"><s>' . $display_name . '</s></a>';
 			}
+		}
+		if($ArrayOutput == TRUE)
+		{
+			$fixedUsername = array($fixedUsername,$avatar);
 		}
 		return $fixedUsername;
 	}

@@ -37,7 +37,7 @@ class Series extends Config {
 		{
 			// We consider this a valid single series, an ID needs to be supplied, and nothing else to ensure system level continuity.
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions;
+			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions;
 			$result = $this->mysqli->query($query);
 			
 			$count = $result->num_rows;
@@ -50,7 +50,20 @@ class Series extends Config {
 				$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
 				// a result was found, build the array for return.
 				$results = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
-				$results[] = $row;
+				
+				foreach($row AS $key => &$value)
+                        	{
+                                	if($key == 'ratingLink')
+                                	{
+                                       		$results['rating'] = substr($value,0,-4);
+                                        	$results[$key] = $this->ImageHost . '/ratings/' . $value;
+                                	}
+                                	else
+                                	{
+                                        	$results[$key] = $value;
+                                	}
+                        	}
+				//$results[] = $row;
 				// add the seriesimage to the array
 				$results['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
 				$results['total-reviews'] = $Reviews['total-reviews'];
@@ -73,7 +86,7 @@ class Series extends Config {
 	public function array_displaySeries()
 	{
 		// these will be the details returned for the series, we don't want them to have the whole cake and eat it too
-		$columns = "`id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` ";
+		$columns = "`id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` ";
 		// render the options that we will accept, includes amount of series, alphanumeric sorting
 		if(isset($this->Data['sort']))
 		{
@@ -169,7 +182,15 @@ class Series extends Config {
 			// a result was found, build the array for return.
 			foreach($row AS $key => &$value)
 			{
-				$returneddata['results'][$i][$key] = $value;
+				if($key == 'ratingLink')
+				{
+					$returneddata['results'][$i]['rating'] = substr($value,0,-4);
+					$returneddata['results'][$i][$key] = $this->ImageHost . '/ratings/' . $value;
+				}
+				else
+				{
+					$returneddata['results'][$i][$key] = $value;
+				}
 			}
 			$returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
 			$returneddata['results'][$i]['total-reviews'] = $Reviews['total-reviews'];

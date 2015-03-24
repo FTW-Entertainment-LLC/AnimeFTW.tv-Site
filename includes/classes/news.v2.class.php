@@ -34,6 +34,9 @@ class News extends Config {
 			$i = 0;
 			while($row = $result->fetch_assoc())
 			{
+				$FancyUsername = $this->string_fancyUsername($row['tpid'],NULL,NULL,NULL,NULL,NULL,TRUE,TRUE);
+				$returndata['results'][$i]['poster'] = $FancyUsername[0];
+				$returndata['results'][$i]['poster-avatar'] = $FancyUsername[1];
 				$returndata['results'][$i]['topic-id'] = $row['tid'];
 				$returndata['results'][$i]['topic-title'] = $row['ttitle'];
 				$returndata['results'][$i]['forum-id'] = $row['tfid'];
