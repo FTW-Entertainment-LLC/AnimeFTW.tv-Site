@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if($_SERVER['PHP_SELF'] == '/request.php'){
+	ob_start(); //Needed so i can use header to change location, to find the correct page for a specific request.
+}
     if ( isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
 		if(isset($_COOKIE['cookie_id'])) {
 		   $globalnonid = $_COOKIE['cookie_id'];

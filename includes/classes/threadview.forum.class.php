@@ -115,7 +115,7 @@ class AFTWThreadView extends Config{
 								$episodes = "?";
 							}
 							$pbody = $pbody.'
-							Request: <a href="/requests?highlight='.$i.'#reqinfo'.$i.'">'.$name.'</a><br>
+							Request: <a href="/requests?highlight='.$i.'">'.$name.'</a><br>
 							Requested by: '.$this->formatUsername($user_id).'<br>
 							AniDB: <a href="http://anidb.net/a'.$anidb.'">'.$anidb.'</a><br>
 							Status: '.$Requests->getStatus($status).'<br>
