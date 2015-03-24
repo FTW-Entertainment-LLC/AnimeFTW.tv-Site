@@ -19,7 +19,9 @@ class AnimeRequest extends Config{
 	var $oldvotes;
 	var $editmode;
 	var $highlight;
+	var $foundhighlight;
 	var $page;
+	var $max_pages;
 	var $fid = 3; //forum id
 	var $rpp = 25; //requests per page
 	
@@ -72,6 +74,8 @@ class AnimeRequest extends Config{
 	}
 	function init()
 	{
+		$amount = $this->SingleVarQuery("SELECT count(*) AS amount FROM requests", "amount");
+		$this->max_pages = ceil($amount / $this->rpp);
 		$this->uid = $this->UserArray[1];
 		$this->maxvotes = $this->setMaxVotes();
 		$this->votes = $this->getRemainingVotes();
@@ -80,8 +84,9 @@ class AnimeRequest extends Config{
 		{
 			$this->editmode = isset($_GET["edit"]);
 		}
-		if((isset($_GET['highlight']) && is_numeric($_GET["highlight"]))){ 
+		if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
 			$this->highlight = $_GET['highlight'];
+			
 		}
 		$this->style();
 		echo '<div class="side-body-bg">
@@ -211,6 +216,11 @@ class AnimeRequest extends Config{
 			$originaldesc = $_GET["DESC"];
 		}
 		$_GET["sort"]="name";
+		$temphighlight;
+		if(isset($_GET["highlight"])){
+			$temphighlight = $_GET["highlight"];
+			$_GET["highlight"] = null; //Delete this from the get variables, so it doesn't get inlcuded in the links below.
+		}
 		if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;} //Check if the sort is the same one as the selected one, if so, then change to descending order.
 		if($originaldesc==true){$_GET["DESC"]=null;}; //If desc was there from the start, then we want it to go back to ascending order
 		$sn = http_build_query($_GET);
@@ -251,6 +261,9 @@ class AnimeRequest extends Config{
 		$sd = http_build_query($_GET);
 		$_GET["DESC"] = $originaldesc;
 		$_GET["sort"] = $originalsort; //Reset so the next http_build_query puts this in where it's not supposed to
+		if(isset($temphighlight)){
+			$_GET["highlight"] = $temphighlight; //Put it back, so it can find the page.
+		}
 		echo '
 		<div class="container">
 		<div class="heading">
@@ -355,6 +368,9 @@ class AnimeRequest extends Config{
 			
 			if($this->highlight==$id){
 				$background_color = "#00CCFF";
+				$this->foundhighlight = true;
+				$_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
+				//User wouldn't be able to change page since it would try to find the highlighted anime.
 			}
 			echo'
 			
@@ -423,6 +439,23 @@ class AnimeRequest extends Config{
 			</div>';
 			$i++;
 		}
+		if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
+			$newurl = "";
+			if(!isset($_GET["page"])){
+				$_GET["page"]=1;
+			}
+			if($_GET["page"]<=$this->max_pages){
+				$_GET["page"] = $this->page+1;
+			}
+			if(!$this->foundhighlight){
+				if($_GET["page"]<=$this->max_pages){
+					header('Location: requests?'.http_build_query($_GET).'#reqinfo'.$_GET["highlight"]);
+				}
+			}
+			
+		}
+		
+		
 		
 		$this->PrintPages();
 
@@ -509,15 +542,14 @@ class AnimeRequest extends Config{
 		}*/
 	}
 	private function PrintPages(){
-		$amount = $this->SingleVarQuery("SELECT count(*) AS amount FROM requests", "amount");
-		$pages = ceil($amount / $this->rpp);
-		echo $pages.' pages ';
+		
+		echo $this->max_pages.' pages ';
 		$lvp = $this->page-4;//lowest visible page
 		$hvp = $this->page+4;//highest visible page
 		if($lvp<=0){
 			$lvp = 1;
-		}if($hvp>$pages){
-			$hvp = $pages;
+		}if($hvp>$this->max_pages){
+			$hvp = $this->max_pages;
 		}
 		
 		if($lvp>1){  //Puts the '<' to the paging
@@ -535,7 +567,7 @@ class AnimeRequest extends Config{
 				echo ', ';
 			}
 		}
-		if($hvp<$pages){ //Puts the '>' to the paging
+		if($hvp<$this->max_pages){ //Puts the '>' to the paging
 			$_GET['page'] = $this->page+1;
 			echo '&nbsp;<a href="?'.http_build_query($_GET).'">&gt;</a>';
 		}
@@ -779,7 +811,7 @@ class AnimeRequest extends Config{
 									// We need to close the dialog box
 									$(\'.micro_form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#00FF00;padding:2px;\'>Success!</div>");
 									
-									window.location.href = "?highlight="+second+"#reqinfo"+second;
+									window.location.href = "?highlight="+second;
 									// then give them a message saying it was successful, while refreshing the listing highlighting their entry.
 								}
 								else{
