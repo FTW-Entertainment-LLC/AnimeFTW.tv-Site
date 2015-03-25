@@ -504,11 +504,21 @@ class AFTWVideos extends Config{
 		{
 			$hiddenstyle = '';
 		}
+		
+		// check the image.
+		if($EpisodeArray[15] == 0)
+		{
+			$epimage = $this->CDNHost . '/video-images/noimage.png';
+		}
+		else
+		{
+			$epimage = $this->CDNHost . '/video-images/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_screen.jpeg';
+		}
 			
 		// All of the code for the HTML5 player is here.
 		echo '
 			<div id="aftw-video-wrapper"' . $hiddenstyle . '>
-				<video id="aftw-player" class="video-js vjs-default-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $this->CDNHost . '/video-images/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_screen.jpeg">';
+				<video id="aftw-player" class="video-js vjs-default-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '">';
 				
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.				
