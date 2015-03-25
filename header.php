@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if($_SERVER['PHP_SELF'] == '/request.php'){
+	ob_start(); //Needed so i can use header to change location, to find the correct page for a specific request.
+}
     if ( isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
 		if(isset($_COOKIE['cookie_id'])) {
 		   $globalnonid = $_COOKIE['cookie_id'];
@@ -196,9 +198,10 @@ session_start();
 		});
 		 </script>';
 	}
-	if($_SERVER['PHP_SELF'] == '/users.php'){
+	if($_SERVER['PHP_SELF'] == '/users.php'||$_SERVER['PHP_SELF'] == '/request.php'){
 	echo '
 	<link rel="stylesheet" href="/css/redactor.css?v=1" />
+	<link rel="stylesheet" href="/css/jquery-ui.min.css" />
 	<script src="/scripts/redactor.min.js"></script>
 	<script type="text/javascript" src="/scripts/popups.jquery.js"></script>
 	<script language="javascript" type="text/javascript">

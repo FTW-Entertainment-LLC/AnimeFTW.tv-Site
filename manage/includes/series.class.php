@@ -827,7 +827,7 @@ class Series extends Config {
 						<div class="series-form-row">
 							<div class="series-form-left"><b><i>Uploads Board Entry</i></b><br /> <i>Does this series have an entry on the uploads board?</i></div>
 							<div class="series-form-right">
-								' . $this->uploadsEntrySelect($ueid) . '
+								' . $this->uploadsEntrySelect($ueid, null) . '
 							</div>
 						</div>
 						<div class="series-form-row">
@@ -1125,33 +1125,7 @@ class Series extends Config {
 		//unset $query;
 	}
 	
-	private function uploadsEntrySelect($upload_id)
-	{
-		$query = "SELECT ID, series FROM uestatus ORDER BY series ASC";
-		$results = mysql_query($query);
-		
-		if(!$results)
-		{
-			echo 'There was an error with the MySQL Query: ' . mysql_error();
-			exit;
-		}		
-		
-		$Data = '<select name="uploadsEntry" style="color: #000000;width:570px;" class="text-input"><option value="0"> Select an Entry </option>';
-		while($row = mysql_fetch_assoc($results))
-		{
-			// make sure to check if it is numeric, if it is, we can push it to the actual good stuff
-			if($upload_id == $row['ID'])
-			{
-				$Data .= '<option value="' . $row['ID'] . '" selected="selected">' . $row['series'] . '</option>';
-			}
-			else
-			{
-				$Data .= '<option value="' . $row['ID'] . '">' . $row['series'] . '</option>';
-			}
-		}
-		$Data .= '</select>';
-		return $Data;
-	}
+	
 	
 	private function buildCategories()
 	{

@@ -113,7 +113,7 @@ class AniDB{
 			}
 		}
 		if($found==null){
-			$found = "NULL";
+			$found = $xml->titles->title; //If we didn't get the language we were looking for, just take the first one.
 		}
 		return $found;
 	}
@@ -144,6 +144,10 @@ class AniDB{
 	public function getEpisodeCount($aid){
 		$xml = $this->getxml($aid);
 		return $xml->episodecount;
+	}
+	public function getSeriesType($aid){
+		$xml = $this->getxml($aid);
+		return $xml->type;
 	}
 	private function getxml($aid){
 		$this->cacheFile($aid); //Check to see if this file needs to update, and do so if it does.
