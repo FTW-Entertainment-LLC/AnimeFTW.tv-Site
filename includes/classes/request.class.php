@@ -359,7 +359,7 @@ class AnimeRequest extends Config{
 		//echo $query."<br>";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$i = 0;
-		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
+		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
 			//echo $uid;
 			$uploadstatus = null;
 			if($uid&&$status!=9){ //If someone denies this request, then we no longer follow the uploads board status for it.
@@ -540,8 +540,25 @@ class AnimeRequest extends Config{
 			}
 		}
 		
-		else if(isset($_GET["mode"]) && $_GET["mode"]=="add" && isset($_GET["name"]) &&isset($_GET["type"]) && (isset($_GET["episodes"]) && is_numeric($_GET["episodes"])) && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])){
-			$this->addRequest($_GET["name"], $_GET["type"], $_GET["episodes"], $_GET["anidb"], $_GET["details"]);
+		else if(isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])){
+			include("includes/classes/anidb.class.php");
+			$AniDB  = new AniDB();
+			$AID = $_GET["anidb"];
+			$name = $AniDB->getName("en",$AID);
+			$episodes = $AniDB->getEpisodeCount($AID);
+			$description = $AniDB->getDescription($AID);
+			$type = $AniDB->getSeriesType($AID);
+			if($type=="TV Series"||$type=="Web"){
+				$type = 1;
+			}else if($type=="OVA"||$type=="TV Special"){
+				$type = 2;
+			}else if($type=="Movie"){
+				$type = 3;
+			}else if($type=="Music Video"){
+				echo "Error: Submitted request is a music video.";
+				return;
+			}
+			$this->addRequest($name, $type, $episodes, $AID, $description, $_GET["details"]);
 		}
 		else
 		{
@@ -622,45 +639,17 @@ class AnimeRequest extends Config{
 				height: 130
 			});
 			$("#requestanimedetails").redactor({
-				minHeight: 100, 
-				maxHeight: 100
+				minHeight: 200, 
+				maxHeight: 200
 			});
 			$("#anidbhelplink").click(function() {
 				$("#anidbhelp").dialog( "open" );
 			});
-			function disableEpisodes (checkbox){ //These wont work in the ready function
-				if($(checkbox).is(":checked")) {
-					$("#requestanimeepisodes").prop(\'disabled\', true);
-					$("#requestanimeepisodes").val(0);
-				}else{
-					$("#requestanimeepisodes").prop(\'disabled\', false);
-					$("#requestanimeepisodes").val(null);
-				}
-			}
 			</script>
 			<div style="height:15px;">
 				<div class="micro_form_results" style="display:none"></div>
 			</div>
 			<form id="requestanimeform" method="get">
-				<div class="table-row">
-					<div class="col">Name: </div>
-					<div class="col"><input type="text" name="requestanimename" id="requestanimename"  style="width: 464px;" /></div>
-				</div>
-				<div class="table-row">
-					<div class="col">Type:</div>
-					<div class="col">
-						<select name="requestanimetype" id="requestanimetype">
-						  <option value="1">Series</option>
-						  <option value="2">OVA</option>
-						  <option value="3">Movie</option>
-						</select>
-					</div>
-				</div>
-				<div class="table-row">
-					<div class="col">Episodes:</div>
-					<div class="col"><input type="number" name="requestanimeepisodes" id="requestanimeepisodes" /><input type="checkbox" name="unknown" id="unkcheckbox" onchange="disableEpisodes(this)"/>Unkown<br></div>
-					
-				</div>
 				<div class="table-row">
 					<div class="col">AniDB ID:</div>
 					<div class="col"><input type="number" name="requestanimeanidb" id="requestanimeanidb" /> <a href="javascript:;" id="anidbhelplink">?</a></div>
@@ -788,24 +777,6 @@ class AnimeRequest extends Config{
 						$(\'.micro_form_results\').slideUp();												
 						$(\'label\').hide();
 						var tripped = 0;
-						var AnimeName = $("input#requestanimename").val();
-						if (AnimeName == "") {
-							 var styles = {
-								border : "1px solid red",
-								padding: "2px"
-							};
-							$("#requestanimename").css(styles);
-							tripped = 1;
-						}
-						var Episodes = $("input#requestanimeepisodes").val();
-						if (Episodes == "") {
-							 var styles = {
-								border : "1px solid red",
-								padding: "2px"
-							};
-							$("#requestanimeepisodes").css(styles);
-							tripped = 1;
-						}
 						var AniDB = $("input#requestanimeanidb").val();
 						if (AniDB == "") {
 							 var styles = {
@@ -820,11 +791,10 @@ class AnimeRequest extends Config{
 							$(\'.micro_form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;\'>Please fill in the required fields.</div>");
 							return false;
 						}
-						var type = $("select#requestanimetype").val();
 						var details = $("textarea#requestanimedetails").val().replace(/(?:\r\n|\r|\n)/g, \'<br />\'); //replace new lines to <br>
 						$.ajax({
 							type: "POST",
-							url: "scripts.php?view=anime-requests&mode=add&name="+AnimeName+"&episodes="+Episodes+"&anidb="+AniDB+"&type="+type+"&details="+details,
+							url: "scripts.php?view=anime-requests&mode=add&anidb="+AniDB+"&details="+details,
 							data: $(\'#requestanimeform\').serialize(),
 							success: function(html) {
 								var first = html.substr(0, 7);
@@ -1078,7 +1048,7 @@ class AnimeRequest extends Config{
 		mysql_query($query) or die('Error : ' . mysql_error());
 	}
 	
-	private function addRequest($name, $type, $episodes, $anidb, $details){
+	private function addRequest($name, $type, $episodes, $anidb, $description, $details){
 		if(empty($name))
 		{
 			echo "The field 'Name' is empty";
@@ -1127,7 +1097,7 @@ class AnimeRequest extends Config{
 			$ptid3 = $row006['tid'];
 			$pistopic = 1;
 			$userIp = @$_SERVER['REMOTE_ADDR'];
-			$query = sprintf("INSERT INTO `requests` (`name`, `status`, `type`, `episodes`, `anidb`, `user_id`, `date`, `details`, `tid`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+			$query = sprintf("INSERT INTO `requests` (`name`, `status`, `type`, `episodes`, `anidb`, `user_id`, `date`, `description`,`details`, `tid`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($name),
 				mysql_real_escape_string("1"),
 				mysql_real_escape_string($type),
@@ -1135,6 +1105,7 @@ class AnimeRequest extends Config{
 				mysql_real_escape_string($anidb),
 				mysql_real_escape_string($this->UserArray[1]),
 				mysql_real_escape_string(time()),
+				mysql_real_escape_string($description),
 				mysql_real_escape_string($details),
 				mysql_real_escape_string($ptid3));
 			mysql_query($query) or die('Error : ' . mysql_error());
