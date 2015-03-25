@@ -489,6 +489,10 @@ class AnimeRequest extends Config{
 	public function initFunctions()
 	{
 		$status = null;
+		if($this->UserArray[2]==0){
+			echo 'Please login to request an anime.';
+			return;
+		}
 		if(isset($_GET["id"]) && is_numeric($_GET["id"])){
 			$status = $this->SingleVarQuery("SELECT status FROM requests WHERE id=".$_GET["id"], "status"); 
 		}
@@ -541,6 +545,7 @@ class AnimeRequest extends Config{
 		}
 		
 		else if(isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])){
+			
 			include("includes/classes/anidb.class.php");
 			$AniDB  = new AniDB();
 			$AID = $_GET["anidb"];
