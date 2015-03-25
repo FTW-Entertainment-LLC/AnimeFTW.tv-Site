@@ -6,7 +6,7 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-if($_SERVER['HTTP_HOST'] == 'dev.animeftw.tv')
+if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
 {
 	$rootdirectory = $_SERVER['DOCUMENT_ROOT'];
 }
