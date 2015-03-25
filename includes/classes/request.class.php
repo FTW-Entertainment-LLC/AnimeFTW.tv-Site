@@ -92,7 +92,7 @@ class AnimeRequest extends Config{
 		echo '<div class="side-body-bg">
 		<span class="scapmain">AnimeFTW.tv\'s Anime Requests</span>
 		<br>
-		<span class="poster">&nbsp;Request an Anime or vote below</span>
+		<span class="poster">&nbsp;Request an Anime or vote below. For help, click <a href="/forums/anime-requests">here! (Change link to specific thread)</a></span>
 		</div>';
 		$this->scripts();
 		
@@ -130,6 +130,19 @@ class AnimeRequest extends Config{
 						}
 						$this->getSelect(array("----", "Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $value, null, "status", false);
 						echo '
+						<a href = "javascript:;" id="statushelp" title="Click to view status meanings!">?</a>
+						<div id="statushelp-content" title="Status Help">
+						<b>Pending</b> - No video technician has started working on this series yet.<br><br>
+						<b>Claimed</b> - A Video Technician has claimed this series, meaning they\'ll start working on the series soon.<br><br>
+						<b>Encoding</b> - The series is currently being encoded.<br><br>
+						<b>Uploading</b> - The series is currently being uploaded to our servers.<br><br>
+						<b>Ongoing</b> - This series is currently airing, and is live on the website.<br><br>
+						<b>Stalled</b> - The series is stalled for some reason.<br><br>
+						<b>Done</b> - The series is done and should come up on the website anytime soon.<br><br>
+						<b>Live</b> - The series is live on the site.<br><br>
+						<b>Denied</b> - The series has been denied, view the comments for specific information.<br><br>
+						View the comments for more information about a series, or ask a question yourself!
+						</div>
 					</div>
 				</div>
 				<div class="table-row">
@@ -191,7 +204,7 @@ class AnimeRequest extends Config{
 		
 		<div id="dialog-form" title="Anime Request"></div>
 		<div style="font-size: 11px;float: left">
-		<a href="javascript:;" id="requestlink" >Request new anime</a><br />
+		<a href="javascript:;" id="requestlink" title="Press to open the request form!">Request new anime</a><br />
 		Votes available: '.($this->maxvotes-$this->votes).'</br>
 		Current votes: '.$this->votes.' times<br>
 		Previous votes: '.$this->oldvotes.'
@@ -267,14 +280,14 @@ class AnimeRequest extends Config{
 		echo '
 		<div class="container">
 		<div class="heading">
-			<div class="hcol" style = "width: 381px" align="left"><a href="?'.$sn.'">Name</a></div>
-			<div class="hcol" style = "width: 61px"><a href="?'.$sv.'">Votes</a></div>
-			<div class="hcol" style = "width: 61px"><a href="?'.$ss.'">Status</a></div>
-			<div class="hcol" style = "width: 51px"><a href="?'.$st.'">Type</a></div>
-			<div class="hcol" style = "width: 81px"><a href="?'.$se.'">Episodes</a></div>
-			<div class="hcol" style = "width: 61px"><a href="?'.$sa.'">AniDB</a></div>
-			<div class="hcol" style = "width: 161px"><a href="?'.$sr.'">Requested by</a></div>
-			<div class="hcol" style = "width: 101px"><a href="?'.$sd.'">Date</a></div>
+			<div class="hcol" style = "width: 381px" align="left"><a href="?'.$sn.'" title="Sort by name">Name</a></div>
+			<div class="hcol" style = "width: 61px"><a href="?'.$sv.'" title="Sort by votes">Votes</a></div>
+			<div class="hcol" style = "width: 61px"><a href="?'.$ss.'" title="Sort by status">Status</a></div>
+			<div class="hcol" style = "width: 51px"><a href="?'.$st.'" title="Sort by type">Type</a></div>
+			<div class="hcol" style = "width: 81px"><a href="?'.$se.'" title="Sort by episodes">Episodes</a></div>
+			<div class="hcol" style = "width: 61px"><a href="?'.$sa.'" title="Sort by AniDB">AniDB</a></div>
+			<div class="hcol" style = "width: 161px"><a href="?'.$sr.'" title="Sort by username">Requested by</a></div>
+			<div class="hcol" style = "width: 101px"><a href="?'.$sd.'" title="Sort by date">Date</a></div>
 		</div>';
 		$sort = "user_requests.status, vote_count DESC";
 		if(isset($_GET["sort"])){
@@ -748,6 +761,15 @@ class AnimeRequest extends Config{
 			//$("#requestlink").click(function(){
 			//	$("#request-anime").slideToggle("fast");
 			//});
+			$("#statushelp-content").dialog({
+				autoOpen: false,
+				resizable: false,
+				width: 500,
+				height: 300
+			});
+			$("#statushelp").click(function() {
+				$("#statushelp-content").dialog( "open" );
+			});
 			$("#dialog-form").dialog({
 				autoOpen: false,
 				resizable: false,
