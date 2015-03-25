@@ -387,23 +387,25 @@ class AnimeRequest extends Config{
 			}
 			echo'
 			
-			<div id = "reqinfo'.$id.'" class="reqinfo" align = "center" style="background-color: '.$background_color.'" name="request-'.$id.'">
+			<div class="reqinfo" align = "center" style="background-color: '.$background_color.'" name="request-'.$id.'">';
+			//$this->indScripts($id, $i, $name);
+			echo '
 				<div class = "table-row">
-				<div class="col" style="width: 380px" align = "left"><a href="javascript:;">'.$name.'</a></div>
+				<div class="col" style="width: 380px" align = "left"><a class="live" href="javascript:;">'.$name.'</a></div>
 				';
 				$result2 = mysql_query("SELECT count(*) from request_votes WHERE voted_to=$id");
 				$rvotes = mysql_result($result2, 0);
 				
 				
 				echo '
-				<div class="col" style="width: 60px;">'.$rvotes.' <div id="reqlink'.$i.'" style="display:inline-block">';
+				<div class="col" style="width: 60px;">'.$rvotes.' <div style="display:inline-block">';
 				if($status==1){ //Vote available only if the request is pending
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
-						echo '<a id="voteclick_'.$id.'" href="javascript:;">+</a>';
+						echo '<a data-id="'.$id.'" class="voteclick" href="javascript:;">+</a>';
 					if($rvotes>0){
-						echo '<a id="votedeleteclick_'.$id.'" href="javascript:;">-</a>';
+						echo '<a data-id="'.$id.'" class="votedeleteclick" href="javascript:;">-</a>';
 					}
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo ')';
@@ -419,18 +421,16 @@ class AnimeRequest extends Config{
 				<div class="col" style="width: 80px;">';
 				if($episodes==0){echo '?';}else{echo $episodes;};
 				echo '</div>
-				<div class="col" style="width: 60px;"><div id="areqlink'.$i.'" style="display:inline-block"><a href="http://anidb.net/perl-bin/animedb.pl?show=anime&aid='.$anidb.'">'.$anidb.'</a></div></div>
-				<div class="col" style="width: 160px;"><div id="ureqlink'.$i.'" style="display:inline-block">'.$this->formatUsername($user_id).'</div></div>
+				<div class="col" style="width: 60px;"><div style="display:inline-block"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
+				<div class="col" style="width: 160px;"><div style="display:inline-block">'.$this->formatUsername($user_id).'</div></div>
 				<div class="col" style="width: 100px;">'.date("Y-m-d", $date).'</div>
 			</div>
 			';
-			$this->indScripts($id, $i, $name);
-			
-			echo'<div id="reqdetail'.$i.'" class = "reqdetail" style="background-color: '.$background_color.'">';
+			echo'<div class = "reqdetail" style="background-color: '.$background_color.'">';
 			
 			if($this->editmode){
-				echo '<div class="ardelete"><a id = "ardeletelink'.$i.'" href = "javascript:;">Delete entry</a></div>';
-				$extras = " id='uploadsentry".$id."' onchange='changeuploadsentry(this)'";
+				echo '<div class="ardelete"><a data-id = "'.$id.'" data-name = "'.$name.'" class = "ardeletelink" href = "javascript:;">Delete entry</a></div>';
+				$extras = " onchange='changeuploadsentry(this)' ";
 				echo $this->uploadsEntrySelect($uid, $extras)."<br>";
 			}if($this->UserArray[2]==1||$this->UserArray[2]==2||$this->UserArray[2]==5){
 				$extra = "";
@@ -438,7 +438,7 @@ class AnimeRequest extends Config{
 					$extra = "margin-top: -10px;";
 				}
 				if($status==1){
-					echo '<div class="ardelete" style="'.$extra.'"><a id = "arclaimlink'.$i.'" href = "javascript:;">Claim request!</a></div>';
+					echo '<div class="ardelete" style="'.$extra.'"><a data-id = "'.$id.'" class = "arclaimlink" href = "javascript:;">Claim request!</a></div>';
 				}
 			}
 			
@@ -752,6 +752,9 @@ class AnimeRequest extends Config{
 		$this->editScripts(array("status", "type", "uploadsentry"));
 		echo '
 		$(document).ready(function(){
+			';
+			$this->indScripts();
+			echo '
 			//$("#requestlink").click(function(){
 			//	$("#request-anime").slideToggle("fast");
 			//});
@@ -843,77 +846,81 @@ class AnimeRequest extends Config{
 		
 		</script>';
 	}
-	private function indScripts($id, $i, $name){
-		$extras = ',#commentslink'.$i.', #status'.$i.', #ardeletelink'.$i.', #arclaimlink'.$i.', #uploadsentry'.$id.'';
+	private function indScripts(){
 		echo '
-		<script>
-		$(document).ready(function(){
-			$("#reqinfo'.$id.'").click(function(){
-				$("#reqdetail'.$i.'").slideToggle("fast");
-				$(".reqdetail:not(#reqdetail'.$i.')").slideUp("fast");
-			});
-			$("#reqlink'.$i.', #areqlink'.$i.', #ureqlink'.$i.''.$extras.'").click(function(e){
-				e.stopPropagation();
-			});';
-			if(isset($_GET["edit"])){ //If in edit mode
-				if($this->canEdit()){ //If they have permission to delete
-					echo '
-						$("#ardeletelink'.$i.'").click(function(e){
-							var reason = prompt("Why do you want to delete '.$name.'?");
-							if(reason!=null){
-								$.ajax({
-									url: "scripts.php?view=anime-requests&mode=delete&id='.$id.'&reason="+reason,
-									success: function(data){
-										location.reload();
-									 }
-								});
-							}
-							else
-							{
-								e.preventDefault();
-							}
-						});';
-				}
-			}
-			
-			if($this->canEdit()){
-				//Rediraction to management is not possible in it's current state.
-				echo '
-				$("#arclaimlink'.$i.'").click(function(e){
-					$.ajax({
-						url: "scripts.php?view=anime-requests&mode=claim&id='.$id.'",
-						success: function(data){
-							location.reload();
-						 }
-					});
-				});';
-			}
-		echo '
+		$(".reqinfo").click(function(){
+			$(this).find(".reqdetail").slideToggle("fast");
+			$(this).siblings().find(".reqdetail").slideUp("fast");
 		});
+		$(".reqinfo a").not(".live").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		});';
+		
+		if(isset($_GET["edit"])){ //If in edit mode
+			if($this->canEdit()){ //If they have permission to delete
+				echo '
+					$(".ardeletelink").click(function(e){
+						var id = $(this).data("id");
+						var name = $(this).data("name");
+						var reason = prompt("Why do you want to delete "+name+"?");
+						if(reason!=null){
+							$.ajax({
+								url: "scripts.php?view=anime-requests&mode=delete&id="+id+"&reason="+reason,
+								success: function(data){
+									location.reload();
+								 }
+							});
+						}
+						else
+						{
+							e.preventDefault();
+						}
+					});';
+			}
+		}
+		
+		if($this->canEdit()){
+			//Rediraction to management is not possible in it's current state.
+			echo '
+			$(".arclaimlink").click(function(e){
+				var id = $(this).data("id");
+				$.ajax({
+					url: "scripts.php?view=anime-requests&mode=claim&id="+id,
+					success: function(data){
+						location.reload();
+					 }
+				});
+			});';
+		}
+		echo '
 		var maxvotes = '.$this->maxvotes.';
 		var votes = '.$this->votes.';
 		var m = maxvotes-votes;
-		$("#voteclick_'.$id.'").click(function(){
+		$(".voteclick").click(function(){
 			if(m<=0){
 				alert("You have no more votes left.");
 			}else{
+				var id = $(this).data("id");
 				$.ajax({
-					url: "scripts.php?view=anime-requests&mode=request-anime-vote&id='.$id.'",
+					url: "scripts.php?view=anime-requests&mode=request-anime-vote&id="+id,
 					success: function(data){
 						location.reload();
 					 }
 				});
 			}
 		});
-		$("#votedeleteclick_'.$id.'").click(function(){
+		$(".votedeleteclick").click(function(){
+			var id = $(this).data("id");
 			$.ajax({
-				url: "scripts.php?view=anime-requests&mode=subvote&id='.$id.'",
+				url: "scripts.php?view=anime-requests&mode=subvote&id="+id,
 				success: function(data){
 					location.reload();
 				 }
 			});
 		});
-		</script>';
+		';
 	}
 	private function getStatusNum($status){
 		$msg = array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied");
@@ -1077,7 +1084,7 @@ class AnimeRequest extends Config{
 			echo "The field 'Details' is empty";
 			return;
 		}
-		
+		$details = strip_tags($details, "<pre><blockquote><h1><h2><h3><h4><h5><p><ul><li><strong><em><del><b><i><a><ol><hr><table><thead><tr><td><tbody><img><br>");
 		$query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=".$anidb.""; //check if it already exist
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$res = mysql_result($result, 0);
@@ -1133,7 +1140,6 @@ class AnimeRequest extends Config{
 			echo "Request already exist";
 		}
 	}
-	
 	
 }
 ?>
