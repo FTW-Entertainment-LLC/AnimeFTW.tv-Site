@@ -494,6 +494,16 @@ Class api extends Config {
 		}
 	}
 	
+	// destroys the token of the currently logged in user.
+	private function destroyToken()
+	{
+		// build the query to delete the table.
+		$query = "DELETE FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `session_hash` = '" . $this->Data['token'] . "'";
+		$result = $this->mysqli->query($query);
+		// let them know it was a success!
+		$this->formatData(array('status' => $this->MessageCodes["Result Codes"]["302"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["302"]["Message"]));
+	}
+	
 	// after the user has been authenticated via the token. We need to parse through the available options
 	// that the dev could push through the app, this function jumps to all of those.
 	private function launchAPISubFunctions()
@@ -518,6 +528,11 @@ Class api extends Config {
 					unset($array);
 				}
 			}
+		}
+		else if(isset($this->Data['action']) && $this->Data['action'] == 'logout')
+		{
+			// we will now destroy the token, causing the user to log out.
+			$this->destroyToken();
 		}
 		else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"])
 		{
