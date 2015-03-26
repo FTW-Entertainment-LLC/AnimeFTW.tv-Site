@@ -64,10 +64,10 @@ class Series extends Config {
 					}
 				}
 				// add the seriesimage to the array
-				$results['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
-				$results['total-reviews'] = $Reviews['total-reviews'];
-				$results['user-reviewed'] = $Reviews['user-reviewed'];
-				$results['reviews-average-stars'] = $Reviews['average-stars'];
+				$results['results']['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
+				$results['results']['total-reviews'] = $Reviews['total-reviews'];
+				$results['results']['user-reviewed'] = $Reviews['user-reviewed'];
+				$results['results']['reviews-average-stars'] = $Reviews['average-stars'];
 				return $results;
 			}
 			else
