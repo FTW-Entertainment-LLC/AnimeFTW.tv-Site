@@ -395,7 +395,8 @@ class AnimeRequest extends Config{
 				';
 				$result2 = mysql_query("SELECT count(*) from request_votes WHERE voted_to=$id");
 				$rvotes = mysql_result($result2, 0);
-				
+				$result2 = mysql_query("SELECT count(*) AS votes from request_votes WHERE voted_by=$user_id AND voted_to=$id");
+				$personalvotes = mysql_result($result2, 0);
 				
 				echo '
 				<div class="col" style="width: 60px;">'.$rvotes.' <div style="display:inline-block">';
@@ -404,7 +405,7 @@ class AnimeRequest extends Config{
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
 						echo '<a data-id="'.$id.'" class="voteclick" href="javascript:;">+</a>';
-					if($rvotes>0){
+					if($personalvotes>0){
 						echo '<a data-id="'.$id.'" class="votedeleteclick" href="javascript:;">-</a>';
 					}
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
@@ -421,8 +422,8 @@ class AnimeRequest extends Config{
 				<div class="col" style="width: 80px;">';
 				if($episodes==0){echo '?';}else{echo $episodes;};
 				echo '</div>
-				<div class="col" style="width: 60px;"><div style="display:inline-block"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
-				<div class="col" style="width: 160px;"><div style="display:inline-block">'.$this->formatUsername($user_id).'</div></div>
+				<div class="col" style="width: 60px;"><div style="display:inline-block" class="live"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
+				<div class="col" style="width: 160px;"><div style="display:inline-block" class="live">'.$this->formatUsername($user_id).'</div></div>
 				<div class="col" style="width: 100px;">'.date("Y-m-d", $date).'</div>
 			</div>
 			';
@@ -447,7 +448,7 @@ class AnimeRequest extends Config{
 			$replies--; //subtract one reply becuase the first post is not a reply
 			
 			echo $details.'<br><br>
-			<a href="/forums/anime-requests/topic-'.$tid.'" id="commentslink'.$i.'">Comments('.$replies.')</a>
+			<a href="/forums/anime-requests/topic-'.$tid.'" class="live">Comments('.$replies.')</a>
 			</div>
 			</div>';
 			$i++;
@@ -852,11 +853,16 @@ class AnimeRequest extends Config{
 			$(this).find(".reqdetail").slideToggle("fast");
 			$(this).siblings().find(".reqdetail").slideUp("fast");
 		});
-		$(".reqinfo a").not(".live").click(function(e) {
+		
+		$(".reqinfo select, a").click(function(e){
+			e.stopPropagation();
+		});
+		$(".reqinfo a div").not(".live").click(function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			return false;
-		});';
+		});
+		';
 		
 		if(isset($_GET["edit"])){ //If in edit mode
 			if($this->canEdit()){ //If they have permission to delete
