@@ -92,4 +92,26 @@ class Rating extends Config {
 			}
 		}
 	}
+	
+	public function bool_averageSeriesRating($id)
+	{
+		$query = "SELECT `stars` FROM `reviews` WHERE `sid` = " . $this->mysqli->real_escape_string($id) . " AND `approved` = 1";
+		$result = $this->mysqli->query($query);
+		$count = mysqli_num_rows($result);
+		if($count > 0)
+		{
+			$a = 0;
+			$row = $result->fetch_assoc();
+			foreach($row as $value)
+			{
+				$a = $a+$value;
+			}
+			$average = $a/$count; // this is the average ratings.
+			return $average;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }

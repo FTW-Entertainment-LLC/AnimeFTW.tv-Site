@@ -52,23 +52,22 @@ class Series extends Config {
 				$results = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
 				
 				foreach($row AS $key => &$value)
-                        	{
-                                	if($key == 'ratingLink')
-                                	{
-                                       		$results['rating'] = substr($value,0,-4);
-                                        	$results[$key] = $this->ImageHost . '/ratings/' . $value;
-                                	}
-                                	else
-                                	{
-                                        	$results[$key] = $value;
-                                	}
-                        	}
-				//$results[] = $row;
+				{
+					if($key == 'ratingLink')
+					{
+						$results['results']['rating'] = substr($value,0,-4);
+						$results['results'][$key] = $this->ImageHost . '/ratings/' . $value;
+					}
+					else
+					{
+						$results['results'][$key] = $value;
+					}
+				}
 				// add the seriesimage to the array
-				$results['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
-				$results['total-reviews'] = $Reviews['total-reviews'];
-				$results['user-reviewed'] = $Reviews['user-reviewed'];
-				$results['reviews-average-stars'] = $Reviews['average-stars'];
+				$results['results']['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
+				$results['results']['total-reviews'] = $Reviews['total-reviews'];
+				$results['results']['user-reviewed'] = $Reviews['user-reviewed'];
+				$results['results']['reviews-average-stars'] = $Reviews['average-stars'];
 				return $results;
 			}
 			else

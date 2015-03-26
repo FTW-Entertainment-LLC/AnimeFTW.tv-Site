@@ -84,18 +84,6 @@ class AFTWVideos extends Config{
 		return $pt;
 	}
 	
-	private function buildCategories()
-	{
-		$query = "SELECT * FROM `categories`";
-		$result = mysql_query($query);
-		while($row = mysql_fetch_assoc($result))
-		{
-			$this->Categories[$row['id']]['id'] = $row['id'];
-			$this->Categories[$row['id']]['name'] = $row['name'];
-			$this->Categories[$row['id']]['description'] = $row['description'];
-		}
-	}
-	
 	#-------------------------------------------------------------
 	# Function showListing
 	# Shows in 3 cloumn tier of series listings
