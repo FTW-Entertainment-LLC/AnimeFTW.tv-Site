@@ -363,11 +363,11 @@ class AnimeRequest extends Config{
 			//echo $uid;
 			$uploadstatus = null;
 			if($uid&&$status!=9){ //If someone denies this request, then we no longer follow the uploads board status for it.
-				$uploadstatus = $this->SingleVarQuery("SELECT status FROM uestatus WHERE ID=".$uid."", "status");
+				$uploadstatus = $this->SingleVarQuery("SELECT status FROM uestatus WHERE ID=".$uid, "status");
 				$uploadstatus = $this->getStatusNum(ucfirst($uploadstatus));
 				if($status!=$uploadstatus){
 					//$status in the request database is not the same as the upload boards database.
-					$this->SingleVarQuery("UPDATE requests SET status=".$uploadstatus." WHERE id=".$id."", "");
+					mysql_query("UPDATE requests SET status=".$uploadstatus." WHERE id=".$id) or die('Error : ' . mysql_error());
 					$status = $uploadstatus; //Change it on this current run too.
 				}
 			}
