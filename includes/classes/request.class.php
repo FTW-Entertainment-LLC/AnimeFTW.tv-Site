@@ -431,7 +431,7 @@ class AnimeRequest extends Config{
 			
 			if($this->editmode){
 				echo '<div class="ardelete"><a data-id = "'.$id.'" data-name = "'.$name.'" class = "ardeletelink" href = "javascript:;">Delete entry</a></div>';
-				$extras = " onchange='changeuploadsentry(this)' ";
+				$extras = " onchange='changeuploadsentry(this)' data-id=".$id." ";
 				echo $this->uploadsEntrySelect($uid, $extras)."<br>";
 			}if($this->UserArray[2]==1||$this->UserArray[2]==2||$this->UserArray[2]==5){
 				$extra = "";
@@ -747,13 +747,12 @@ class AnimeRequest extends Config{
 	private function scripts()
 	{
 		
-		echo '
-		
-		<script>';
+		echo '<script>';
 		$this->editScripts(array("status", "type", "uploadsentry"));
 		echo '
 		$(document).ready(function(){
 			';
+			
 			$this->indScripts();
 			echo '
 			//$("#requestlink").click(function(){
@@ -954,7 +953,7 @@ class AnimeRequest extends Config{
 		if($jsfunction){
 			$jsstring = 'onchange="'.$jsfunction.'(this)"';
 		}
-		echo '<select id = "'.$option.''.$id.'" name="'.$option.'" '.$jsstring.'>';
+		echo '<select data-id="'.$id.'" name="'.$option.'" '.$jsstring.'>';
 		for($i=0;$i<count($msg);$i++){
 			echo '<option value="'.($i+1).'" '.$selected[$i].'>'.$msg[$i].'</option>';
 		}
@@ -977,7 +976,9 @@ class AnimeRequest extends Config{
 			foreach($values as $i){
 			echo 'function change'.$i.'(selected){
 					var val = selected.value;
-					var id = selected.id.replace("'.$i.'", "");
+					var id = $(selected).data("id");
+					console.log(val);
+					console.log(id);
 					$.ajax({
 						url: "scripts.php?view=anime-requests&mode=manage&'.$i.'="+val+"&id="+id,
 						success: function(data){
