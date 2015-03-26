@@ -86,7 +86,7 @@ class toplist extends Config {
 				{
 					if($c > 0 && $c < $count)
 					{
-						$category .= $this->Categories[$value]['name'];
+						$category .= $this->Categories[$value]['name']; 
 						$c++;
 						if($c < ($count-1))
 						{
@@ -98,7 +98,7 @@ $category .= ', ';
 						$c++;
 					}
 				}
-				$returnarray['results'][$i]['genre'] = $category;
+				$returnarray['results'][$i]['categories'] = $category;
 				// add the ratings here.
 				$i++;
 			}
