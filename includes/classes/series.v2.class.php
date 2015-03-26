@@ -63,7 +63,6 @@ class Series extends Config {
 						$results['results'][$key] = $value;
 					}
 				}
-				//$results[] = $row;
 				// add the seriesimage to the array
 				$results['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
 				$results['total-reviews'] = $Reviews['total-reviews'];
