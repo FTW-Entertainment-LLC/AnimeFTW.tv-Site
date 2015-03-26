@@ -551,6 +551,9 @@ class AnimeRequest extends Config{
 			$AniDB  = new AniDB();
 			$AID = $_GET["anidb"];
 			$name = $AniDB->getName("en",$AID);
+			if(!$name){
+				return; //The user will already have recieved an "Anime not found" error if it fails.
+			}
 			$episodes = $AniDB->getEpisodeCount($AID);
 			$description = $AniDB->getDescription($AID);
 			$type = $AniDB->getSeriesType($AID);
@@ -1071,12 +1074,12 @@ class AnimeRequest extends Config{
 	private function addRequest($name, $type, $episodes, $anidb, $description, $details){
 		if(empty($name))
 		{
-			echo "The field 'Name' is empty";
+			echo "Couldn't retrieve series name";
 			return;
 		}
 		if(intval($episodes)<0&&!is_numeric($episodes))
 		{
-			echo "The field 'Episodes' is empty";
+			echo "Couldn't retrieve episode count";
 			return;
 		}
 		if(empty($anidb))
