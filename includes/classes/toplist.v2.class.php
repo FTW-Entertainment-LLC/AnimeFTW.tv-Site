@@ -11,6 +11,7 @@
 class toplist extends Config {
 
 	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	var $Categories = array(); // added 10/10/2014 by robotman321
 
 	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
 	{
@@ -38,6 +39,9 @@ class toplist extends Config {
 	
 	public function array_showTopAnime($count = NULL)
 	{
+		// build the cateogory listing.
+		$this->buildCategories();
+		
 		$returnarray = array();
 		if($count == NULL && isset($_GET['count']))
 		{
@@ -51,7 +55,7 @@ class toplist extends Config {
 		{
 			$count = 25;
 		}
-		$query = "SELECT `site_topseries`.`seriesId`, `site_topseries`.`lastPosition`, `site_topseries`.`currentPosition`, `series`.`fullSeriesName` FROM `site_topseries`, `series` WHERE `series`.`id`=`site_topseries`.`seriesId` ORDER BY `site_topseries`.`currentPosition` ASC LIMIT 0, " . $this->mysqli->real_escape_string($count);
+		$query = "SELECT `site_topseries`.`seriesId`, `site_topseries`.`lastPosition`, `site_topseries`.`currentPosition`, `series`.`fullSeriesName`, `series`.`description`, `series`.`category`, `series`.`ratingLink` FROM `site_topseries`, `series` WHERE `series`.`id`=`site_topseries`.`seriesId` ORDER BY `site_topseries`.`currentPosition` ASC LIMIT 0, " . $this->mysqli->real_escape_string($count);
 		$result = $this->mysqli->query($query);
 		
 		if($result)
@@ -60,12 +64,42 @@ class toplist extends Config {
 			$returnarray['message'] = $this->MessageCodes["Result Codes"]["201"]["Message"];
 			$returnarray['count'] = $count;
 			$i=0;
+			include_once("rating.v2.class.php");
+			$Rating = new Rating();
 			while($row = $result->fetch_assoc())
 			{
 				$returnarray['results'][$i]['id'] = $row['seriesId'];
-				$returnarray['results'][$i]['name'] = stripslashes($row['fullSeriesName']);
+				$returnarray['results'][$i]['fullSeriesName'] = stripslashes($row['fullSeriesName']);
 				$returnarray['results'][$i]['last-position'] = $row['lastPosition'];
 				$returnarray['results'][$i]['current-position'] = $row['currentPosition'];
+				$returnarray['results'][$i]['average-stars'] = $Rating->bool_averageSeriesRating($row['seriesId']);
+				$returnarray['results'][$i]['rating'] = $Rating->bool_averageSeriesRating($row['seriesId']);
+				$returnarray['results'][$i]['ratingLink'] = $this->ImageHost . '/ratings/' . $row['ratingLink'];
+				$returnarray['results'][$i]['description'] = stripslashes($row['description']);
+				$returnarray['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['seriesId'] . '.jpg';
+				// category functions
+				$exploded = explode(" , ",$row['category']);
+				$category = '';
+				$c = 0;
+				$count = count($exploded);
+				foreach($exploded as $value)
+				{
+					if($c > 0 && $c < $count)
+					{
+						$category .= $this->Categories[$value]['name'];
+						$c++;
+						if($c < ($count-1))
+						{
+$category .= ', ';
+						}
+					}
+					if($c == 0)
+					{
+						$c++;
+					}
+				}
+				$returnarray['results'][$i]['genre'] = $category;
+				// add the ratings here.
 				$i++;
 			}
 		}

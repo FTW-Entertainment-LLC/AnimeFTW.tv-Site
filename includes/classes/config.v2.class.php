@@ -522,6 +522,18 @@ class Config {
 		}
 	}
 	
+	public function buildCategories()
+	{
+		$query = "SELECT * FROM `categories`";
+		$result = $this->mysqli->query($query);
+		while($row = $result->fetch_assoc())
+		{
+			$this->Categories[$row['id']]['id'] = $row['id'];
+			$this->Categories[$row['id']]['name'] = $row['name'];
+			$this->Categories[$row['id']]['description'] = $row['description'];
+		}
+	}
+	
 	public function array_buildAPICodes()
 	{
 		$this->MessageCodes = array (

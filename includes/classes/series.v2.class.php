@@ -52,17 +52,17 @@ class Series extends Config {
 				$results = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
 				
 				foreach($row AS $key => &$value)
-                        	{
-                                	if($key == 'ratingLink')
-                                	{
-                                       		$results['rating'] = substr($value,0,-4);
-                                        	$results[$key] = $this->ImageHost . '/ratings/' . $value;
-                                	}
-                                	else
-                                	{
-                                        	$results[$key] = $value;
-                                	}
-                        	}
+				{
+					if($key == 'ratingLink')
+					{
+						$results['rating'] = substr($value,0,-4);
+						$results[$key] = $this->ImageHost . '/ratings/' . $value;
+					}
+					else
+					{
+						$results[$key] = $value;
+					}
+				}
 				//$results[] = $row;
 				// add the seriesimage to the array
 				$results['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
