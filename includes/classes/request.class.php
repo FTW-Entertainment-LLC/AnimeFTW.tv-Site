@@ -174,7 +174,7 @@ class AnimeRequest extends Config{
 							}
 							
 						}
-						echo '<input type="text" name="anidbid"'.$value.'></input>';
+						echo '<input type="text" name="anidbid"'.$value.' style="width:40px;"></input>';
 					echo '
 					</div>
 				</div>
@@ -400,7 +400,7 @@ class AnimeRequest extends Config{
 				
 				echo '
 				<div class="col" style="width: 60px;">'.$rvotes.' <div style="display:inline-block">';
-				if($status==1){ //Vote available only if the request is pending
+				if($status==1&&$this->UserArray[2]!=0){ //Vote available only if the request is pending, and if the user is logged in.
 					if($this->maxvotes-$this->votes>0||$rvotes>0)
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
@@ -422,8 +422,8 @@ class AnimeRequest extends Config{
 				<div class="col" style="width: 80px;">';
 				if($episodes==0){echo '?';}else{echo $episodes;};
 				echo '</div>
-				<div class="col" style="width: 60px;"><div style="display:inline-block" class="live"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
-				<div class="col" style="width: 160px;"><div style="display:inline-block" class="live">'.$this->formatUsername($user_id).'</div></div>
+				<div class="col" style="width: 60px;"><div style="display:inline-block"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
+				<div class="col" style="width: 160px;"><div style="display:inline-block">'.$this->formatUsername($user_id).'</div></div>
 				<div class="col" style="width: 100px;">'.date("Y-m-d", $date).'</div>
 			</div>
 			';
@@ -448,7 +448,7 @@ class AnimeRequest extends Config{
 			$replies--; //subtract one reply becuase the first post is not a reply
 			
 			echo $details.'<br><br>
-			<a href="/forums/anime-requests/topic-'.$tid.'" class="live">Comments('.$replies.')</a>
+			<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
 			</div>
 			</div>';
 			$i++;
@@ -849,19 +849,20 @@ class AnimeRequest extends Config{
 	}
 	private function indScripts(){
 		echo '
-		$(".reqinfo").click(function(){
+		
+		$(".reqinfo").click(function(e){
 			$(this).find(".reqdetail").slideToggle("fast");
 			$(this).siblings().find(".reqdetail").slideUp("fast");
 		});
-		
-		$(".reqinfo select, a").click(function(e){
-			e.stopPropagation();
-		});
-		$(".reqinfo a div").not(".live").click(function(e) {
+		/*$(".reqinfo a, select").not(".live").click(function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			return false;
+		});*/
+		$(".reqinfo a, select").not(".live").click(function(e) {
+			e.stopPropagation();
 		});
+		
 		';
 		
 		if(isset($_GET["edit"])){ //If in edit mode
