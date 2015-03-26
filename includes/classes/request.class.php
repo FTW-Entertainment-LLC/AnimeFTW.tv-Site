@@ -92,7 +92,7 @@ class AnimeRequest extends Config{
 		echo '<div class="side-body-bg">
 		<span class="scapmain">AnimeFTW.tv\'s Anime Requests</span>
 		<br>
-		<span class="poster">&nbsp;Request an Anime or vote below. For help, click <a href="/forums/anime-requests">here! (Change link to specific thread)</a></span>
+		<span class="poster">&nbsp;Request an Anime or vote below. For help, click <a href="/forums/anime-requests/topic-4494/s-0">here!</a></span>
 		</div>';
 		$this->scripts();
 		
