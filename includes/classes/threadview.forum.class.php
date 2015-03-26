@@ -95,7 +95,7 @@ class AFTWThreadView extends Config{
 					
 					//Anime request code:
 					//This part could probably all be integrated to the request class. Also needs to be designed better.
-					include('includes/classes/request.class.php');
+					include_once('includes/classes/request.class.php');
 					$Requests = new AnimeRequest();
 					
 					$out;
