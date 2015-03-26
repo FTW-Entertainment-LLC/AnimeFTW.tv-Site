@@ -14,7 +14,7 @@ class Store extends Config {
 	{
 		parent::__construct();
 		$this->ParseOptions();
-		$this->BuildCategories();
+		$this->BuildStoreCategories();
 	}
 	
 	public function StoreInit()
@@ -89,7 +89,7 @@ class Store extends Config {
 		}
 	}
 	
-	private function BuildCategories($type = NULL,$var = NULL)
+	private function BuildStoreCategories($type = NULL,$var = NULL)
 	{
 		$query = "SELECT * FROM store_category";
 		$result = mysql_query($query);
