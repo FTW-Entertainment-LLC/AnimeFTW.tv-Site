@@ -373,21 +373,19 @@ class AnimeRequest extends Config{
 			}
 			
 			$background_color = "";
-			if($i%2==0){
-				$background_color = "#fff";
-			}else{
-				$background_color = "#e8e8e8 ";
+			if($i%2==1){
+				$background_color = " dark ";
 			}
 			
 			if($this->highlight==$id){
-				$background_color = "#00CCFF";
+				$background_color = " highlight ";
 				$this->foundhighlight = true;
 				$_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
 				//User wouldn't be able to change page since it would try to find the highlighted anime.
 			}
 			echo'
 			
-			<div class="reqinfo" align = "center" style="background-color: '.$background_color.'" name="request-'.$id.'">';
+			<div class="reqinfo'.$background_color.'" align = "center" name="request-'.$id.'">';
 			//$this->indScripts($id, $i, $name);
 			echo '
 				<div class = "table-row">
@@ -687,6 +685,15 @@ class AnimeRequest extends Config{
 			border-bottom: 1px solid rgb(168, 168, 168);
 			margin-top: -1px;
 			font-size: 1.2em;
+			cursor: pointer;
+			background-color: #fff;
+		}.dark{
+			background-color: #e8e8e8;
+		}.highlight{
+			background-color: #00CCFF;
+		}
+		.reqinfo:hover{
+			  background-color: rgb(187, 187, 187);
 		}
 		.reqdetail{
 			display:none;
