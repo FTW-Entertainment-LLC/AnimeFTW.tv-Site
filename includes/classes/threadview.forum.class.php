@@ -109,22 +109,25 @@ class AFTWThreadView extends Config{
 						//echo $i;
 						$req_query = "SELECT Username, name, status, type, episodes, anidb, user_id, date, description, details FROM user_requests WHERE id='".$i."'";
 						$req_result = mysql_query($req_query) or die('Error : ' . mysql_error());
-						
-						while(list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysql_fetch_array($req_result)){
-							if($episodes==0){
-								$episodes = "?";
+						if($req_result){
+							while(list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysql_fetch_array($req_result)){
+								if($episodes==0){
+									$episodes = "?";
+								}
+								$pbody = $pbody.'
+								Request: <a href="/requests?highlight='.$i.'">'.$name.'</a><br>
+								Requested by: '.$this->formatUsername($user_id).'<br>
+								AniDB: <a href="http://anidb.net/a'.$anidb.'">'.$anidb.'</a><br>
+								Status: '.$Requests->getStatus($status).'<br>
+								Episodes: '.$episodes.'<br>
+								Requested: '.date("Y-m-d H:i:s", $date).'<br>
+								Description: '.$description.'<br><br>
+								User Comments:<br>'.$details.'<br><br>
+								
+								';
 							}
-							$pbody = $pbody.'
-							Request: <a href="/requests?highlight='.$i.'">'.$name.'</a><br>
-							Requested by: '.$this->formatUsername($user_id).'<br>
-							AniDB: <a href="http://anidb.net/a'.$anidb.'">'.$anidb.'</a><br>
-							Status: '.$Requests->getStatus($status).'<br>
-							Episodes: '.$episodes.'<br>
-							Requested: '.date("Y-m-d H:i:s", $date).'<br>
-							Description: '.$description.'<br><br>
-							User Comments:<br>'.$details.'<br><br>
-							
-							';
+						}else{
+							echo "Couldn't retrieve Anime Request information.";
 						}
 					}
 					//End of anime request code
