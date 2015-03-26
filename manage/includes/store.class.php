@@ -349,7 +349,7 @@ class Store extends Config {
 				<div id="lower-container">
 					<div class="left-column" style="width:350px;display:inline-block;vertical-align:top;">
 						<div style="padding:10px 10px 0 10px;">Category</div>
-						<div>' . $this->BuildCategories(1,$category). '</div>
+						<div>' . $this->BuildStoreCategories(1,$category). '</div>
 						<div style="padding:10px 10px 0 10px;">Price</div>
 						<div><input type="text" name="price" class="text-input2" value="' . $price . '" /></div>
 						<div style="padding:10px 10px 0 10px;">Availability</div>
@@ -479,7 +479,7 @@ class Store extends Config {
 		echo '</div>';
 	}
 
-	private function BuildCategories($type = NULL,$var = NULL)
+	private function BuildStoreCategories($type = NULL,$var = NULL)
 	{
 		$query = "SELECT * FROM store_category";
 		$result = mysql_query($query);
