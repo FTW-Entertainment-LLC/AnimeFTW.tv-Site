@@ -77,7 +77,7 @@ class toplist extends Config {
 				$returnarray['results'][$i]['ratingLink'] = $this->ImageHost . '/ratings/' . $row['ratingLink'];
 				$returnarray['results'][$i]['description'] = stripslashes($row['description']);
 				$returnarray['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['seriesId'] . '.jpg';
-				$returnarray['results'][$i]['categories'] = $row['category'];
+				$returnarray['results'][$i]['category'] = $row['category'];
 				// add the ratings here.
 				$i++;
 			}
