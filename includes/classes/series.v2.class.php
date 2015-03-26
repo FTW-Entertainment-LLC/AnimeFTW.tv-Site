@@ -55,12 +55,12 @@ class Series extends Config {
 				{
 					if($key == 'ratingLink')
 					{
-						$results['rating'] = substr($value,0,-4);
-						$results[$key] = $this->ImageHost . '/ratings/' . $value;
+						$results['results']['rating'] = substr($value,0,-4);
+						$results['results'][$key] = $this->ImageHost . '/ratings/' . $value;
 					}
 					else
 					{
-						$results[$key] = $value;
+						$results['results'][$key] = $value;
 					}
 				}
 				//$results[] = $row;
