@@ -425,7 +425,7 @@ class AnimeRequest extends Config{
 				<div class="col" style="width: 100px;">'.date("Y-m-d", $date).'</div>
 			</div>
 			';
-			echo'<div class = "reqdetail" style="background-color: '.$background_color.'">';
+			echo'<div class = "reqdetail">';
 			
 			if($this->editmode){
 				echo '<div class="ardelete"><a data-id = "'.$id.'" data-name = "'.$name.'" class = "ardeletelink" href = "javascript:;">Delete entry</a></div>';
