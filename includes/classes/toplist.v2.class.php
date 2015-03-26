@@ -77,28 +77,7 @@ class toplist extends Config {
 				$returnarray['results'][$i]['ratingLink'] = $this->ImageHost . '/ratings/' . $row['ratingLink'];
 				$returnarray['results'][$i]['description'] = stripslashes($row['description']);
 				$returnarray['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['seriesId'] . '.jpg';
-				// category functions
-				$exploded = explode(" , ",$row['category']);
-				$category = '';
-				$c = 0;
-				$count = count($exploded);
-				foreach($exploded as $value)
-				{
-					if($c > 0 && $c < $count)
-					{
-						$category .= $this->Categories[$value]['name']; 
-						$c++;
-						if($c < ($count-1))
-						{
-$category .= ', ';
-						}
-					}
-					if($c == 0)
-					{
-						$c++;
-					}
-				}
-				$returnarray['results'][$i]['categories'] = $category;
+				$returnarray['results'][$i]['categories'] = $row['category'];
 				// add the ratings here.
 				$i++;
 			}
