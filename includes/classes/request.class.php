@@ -389,7 +389,7 @@ class AnimeRequest extends Config{
 			//$this->indScripts($id, $i, $name);
 			echo '
 				<div class = "table-row">
-				<div class="col" style="width: 380px" align = "left"><a class="live" href="javascript:;">'.$name.'</a></div>
+				<div class="col" style="width: 380px" align = "left">'.$name.'</div>
 				';
 				$result2 = mysql_query("SELECT count(*) from request_votes WHERE voted_to=$id");
 				$rvotes = mysql_result($result2, 0);
