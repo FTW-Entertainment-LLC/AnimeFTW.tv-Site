@@ -109,7 +109,7 @@ class AFTWThreadView extends Config{
 						//echo $i;
 						$req_query = "SELECT Username, name, status, type, episodes, anidb, user_id, date, description, details FROM user_requests WHERE id='".$i."'";
 						$req_result = mysql_query($req_query) or die('Error : ' . mysql_error());
-						if($req_result){
+						if(count($rows)){
 							while(list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysql_fetch_array($req_result)){
 								if($episodes==0){
 									$episodes = "?";
@@ -127,7 +127,7 @@ class AFTWThreadView extends Config{
 								';
 							}
 						}else{
-							echo "Couldn't retrieve Anime Request information.";
+							$pbody = $pbody."Anime Request Error: Couldn't retrieve Anime Request information.";
 						}
 					}
 					//End of anime request code
