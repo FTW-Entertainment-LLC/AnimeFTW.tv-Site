@@ -72,7 +72,7 @@ class toplist extends Config {
 				$returnarray['results'][$i]['fullSeriesName'] = stripslashes($row['fullSeriesName']);
 				$returnarray['results'][$i]['last-position'] = $row['lastPosition'];
 				$returnarray['results'][$i]['current-position'] = $row['currentPosition'];
-				$returnarray['results'][$i]['average-stars'] = $Rating->bool_averageSeriesRating($row['seriesId']);
+				$returnarray['results'][$i]['reviews-average-stars'] = $Rating->bool_averageSeriesRating($row['seriesId']);
 				$returnarray['results'][$i]['rating'] = $Rating->bool_averageSeriesRating($row['seriesId']);
 				$returnarray['results'][$i]['ratingLink'] = $this->ImageHost . '/ratings/' . $row['ratingLink'];
 				$returnarray['results'][$i]['description'] = stripslashes($row['description']);
