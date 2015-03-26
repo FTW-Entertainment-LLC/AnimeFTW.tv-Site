@@ -86,6 +86,12 @@ class AniDB{
 		curl_close($ch);
 
 		//now we have all data in $string, lets put it in a file
+		
+		if($string == "<error>Anime not found</error>"){
+			echo 'Anime not found';
+			return;
+		}
+		
 		$ha = fopen($filename,"w");
 		fputs($ha,$string);
 		fclose($ha);
@@ -95,63 +101,94 @@ class AniDB{
 		$xml = $this->getxml($aid);
 		$found = null;
 		$priority = 0;
-		foreach($xml->titles->title->xpath('//titles/title[@xml:lang = "'.$lang.'"]') as $i){ //Loop through the titles
-			switch($i->attributes()){ //For priority, depends from anime and some don't have all.
-				case "synonym":
-					if($priority>1){continue 2;}
-					$found = $i;
-					$priority = 1;
-					break;
-				case "official":
-					if($priority>2){continue 2;}
-					$found = $i;
-					$priority = 2;
-					break;
-				case "main":
-					$found = $i;
-					$priority = 3;
+		if($xml){
+			foreach($xml->titles->title->xpath('//titles/title[@xml:lang = "'.$lang.'"]') as $i){ //Loop through the titles
+				switch($i->attributes()){ //For priority, depends from anime and some don't have all.
+					case "synonym":
+						if($priority>1){continue 2;}
+						$found = $i;
+						$priority = 1;
+						break;
+					case "official":
+						if($priority>2){continue 2;}
+						$found = $i;
+						$priority = 2;
+						break;
+					case "main":
+						$found = $i;
+						$priority = 3;
+				}
 			}
+			if($found==null){
+				$found = $xml->titles->title; //If we didn't get the language we were looking for, just take the first one.
+			}
+			return $found;
+		}else{
+			return null;
 		}
-		if($found==null){
-			$found = $xml->titles->title; //If we didn't get the language we were looking for, just take the first one.
-		}
-		return $found;
 	}
 	public function getDescription($aid){ //Gets the description of the anime
 		$xml = $this->getxml($aid);
-		foreach($xml->description as $i){
-			return $i;
+		if($xml){
+			foreach($xml->description as $i){
+				return $i;
+			}
+		}else{
+			return null;
 		}
 	}
 	public function getCategories($aid){ //Returns a string of the categories, seperated by a comma and a space bar.
 		$xml = $this->getxml($aid);
-		$categories = ""; //Create the variable to store the categories..
-		foreach($xml->categories->category as $i){  //Loop through them
-			$categories = $categories.$i->name.", "; //Add them to the variable
+		if($xml){
+			$categories = ""; //Create the variable to store the categories..
+			foreach($xml->categories->category as $i){  //Loop through them
+				$categories = $categories.$i->name.", "; //Add them to the variable
+			}
+			$categories = substr($categories,0,strlen($categories)-2); //Remove the last two characters being ", "
+			return $categories;
+		}else{
+			return null;
 		}
-		$categories = substr($categories,0,strlen($categories)-2); //Remove the last two characters being ", "
-		return $categories;
 	}
 	public function getEpisodeTitle($aid, $epno){ //Returns the title of the episode.
 		$xml = $this->getxml($aid);
-		foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
-			if($i->epno==$epno){ //If it's the one we're looking for
-				return $i->title[1];
-				break;
+		if($xml){
+			foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
+				if($i->epno==$epno){ //If it's the one we're looking for
+					return $i->title[1];
+					break;
+				}
 			}
+		}else{
+			return null;
 		}
 	}
 	public function getEpisodeCount($aid){
 		$xml = $this->getxml($aid);
-		return $xml->episodecount;
+		if($xml){
+			return $xml->episodecount;
+		}else{
+			return null;
+		}
+		
 	}
 	public function getSeriesType($aid){
 		$xml = $this->getxml($aid);
-		return $xml->type;
+		if($xml){
+			return $xml->type;
+		}else{
+			return null;
+		}
+		
 	}
 	private function getxml($aid){
 		$this->cacheFile($aid); //Check to see if this file needs to update, and do so if it does.
-		return simplexml_load_file($this->rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml');
+		$filename = $this->rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml';
+		if ( file_exists($filename) ){ 
+			return simplexml_load_file($filename);
+		}else{
+			return null;
+		}
 	}
 
 }
