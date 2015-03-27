@@ -24,23 +24,44 @@ class AFTWThreads extends Config {
 	
 	public function ThreadListDisplay(){
 		$this->DisplayPinnedTopics();
-		$query4  = "SELECT tid, ttitle, tpid, tfid, tclosed, tviews FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='0' ORDER BY tclosed ASC, tupdated DESC LIMIT ".$this->reqLimit.", 30";					
+		// ADDED 27/03/15 by Robotman321
+		$restrictHiddenThreads = "";
+		if($this->UserArray[2] != 1 && $this->UserArray[2] != 2)
+		{
+		        $restrictHiddenThreads = " AND `hidden` = 0";
+		}
+
+		$query4  = "SELECT tid, ttitle, tpid, tfid, tclosed, `hidden`, `tviews` FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='0'" . $restrictHiddenThreads . " ORDER BY tclosed ASC, tupdated DESC LIMIT ".$this->reqLimit.", 30";
 		$result4 = mysql_query($query4) or die('Error : ' . mysql_error());		
 		echo "<tr>\n";
 		echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
 		echo "<td class='tbl2 forum-cap'><strong>Forum Topics</strong></td>\n";
 		echo "</tr>\n";		
-		while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$tviews) = mysql_fetch_array($result4)) {
+		while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$hidden,$tviews) = mysql_fetch_array($result4)) {
 			$ttitle = stripslashes($ttitle);
 			$ttitle = htmlentities($ttitle); //HTML exploit fix, Zigbigidorlu was here =D
-			echo "<tr>\n";
-			if ($tclosed == 1) {
-		    	$thread_image = "<img src='/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
-		  	} 
-			else {
-		   		$thread_image = "<img src='/images/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
-		  	}
-            $thread_subject = "<a id='topic-".$tid."' href='/forums/".$this->fseo."/topic-".$tid."/s-0' >".$ttitle."</a>";
+			$subjectPreffix = '';
+			if($hidden == 1)
+			{
+				// Hidden topic
+				$thread_image = "<img src='/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' title='Topic is Hidden!' />";
+				$subjectPreffix = '<span style="color:gray;">Hidden:</span> ';
+				echo '<tr style="background-color:gray;">'."\n";
+			}
+			else
+			{
+				echo "<tr>\n";
+				if ($tclosed == 1)
+				{
+		    			$thread_image = "<img src='/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
+		  		} 
+				else
+				{
+		   			$thread_image = "<img src='/images/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
+		  		}
+			
+			}
+			$thread_subject = $subjectPreffix . "<a id='topic-".$tid."' href='/forums/".$this->fseo."/topic-".$tid."/s-0' >".$ttitle."</a>";
 			echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$thread_image."</td>\n";
 			echo "<td width='100%' class='tbl1'>".$thread_subject."</td>\n";	
 			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'"); 

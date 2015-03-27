@@ -35,10 +35,18 @@ $row7 = mysql_fetch_array($result7);
 $fid = $row7['fid'];
 $ftitle = $row7['ftitle'];
 $fseo = $row7['fseo'];
-$query9 = "SELECT tclosed FROM forums_threads WHERE tid='$tid'";
+// ADDED 27/03/15 by Robotman321
+$restrictHiddenThreads = "";
+if($profileArray[2] != 1 && $profileArray[2] != 2)
+{
+        $restrictHiddenThreads = " AND `hidden` = 0";
+}
+
+$query9 = "SELECT tclosed, hidden FROM forums_threads WHERE tid='$tid'" . $restrictHiddenThreads;
 $result9 = mysql_query($query9) or die('Error : ' . mysql_error());
 $row9 = mysql_fetch_array($result9);
 $tclosed = $row9['tclosed'];
+$thidden = $row9['hidden'];
 if ($fseo != $requestedForum){
 echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 	echo "<div class='errorwrap'>
