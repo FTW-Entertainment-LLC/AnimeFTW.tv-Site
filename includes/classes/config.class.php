@@ -524,7 +524,6 @@ class Config {
 		$Data .= '</select>';
 		return $Data;
 	}
-	
 	public function buildCategories()
 	{
 		$query = "SELECT * FROM `categories`";

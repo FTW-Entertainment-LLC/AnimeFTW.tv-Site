@@ -90,6 +90,18 @@ class AFTWThreadView extends Config{
 				while(list($pid,$ptid,$puid,$pfid,$ptitle,$pdate,$pbody,$pip) = mysql_fetch_array($result001))
 				{
 					$pbody = stripslashes($pbody);
+					
+					
+					
+					//Anime request code:
+					include_once('includes/classes/request.class.php');
+					$Requests = new AnimeRequest();
+					$pbody = $Requests->matchRequest($pbody);
+					
+					//End of anime request code
+					
+					
+					
 					$ptitle = stripslashes($ptitle);
 					$pdate = timeZoneChange($pdate,$this->profileArray[3]);
 					

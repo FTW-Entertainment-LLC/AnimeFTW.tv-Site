@@ -111,7 +111,7 @@ function bodyTopInfo($message,$bdybr){
 				echo "<div class='side-body-bg'>\n";
 				echo "<span class='scapmain'>AnimeFTW.tv's Anime Selection</span>\n";
 				echo "<br />\n";
-				echo "<span class='poster'>&nbsp;All of the Anime that AnimeFTW.tv supplies is listed below.</span>\n";
+				echo "<span class='poster'>&nbsp;All of the Anime that AnimeFTW.tv supplies is listed below.<br>&nbsp;If you don't find what you're looking for, you can request anime <a href='/requests'>here</a>.</span>\n";
 				echo "</div>\n";
 				echo "<br />";
 				echo '<div align="center" ><a href="#" id="tagcloud-toggle">:: Toggle the Tag Cloud ::</a></div>';

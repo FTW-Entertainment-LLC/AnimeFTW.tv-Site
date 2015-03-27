@@ -827,7 +827,7 @@ class Series extends Config {
 						<div class="series-form-row">
 							<div class="series-form-left"><b><i>Uploads Board Entry</i></b><br /> <i>Does this series have an entry on the uploads board?</i></div>
 							<div class="series-form-right">
-								' . $this->uploadsEntrySelect($ueid) . '
+								' . $this->uploadsEntrySelect($ueid, null) . '
 							</div>
 						</div>
 						<div class="series-form-row">
