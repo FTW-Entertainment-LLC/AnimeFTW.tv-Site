@@ -98,7 +98,7 @@ class AnimeRequest extends Config{
 		
 		echo '
 		<div class="request-filter side-body-bg">
-			<form action="requests" method="get">
+			<form action="requests" method="get" id="searchform">
 				<div class="table-row">
 					<div class="col">
 						Series name:
@@ -131,7 +131,7 @@ class AnimeRequest extends Config{
 						$this->getSelect(array("----", "Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $value, null, "status", false);
 						echo '
 						<a href = "javascript:;" id="statushelp" title="Click to view status meanings!">?</a>
-						<div id="statushelp-content" title="Status Help">
+						<div id="statushelp-content" title="Status Help" style="display:none">
 						<b>Pending</b> - No video technician has started working on this series yet.<br><br>
 						<b>Claimed</b> - A Video Technician has claimed this series, meaning they\'ll start working on the series soon.<br><br>
 						<b>Encoding</b> - The series is currently being encoded.<br><br>
@@ -194,9 +194,8 @@ class AnimeRequest extends Config{
 					echo '
 					</div>
 				</div>
-				<div class="table-row">
-					<input name="search" type="submit" style="width: 60px;">
-				</div>
+				<button name="search" value="Submit" type="submit" class="formbutton">Submit</button>
+				<button type="button" id="resetbutton" class="formbutton">Reset</button>
 			</form>
 		</div>
 				
@@ -749,6 +748,13 @@ class AnimeRequest extends Config{
 			width: 470px;
 		}.request-filter .col{
 			padding-right: 10px;
+		}.formbutton{
+			width: 80px;
+			padding: 5px;
+			-webkit-border-radius: 6px;
+			-moz-border-radius: 6px;
+			border-radius: 6px;
+			margin-top: 5px;
 		}
 		
 		</style>';
@@ -761,6 +767,11 @@ class AnimeRequest extends Config{
 		$this->editScripts(array("status", "type", "uploadsentry"));
 		echo '
 		$(document).ready(function(){
+		
+		
+			$( "#resetbutton" ).click(function() {
+			  $("#searchform")[0].reset();
+			});
 			';
 			
 			$this->indScripts();
