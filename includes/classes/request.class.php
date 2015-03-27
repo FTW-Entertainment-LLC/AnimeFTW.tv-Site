@@ -194,8 +194,10 @@ class AnimeRequest extends Config{
 					echo '
 					</div>
 				</div>
+				<div style="text-align: center;">
 				<button name="search" value="Submit" type="submit" class="formbutton">Submit</button>
 				<button type="button" id="resetbutton" class="formbutton">Reset</button>
+				</div>
 			</form>
 		</div>
 				
@@ -755,6 +757,7 @@ class AnimeRequest extends Config{
 			-moz-border-radius: 6px;
 			border-radius: 6px;
 			margin-top: 5px;
+			margin-right: 20px;
 		}
 		
 		</style>';
