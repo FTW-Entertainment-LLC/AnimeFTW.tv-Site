@@ -195,8 +195,8 @@ class AnimeRequest extends Config{
 					</div>
 				</div>
 				<div style="text-align: center;">
-				<button name="search" value="Submit" type="submit" class="formbutton">Submit</button>
-				<button type="button" id="resetbutton" class="formbutton">Reset</button>
+				<button name="search" value="Submit" type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Submit</span></button>
+				<button type="button" id="resetbutton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Reset<span></button>
 				</div>
 			</form>
 		</div>
@@ -750,14 +750,6 @@ class AnimeRequest extends Config{
 			width: 470px;
 		}.request-filter .col{
 			padding-right: 10px;
-		}.formbutton{
-			width: 80px;
-			padding: 5px;
-			-webkit-border-radius: 6px;
-			-moz-border-radius: 6px;
-			border-radius: 6px;
-			margin-top: 5px;
-			margin-right: 20px;
 		}
 		
 		</style>';
