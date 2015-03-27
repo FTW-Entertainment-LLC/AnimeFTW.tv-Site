@@ -132,7 +132,7 @@ class AnimeRequest extends Config{
 						echo '
 						<a href = "javascript:;" id="statushelp" title="Click to view status meanings!">?</a>
 						<div id="statushelp-content" title="Status Help" style="display:none">
-						<b>Pending</b> - No video technician has started working on this series yet.<br><br>
+						<b>Pending</b> - Request is pending and can be voted to.<br><br>
 						<b>Claimed</b> - A Video Technician has claimed this series, meaning they\'ll start working on the series soon.<br><br>
 						<b>Encoding</b> - The series is currently being encoded.<br><br>
 						<b>Uploading</b> - The series is currently being uploaded to our servers.<br><br>
