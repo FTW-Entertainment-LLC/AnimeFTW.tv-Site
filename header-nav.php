@@ -34,7 +34,7 @@ else {
 <a id=\"tab-2\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php' || $_SERVER['PHP_SELF'] == '/search.php'){echo ' current';} echo "\" href=\"/anime\">Anime</a>
 <a id=\"tab-3\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/messages.php'){echo ' current';} echo "\" href=\"/user\">Profile</a>
 <a id=\"tab-4\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'store')){echo ' current';} echo "\" href=\"/store\">Store</a>
-<a id=\"tab-5\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/forums.php'){echo ' current';} echo "\" href=\"/forums\">Forum</a>";
+<a id=\"tab-5\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/forums.php'|| $_SERVER['PHP_SELF'] == '/request.php'){echo ' current';} echo "\" href=\"/forums\">Forum</a>";
 	if($profileArray[2] == 3)
 	{
 		echo "<a id=\"tab-6\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'advanced-signup')){echo ' current';} echo "\" href=\"/advanced-signup\">Adv.</a>";
