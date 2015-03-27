@@ -22,7 +22,7 @@ class AnimeRequest extends Config{
 	var $foundhighlight;
 	var $page;
 	var $max_pages;
-	var $fid = 3; //forum id
+	var $fid = 7; //forum id
 	var $rpp = 25; //requests per page
 	
 	public function getRemainingVotes()
