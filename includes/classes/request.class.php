@@ -195,7 +195,7 @@ class AnimeRequest extends Config{
 					</div>
 				</div>
 				<div style="text-align: center;">
-				<button name="search" value="Submit" type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Submit</span></button>
+				<button name="search" value="Submit" type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Search</span></button>
 				<button type="button" id="resetbutton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Reset<span></button>
 				</div>
 			</form>
