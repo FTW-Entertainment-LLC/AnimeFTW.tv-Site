@@ -91,14 +91,20 @@ class AFTWForum extends Config {
 		echo "<div class=\"borderwrap\"><br /><br /> <table class='ipbtable' cellspacing=\"0\"><tr><td colspan='8' class='darkrow1'><div><div style='float: left;'>Active Topics for the past 24 Hours</div></div></td></tr><tr class='foruminfo3'><th width=\"37%\" nowrap=\"nowrap\">&nbsp;&nbsp;Thread Title</th><th width=\"13%\" style=\"text-align:center\" nowrap=\"nowrap\">Forum</th><th width=\"13%\" style=\"text-align:center\" nowrap=\"nowrap\">Thread Starter</th><th width=\"4%\" style=\"text-align:center\" nowrap=\"nowrap\">Replies</th><th width=\"4%\" style=\"text-align:center\" nowrap=\"nowrap\">Views</th><th width=\"19%\" style=\"text-align:center\" nowrap=\"nowrap\">Last Action</th></tr>";
 					
 		$FinalDate3 = time()-86400;
-		$query4 = "SELECT t1.tid, t1.ttitle, t1.tpid, t1.tfid, t1.tviews, t2.ftitle, t2.fseo FROM forums_threads AS t1 LEFT JOIN forums_forum AS t2 ON t1.tfid = t2.fid WHERE (t2.fpermission LIKE '%".$PLA."%' AND t1.tupdated>='".$FinalDate3."' AND t1.tclosed=0) ORDER BY t1.tupdated DESC";
+		// ADDED 27/03/15 by robotman321
+                $hiddenLimit = "";
+                if($this->UserArray[2] != 1 && $this->UserArray[2] != 2)
+                {
+                        $hiddenLimit = " AND `t1`.`hidden` = 0";
+                }
+		$query4 = "SELECT t1.tid, t1.ttitle, t1.tpid, t1.tfid, `t1`.`hidden`, t1.tviews, t2.ftitle, t2.fseo FROM forums_threads AS t1 LEFT JOIN forums_forum AS t2 ON t1.tfid = t2.fid WHERE (t2.fpermission LIKE '%".$PLA."%' AND t1.tupdated>='".$FinalDate3."' AND t1.tclosed=0" . $hiddenLimit  . ") ORDER BY t1.tupdated DESC";
 		mysql_query("SET NAMES 'utf8'"); 
 		$result4 = mysql_query($query4) or die('Error : ' . mysql_error());
 		$numcount = mysql_num_rows($result4);
 		if($numcount == 0){
 			echo "<tr><td class='row1' colspan=\"5\"><div style=\"padding-left:30px;\"><h3>There have been no replies in the last 24 hours.</td></tr>";
 		}
-		while(list($tid,$ttitle,$tpid,$tfid,$tviews,$ftitle,$fseo) = mysql_fetch_array($result4)){
+		while(list($tid,$ttitle,$tpid,$tfid,$thidden,$tviews,$ftitle,$fseo) = mysql_fetch_array($result4)){
 			$ttitle = stripslashes($ttitle);
 							
 			//HTML exploit fix
@@ -115,7 +121,13 @@ class AFTWForum extends Config {
 			$pdate3 = $row02['pdate'];
 			$pdate3 = timeZoneChange($pdate3,$timeZone);
 			$pdate4 = date("M j Y, h:i A",$pdate3);
-			echo "<tr><td class='row1'><a href='/forums/$fseo/topic-$tid/s-0'>$ttitle</a></td><td class='row1' align='center'><a href='/forums/$fseo/'>$ftitle</a></td><td class='row1' align='center'>".$this->formatUsername($tpid)."</td><td class='row1' align='center'>$total_thread_posts</td><td class='row1' align='center'>$tviews</td><td class='row1' align='center'>$pdate4<br /><a href='/forums/$fseo/topic-$tid/showlastpost'>Last post by:</a><b>".checkUserNameNumber($puid)."</b></td></tr>";
+			// hidden..
+			$ThreadHidden = "";
+			if($thidden == 1)
+			{
+				$ThreadHidden = "<span style='color:gray;'>Hidden:</span> ";
+			}
+			echo "<tr><td class='row1'>" . $ThreadHidden . "<a href='/forums/$fseo/topic-$tid/s-0'>$ttitle</a></td><td class='row1' align='center'><a href='/forums/$fseo/'>$ftitle</a></td><td class='row1' align='center'>".$this->formatUsername($tpid)."</td><td class='row1' align='center'>$total_thread_posts</td><td class='row1' align='center'>$tviews</td><td class='row1' align='center'>$pdate4<br /><a href='/forums/$fseo/topic-$tid/showlastpost'>Last post by:</a><b>".checkUserNameNumber($puid)."</b></td></tr>";
 		}
 		echo "</table></td></tr>";
 		echo "</table></div><br /><br /><br />";
