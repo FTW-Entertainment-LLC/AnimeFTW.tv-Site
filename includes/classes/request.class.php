@@ -391,6 +391,21 @@ class AnimeRequest extends Config{
 				$_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
 				//User wouldn't be able to change page since it would try to find the highlighted anime.
 			}
+			if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
+				$newurl = "";
+				if(!isset($_GET["page"])){
+					$_GET["page"]=1;
+				}
+				if($_GET["page"]<=$this->max_pages){
+					$_GET["page"] = $this->page+1;
+				}
+				if(!$this->foundhighlight){
+					if($_GET["page"]<=$this->max_pages){
+						header('Location: requests?'.http_build_query($_GET).'#reqinfo'.$_GET["highlight"]);
+					}
+				}
+				
+			}
 			echo'
 			
 			<div class="reqinfo'.$background_color.'" align = "center" name="request-'.$id.'">';
@@ -430,9 +445,10 @@ class AnimeRequest extends Config{
 				<div class="col" style="width: 60px;"><div style="display:inline-block"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
 				<div class="col" style="width: 160px;"><div style="display:inline-block">'.$this->formatUsername($user_id).'</div></div>
 				<div class="col" style="width: 100px;">'.date("Y-m-d", $date).'</div>
-			</div>
+				</div>
 			';
-			echo'<div class = "reqdetail">';
+			echo'
+			<div class = "reqdetail">';
 			
 			if($this->editmode){
 				echo '<div class="ardelete"><a data-id = "'.$id.'" data-name = "'.$name.'" class = "ardeletelink" href = "javascript:;">Delete entry</a></div>';
@@ -447,32 +463,32 @@ class AnimeRequest extends Config{
 					echo '<div class="ardelete" style="'.$extra.'"><a data-id = "'.$id.'" class = "arclaimlink" href = "javascript:;">Claim request!</a></div>';
 				}
 			}
-			
-			$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
-			$replies = $this->SingleVarQuery("SELECT count(pid) FROM forums_post WHERE ptid=".$tid, "count(pid)");
-			$replies--; //subtract one reply becuase the first post is not a reply
-			
-			echo $details.'<br><br>
-			<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
-			</div>
-			</div>';
+			echo '
+				<div class="tabs">
+					<ul class = "tab-links">
+						<li class="active">Details</li>
+						<li>Voters</li>
+					</ul>
+				
+					<div class = "tab-content>
+						<div id="detailstab" class="tab active">';
+							$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
+							$replies = $this->SingleVarQuery("SELECT count(pid) FROM forums_post WHERE ptid=".$tid, "count(pid)");
+							$replies--; //subtract one reply becuase the first post is not a reply
+							echo $details.'
+							<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
+						</div>
+						<div id="voterstab">
+							Voters
+						</div>
+					</div> <!-- End tab-content -->
+				</div><!--End tabs-->
+			</div><!--End reqdetail-->
+			</div><!--End reqinfo-->
+			';
 			$i++;
 		}
-		if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
-			$newurl = "";
-			if(!isset($_GET["page"])){
-				$_GET["page"]=1;
-			}
-			if($_GET["page"]<=$this->max_pages){
-				$_GET["page"] = $this->page+1;
-			}
-			if(!$this->foundhighlight){
-				if($_GET["page"]<=$this->max_pages){
-					header('Location: requests?'.http_build_query($_GET).'#reqinfo'.$_GET["highlight"]);
-				}
-			}
-			
-		}
+		
 		
 		
 		
