@@ -502,11 +502,20 @@ class AFTWVideos extends Config{
 		{
 			$epimage = $this->CDNHost . '/video-images/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_screen.jpeg';
 		}
+		// Autoplay functionality.
+		$autoplay = "";
+		if(isset($this->SettingsArray[15]) && $this->SettingsArray[15]['disabled'] != 1)
+		{
+			if($this->SettingsArray[15]['value'] == 30)
+			{
+				$autoplay = " autoplay";
+			}
+		}
 			
 		// All of the code for the HTML5 player is here.
 		echo '
-			<div id="aftw-video-wrapper"' . $hiddenstyle . '>
-				<video id="aftw-player" class="video-js vjs-default-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '">';
+			<div id="aftw-video-wrapper"' . $hiddenstyle . ' align="center">
+				<video id="aftw-player" class="video-js vjs-default-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . '>';
 				
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.				
@@ -584,6 +593,44 @@ class AFTWVideos extends Config{
 		echo '
 					return;
 				}
+				';				
+		// Auto Play feature
+		// Will auto move to the next page at the completion of video. We will want to
+		// add some sort of pause option down the line, technically pausing a video would 
+		// do what we need, but it could be useful.
+		if(isset($this->SettingsArray[15]) && $this->SettingsArray[15]['disabled'] != 1)
+		{
+			if($this->SettingsArray[15]['value'] == 30)
+			{
+				$query = "SELECT `id` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` > " . $EpisodeArray[0] . " LIMIT 0, 1";
+				$result = mysql_query($query);
+				$count = mysql_num_rows($result);
+				if($count > 0)
+				{
+					if($EpisodeArray[17] == 0)
+					{
+						// Episode
+						$mov = "ep";
+					}
+					else
+					{
+						// movie
+						$mov = "movie";
+					}
+					// we make sure that the current time equals the durration, then we redirect them.
+					echo '
+				if(current_time == durration)
+				{
+					window.location.href = "/anime/' . $SeriesArray[2] . '/' . $mov . '-' . ($EpisodeArray[0]+1) . '";
+				}
+					';
+				}
+				else
+				{
+				}
+			}
+		}
+		echo '
 			},1000);
 		</script>
 		<script>
@@ -826,6 +873,22 @@ class AFTWVideos extends Config{
 										</div>
 									</div>
 									<div id="video-right-column">
+										<div style="border-bottom:1px solid #D1D1D1;">
+										';
+										
+										$autoplaytext = '
+											<div class="video-episodes">AutoPlay is <span style="color:red;cursor:pointer;" title="Enable this Advanced Member feature in your Profile Settings!">Disabled</span></div>';
+										if(isset($this->SettingsArray[15]) && $this->SettingsArray[15]['disabled'] != 1)
+										{
+											if($this->SettingsArray[15]['value'] == 30)
+											{
+										$autoplaytext = '
+											<div class="video-episodes">AutoPlay is <span style="color:green;cursor:pointer;" title="The Videos will automatically start and move to the next episode once completed.">Enabled</span></div>';
+											}
+										}
+										echo $autoplaytext;
+										echo '
+										</div>
 										<div>';
 											echo $this->NextEpisodesV2($SeriesArray,$EpisodeArray);
 											echo '
