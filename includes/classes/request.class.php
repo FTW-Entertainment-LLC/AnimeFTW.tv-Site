@@ -652,6 +652,7 @@ class AnimeRequest extends Config{
 			});
 			$("#anidbhelplink").click(function() {
 				$("#anidbhelp").dialog( "open" );
+				return false;
 			});
 			</script>
 			<div style="height:15px;">
@@ -766,6 +767,7 @@ class AnimeRequest extends Config{
 		
 			$( "#resetbutton" ).click(function() {
 			  $("#searchform")[0].reset();
+				return false;
 			});
 			';
 			
@@ -836,6 +838,7 @@ class AnimeRequest extends Config{
 								}
 							}
 						});
+						return false;
 					},
 					Cancel: function() {
 						$( this ).dialog( "close" );
@@ -846,6 +849,7 @@ class AnimeRequest extends Config{
 			$("#requestlink").click(function() {
 				$("#dialog-form").load("/scripts.php?view=anime-requests&mode=request-anime-vote-form");
 				$("#dialog-form").dialog( "open" );
+				return false;
 				
 			});
 			
@@ -894,6 +898,7 @@ class AnimeRequest extends Config{
 									location.reload();
 								 }
 							});
+							return false;
 						}
 						else
 						{
@@ -914,6 +919,7 @@ class AnimeRequest extends Config{
 						location.reload();
 					 }
 				});
+				return false;
 			});';
 		}
 		echo '
@@ -1072,6 +1078,14 @@ class AnimeRequest extends Config{
 			$arid = $_GET["id"];
 			$query = "UPDATE `requests` SET `status` = '2' WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
 			mysql_query($query) or die('Error : ' . mysql_error());
+			// grab the information about the series entry.
+			$query = "SELECT `name`, `anidb`, `type`, `episodes` FROM `requests` WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
+			$result = mysql_query($query);
+			$seriesInfo = mysql_fetch_assoc($result);
+			// let's add a series to the claimed pile..
+			$seriestype = array("----", "Series", "OVA", "Movie");
+			$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`) VALUES ('" . $seriesInfo['name'] . "', '" . str_replace(' ', '', strtolower($seriesInfo['name'])) . "', '" . $seriesInfo['anidb'] . "/" . $seriesInfo['anidb'] . "', '" . $seriestype[$seriesInfo['type']] . "', '--x--', 'Claimed', '" . $this->UserArray[1] . "', NOW(), '" . $seriesInfo['anidb'] . "', '0', '0', 0)";
+			mysql_query($query);
 			$this->ModRecord("Marked an Anime Request (".$arid.") as Claimed."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
 		}
 		
