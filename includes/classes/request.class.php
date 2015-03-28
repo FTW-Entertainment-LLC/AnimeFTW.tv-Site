@@ -22,7 +22,7 @@ class AnimeRequest extends Config{
 	var $foundhighlight;
 	var $page;
 	var $max_pages;
-	var $fid = 3; //forum id
+	var $fid = 7; //forum id
 	var $rpp = 25; //requests per page
 	
 	public function getRemainingVotes()
@@ -98,7 +98,7 @@ class AnimeRequest extends Config{
 		
 		echo '
 		<div class="request-filter side-body-bg">
-			<form action="requests" method="get">
+			<form action="requests" method="get" id="searchform">
 				<div class="table-row">
 					<div class="col">
 						Series name:
@@ -131,8 +131,8 @@ class AnimeRequest extends Config{
 						$this->getSelect(array("----", "Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $value, null, "status", false);
 						echo '
 						<a href = "javascript:;" id="statushelp" title="Click to view status meanings!">?</a>
-						<div id="statushelp-content" title="Status Help">
-						<b>Pending</b> - No video technician has started working on this series yet.<br><br>
+						<div id="statushelp-content" title="Status Help" style="display:none">
+						<b>Pending</b> - Request is pending and can be voted to.<br><br>
 						<b>Claimed</b> - A Video Technician has claimed this series, meaning they\'ll start working on the series soon.<br><br>
 						<b>Encoding</b> - The series is currently being encoded.<br><br>
 						<b>Uploading</b> - The series is currently being uploaded to our servers.<br><br>
@@ -194,8 +194,9 @@ class AnimeRequest extends Config{
 					echo '
 					</div>
 				</div>
-				<div class="table-row">
-					<input name="search" type="submit" style="width: 60px;">
+				<div style="text-align: center;">
+				<button name="search" value="Submit" type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Search</span></button>
+				<button type="button" id="resetbutton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">Reset<span></button>
 				</div>
 			</form>
 		</div>
@@ -389,7 +390,7 @@ class AnimeRequest extends Config{
 			//$this->indScripts($id, $i, $name);
 			echo '
 				<div class = "table-row">
-				<div class="col" style="width: 380px" align = "left"><a class="live" href="javascript:;">'.$name.'</a></div>
+				<div class="col" style="width: 380px" align = "left">'.$name.'</div>
 				';
 				$result2 = mysql_query("SELECT count(*) from request_votes WHERE voted_to=$id");
 				$rvotes = mysql_result($result2, 0);
@@ -761,6 +762,11 @@ class AnimeRequest extends Config{
 		$this->editScripts(array("status", "type", "uploadsentry"));
 		echo '
 		$(document).ready(function(){
+		
+		
+			$( "#resetbutton" ).click(function() {
+			  $("#searchform")[0].reset();
+			});
 			';
 			
 			$this->indScripts();
@@ -1157,6 +1163,40 @@ class AnimeRequest extends Config{
 		{
 			echo "Request already exist";
 		}
+	}public function matchRequest($pbody){
+		$out;
+		preg_match_all("/\[animerequest\](\d+)\[\/animerequest\]/", $pbody, $out);
+		
+		foreach($out[0] as $i){ //Delete the found text from the body.
+			$pbody = str_replace($i, " ", $pbody);
+		}
+		
+		foreach($out[1] as $i){
+			//echo $i;
+			$req_query = "SELECT Username, name, status, type, episodes, anidb, user_id, date, description, details FROM user_requests WHERE id='".$i."'";
+			$req_result = mysql_query($req_query) or die('Error : ' . mysql_error());
+			if(mysql_num_rows($req_result)>0){
+				while(list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysql_fetch_array($req_result)){
+					if($episodes==0){
+						$episodes = "?";
+					}
+					$pbody = $pbody.'
+					Request: <a href="/requests?highlight='.$i.'">'.$name.'</a><br>
+					Requested by: '.$this->formatUsername($user_id).'<br>
+					AniDB: <a href="http://anidb.net/a'.$anidb.'">'.$anidb.'</a><br>
+					Status: '.$this->getStatus($status).'<br>
+					Episodes: '.$episodes.'<br>
+					Requested: '.date("Y-m-d H:i:s", $date).'<br>
+					Description: '.$description.'<br><br>
+					User Comments:<br>'.$details.'<br><br>
+					
+					';
+				}
+			}else{
+				$pbody = $pbody."Anime Request Error: Couldn't retrieve Anime Request information.";
+			}
+		}
+		return $pbody;
 	}
 	
 }

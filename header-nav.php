@@ -34,7 +34,7 @@ else {
 <a id=\"tab-2\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php' || $_SERVER['PHP_SELF'] == '/search.php'){echo ' current';} echo "\" href=\"/anime\">Anime</a>
 <a id=\"tab-3\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/messages.php'){echo ' current';} echo "\" href=\"/user\">Profile</a>
 <a id=\"tab-4\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'store')){echo ' current';} echo "\" href=\"/store\">Store</a>
-<a id=\"tab-5\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/forums.php'){echo ' current';} echo "\" href=\"/forums\">Forum</a>";
+<a id=\"tab-5\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/forums.php'|| $_SERVER['PHP_SELF'] == '/request.php'){echo ' current';} echo "\" href=\"/forums\">Forum</a>";
 	if($profileArray[2] == 3)
 	{
 		echo "<a id=\"tab-6\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'advanced-signup')){echo ' current';} echo "\" href=\"/advanced-signup\">Adv.</a>";
@@ -137,7 +137,7 @@ else {
 						}
 						echo "</div>
 						<div id=\"hover-tab-4\" class=\"pane-subnav\" align=\"center\">Love AnimeFTW.tv? Check out the Store for awesome Goodies, AFTW Style.</div>
-						<div id=\"hover-tab-5\" class=\"pane-subnav\" align=\"center\"><a href='/forums/global-announcements/'>Announcements</a> | <a href='/forums/releases/'>Releases</a> | <a href='/forums/anime-requests/'>Anime Requests</a> | <a href='/forums/bug-reports/'>Bug Reports</a> | <a href='/forums/active-topics'>Active Topics</a></div>
+						<div id=\"hover-tab-5\" class=\"pane-subnav\" align=\"center\"><a href='/forums/global-announcements/'>Announcements</a> | <a href='/forums/releases/'>Releases</a> | <a href='/requests'>Anime Requests</a> | <a href='/forums/bug-reports/'>Bug Reports</a> | <a href='/forums/active-topics'>Active Topics</a></div>
 						<div id=\"hover-tab-6\" class=\"pane-subnav\" align=\"center\">Get the Perks of Advanced Membership Today!</div> 
 						<div id=\"hover-tab-7\" class=\"pane-subnav\" align=\"center\">Join the Staff and other Members in Chat!</div> 
 						<div id=\"hover-tab-8\" class=\"pane-subnav\" align=\"center\">Want to help AnimeFTW.tv Spread Anime Love? Apply Within!</div> 
