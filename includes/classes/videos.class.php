@@ -506,7 +506,7 @@ class AFTWVideos extends Config{
 		$autoplay = "";
 		if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
 		{
-			if($this->SettingsArray[16]['value'] == 30)
+			if($this->SettingsArray[16]['value'] == 33)
 			{
 				$autoplay = " autoplay";
 			}
@@ -600,7 +600,7 @@ class AFTWVideos extends Config{
 		// do what we need, but it could be useful.
 		if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
 		{
-			if($this->SettingsArray[16]['value'] == 30)
+			if($this->SettingsArray[16]['value'] == 33)
 			{
 				$query = "SELECT `id` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` > " . $EpisodeArray[0] . " LIMIT 0, 1";
 				$result = mysql_query($query);
@@ -880,7 +880,7 @@ class AFTWVideos extends Config{
 											<div class="video-episodes">AutoPlay is <span style="color:red;cursor:pointer;" title="Enable this Advanced Member feature in your Profile Settings!">Disabled</span></div>';
 										if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
 										{
-											if($this->SettingsArray[16]['value'] == 30)
+											if($this->SettingsArray[16]['value'] == 33)
 											{
 										$autoplaytext = '
 											<div class="video-episodes">AutoPlay is <span style="color:green;cursor:pointer;" title="The Videos will automatically start and move to the next episode once completed.">Enabled</span></div>';
