@@ -15,7 +15,6 @@ echo "<td width='".THEME_WIDTH."' class='main-bg'>\n";
 // End Main BG
 echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 echo "</tr>\n</table>\n";
-echo "<br />\n<br />\n";
 // Start Mid and Right Content
 
 $r->init();

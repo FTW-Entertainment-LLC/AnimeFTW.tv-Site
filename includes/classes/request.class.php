@@ -98,7 +98,14 @@ class AnimeRequest extends Config{
 		
 		echo '
 		<div class="request-filter side-body-bg">
+						<div style="font-size:14px;">Search for an Existing Request.</div>
 			<form action="requests" method="get" id="searchform">
+				<div class="table-row">
+					<div class="col">
+					</div>
+					<div class="col">
+					</div>
+				</div>
 				<div class="table-row">
 					<div class="col">
 						Series name:
@@ -205,7 +212,7 @@ class AnimeRequest extends Config{
 		
 		<div id="dialog-form" title="Anime Request"></div>
 		<div style="font-size: 11px;float: left">
-		<a href="javascript:;" id="requestlink" title="Press to open the request form!">Request new anime</a><br />
+		<a href="javascript:;" id="requestlink" title="Press to open the request form!" style="font-size:14px;">Request new anime</a><br />
 		Votes available: '.($this->maxvotes-$this->votes).'</br>
 		Current votes: '.$this->votes.' times<br>
 		Previous votes: '.$this->oldvotes.'
