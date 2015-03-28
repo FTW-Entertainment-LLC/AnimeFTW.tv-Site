@@ -874,7 +874,7 @@ class AFTWVideos extends Config{
 									</div>
 									<div id="video-right-column">
 										<div style="border-bottom:1px solid #D1D1D1;">
-										';
+										'; 
 										
 										$autoplaytext = '
 											<div class="video-episodes">AutoPlay is <span style="color:red;cursor:pointer;" title="Enable this Advanced Member feature in your Profile Settings!">Disabled</span></div>';
