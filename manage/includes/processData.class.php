@@ -397,7 +397,14 @@ class processData extends Config {
 				`change` = " . $Change. "
 				WHERE `uestatus`.`ID` = " . mysql_real_escape_string($_POST['ueid']);
 				mysql_query($query) or die(mysql_error());
-								
+				
+				// ADDED: 27/03/15 by Robotman321
+				// will update the Requests entry to ensure things are kept up to date.
+				$EntryStatuses = array("pending", "claimed", "encoding", "uploading", "ongoing", "stalled", "done", "live", "denied");
+				// we will want to map the request to the uploads entry down the line, it will keep things working correctly..
+				$query = "UPDATE `requests` SET `status` = " . array_search($_POST['Status'], $EntryStatuses) . " WHERE `anidb` = " . mysql_real_escape_string($_POST['anidb']);
+				mysql_query($query) or die(mysql_error());
+				
 				$this->ModRecord('Editted Tracker entry ' . mysql_real_escape_string($_POST['ueid']));
 				echo 'Success';
 				//echo $query;
