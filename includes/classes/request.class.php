@@ -401,20 +401,19 @@ class AnimeRequest extends Config{
 				';
 				$result2 = mysql_query("SELECT count(*) from request_votes WHERE voted_to=$id");
 				$rvotes = mysql_result($result2, 0);
-				$result2 = mysql_query("SELECT count(*) AS votes from request_votes WHERE voted_by=$user_id AND voted_to=$id");
-				$personalvotes = mysql_result($result2, 0);
-				
+				$result2 = mysql_query("SELECT count(*) AS votes from request_votes WHERE voted_by=".$this->UserArray[1]." AND voted_to=".$id);
+				$personalvotes = intval(mysql_result($result2, 0));
 				echo '
 				<div class="col" style="width: 60px;">'.$rvotes.' <div style="display:inline-block">';
 				if($status==1&&$this->UserArray[2]!=0){ //Vote available only if the request is pending, and if the user is logged in.
-					if($this->maxvotes-$this->votes>0||$rvotes>0)
+					if(($this->maxvotes-$this->votes>0)||$personalvotes>0)
 						echo '(';
 					if($this->maxvotes-$this->votes>0)
 						echo '<a data-id="'.$id.'" class="voteclick" href="javascript:;">+</a>';
 					if($personalvotes>0){
 						echo '<a data-id="'.$id.'" class="votedeleteclick" href="javascript:;">-</a>';
 					}
-					if($this->maxvotes-$this->votes>0||$rvotes>0)
+					if(($this->maxvotes-$this->votes>0)||$personalvotes>0)
 						echo ')';
 				}
 				echo '</div></div>
