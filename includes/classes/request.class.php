@@ -466,22 +466,20 @@ class AnimeRequest extends Config{
 			echo '
 				<div class="tabs">
 					<ul class = "tab-links">
-						<li class="active">Details</li>
-						<li>Voters</li>
+						<li class="active" data-tab="detailstab">Details</li>
+						<li data-tab="voterstab">Voters</li>
 					</ul>
 				
-					<div class = "tab-content>
-						<div id="detailstab" class="tab active">';
-							$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
-							$replies = $this->SingleVarQuery("SELECT count(pid) FROM forums_post WHERE ptid=".$tid, "count(pid)");
-							$replies--; //subtract one reply becuase the first post is not a reply
-							echo $details.'
-							<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
-						</div>
-						<div id="voterstab">
-							Voters
-						</div>
-					</div> <!-- End tab-content -->
+					<div id="detailstab" class="tab-content active">';
+						$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
+						$replies = $this->SingleVarQuery("SELECT count(pid) FROM forums_post WHERE ptid=".$tid, "count(pid)");
+						$replies--; //subtract one reply becuase the first post is not a reply
+						echo $details.'
+						<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
+					</div>
+					<div id="voterstab" class="tab-content">
+						Voters
+					</div>
 				</div><!--End tabs-->
 			</div><!--End reqdetail-->
 			</div><!--End reqinfo-->
@@ -773,6 +771,25 @@ class AnimeRequest extends Config{
 			width: 470px;
 		}.request-filter .col{
 			padding-right: 10px;
+		}ul.tab-links{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}ul.tab-links li{
+			background: none;
+			color: #222;
+			display: inline-block;
+			padding: 10px 15px;
+			cursor: pointer;
+		}ul.tab-links li.active{
+			background: #ededed;
+			color: #222;
+		}.tab-content{
+			display: none;
+			background: #ededed;
+			padding: 15px;
+		}.tab-content.active{
+			display: inherit;
 		}
 		
 		</style>';
@@ -795,6 +812,15 @@ class AnimeRequest extends Config{
 			
 			$this->indScripts();
 			echo '
+			$("ul.tab-links li").click(function(){
+				var tab_id = $(this).attr("data-tab");
+				console.log(tab_id);
+				$("ul.tab-links li").removeClass("active");
+				$(".tab-content").removeClass("active");
+
+				$(this).addClass("active");
+				$("#"+tab_id).addClass("active");
+			})
 			//$("#requestlink").click(function(){
 			//	$("#request-anime").slideToggle("fast");
 			//});
@@ -900,7 +926,7 @@ class AnimeRequest extends Config{
 			e.stopPropagation();
 			return false;
 		});*/
-		$(".reqinfo a, select").not(".live").click(function(e) {
+		$(".reqinfo a, select, ul.tab-links").not(".live").click(function(e) {
 			e.stopPropagation();
 		});
 		
