@@ -464,21 +464,25 @@ class AnimeRequest extends Config{
 				}
 			}
 			echo '
-				<div class="tabs">
+				<div class="tabs" data-id="'.$id.'">
 					<ul class = "tab-links">
 						<li class="active" data-tab="detailstab">Details</li>
 						<li data-tab="voterstab">Voters</li>
 					</ul>
-				
-					<div id="detailstab" class="tab-content active">';
-						$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
-						$replies = $this->SingleVarQuery("SELECT count(pid) FROM forums_post WHERE ptid=".$tid, "count(pid)");
-						$replies--; //subtract one reply becuase the first post is not a reply
-						echo $details.'
-						<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
-					</div>
-					<div id="voterstab" class="tab-content">
-						Voters
+					<div id="tab-contents">
+						<div id="detailstab" class="tab-content active">';
+							$tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$id, "tid");
+							$replies = $this->SingleVarQuery("SELECT count(pid) FROM forums_post WHERE ptid=".$tid, "count(pid)");
+							$replies--; //subtract one reply becuase the first post is not a reply
+							echo $details.'
+							<a href="/forums/anime-requests/topic-'.$tid.'">Comments('.$replies.')</a>
+						</div>
+						<div id="voterstab" class="tab-content">
+							';
+							$voters = $this->getVoters($id);
+							$this->printVoters($voters);
+							echo '
+						</div>
 					</div>
 				</div><!--End tabs-->
 			</div><!--End reqdetail-->
@@ -781,15 +785,30 @@ class AnimeRequest extends Config{
 			display: inline-block;
 			padding: 10px 15px;
 			cursor: pointer;
-		}ul.tab-links li.active{
+			-webkit-border-top-left-radius: 4px;
+			-webkit-border-top-right-radius: 4px;
+			-moz-border-radius-topleft: 4px;
+			-moz-border-radius-topright: 4px;
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+			margin-bottom: -2px;
+		}ul.tab-links li:hover{
+			background-color: #ededed;;
+		}
+		ul.tab-links li.active{
 			background: #ededed;
 			color: #222;
 		}.tab-content{
 			display: none;
 			background: #ededed;
 			padding: 15px;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
 		}.tab-content.active{
 			display: inherit;
+		}.tab-content .table-row{
+			border-bottom: 1px solid grey;
 		}
 		
 		</style>';
@@ -814,12 +833,13 @@ class AnimeRequest extends Config{
 			echo '
 			$("ul.tab-links li").click(function(){
 				var tab_id = $(this).attr("data-tab");
-				console.log(tab_id);
-				$("ul.tab-links li").removeClass("active");
-				$(".tab-content").removeClass("active");
-
-				$(this).addClass("active");
-				$("#"+tab_id).addClass("active");
+				var req_id = $(this).closest(".tabs").attr("data-id");
+				console.log(req_id);
+				$(".tabs[data-id="+req_id+"]").find("ul.tab-links li").removeClass("active");
+				$(".tabs[data-id="+req_id+"]").find(".tab-content").removeClass("active");
+				
+				$(".tabs[data-id="+req_id+"]").find(this).addClass("active");
+				$(".tabs[data-id="+req_id+"]").find("#"+tab_id).addClass("active");
 			})
 			//$("#requestlink").click(function(){
 			//	$("#request-anime").slideToggle("fast");
@@ -1259,6 +1279,37 @@ class AnimeRequest extends Config{
 			}
 		}
 		return $pbody;
+	}private function getVoters($id){
+		$query = "SELECT count(1) AS `votes`, `voted_by`, `voted_to` FROM `request_votes` WHERE `voted_to`=".$id." group by `voted_by`, `voted_to`";
+		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		return $result;
+	}private function printVoters($result){
+		if(mysql_num_rows($result)>0){
+			echo '
+			<div class="table-row">
+				<div class="col" style="width:100%">
+					Username
+				</div>
+				<div class="col">
+					Votes
+				</div>
+			</div>
+			';
+			while(list($votes, $voted_by) = mysql_fetch_array($result)){
+				echo '
+				<div class="table-row">
+					<div class="col">
+						'.$this->formatUsername($voted_by).'
+					</div>
+					<div class="col" style="text-align: center;">
+						'.$votes.'
+					</div>
+				</div>
+				';
+			}
+		}else{
+			echo "No one has voted yet.";
+		}
 	}
 	
 }
