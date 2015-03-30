@@ -17,7 +17,7 @@ getEpisodeTitle($aid, $epno);
 
 \****************************************************************/
 
-class AniDB{
+class AniDB extends Config{ //Needed for modrecord
 	private $rootdirectory;
 	public function __construct()
 	{
@@ -55,10 +55,18 @@ class AniDB{
 		//echo "Caching anime...<br>";
 		//code from  messer00, http://anidb.net/perl-bin/animedb.pl?show=cmt&id=30158
 		// Remember to change client name below. Also - put anidb's aid in $aid variable first
-
-		
+		$this->ModRecord('Fetching '.$filename.' from AniDB.'); //Loggin so we can see exactly when we've tried to request from the API.
 		$post = 'http://api.anidb.net:9001/httpapi?request=anime&client=animeftw&clientver=1&protover=1&aid='.$aid;
-
+		
+		$current = time();
+		$calledLast = strtotime($this->SingleVarQuery("SELECT lasthttpcall FROM `anidb_api`", "lasthttpcall")); //Get the time of last call
+		if($current < ($calledLast + 2)){ //If it hasn't been more than 10 seconds since last call
+			echo 'Please wait before trying again';
+			return;
+		}
+		$query = "UPDATE anidb_api SET lasthttpcall=CURRENT_TIMESTAMP"; //Everything's okay, set it to the current time and continue.
+		$results = mysql_query($query);
+		
 		//im using cURL, simulating http connection with browser and getting data from anidb
 		  $ch = curl_init();
 
@@ -93,7 +101,10 @@ class AniDB{
 		}
 		
 		$ha = fopen($filename,"w");
-		fputs($ha,$string);
+		$fputs = fputs($ha,$string);
+		if($fputs==false){
+			$this->ModRecord('AniDB: Couldn\'t cache '.$filename); //Logging if saving the file didn't work.
+		}
 		fclose($ha);
 	}
 	
@@ -159,6 +170,20 @@ class AniDB{
 					break;
 				}
 			}
+		}else{
+			return null;
+		}
+	}
+	public function getEpisodeTitles($aid, $epfrom, $epto){
+		$xml = $this->getxml($aid);
+		$episodes = array();
+		if($xml){
+			foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
+				if($i->epno>=$epfrom&&$i->epno<=$epto){ //If it's the episodes we're looking for.
+					$episodes[intval($i->epno)] = strval($i->title[1]);
+				}
+			}
+			return $episodes;
 		}else{
 			return null;
 		}

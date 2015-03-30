@@ -689,7 +689,7 @@ class processData extends Config {
 			$addtime = time();
 		}
 		
-		
+		$eptitles; //declaration
 		if($auto==FALSE){
 			$fromep = $epnumber;
 			$toep = $epnumber;
@@ -697,6 +697,8 @@ class processData extends Config {
 			if($toep>$AniDB->getEpisodeCount($anidbid)){
 				echo 'Error: Max episode is higher than AniDB\'s episode.';
 				exit;
+			}else{
+				$eptitles = $AniDB->getEpisodeTitles($anidbid, $fromep, $toep);
 			}
 		}
 		if($fromep<0||$toep<0){ //If someone writes in negative values for whatever reason..
@@ -706,8 +708,8 @@ class processData extends Config {
 		
 		for($i=$fromep;$i<=$toep;$i++){
 			$epnumber = mysql_real_escape_string($i);
-			if($auto){
-				$epname = $AniDB->getEpisodeTitle($anidbid, $i);
+			if($auto){ //If it's auto, we know that $eptitles is initialized
+				$epname = $eptitles[$i];
 			}
 			$NextEp = $i+1;
 			// ADDED: 8/13/14 - robotman321
