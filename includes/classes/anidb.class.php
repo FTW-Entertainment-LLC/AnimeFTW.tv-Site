@@ -106,6 +106,7 @@ class AniDB extends Config{ //Needed for modrecord
 			$this->ModRecord('AniDB: Couldn\'t cache '.$filename); //Logging if saving the file didn't work.
 		}
 		fclose($ha);
+		chmod($filename, 0777);
 	}
 	
 	public function getName($lang,$aid){
