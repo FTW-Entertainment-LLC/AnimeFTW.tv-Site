@@ -56,7 +56,7 @@ class AniDB{
 		//code from  messer00, http://anidb.net/perl-bin/animedb.pl?show=cmt&id=30158
 		// Remember to change client name below. Also - put anidb's aid in $aid variable first
 
-		
+		$this->ModRecord('Fetching '.$filename.' from AniDB.'); //Loggin so we can see exactly when we've tried to request from the API.
 		$post = 'http://api.anidb.net:9001/httpapi?request=anime&client=animeftw&clientver=1&protover=1&aid='.$aid;
 
 		//im using cURL, simulating http connection with browser and getting data from anidb
@@ -93,7 +93,10 @@ class AniDB{
 		}
 		
 		$ha = fopen($filename,"w");
-		fputs($ha,$string);
+		$fputs = fputs($ha,$string);
+		if($fputs==false){
+			$this->ModRecord('AniDB: Couldn\'t cache '.$filename); //Loggin so we can see exactly when we've tried to request from the API.
+		}
 		fclose($ha);
 	}
 	
