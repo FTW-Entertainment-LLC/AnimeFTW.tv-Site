@@ -56,7 +56,6 @@ class AniDB extends Config{ //Needed for modrecord
 		//echo "Caching anime...<br>";
 		//code from  messer00, http://anidb.net/perl-bin/animedb.pl?show=cmt&id=30158
 		// Remember to change client name below. Also - put anidb's aid in $aid variable first
-
 		$this->ModRecord('Fetching '.$filename.' from AniDB.'); //Loggin so we can see exactly when we've tried to request from the API.
 		$post = 'http://api.anidb.net:9001/httpapi?request=anime&client=animeftw&clientver=1&protover=1&aid='.$aid;
 		
@@ -173,6 +172,20 @@ class AniDB extends Config{ //Needed for modrecord
 					break;
 				}
 			}
+		}else{
+			return null;
+		}
+	}
+	public function getEpisodeTitles($aid, $epfrom, $epto){
+		$xml = $this->getxml($aid);
+		$episodes = array();
+		if($xml){
+			foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
+				if($i->epno>=$epfrom&&$i->epno<=$epto){ //If it's the episodes we're looking for.
+					$episodes[intval($i->epno)] = strval($i->title[1]);
+				}
+			}
+			return $episodes;
 		}else{
 			return null;
 		}
