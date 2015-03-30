@@ -19,7 +19,6 @@ getEpisodeTitle($aid, $epno);
 
 class AniDB extends Config{ //Needed for modrecord
 	private $rootdirectory;
-	private static $calledLast; //Static so we keep this variable throughout the class.
 	public function __construct()
 	{
 		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
@@ -60,14 +59,13 @@ class AniDB extends Config{ //Needed for modrecord
 		$post = 'http://api.anidb.net:9001/httpapi?request=anime&client=animeftw&clientver=1&protover=1&aid='.$aid;
 		
 		$current = time();
-		if(self::$calledLast!=null){
-			while($current < self::$calledLast + 10){ //If it hasn't been more than 10 seconds since last call
-				sleep(1); //We wait one second and then try again.
-			}
-			self::$calledLast = $current; //Everything's okay, set it to the current time and continue.
-		}else{
-			self::$calledLast = $current; //If this was the first time it was called, then we put in the current time and continue.
+		$calledLast = strtotime($this->SingleVarQuery("SELECT lasthttpcall FROM `anidb_api`", "lasthttpcall")); //Get the time of last call
+		if($current < ($calledLast + 2)){ //If it hasn't been more than 10 seconds since last call
+			echo 'Please wait before trying again';
+			return;
 		}
+		$query = "UPDATE anidb_api SET lasthttpcall=CURRENT_TIMESTAMP"; //Everything's okay, set it to the current time and continue.
+		$results = mysql_query($query);
 		
 		//im using cURL, simulating http connection with browser and getting data from anidb
 		  $ch = curl_init();
