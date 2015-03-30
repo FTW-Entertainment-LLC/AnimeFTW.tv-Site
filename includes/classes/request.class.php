@@ -499,8 +499,6 @@ class AnimeRequest extends Config{
 			echo 'Please login to request an anime.';
 			return;
 		}
-		echo "We're currently facing some issues and the request form has been disabled until these issues have been resolved. Thank your for your patience";
-		return; 
 		if(isset($_GET["id"]) && is_numeric($_GET["id"])){
 			$status = $this->SingleVarQuery("SELECT status FROM requests WHERE id=".$_GET["id"], "status"); 
 		}
