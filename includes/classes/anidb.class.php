@@ -19,6 +19,7 @@ getEpisodeTitle($aid, $epno);
 
 class AniDB{
 	private $rootdirectory;
+	private static $calledLast; //Static so we keep this variable throughout the class.
 	public function __construct()
 	{
 		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
@@ -56,9 +57,19 @@ class AniDB{
 		//code from  messer00, http://anidb.net/perl-bin/animedb.pl?show=cmt&id=30158
 		// Remember to change client name below. Also - put anidb's aid in $aid variable first
 
-		
+		$this->ModRecord('Fetching '.$filename.' from AniDB.'); //Loggin so we can see exactly when we've tried to request from the API.
 		$post = 'http://api.anidb.net:9001/httpapi?request=anime&client=animeftw&clientver=1&protover=1&aid='.$aid;
-
+		
+		$current = time();
+		if(self::$calledLast!=null){
+			while($current < self::$calledLast + 10){ //If it hasn't been more than 10 seconds since last call
+				sleep(1); //We wait one second and then try again.
+			}
+			self::$calledLast = $current; //Everything's okay, set it to the current time and continue.
+		}else{
+			self::$calledLast = $current; //If this was the first time it was called, then we put in the current time and continue.
+		}
+		
 		//im using cURL, simulating http connection with browser and getting data from anidb
 		  $ch = curl_init();
 
@@ -93,7 +104,10 @@ class AniDB{
 		}
 		
 		$ha = fopen($filename,"w");
-		fputs($ha,$string);
+		$fputs = fputs($ha,$string);
+		if($fputs==false){
+			$this->ModRecord('AniDB: Couldn\'t cache '.$filename); //Logging if saving the file didn't work.
+		}
 		fclose($ha);
 	}
 	
