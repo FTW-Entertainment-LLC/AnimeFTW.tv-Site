@@ -17,7 +17,7 @@ getEpisodeTitle($aid, $epno);
 
 \****************************************************************/
 
-class AniDB{
+class AniDB extends Config{ //Needed for modrecord
 	private $rootdirectory;
 	private static $calledLast; //Static so we keep this variable throughout the class.
 	public function __construct()
