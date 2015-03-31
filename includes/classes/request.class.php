@@ -808,7 +808,9 @@ class AnimeRequest extends Config{
 		}.tab-content.active{
 			display: inherit;
 		}.tab-content .table-row{
-			border-bottom: 1px solid grey;
+			border-bottom: 1px solid rgb(161, 161, 161);;
+		}#voterstab .col{
+			  padding: 6px 20px;
 		}
 		
 		</style>';
@@ -1280,13 +1282,13 @@ class AnimeRequest extends Config{
 		}
 		return $pbody;
 	}private function getVoters($id){
-		$query = "SELECT count(1) AS `votes`, `voted_by`, `voted_to` FROM `request_votes` WHERE `voted_to`=".$id." group by `voted_by`, `voted_to`";
+		$query = "SELECT count(1) AS `votes`, `voted_by`, `voted_to` FROM `request_votes` WHERE `voted_to`=".$id." group by `voted_by`, `voted_to` ORDER BY votes DESC";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		return $result;
 	}private function printVoters($result){
 		if(mysql_num_rows($result)>0){
 			echo '
-			<div class="table-row">
+			<div class="table-row" style="background: linear-gradient(rgb(205, 205, 205), rgb(228, 228, 228), rgb(205, 205, 205));">
 				<div class="col" style="width:100%">
 					Username
 				</div>
