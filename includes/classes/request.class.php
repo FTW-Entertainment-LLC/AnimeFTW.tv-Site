@@ -1090,8 +1090,12 @@ class AnimeRequest extends Config{
 			$seriesInfo = mysql_fetch_assoc($result);
 			// let's add a series to the claimed pile..
 			$seriestype = array("----", "Series", "OVA", "Movie");
-			$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`) VALUES ('" . $seriesInfo['name'] . "', '" . str_replace(' ', '', strtolower($seriesInfo['name'])) . "', '" . $seriesInfo['anidb'] . "/" . $seriesInfo['anidb'] . "', '" . $seriestype[$seriesInfo['type']] . "', '--x--', 'Claimed', '" . $this->UserArray[1] . "', NOW(), '" . $seriesInfo['anidb'] . "', '0', '0', 0)";
-			mysql_query($query);
+			$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`) VALUES ('" . $seriesInfo['name'] . "', '" . str_replace(' ', '', strtolower($seriesInfo['name'])) . "', '" . $seriesInfo['episodes'] . "/" . $seriesInfo['episodes'] . "', '" . $seriestype[$seriesInfo['type']] . "', '--x--', 'Claimed', '" . $this->UserArray[1] . "', NOW(), '" . $seriesInfo['anidb'] . "', '0', '0', 0)";
+			mysql_query($query) or die('Error : ' . mysql_error());
+			$ueid = mysql_insert_id();
+			$query = "UPDATE `requests` SET `uid` = '".$ueid."' WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
+			mysql_query($query) or die('Error : ' . mysql_error());
+			
 			$this->ModRecord("Marked an Anime Request (".$arid.") as Claimed."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
 		}
 		
