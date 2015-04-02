@@ -164,12 +164,14 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getEpisodeTitle($aid, $epno){ //Returns the title of the episode.
 		$xml = $this->getxml($aid);
+		$count = 0;
 		if($xml){
 			foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
 				if($i->epno==$epno){ //If it's the one we're looking for
-					return $i->title[1];
+					return $i->xpath('//episodes/episode/title[@xml:lang="en"]')[$count];
 					break;
 				}
+				$count++;
 			}
 		}else{
 			return null;
@@ -178,11 +180,13 @@ class AniDB extends Config{ //Needed for modrecord
 	public function getEpisodeTitles($aid, $epfrom, $epto){
 		$xml = $this->getxml($aid);
 		$episodes = array();
+		$count = 0;
 		if($xml){
 			foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
 				if($i->epno>=$epfrom&&$i->epno<=$epto){ //If it's the episodes we're looking for.
-					$episodes[intval($i->epno)] = strval($i->title[1]);
+					$episodes[intval($i->epno)] = strval($xml->xpath('//episodes/episode/title[@xml:lang="en"]')[$count]);
 				}
+				$count++;
 			}
 			return $episodes;
 		}else{
