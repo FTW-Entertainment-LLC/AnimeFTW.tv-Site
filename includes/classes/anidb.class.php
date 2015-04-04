@@ -98,6 +98,8 @@ class AniDB extends Config{ //Needed for modrecord
 		if($string == "<error>Anime not found</error>"){
 			echo 'Anime not found';
 			return;
+		}else if($string == "<error>aid Missing or Invalid</error>"){
+			echo 'AniDB ID is invalid';
 		}
 		
 		$ha = fopen($filename,"w");
