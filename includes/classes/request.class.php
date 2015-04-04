@@ -571,6 +571,7 @@ class AnimeRequest extends Config{
 		else if(isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])){
 			
 			include("includes/classes/anidb.class.php");
+			$this->ModRecord("Requested an anime with AniDB (\"".$_GET["anidb"]."\")");
 			$AniDB  = new AniDB();
 			$AID = $_GET["anidb"];
 			$name = $AniDB->getName("en",$AID);
