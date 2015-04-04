@@ -100,6 +100,10 @@ class AniDB extends Config{ //Needed for modrecord
 			return;
 		}else if($string == "<error>aid Missing or Invalid</error>"){
 			echo 'AniDB ID is invalid';
+			return;
+		}else if($string == "<error>Banned</error>"){
+			echo 'Cant\'t get Anime information for the time being';
+			return;
 		}
 		
 		$ha = fopen($filename,"w");
