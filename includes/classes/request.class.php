@@ -419,7 +419,7 @@ class AnimeRequest extends Config{
 				}
 				if(!$this->foundhighlight){
 					if($_GET["page"]<=$this->max_pages){
-						header('Location: requests?'.http_build_query($_GET).'#reqinfo'.$_GET["highlight"]);
+						header('Location: requests?'.http_build_query($_GET));
 					}
 				}
 				
