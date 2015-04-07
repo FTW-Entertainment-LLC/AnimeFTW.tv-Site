@@ -390,6 +390,24 @@ class AnimeRequest extends Config{
 				$this->foundhighlight = true;
 				$_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
 				//User wouldn't be able to change page since it would try to find the highlighted anime.
+				echo "
+				<script>
+				$( document ).ready(function() {
+					var elOffset = $('.reqinfo[name=request-".$this->highlight."]').offset().top;
+					var elHeight = $('.reqinfo[name=request-".$this->highlight."]').height();
+					var windowHeight = $(window).height();
+					var offset;
+
+					if (elHeight < windowHeight) {
+						offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+					}
+					else {
+						offset = elOffset;
+					}
+					$('html, body').animate({scrollTop:offset}, 1000);
+				});
+				</script>
+				";
 			}
 			if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
 				$newurl = "";
@@ -833,6 +851,8 @@ class AnimeRequest extends Config{
 			';
 			
 			$this->indScripts();
+			
+			
 			echo '
 			$("ul.tab-links li").click(function(){
 				var tab_id = $(this).attr("data-tab");
