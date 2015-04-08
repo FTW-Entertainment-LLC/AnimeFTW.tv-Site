@@ -47,14 +47,20 @@ class AFTWNotifications extends Config {
 	{
 		if($this->UserArray[0] == 1)
 		{
-			$query = mysql_query("SELECT id FROM notifications WHERE notifications.date > ".$this->UserArray[12]." AND (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1].")))"); 
-			$CountNotes = mysql_num_rows($query);
-			if($CountNotes > 0)
+			$query = mysql_query("SELECT COUNT(id) as Total FROM notifications WHERE notifications.date > ".$this->UserArray[12]." AND (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1].")))"); 
+			if(!$query)
 			{
-				return '<span class="JewelNotif2 disBlock" id="requestJewelNotif">'.$CountNotes.'</span>';
 			}
-			else 
+			else
 			{
+				$CountNotes = mysql_result($query,0);
+				if($CountNotes > 0)
+				{
+					return '<span class="JewelNotif2 disBlock" id="requestJewelNotif">'.$CountNotes.'</span>';
+				}
+				else 
+				{
+				}
 			}
 		}
 		else {
