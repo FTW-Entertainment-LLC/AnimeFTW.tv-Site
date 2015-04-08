@@ -471,30 +471,34 @@ class Config {
 	
 	private function array_buildRecentlyWatchedEpisodes()
 	{
-		$query = "SELECT `eid`, `time`, `updated`, `max` FROM `episode_timer` WHERE `uid` = " . $this->UserArray[1];
-		$result = mysql_query($query);
-		
-		if(!$result)
+		// let's only load this when it's a video page..
+		if($_SERVER['PHP_SELF'] == '/videos.php')
 		{
-			echo 'There was an issue with the communications.';
-		}
-		else
-		{
-			$count = mysql_num_rows($result);
-			if($count > 0)
+			$query = "SELECT `eid`, `time`, `updated`, `max` FROM `episode_timer` WHERE `uid` = " . $this->UserArray[1];
+			$result = mysql_query($query);
+			
+			if(!$result)
 			{
-				$i = 0;
-				while($row = mysql_fetch_assoc($result))
-				{
-					$this->RecentEps[$row['eid']]['time'] = $row['time'];
-					$this->RecentEps[$row['eid']]['updated'] = $row['updated'];
-					$this->RecentEps[$row['eid']]['max'] = $row['max'];			
-					$i++;
-				}
+				echo 'There was an issue with the communications.';
 			}
 			else
 			{
-				$this->RecentEps[] = 0;
+				$count = mysql_num_rows($result);
+				if($count > 0)
+				{
+					$i = 0;
+					while($row = mysql_fetch_assoc($result))
+					{
+						$this->RecentEps[$row['eid']]['time'] = $row['time'];
+						$this->RecentEps[$row['eid']]['updated'] = $row['updated'];
+						$this->RecentEps[$row['eid']]['max'] = $row['max'];			
+						$i++;
+					}
+				}
+				else
+				{
+					$this->RecentEps[] = 0;
+				}
 			}
 		}
 	}

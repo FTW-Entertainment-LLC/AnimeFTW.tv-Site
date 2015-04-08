@@ -587,14 +587,14 @@ class Series extends Config {
 							$seoname = preg_replace('/[^a-z0-9 -]+/', '', $seoname);
 							$seoname = str_replace(' ', '-', $seoname);
 							$seoname = trim($seoname, '-');
-							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '1'; $seriesList = '';$html5 = 0; $hd = 0; $ueid = $_GET['ueid'];
+							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$html5 = 0; $hd = 0; $ueid = $_GET['ueid'];
 						}
 						else 
 						{
 							$Type = 'add';
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />';
 							$SubmitTXT = 'Add Series';
-							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '1'; $seriesList = ''; $ueid = '';$html5 = 0; $hd = 0;
+							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = ''; $ueid = '';$html5 = 0; $hd = 0;
 						}
 					}
 					else 
