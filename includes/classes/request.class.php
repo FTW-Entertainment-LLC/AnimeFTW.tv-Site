@@ -387,7 +387,6 @@ class AnimeRequest extends Config{
 			if($this->highlight==$id){
 				$background_color = " highlight ";
 				$this->foundhighlight = true;
-				error_log("SET HERE");
 				$_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
 				//User wouldn't be able to change page since it would try to find the highlighted anime.
 				echo "
