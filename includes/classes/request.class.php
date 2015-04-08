@@ -384,10 +384,10 @@ class AnimeRequest extends Config{
 			if($i%2==1){
 				$background_color = " dark ";
 			}
-			
 			if($this->highlight==$id){
 				$background_color = " highlight ";
 				$this->foundhighlight = true;
+				error_log("SET HERE");
 				$_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
 				//User wouldn't be able to change page since it would try to find the highlighted anime.
 				echo "
@@ -409,20 +409,19 @@ class AnimeRequest extends Config{
 				</script>
 				";
 			}
-			if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
-				$newurl = "";
-				if(!isset($_GET["page"])){
-					$_GET["page"]=1;
-				}
-				if($_GET["page"]<=$this->max_pages){
-					$_GET["page"] = $this->page+1;
-				}
-				if(!$this->foundhighlight){
+			if($i==$this->rpp-1){ //If it's the last request.
+				if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ //Check if we're trying to highlight an request, then change page if the request is not here.
+					$newurl = "";
+					if(!isset($_GET["page"])){
+						$_GET["page"]=1;
+					}
+					if($_GET["page"]<=$this->max_pages){
+						$_GET["page"] = $this->page+1;
+					}
 					if($_GET["page"]<=$this->max_pages){
 						header('Location: requests?'.http_build_query($_GET));
 					}
 				}
-				
 			}
 			echo'
 			
