@@ -576,7 +576,7 @@ class Episodes extends Config {
 					if($Type == 'add')
 					{
 						echo '
-								if($(\'#Remember\').is(":checked")&&$("input#anidbidnum").val() == "")
+								if($(\'#Remember\').is(":checked") && $("#entry-manual").is(":checked"))
 								{
 									var epnum = parseInt($("#epnumber").val());
 									var epnum2 = epnum+1;
