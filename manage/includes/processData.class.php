@@ -647,7 +647,7 @@ class processData extends Config {
 	private function addEpisode(){
 		$auto = FALSE;
 		$AniDB;
-		if(isset($_POST['anidbid'])&&$_POST['anidbid']!=""&&isset($_POST['fromep'])&&$_POST['fromep']!=""&&isset($_POST['toep'])&&$_POST['toep']!=""){
+		if(isset($_POST['entry-type']) && $_POST['entry-type'] == '1' && isset($_POST['fromep']) && $_POST['fromep'] != "" && isset($_POST['toep'])&&$_POST['toep']!=""){
 			$auto = TRUE;
 			$AniDB  = new AniDB();
 		}
