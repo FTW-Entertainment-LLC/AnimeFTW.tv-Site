@@ -239,51 +239,71 @@ class Episodes extends Config {
 		' . $options . '
 		<input type="hidden" name="uid" value="' . $this->UserArray[1] . '" />
 		<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />
-		<div class="series-form-row" style="border: 1px solid #eeebea;border-bottom: none;">
+		';
+		if($Type == 'add')
+		{
+			$hideTypeInput = '';
+		}
+		else
+		{
+			$hideTypeInput = ' style="display:none;"';
+		}
+			echo '
+		<div class="series-form-row"' . $hideTypeInput . '>
 			<div class="series-form-left">
-				Anidb ID
+				Add this episode manually<br /> or via AniDB Matching?
 			</div>
 			<div class="series-form-right">
-				<input name="anidbid" id="anidbidnum" type="text" size="25" value="' . $aniDBid . '" class="text-input2" />
-				<label for="anidbid" id="anidbError" class="form-labels FormError">AniDB ID is Required</label>
+				<div style="display:inline-block;width:49%;">
+					<input type="radio" name="entry-type" value="0" id="entry-manual" class="entry-selection" checked />&nbsp;<label for="entry-manual">Manual</label>
+				</div>
+				<div style="display:inline-block;width:49%;">
+					<input type="radio" name="entry-type" value="1" id="entry-anidb" class="entry-selection" />&nbsp;<label for="entry-anidb">AniDB</label>
+				</div>
 			</div>
 		</div>
-		<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
-			<div class="series-form-left">
-				Episodes
+		<div id="entry-row-anidb" class="entry-details-row" style="display:none;">
+			<div class="series-form-row"">
+				<div class="series-form-left">
+					Anidb ID
+				</div>
+				<div class="series-form-right">
+					<input name="anidbid" id="anidbidnum" type="text" size="25" value="' . $aniDBid . '" class="text-input2" />
+					<label for="anidbid" id="anidbError" class="form-labels FormError">AniDB ID is Required</label>
+				</div>
 			</div>
-			<div class="series-form-right">
-				From:
-				<input name="fromep" id="addfromnum" type="number" value="' . $epnumber . '" class="text-input2" style="width:73px;"/>
-				<label for="fromep" id="addfromnumError" class="form-labels FormError">Starting Value is Required</label>
-				To:
-				<input name="toep" id="addtonum" type="number" value="' . $epnumber . '" class="text-input2" style="width:74px;"/>
-				<label for="toep" id="addtonumError" class="form-labels FormError">End Value is Required</label>
-			</div>
-		</div>
-		<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
-			<div class="series-form-left">
-			</div>
-			<div class="series-form-right">
-				<span style="display: block;width: 224px;text-align: center;">OR</span>
-			</div>
-		</div>
-		<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
-			<div class="series-form-left">
-				Episode #
-			</div>
-			<div class="series-form-right">
-				<input name="epnumber" id="epnumber" type="text" size="25" value="" class="text-input2" />
-				<label for="epnumber" id="epnumberError" class="form-labels FormError">Episode Number is Required</label>
+			<div class="series-form-row" style="border-left: 1px solid #eeebea;border-right: 1px solid #eeebea;">
+				<div class="series-form-left">
+					Episodes
+				</div>
+				<div class="series-form-right">
+					From:
+					<input name="fromep" id="addfromnum" type="number" value="' . $epnumber . '" class="text-input2" style="width:73px;"/>
+					<label for="fromep" id="addfromnumError" class="form-labels FormError">Starting Value is Required</label>
+					To:
+					<input name="toep" id="addtonum" type="number" value="' . $epnumber . '" class="text-input2" style="width:74px;"/>
+					<label for="toep" id="addtonumError" class="form-labels FormError">End Value is Required</label>
+				</div>
 			</div>
 		</div>
-		<div class="series-form-row" style="border: 1px solid #eeebea;border-top: none">
-			<div class="series-form-left">
-				Episode Name
+		<div id="entry-row-manual" class="entry-details-row">
+			<div class="series-form-row">
+				<div class="series-form-left">
+					Episode #
+				</div>
+				<div class="series-form-right">
+					<input name="epnumber" id="epnumber" type="text" size="25" value="' . $epnumber . '" class="text-input2" />
+					<label for="epnumber" id="epnumberError" class="form-labels FormError">Episode Number is Required</label>
+				</div>
 			</div>
-			<div class="series-form-right">
-				<input name="epname" id="epname" type="text" size="25" value="" class="text-input2" />
-				<label for="epname" id="epnameError" class="form-labels FormError">An episode Name is required</label>
+			<div class="series-form-row">
+				<div class="series-form-left">
+					Episode Name
+				</div>
+				<div class="series-form-right">
+					<input name="epname" id="epname" type="text" size="25" value="' . $epname . '" class="text-input2" />
+					<label for="epname" id="epnameError" class="form-labels FormError">An episode Name is required</label>
+				</div>
 			</div>
 		</div>
 		<div class="series-form-row" >
@@ -352,8 +372,8 @@ class Episodes extends Config {
 			<div class="series-form-right">
 				<select name="videotype" class="text-input2">
 					<option value="divx"'; if($videotype == 'divx'){echo ' selected="selected"';} echo'>DivX</option>
-					<option value="mkv"'; if(($videotype == 'mkv')||!isset($Remember)){echo ' selected="selected"';} echo'>MKV</option>
-					<option value="mp4"'; if($videotype == 'mp4'){echo ' selected="selected"';} echo'>MP4</option>
+					<option value="mkv"'; if(($videotype == 'mkv')){echo ' selected="selected"';} echo'>MKV</option>
+					<option value="mp4"'; if($videotype == 'mp4'||!isset($Remember)){echo ' selected="selected"';} echo'>MP4</option>
 				</select>
 			</div>
 		</div>
@@ -441,7 +461,17 @@ class Episodes extends Config {
 			echo '</div>
 		</div>
 		</form>';
-		echo '<script>
+		echo '
+		<script>
+			$(function() {				
+				$(".entry-selection").on("click", function() {
+					var this_id = $(this).attr("id").substring(6);
+					$(".entry-details-row").hide();
+					$("#entry-row-" + this_id).show();
+				});
+			});
+		</script>
+		<script>
 			$(function() {
 				$(\'.form_results\').hide();
 				$(\'.text-input\')
@@ -459,7 +489,9 @@ class Episodes extends Config {
 				$(".SubmitForm").click(function() {
 					$(\'.form-labels\').hide();
 					var epnumber = $("input#epnumber").val();
-					if(epnumber==""){ //If epnumber is null, then they want to use the automatic function. so we check for errors there.
+					if($("#entry-anidb").is(":checked"))
+					{
+						// this is an anidb episode
 						var anidbid = $("input#anidbidnum").val();
 						if (anidbid == "") {
 							$("label#anidbError").show();
@@ -479,8 +511,9 @@ class Episodes extends Config {
 							return false;
 						}
 					}
-					if(anidbid == ""&&fromep == ""&&toep == ""){ //Show error for epnumber only if these 3 values are null.
-					//If these 3 values are set, it means the user wants to use the automatic function. If not, they want to use the manual.
+					else
+					{
+						// everything else is manual
 						if (epnumber == "") {
 							$("label#epnumberError").show();
 							$("input#epnumber").focus();
@@ -492,8 +525,7 @@ class Episodes extends Config {
 							$("input#epname").focus();
 							return false;
 						}
-					}
-					
+					}					
 					var vidwidth = $("input#vidwidth").val();
 					if (vidwidth == "") {
 						$("label#vidwidthError").show();
