@@ -67,6 +67,37 @@ class AFTWNotifications extends Config {
 		}
 	}
 	
+	public function showProfile()
+	{
+		// make sure the user is logged in first.
+		if($this->UserArray[0] == 1)
+		{
+			$query = "SELECT COUNT(notifications.id) FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ";
+			$result = mysql_query($query); 
+			if(!$result)
+			{
+				echo 'There was an error executing the query.';
+			}
+			else
+			{
+				$CountNotes = mysql_result($result,0);
+				echo '<div class="fds">My Site notifications</div><br />';
+				if($CountNotes > 0)
+				{
+					echo $this->BuildList(FALSE);
+				}
+				else
+				{
+					echo '<div style="font-size:16px;margin:10px;color:#d0d0d0;" align="center">You have no notifications for your account, oh noes!</div> ';
+				}
+			}
+		}
+		else
+		{
+			echo 'Please <a href="/login">Log in</a> to view your Notification listing.';
+		}
+	}
+	
 	//#- Private Functions -#\\
 	
 	# function Query
@@ -76,28 +107,51 @@ class AFTWNotifications extends Config {
 	}
 	
 	# function BuildIcon
-	private function BuildList(){
+	private function BuildList($spriteMode=TRUE)
+	{
+		if($spriteMode == TRUE)
+		{
+			// we limit this to 8 rows.
+			$queryLimit = " LIMIT 0, 8";
+		}
+		else
+		{
+			// we limit this to 8 rows.
+			$queryLimit = " LIMIT 0, 30";
+		}
+		
 		mysql_query("SET NAMES 'utf8'"); 
-		$query = "SELECT notifications.* FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ORDER BY notifications.date DESC LIMIT 0, 8";
+		$query = "SELECT notifications.* FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ORDER BY notifications.date DESC" . $queryLimit;
 		$result = $this->Query($query);
-		$user = $this->Query("SELECT Username FROM users WHERE ID = '".$this->UserArray[1]."'");
-		$user = mysql_fetch_array($user);
 		//echo '<ul>';
-		echo '<li><div align="left" class="notificationHeader">AnimeFTW.tv Site Notifications</div></li>';
+		if($spriteMode == TRUE)
+		{
+			echo '<li><div align="left" class="notificationHeader">AnimeFTW.tv Site Notifications</div></li>';
+		}
 		$count = mysql_num_rows($result);
 		
 		if($count < 1)
 		{
-			echo '<li class="mainli"><div align="left">You have no notifications.</div></li>';
+			if($spriteMode == TRUE)
+			{
+				echo '<li class="mainli"><div align="left">You have no notifications.</div></li>';
+			}
+			else
+			{
+				echo '<div>You do not have any notifications! Add a friend or add an airing series to get updates!</div>';
+			}
 		}
 		else
 		{
 			while(list($id,$uid,$date,$type,$d1,$d2,$d3) = mysql_fetch_array($result)){
-				$this->PopulateRow($id,$uid,$date,$type,$d1,$d2,$d3);
+				$this->PopulateRow($id,$uid,$date,$type,$spriteMode,$d1,$d2,$d3);
 				//echo 'id: '.$id.', uid: '.$uid.', date: '.$date.', type: '.$type.', d1: '.$d1.', d2: '.$d2.', d3: '.$d3.'<br />';
 			}
 		}
-		echo '<li><div align="center" class="notificationFooter"><a href="/user/'.$user['Username'].'">View All Notifications</a></div></li>';
+		if($spriteMode == TRUE)
+		{
+			echo '<li><div align="center" class="notificationFooter"><a href="/user/'.$this->UserArray[5].'">View All Notifications</a></div></li>';
+		}
 		echo '
 		<script>		
 			$(".add-friend-link").click(function(){
@@ -133,38 +187,68 @@ class AFTWNotifications extends Config {
 	}
 	
 	# function PopulateRow
-	private function PopulateRow($id,$uid = NULL,$date,$type,$d1 = NULL,$d2 = NULL,$d3 = NULL){
-		if($uid == NULL){ //uid is null, means it's global (aka an episode addition)
+	private function PopulateRow($id,$uid = NULL,$date,$type,$spriteMode,$d1 = NULL,$d2 = NULL,$d3 = NULL){
+		if($uid == NULL)
+		{ //uid is null, means it's global (aka an episode addition)
 			$result = $this->Query("SELECT series.fullSeriesName, series.seoname, episode.id, episode.epnumber, episode.epname FROM series, episode WHERE episode.id=$d2 AND series.id=$d1");
 			$row = mysql_fetch_array($result);
 			$eimage = '';
-			echo '<li class="mainli" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&show=eptips&id='.$row['id'].'\',this);return false;" onmouseout="ajax_hideTooltip()" onclick="location.href=\'/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'\'"><div align="center"'.$eimage.'>Episode '.$row['epnumber'].' of '.$row['fullSeriesName'].' was added.<br /> Titled: '.$row['epname'].'<br /><a href="/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'"><b>Watch this Episode Now</b></a></div><div class="notif_time">'.$this->BuildDate($date).'<img src="/images/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" /></div></li>';
+			if($spriteMode == TRUE)
+			{
+				$startTag = '<li class="mainli" onclick="location.href=\'/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'\'">';
+				$endTag = '</li>';
+			}
+			else
+			{
+				$startTag = '<div style="border-bottom:1px solid #e5e5e5;padding:5px 0 5px 0;" onclick="location.href=\'/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'\'">';
+				$endTag = '</div>';
+			}
+			echo $startTag . '
+				<div align="center"'.$eimage.'>
+					Episode '.$row['epnumber'].' of '.$row['fullSeriesName'].' was added.<br /> 
+					Titled: '.$row['epname'].'<br />
+					<a href="/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'"><b>Watch this Episode Now</b></a>
+				</div>
+				<div class="notif_time">
+					'.$this->BuildDate($date).'<img src="/images/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
+				</div>' . $endTag;
 		}
-		else {
+		else
+		{
 			if($type == 1)
 			{ //Friend request SENT, display the goodies				
 				$result = $this->Query("SELECT users.ID, users.Username, users.avatarActivate, users.avatarExtension, friends.reqDate FROM users, friends WHERE friends.id = ".$d1." AND users.ID=friends.Asker");
 				$row = mysql_fetch_array($result);
-				if($row['avatarActivate'] == 'no'){
-					$userimage = "/images/avatars/default.gif";
+				if($row['avatarActivate'] == 'no')
+				{
+					$userimage = $this->Host . "/avatars/default.gif";
 				}
-				else {
-					$userimage = "/images/avatars/user".$row['ID'].".".$row['avatarExtension'];
+				else
+				{
+					$userimage = $this->Host . "/avatars/user".$row['ID'].".".$row['avatarExtension'];
 				}
-				echo '
-				<li class="mainli">
+				if($spriteMode == TRUE)
+				{
+					$startTag = '<li class="mainli">';
+					$endTag = '</li>';
+				}
+				else
+				{
+					$startTag = '<div style="border-bottom:1px solid #e5e5e5;padding:5px 0 5px 0;">';
+					$endTag = '</div>';
+				}
+				echo $startTag . '				
 					<div align="left">
 						<img src="'.$userimage.'" alt="" height="50px" style="padding:3px;" />
 						<div class="inotif" align="left">
 							' . $this->formatUsername($row['ID']) . ' added you as a friend.<br />
-							<img src="/images/new-icons/user_add.png" alt="" style="padding-right:5px;" width="14px" />
+							<img src="' . $this->Host . '/new-icons/user_add.png" alt="" style="padding-right:5px;" width="14px" />
 							<a href="/user/'.$row['Username'].'" class="add-friend-link" id="user-' . $row['ID'] . '">Add them as your Friend</a>
 						</div>
 					</div>
 					<div class="notif_time">
-						'.$this->BuildDate($date).'<img src="/images/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
-					</div>
-				</li>';
+						'.$this->BuildDate($date).'<img src="' . $this->Host . '/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
+					</div>' . $endTag;
 			}
 			else if($type == 2)
 			{ // type == 2, post on profile, uid is for the user that is being posted on, and d1 is the comment id to map everything together
@@ -175,30 +259,42 @@ class AFTWNotifications extends Config {
 				$result1 = $this->Query("SELECT Username FROM users WHERE ID = ".$uid);
 				$row1 = mysql_fetch_array($result1);
 				if($row['avatarActivate'] == 'no'){
-					$userimage = "/images/avatars/default.gif";
+					$userimage = $this->Host . "/avatars/default.gif";
 				}
 				else {
-					$userimage = "/images/avatars/user".$row['ID'].".".$row['avatarExtension'];
+					$userimage = $this->Host . "/avatars/user".$row['ID'].".".$row['avatarExtension'];
 				}
 				$comment = $row['comments'];
 				$comment = stripslashes($comment);
-				if(strlen($comment) <= 75){
-					$comment = $comment;
+				if($spriteMode == TRUE)
+				{
+					$startTag = '<li class="mainli">';
+					$endTag = '</li>';
+					if(strlen($comment) <= 75){
+						$comment = $comment;
+					}
+					else {
+						$comment = substr($comment,0,73).'&hellip;';
+					}
 				}
-				else {
-					$comment = substr($comment,0,73).'&hellip;';
+				else
+				{
+					$startTag = '<div style="border-bottom:1px solid #e5e5e5;padding:5px 0 5px 0;">';
+					$endTag = '</div>';
 				}
-				echo '<li class="mainli">
+				echo $startTag . '	
 				<div align="left">
-					<img src="'.$userimage.'" alt="" width="50px" style="padding:10px 1px 1px 1px;" />
-					<div class="inotif" align="left">
+					<div style="display:inline-block;width:20%;" align="center">
+						<img src="'.$userimage.'" alt="" width="50px" style="padding:10px 1px 1px 1px;" />
+					</div>
+					<div style="display:inline-block;width:79%;" class="inotif" align="left">
 						Profile post by ' . $this->formatUsername($row['ID']) . '.
 						<br /><a href="/user/'.$row1['Username'].'#'.$row['cid'].'"><i>'.$comment.'</i></a>
 					</div>
 				</div>
 				<div class="notif_time">
-					'.$this->BuildDate($date).'<img src="/images/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
-				</div></li>';
+					'.$this->BuildDate($date).'<img src="' . $this->Host . '/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
+				</div>' . $endTag;
 			}
 			else {
 			}

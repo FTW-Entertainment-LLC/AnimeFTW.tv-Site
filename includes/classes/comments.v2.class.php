@@ -59,21 +59,22 @@ class Comment extends Config {
 			$dated = date("Y-m-d H:j:s");
 			//insert the comment
 			$query = "INSERT INTO page_comments (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `admin_comment`, `is_approved`, `uid`, `epid`, `type`) VALUES (NULL, '$comment', '0', '$ip', 'u".$pid."', '$dated', '', '1', '$uid', '0', '1') ";
-			$this->mysqli->query($query);
-			//select the id for everything else
-			$query = "SELECT `page_comments`.`id`, `users`.`Username`, `users`.`avatarActivate`, `users`.`avatarExtension` FROM `page_comments`, `users` WHERE `users`.`ID`=`page_comments`.`uid` AND `page_comments`.`dated`='".$dated."' AND `page_comments`.`uid`='".$uid."' AND `page_comments`.`page_id`='u".$pid."'";
 			$result = $this->mysqli->query($query);
-			$row = $result->fetch_assoc(); //put it in an array
+			$insertId = $this->mysqli->insert_id;
+			//select the id for everything else
+			//$query = "SELECT `page_comments`.`id`, `users`.`Username`, `users`.`avatarActivate`, `users`.`avatarExtension` FROM `page_comments`, `users` WHERE `users`.`ID`=`page_comments`.`uid` AND `page_comments`.`dated`='".$dated."' AND `page_comments`.`uid`='".$uid."' AND `page_comments`.`page_id`='u".$pid."'";
+			//$result = $this->mysqli->query($query);
+			//$row = $result->fetch_assoc(); //put it in an array
 			//insert a notification row.. cause were bad ass like that.
-			$this->mysqli->query("INSERT INTO notifications (`id`, `uid`, `date`, `type`, `d1`, `d2`, `d3`) VALUES (NULL, '".$pid."', '".time()."', '2', '".$row['id']."', NULL, NULL)");
+			$this->mysqli->query("INSERT INTO notifications (`id`, `uid`, `date`, `type`, `d1`, `d2`, `d3`) VALUES (NULL, '".$pid."', '".time()."', '2', '" . $insertId . "', NULL, NULL)");
 			
-			if($row['avatarActivate'] == 'no')
+			if($this->UserArray['avatarActivate'] == 'no')
 			{
-				$avatar = '<img src="/images/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';
+				$avatar = '<img src="' . $this->ImageHost . '/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';
 			}
 			else
 			{
-				$avatar = '<img src="/images/avatars/user'.$uid.'.'.$row['avatarExtension'].'" alt="User avatar" width="40px" style="padding:2px;" border="0" />';
+				$avatar = '<img src="' . $this->ImageHost . '/avatars/user' . $this->UserArray['ID'] . '.' . $this->UserArray['avatarExtension'] . '" alt="User avatar" width="40px" style="padding:2px;" border="0" />';
 			}
 			$comment = stripslashes($comment);
 			$comment = nl2br($comment);
