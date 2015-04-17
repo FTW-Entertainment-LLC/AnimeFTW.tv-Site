@@ -18,4 +18,5 @@ Disallow: /videos
 Disallow: /users
 Disallow: /stats
 Disallow: /m
+Disallow: /api
 
