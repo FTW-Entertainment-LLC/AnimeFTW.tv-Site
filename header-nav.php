@@ -162,14 +162,14 @@ if(strlen(strstr($_SERVER['HTTP_USER_AGENT'], 'Firefox')) > 0 && $profileArray[0
 {
     echo '
 <div style="width:100%;color:white;margin-bottom:50px;" align="center">
-        <div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;width:75%;border-radius:5px;">
+        <div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;width:60%;border-radius:5px;">
 <span style="font-size:16px;">!!ATTENTION!!</span> <br />
 Your browser has been detected as being firefox.<br />
  Some FireFox users have experienced issues playing back videos, but are able to play with the latest Internet Explorer or Chrome.<br />
-We are trying to figure out what is causing this, the common factor is that around the beginning of April, that was when the ability to play videos was lost.<br />
-Please bear in mind, that AnimeFTW.tv and FTW Entertainmetn have NOT, we repeat <b>NOT</b> made any changes to the site that would impact playback. <br />
-We believe the issue stems from a windows update, if you are having problems, please post in the <a href="/forums/bug-reports/">bug report forum</a>, include your operating system, firefox version and when the last time windows updates were run on your PC.<br />
-Thank you.
+We have found that an addon was enabled during an update, the update <b>OpenH264 Plugin from Csico Systems</b> needs to be disabled in your addons listing. <br />
+As soon as this is disabled, restart FireFox and attempt to view videos again.<br />
+If you have issues still, please post in the bug report forum.<br />
+Thank you, AnimeFTW.tv Staff.
         </div>
 </div>';
 }
