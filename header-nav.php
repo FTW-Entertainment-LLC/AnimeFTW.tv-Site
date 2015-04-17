@@ -154,9 +154,26 @@ else {
 		echo '<div class="comments" id="uploadstracker">Loading. Please Wait...</div>';
 		echo '</div>';
 	}
-	if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php'){}
-	else {echo "<br /><br /><br /><br /><br /><br />\n";}
-	
 
-		
-?>
+	if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php'){}
+	else {echo "<br /><br /><br /><br />\n";}
+	
+if(strlen(strstr($_SERVER['HTTP_USER_AGENT'], 'Firefox')) > 0 && $profileArray[0] == 1)
+{
+    echo '
+<div style="width:100%;color:white;margin-bottom:50px;" align="center">
+        <div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;width:75%;border-radius:5px;">
+<span style="font-size:16px;">!!ATTENTION!!</span> <br />
+Your browser has been detected as being firefox.<br />
+ Some FireFox users have experienced issues playing back videos, but are able to play with the latest Internet Explorer or Chrome.<br />
+We are trying to figure out what is causing this, the common factor is that around the beginning of April, that was when the ability to play videos was lost.<br />
+Please bear in mind, that AnimeFTW.tv and FTW Entertainmetn have NOT, we repeat <b>NOT</b> made any changes to the site that would impact playback. <br />
+We believe the issue stems from a windows update, if you are having problems, please post in the <a href="/forums/bug-reports/">bug report forum</a>, include your operating system, firefox version and when the last time windows updates were run on your PC.<br />
+Thank you.
+        </div>
+</div>';
+}
+else
+{
+	echo '<br /><br />';
+}
