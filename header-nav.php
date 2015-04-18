@@ -155,8 +155,10 @@ else {
 		echo '</div>';
 	}
 
-	if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php'){}
-	else {echo "<br /><br /><br /><br />\n";}
+	//if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php'){}
+	//else {
+		echo "<br /><br /><br /><br />\n";
+	//}
 	
 if(strlen(strstr($_SERVER['HTTP_USER_AGENT'], 'Firefox')) > 0 && $profileArray[0] == 1)
 {
