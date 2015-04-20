@@ -10,5 +10,13 @@ Disallow: /
 User-agent: CrazyWebCrawler-Spider
 Disallow: / 
 
-User-agent: *
-Disallow: /
+User-Agent: *
+Disallow: 
+Disallow: /anime
+Disallow: /forums
+Disallow: /videos
+Disallow: /users
+Disallow: /stats
+Disallow: /m
+Disallow: /api
+

@@ -53,6 +53,13 @@ class Config {
 		$dbuser = 'mainaftw_anime';
 		$dbpass = '26V)YPh:|IJG';
 		$dbname = 'mainaftw_anime';
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			// this will be for development connections only.
+			$dbuser = 'devadmin_anime';
+			$dbpass = 'L=.zZ76[,TOqwf*&tl';
+			$dbname = 'devadmin_anime';
+		}
 		$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 		mysqli_set_charset($mysqli,"utf8");
 		$this->mysqli = $mysqli;

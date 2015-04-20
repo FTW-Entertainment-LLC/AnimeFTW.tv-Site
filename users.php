@@ -16,6 +16,14 @@ else
 	$PageTitle = 'Unknown User - AnimeFTW.tv';
 	$index_global_message = "ERROR: There is no User by that Username.";
 }
+if($_SERVER['SERVER_PORT'] == 443)
+{
+	$ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+}
+else
+{
+	$ImageHost = 'http://img02.animeftw.tv';
+}
 
 include('header.php');
 include('header-nav.php');
@@ -52,11 +60,11 @@ echo psa($profileArray,1);
 		<div id="avatar-div-wrapper">';
 		if($u->UserArray['avatarActivate'] == 'yes')
 		{
-			echo '<img src="/images/avatars/user'.$u->UserArray['ID'].'.'.$u->UserArray['avatarExtension'].'" alt="'.$u->UserArray['display_name'].'\'s Avatar" style="padding-right:10px;" id="user-avatar" class="avatardiv" />';
+			echo '<img src="' . $ImageHost . '/avatars/user'.$u->UserArray['ID'].'.'.$u->UserArray['avatarExtension'].'" alt="'.$u->UserArray['display_name'].'\'s Avatar" style="padding-right:10px;" id="user-avatar" class="avatardiv" />';
 		}
 		else
 		{
-			echo '<img src="/images/avatars/default.gif" alt="" border="0" width="100px" id="user-avatar" class="avatardiv" />';
+			echo '<img src="' . $ImageHost . '/avatars/default.gif" alt="" border="0" width="100px" id="user-avatar" class="avatardiv" />';
 		}
 		echo '</div>';
 		if($profileArray[1] == $u->UserArray['ID'] || $profileArray[2] == 1 || $profileArray[2] == 2)
@@ -88,7 +96,7 @@ echo psa($profileArray,1);
 		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='/images/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>";		
 		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='/images/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>";		
 		if($u->UserArray['ID'] == $profileArray[1]){
-			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$(\'#profileedit\').load(\'/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='/images/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>";			
+			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='/images/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>";			
 			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='/images/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>";			
 		}
 		else if($profileArray[2] == 1 || $profileArray[2] == 2){
@@ -122,7 +130,8 @@ echo psa($profileArray,1);
 			<div id=\"tabcontent3\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"comments1\">Loading User Comments. Please Wait...</div></div>
 			<div id=\"tabcontent4\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"watchlistprofile\">Loading WatchList...</div></div>
 			<div id=\"tabcontent5\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"profilesettings\">Loading Settings...</div></div>
-			<div id=\"tabcontent6\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"episodetracker\">Loading Tracker Data...</div></div>";		
+			<div id=\"tabcontent6\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"episodetracker\">Loading Tracker Data...</div></div>
+			<div id=\"tabcontent7\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"usernotifications\">Loading Notification information..</div></div>";		
 		echo "</td>";
 		echo "</tr></table>";
 		//echo "- <a href=\"/management/manage-episodes?episode=add&amp;series=".$sa1."\" rel=\"#profile\">Add Episode</a><br />\n";

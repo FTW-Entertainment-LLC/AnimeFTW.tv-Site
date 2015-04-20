@@ -27,11 +27,10 @@ if(isset($_GET['ref']))
 	mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
 }
 
-echo psa($profileArray,2);
+echo psa($profileArray,1);
 $index_global_message = NULL;
 function bodyTopInfo($message,$bdybr){
-	if($bdybr == NULL){$bodyTop = "";}
-	else {$bodyTop = "<br /><br /><br /><br /><br /><br />\n";}
+	$bodyTop = "";
 	// Start Main BG
    	$bodyTop .= "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	$bodyTop .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";

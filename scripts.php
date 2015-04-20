@@ -644,6 +644,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'notifications'){
 			if(isset($_GET['show']) && $_GET['show'] == 'sprite'){
 				echo $N->ShowSprite();
 			}
+			else if(isset($_GET['show']) && $_GET['show'] == 'profile')
+			{
+				echo $N->showProfile();
+			}
 			else {
 				echo 'hello there.';
 			}
