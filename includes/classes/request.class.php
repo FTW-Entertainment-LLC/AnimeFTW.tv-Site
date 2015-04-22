@@ -707,7 +707,7 @@ class AnimeRequest extends Config{
 					a paranthesis like (<a href="http://www.anidb.net/a4575" target="_blank">a4575</a>). Write <span style="text-decoration: underline">ONLY</span> the numbers.</div>
 				</div>
 				<div class="table-row">
-					<div class="col" style="vertical-align:top;">Details:</div>
+					<div class="col" style="vertical-align:top;">Comment:</div>
 					<div class="col"><textarea rows="10" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;"></textarea></div>
 				</div>
 				<br>
