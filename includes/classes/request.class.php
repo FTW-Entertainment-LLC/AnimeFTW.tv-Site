@@ -997,7 +997,7 @@ class AnimeRequest extends Config{
 			}
 		}
 		
-		if($this->canEdit()||$this->UserArray[2]){
+		if($this->UserArray[2]==1 || $this->UserArray[2]==2 || $this->UserArray[2]==5){
 			//Rediraction to management is not possible in it's current state.
 			echo '
 			$(".arclaimlink").click(function(e){
