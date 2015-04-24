@@ -997,7 +997,7 @@ class AnimeRequest extends Config{
 			}
 		}
 		
-		if($this->canEdit()){
+		if($this->canEdit()||$this->UserArray[2]){
 			//Rediraction to management is not possible in it's current state.
 			echo '
 			$(".arclaimlink").click(function(e){
