@@ -1195,9 +1195,9 @@ class AFTWUser extends Config{
 				{
 					echo '
 					<div>
-						<div style="width:100px;display:inline-block;">' . $row['date'] . '</div>
-						<div style="width:100px;display:inline-block;">' . $row['ip'] . '</div>
-						<div style="width:100px;display:inline-block;">' . $row['agent'] . '</div>
+						<div style="width:20%;display:inline-block;">' . $row['date'] . '</div>
+						<div style="width:20%;display:inline-block;">' . $row['ip'] . '</div>
+						<div style="width:50%;display:inline-block;">' . $row['agent'] . '</div>
 					</div>';
 				}
 			}
