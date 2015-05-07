@@ -358,6 +358,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 		{
 			$u->UserSiteSettings($profileArray,$_GET['id']);
 		}
+		else if(isset($_GET['edit']) && $_GET['edit'] == 'user-logs')
+		{
+			$u->UserLogs($profileArray,$_GET['id']);
+		}
 		else
 		{
 			$u->UserProfileSettings($profileArray,$_GET['id']);
