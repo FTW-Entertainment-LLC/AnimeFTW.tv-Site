@@ -348,6 +348,13 @@ class AFTWUser extends Config{
 			<div class="fds">
 				<div class="user-settings-link-header header-active" id="account-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',0); return false;">Account Settings</a></div>
 				<div class="user-settings-link-header" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>
+				';
+				if($profileArray[2] == 1 || $profileArray[2] == 2)
+				{
+					echo '
+				<div class="user-settings-link-header" id="user-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',2); return false;">Account Logs</a></div>';
+				}
+				echo '
 			</div><br />';
 			echo '<form method="POST" name="ProfileEdit" id="ProfileEdit">';	
 			$query = "SELECT * FROM users WHERE ID='".mysql_real_escape_string($ruid)."'";
@@ -1154,6 +1161,49 @@ class AFTWUser extends Config{
 		}
 	}
 	
+	public function UserLogs($profileArray,$ruid)
+	{
+		$this->UserArray = $profileArray;
+		
+		// This will show the 
+		if($this->UserArray[2] != 1 && $this->UserArray[2] != 2)
+		{
+			echo 'There was an error in your request.';
+			//echo '<br />'.$_SERVER['REQUEST_URI'];
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+		}
+		else
+		{
+			
+			echo '
+			<div class="fds">
+				<div class="user-settings-link-header" id="account-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',0); return false;">Account Settings</a></div>
+				<div class="user-settings-link-header" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>
+				<div class="user-settings-link-header header-active" id="user-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',2); return false;">Account Logs</a></div>
+			</div><br />
+			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Site Logins</div>';
+			$query = "SELECT * FROM `logins` WHERE uid = " . mysql_real_escape_string($ruid) . " ORDER BY `logins`.`date` DESC LIMIT 0, 40";
+			$result = mysql_query($query);
+			
+			if(mysql_num_rows($result) < 1)
+			{
+				echo '<div align="center">No logins were detected for this user.</div>';
+			}
+			else
+			{
+				while($row = mysql_fetch_assoc($result))
+				{
+					echo '
+					<div>
+						<div style="width:100px;display:inline-block;">' . $row['date'] . '</div>
+						<div style="width:100px;display:inline-block;">' . $row['ip'] . '</div>
+						<div style="width:100px;display:inline-block;">' . $row['agent'] . '</div>
+					</div>';
+				}
+			}
+		}
+	}
+	
 	public function UserSiteSettings($profileArray,$ruid)
 	{
 		$this->UserArray = $profileArray;
@@ -1178,7 +1228,13 @@ class AFTWUser extends Config{
 			<input type="hidden" name="uid" value="' . $ruid . '" />
 			<div class="fds">
 				<div class="user-settings-link-header" id="account-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',0); return false;">Account Settings</a></div>
-				<div class="user-settings-link-header header-active" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>
+				<div class="user-settings-link-header header-active" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>';
+				if($profileArray[2] == 1 || $profileArray[2] == 2)
+				{
+					echo '
+				<div class="user-settings-link-header" id="user-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',2); return false;">Account Logs</a></div>';
+				}
+				echo '
 			</div><br />
 			<div align="center">
 				Manage your site, email and security settings for AnimeFTW.tv with this form.
