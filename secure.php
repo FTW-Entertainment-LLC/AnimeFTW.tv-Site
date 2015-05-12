@@ -5,7 +5,6 @@ if($_SERVER['SERVER_PORT'] == '80')
 {
 	header("location: https://www.animeftw.tv".$_SERVER['REQUEST_URI']);
 }
-print_r($DefaultSettingsArray);
 //Header area start. (This code loads before anything in the body tags..)
 if($_GET['node'] == 'login'){
 $PageTitle = 'Login - AnimeFTW.TV';
@@ -26,6 +25,8 @@ $PageTitle = 'Login - AnimeFTW.TV';
 		$userName  = $_POST['username'];
 		$password = $_POST['password'];
 		$last_page = $_POST['last_page'];
+		include_once('includes/classes/sessions.class.php');
+		$Session = new Sessions();
 		require_once ( 'includes/settings.php' );
 		
 		if ( array_key_exists ( '_submit_check', $_POST ) )
@@ -51,7 +52,8 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					{
 						include 'includes/config.php';
 						include 'includes/newsOpenDb.php';
-						set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
+						$Session->setUserSessionData($row->ID,$row->Username,(@$_POST['remember'])?TRUE:FALSE);
+						//set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
 						$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
 						mysql_query($query) or die('Error : ' . mysql_error());
 						$query = "INSERT INTO `logins` (`ip`, `date`, `uid`, `agent`) VALUES

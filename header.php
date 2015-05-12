@@ -1,31 +1,12 @@
 <?php
 session_start();
-if($_SERVER['PHP_SELF'] == '/request.php'){
+if($_SERVER['PHP_SELF'] == '/request.php')
+{
 	ob_start(); //Needed so i can use header to change location, to find the correct page for a specific request.
-}
-    if ( isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
-		if(isset($_COOKIE['cookie_id'])) {
-		   $globalnonid = $_COOKIE['cookie_id'];
-	  	} 
-		else if(isset($_SESSION['user_id'])) { $globalnonid = $_SESSION['user_id']; 
-		} 
-	}
-	else {
-		$globalnonid = NULL;
-	}
-	$profileArray = checkLoginStatus($globalnonid,$_SERVER['REMOTE_ADDR'],$_SERVER['HTTP_USER_AGENT']);
-	
-	// Upgrading the site mechanism
-	/*if($profileArray[2] == 1)
-	{
-		// admin is allowed through
-	}
-	else
-	{
-		header('location: https://www.animeftw.tv/upgrading.html');
-		exit;
-	}*/
-	
+}	
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
 	  // only set this if you wish to set a login only policy
 	if($_SERVER['REQUEST_URI'] == '/user' || $_SERVER['REQUEST_URI'] == '/user/')
 	{

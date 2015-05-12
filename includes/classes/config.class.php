@@ -20,7 +20,14 @@ include_once($rootdirectory . "/includes/config_site.php");
 class Config {
 	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array();
 
-	public function __construct(){
+	public function __construct(){		
+		// Declare the main database
+		$this->MainDB = 'mainaftw_anime';
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
+		}
+	
 		$this->BuildUser(); // build our user array
 			
 		if($_SERVER['SERVER_PORT'] == 443)
@@ -33,13 +40,6 @@ class Config {
 			//$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
 		}
 		
-		// Declare the main database
-		$this->MainDB = 'mainaftw_anime';
-		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
-		{
-			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
-		}
-		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
 		
@@ -50,83 +50,38 @@ class Config {
 		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
-	private function BuildUser(){
-		@session_start();
-	    if(isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
-			if(isset($_COOKIE['cookie_id'])) {
-				$UserID = $_COOKIE['cookie_id'];
-			} 
-			else if(isset($_SESSION['user_id'])){
-				$UserID = $_SESSION['user_id']; 
-			} 
-		}
-		else {
-			$UserID = NULL;
-		}
-		if($UserID != NULL){
-			$query = "SELECT `Username`, `Password`, `viewNotifications`, `UploadsVisit`, `Email`, `Active`, `Level_access`, `canDownload`, `advanceActive`, `forumBan`, `messageBan`, `postBan`, `timeZone`, `theme`, `html5`, `ssl` FROM users WHERE ID='$UserID'";
+	private function BuildUser()
+	{	
+		// we need to check if the token and authentication are setup correctly.
+		$query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+		$result = mysql_query($query);
+		$count = mysql_result($result, 0);
+		if($count > 0)
+		{
+			$query = "SELECT `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `html5`, `ssl` FROM users WHERE ID='" . mysql_real_escape_string($_COOKIE['au']) . "'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			if(isset($_COOKIE['authenticate']) && $_COOKIE['authenticate'] == md5 ( $_SERVER['REMOTE_ADDR'] . $row['Password'] . $_SERVER['HTTP_USER_AGENT'] ) ) {
-				//they clear the authentication process...
-				$Logged = 1;
-				mysql_query('UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $UserID . '\'');
-				$PermissionLevelAdvanced = $row['Level_access'];
-				$timeZone = $row['timeZone'];
-				$bannedornot = $row['Active'];
-				$name = $row['Username'];
-				$canDownload = $row['canDownload'];
-				$postBan = $row['postBan'];
-				$siteTheme = $row['theme'];
-				$forumBan = $row['forumBan'];
-				$messageBan = $row['messageBan'];
-				$viewNotifications = $row['viewNotifications'];
-				$AdvanceActive = $row['advanceActive'];
-				$UploadsVisit = $row['UploadsVisit'];
-				$html5 = $row['html5'];
-				$ssl = $row['ssl'];
-			}
-			else 
-			{
-				if(isset($_SESSION['user_id'])){
-					$Logged = 1;
-					$PermissionLevelAdvanced = $row['Level_access'];
-					mysql_query('UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $UserID . '\'');
-					$timeZone = $row['timeZone'];
-					$bannedornot = $row['Active'];
-					$name = $row['Username'];
-					$canDownload = $row['canDownload'];
-					$postBan = $row['postBan'];
-					$siteTheme = $row['theme'];
-					$forumBan = $row['forumBan'];
-					$messageBan = $row['messageBan'];
-					$viewNotifications = $row['viewNotifications'];
-					$AdvanceActive = $row['advanceActive'];
-					$UploadsVisit = $row['UploadsVisit'];
-					$html5 = $row['html5'];
-					$ssl = $row['ssl'];
-				}
-				else {
-					$Logged = 0;
-					$PermissionLevelAdvanced = 0;
-					$timeZone = '-6';
-					$canDownload = 0;
-					$siteTheme = 0;
-					$postBan = 0;
-					$name = '';
-					$bannedornot = 0;
-					$UserID = 0;
-					$forumBan = 0;
-					$messageBan = 0;
-					$viewNotifications = 0;
-					$AdvanceActive = 0;
-					$UploadsVisit = 0;
-					$html5 = 0;
-					$ssl = 0;
-				}
-			}
+			$Logged = 1;
+			$UserID = mysql_real_escape_string($_COOKIE['au']);
+			$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . mysql_real_escape_string($_COOKIE['au']) . '\'';
+			mysql_query($query) or die('Error : ' . mysql_error());
+			$PermissionLevelAdvanced = $row['Level_access'];
+			$timeZone = $row['timeZone'];
+			$bannedornot = $row['Active'];
+			$name = $row['Username'];
+			$canDownload = $row['canDownload'];
+			$postBan = $row['postBan'];
+			$siteTheme = $row['theme'];
+			$forumBan = $row['forumBan'];
+			$messageBan = $row['messageBan'];
+			$viewNotifications = $row['viewNotifications'];
+			$AdvanceActive = $row['advanceActive'];
+			$UploadsVisit = $row['UploadsVisit'];
+			$html5 = $row['html5'];
+			$ssl = $row['ssl'];
 		}
-		else {
+		else
+		{
 			$Logged = 0;
 			$PermissionLevelAdvanced = 0;
 			$timeZone = '-6';
@@ -139,8 +94,6 @@ class Config {
 			$forumBan = 0;
 			$messageBan = 0;
 			$viewNotifications = 0;
-			$AdvanceActive = 0;
-			$UploadsVisit = 0;
 			$html5 = 0;
 			$ssl = 0;
 		}
