@@ -545,6 +545,12 @@ class Config {
 		}
 	}
 	
+	public function generateRandomString($length = 10)
+	{
+		$randomString = substr(str_shuffle(MD5(microtime())), 0, $length);
+		return $randomString;
+	}
+	
 	public function array_buildAPICodes()
 	{
 		$this->MessageCodes = array (

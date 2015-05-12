@@ -15,14 +15,14 @@ else
 	$rootdirectory = '/home/mainaftw/public_html';
 }
 
-include($rootdirectory . "/includes/config_site.php");
-include($rootdirectory . "/includes/newsOpenDb.php");
+include_once($rootdirectory . "/includes/config_site.php");
 
 class Config {
 	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array();
 
 	public function __construct(){
 		$this->BuildUser(); // build our user array
+			
 		if($_SERVER['SERVER_PORT'] == 443)
 		{
 			$this->Host = 'https://d206m0dw9i4jjv.cloudfront.net';
@@ -35,6 +35,10 @@ class Config {
 		
 		// Declare the main database
 		$this->MainDB = 'mainaftw_anime';
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
+		}
 		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
@@ -538,5 +542,11 @@ class Config {
 			$this->Categories[$row['id']]['name'] = $row['name'];
 			$this->Categories[$row['id']]['description'] = $row['description'];
 		}
+	}
+	
+	public function generateRandomString($length = 10)
+	{
+		$randomString = substr(str_shuffle(MD5(microtime())), 0, $length);
+		return $randomString;
 	}
 }
