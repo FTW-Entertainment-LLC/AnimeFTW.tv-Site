@@ -350,17 +350,56 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	}
 	else 
 	{
-		if(isset($_GET['edit']) && $_GET['edit'] == 'user-settings')
-		{
-			$u->UserProfileSettings($profileArray,$_GET['id']);
-		}
-		else if(isset($_GET['edit']) && $_GET['edit'] == 'site-settings')
+		echo '
+		<div class="fds">
+			<div style="display:inline-block;">Settings:</div>
+			<div class="user-settings-link-header';
+			if(isset($_GET['edit']) && $_GET['edit'] == 'user-settings' || !isset($_GET['edit']))
+			{
+				echo ' header-active';
+			}
+			echo '" id="account-setting-header"><a href="#" onClick="loadSettings(' . $_GET['id'] . ',0); return false;">Account</a></div>
+			<div class="user-settings-link-header';
+			if(isset($_GET['edit']) && $_GET['edit'] == 'site-settings')
+			{
+				echo ' header-active';
+			}
+			echo '" id="site-setting-header"><a href="#" onClick="loadSettings(' . $_GET['id'] . ',1); return false;">Site</a></div>
+			<div class="user-settings-link-header';
+			if(isset($_GET['edit']) && $_GET['edit'] == 'user-sessions')
+			{
+				echo ' header-active';
+			}
+			echo '" id="session-setting-header"><a href="#" onClick="loadSettings(' . $_GET['id'] . ',3); return false;">Sessions</a></div>
+			';
+			if($profileArray[2] == 1 || $profileArray[2] == 2)
+			{
+				echo '
+				<div class="user-settings-link-header';
+				if(isset($_GET['edit']) && $_GET['edit'] == 'user-logs')
+				{
+					echo ' header-active';
+				}
+				echo '" id="user-setting-header"><a href="#" onClick="loadSettings(' . $_GET['id'] . ',2); return false;">Logs</a></div>';
+			}
+			echo '
+			<div style="display:inline-block;">
+				<div style="display:none;" id="settings-loading-bar">
+					<img src="' . $Host . '/loading-mini.gif" alt="" />
+				</div>
+			</div>
+		</div><br />';
+		if(isset($_GET['edit']) && $_GET['edit'] == 'site-settings')
 		{
 			$u->UserSiteSettings($profileArray,$_GET['id']);
 		}
 		else if(isset($_GET['edit']) && $_GET['edit'] == 'user-logs')
 		{
 			$u->UserLogs($profileArray,$_GET['id']);
+		}
+		else if(isset($_GET['edit']) && $_GET['edit'] == 'user-sessions')
+		{
+			$u->UserSessions($profileArray,$_GET['id']);
 		}
 		else
 		{
