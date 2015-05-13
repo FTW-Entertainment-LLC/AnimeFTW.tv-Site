@@ -28,71 +28,77 @@ $PageTitle = 'Login - AnimeFTW.TV';
 		include_once('includes/classes/sessions.class.php');
 		$Session = new Sessions();
 		require_once ( 'includes/settings.php' );
-		
-		if ( array_key_exists ( '_submit_check', $_POST ) )
+		if(!isset($_POST['cookies-set']) || (isset($_POST['cookies-set']) && $_POST['cookies-set'] == 1))
 		{
-			if ( $userName != '' && $password != '' )
+			$error = 'Your Cookies are not enabled, you will not be able to login to AnimeFTW.tv without cookies enabled.';
+		}
+		else
+		{
+			if ( array_key_exists ( '_submit_check', $_POST ) )
 			{
-				if(isEmail($userName))
+				if ( $userName != '' && $password != '' )
 				{
-					// if the username is an email, we change the query string a bit.
-					$query = 'SELECT `ID`, `Username`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
-				}
-				else
-				{
-					$userName = makeUrlFriendly($userName);
-					// if the username is a real username.. then we use a different string.
-					$query = 'SELECT `ID`, `Username`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
-				}
-				
-				if ( $db->RecordCount ( $query ) == 1 )
-				{
-					$row = $db->getRow ( $query );
-					if ( $row->Active == 1 )
+					if(isEmail($userName))
 					{
-						include 'includes/config.php';
-						include 'includes/newsOpenDb.php';
-						$Session->setUserSessionData($row->ID,$row->Username,(@$_POST['remember'])?TRUE:FALSE);
-						//set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
-						$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
-						mysql_query($query) or die('Error : ' . mysql_error());
-						$query = "INSERT INTO `logins` (`ip`, `date`, `uid`, `agent`) VALUES
-	('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row->ID."', '".$_SERVER['HTTP_USER_AGENT']."')";
+						// if the username is an email, we change the query string a bit.
+						$query = 'SELECT `ID`, `Username`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+					}
+					else
+					{
+						$userName = makeUrlFriendly($userName);
+						// if the username is a real username.. then we use a different string.
+						$query = 'SELECT `ID`, `Username`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+					}
+					
+					if ( $db->RecordCount ( $query ) == 1 )
+					{
+						$row = $db->getRow ( $query );
+						if ( $row->Active == 1 )
+						{
+							include 'includes/config.php';
+							include 'includes/newsOpenDb.php';
+							$Session->setUserSessionData($row->ID,$row->Username,(@$_POST['remember'])?TRUE:FALSE);
+							//set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
+							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
+							mysql_query($query) or die('Error : ' . mysql_error());
+							$query = "INSERT INTO `logins` (`ip`, `date`, `uid`, `agent`) VALUES
+		('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row->ID."', '".$_SERVER['HTTP_USER_AGENT']."')";
+							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
+							
+							if ($last_page == '')
+							{
+								header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
+								exit;
+							}
+							else if ($last_page == 'http://'.$_SERVER['HTTP_HOST'].'/login.php' || $last_page == 'https://'.$_SERVER['HTTP_HOST'].'/login')
+							{
+								header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
+								exit;
+							}
+							else {
+								header ( "Location: ".$last_page );
+								exit;
+							}
+						}
+						elseif ( $row->Active == 0 ) {
+							$error = 'Your membership was not activated. Please open the email that we sent and click on the activation link.';
+					$failed = FALSE;
+						}
+						elseif ( $row->Active == 2 ) {
+							$error = 'You are suspended!<br /><br /> Reason: '.$row->Reason.'<br /><br />If you feel this suspension is in error, please email: support@animeftw.tv with your username and the reason given above.';
+					$failed = FALSE;
+						}
+					}
+					else {		
+						$query = "INSERT INTO `failed_logins` (`name`, `password`, `ip`, `date`) VALUES
+		('" . mysql_real_escape_string($userName) . "', '" . mysql_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
 						mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
-						
-						if ($last_page == '')
-						{
-							header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
-							exit;
-						}
-						else if ($last_page == 'http://'.$_SERVER['HTTP_HOST'].'/login.php' || $last_page == 'https://'.$_SERVER['HTTP_HOST'].'/login')
-						{
-							header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
-							exit;
-						}
-						else {
-							header ( "Location: ".$last_page );
-							exit;
-						}
-					}
-					elseif ( $row->Active == 0 ) {
-						$error = 'Your membership was not activated. Please open the email that we sent and click on the activation link.';
-				$failed = FALSE;
-					}
-					elseif ( $row->Active == 2 ) {
-						$error = 'You are suspended!<br /><br /> Reason: '.$row->Reason.'<br /><br />If you feel this suspension is in error, please email: support@animeftw.tv with your username and the reason given above.';
-				$failed = FALSE;
+						$error = 'Login failed! Password or Username is Incorrect.<br />'.checkFailedLogins($_SERVER['REMOTE_ADDR']);
 					}
 				}
-				else {		
-					$query = "INSERT INTO `failed_logins` (`name`, `password`, `ip`, `date`) VALUES
-	('" . mysql_real_escape_string($userName) . "', '" . mysql_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
-					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
-					$error = 'Login failed! Password or Username is Incorrect.<br />'.checkFailedLogins($_SERVER['REMOTE_ADDR']);
+				else {
+					$error = 'Please use both your username and password to access your account';	
 				}
-			}
-			else {
-				$error = 'Please use both your username and password to access your account';	
 			}
 		}
 	}
@@ -373,6 +379,28 @@ else {
 			echo '<div align="center"><form id="form1" action="'.$_SERVER['REQUEST_URI'].'" method="post">
 				<input type="hidden" name="_submit_check" value="1" />
 				<input type="hidden" name="issubmit" value="1">
+				<input type="hidden" name="cookies-set" value="0" id="cookies-set" />
+				<div id="cookie-warning" style="margin-top:-10px;margin-bottom:10px;display:none;">
+					<div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;border-radius:5px;color:white;">WARNING: AnimeFTW.tv requires cookies to log in, if they are not enabled you will not be able to log in.</div>
+				</div>
+				<script type="text/javascript">
+				are_cookies_enabled();
+				function are_cookies_enabled()
+				{
+					var cookieEnabled = (navigator.cookieEnabled) ? true : false;
+
+					if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
+					{ 
+						document.cookie="testcookie";
+						cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
+					}
+					if(cookieEnabled == false)
+					{
+						$("#cookie-warning").css("display","");
+						$("#cookies-set").val("1");
+					}
+				}
+				</script>
 				<table width="500px">
 				<tr>
 					<td align="right">
