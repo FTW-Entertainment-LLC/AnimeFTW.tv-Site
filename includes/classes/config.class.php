@@ -555,7 +555,8 @@ class Config {
 			'/netscape/i'   =>  'Netscape',
 			'/maxthon/i'    =>  'Maxthon',
 			'/konqueror/i'  =>  'Konqueror',
-			'/mobile/i'     =>  'Handheld Browser'
+			'/mobile/i'     =>  'Handheld Browser',
+			'/palemoon/i'	=>	'Palemoon'
 		);
 
 		foreach($browser_array as $regex => $value)
