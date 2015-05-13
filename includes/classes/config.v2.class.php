@@ -551,7 +551,7 @@ class Config {
 		return $randomString;
 	}
 	
-	public function getOS()
+	public function getOS($agent)
 	{
 		$os_platform    =   "Unknown OS Platform";
 		$os_array       =   array(
@@ -582,7 +582,7 @@ class Config {
 
 		foreach($os_array as $regex => $value)
 		{
-			if(preg_match($regex, $_SERVER['HTTP_USER_AGENT']))
+			if(preg_match($regex, $agent))
 			{
 				$os_platform    =   $value;
 			}
@@ -608,7 +608,7 @@ class Config {
 
 		foreach($browser_array as $regex => $value)
 		{
-			if(preg_match($regex,  $_SERVER['HTTP_USER_AGENT']))
+			if(preg_match($regex,  $agent))
 			{
 				$browser    =   $value;
 			}
