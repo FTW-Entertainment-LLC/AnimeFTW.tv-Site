@@ -993,12 +993,13 @@ class AFTWUser extends Config{
 		else
 		{
 			echo '
-			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active Desktop Sessions</div>';
-			$query = "SELECT `id`, `updated`, `agent`, `ip` FROM `user_session` WHERE `uid` = $ruid ORDER BY `updated` DESC LIMIT 0, 30";
+			<div class="desktop-sessions-wrapper">
+				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active Desktop Sessions</div>';
+			$query = "SELECT `id`, `updated`, `agent`, `ip` FROM `user_session` WHERE `uid` = " . mysql_real_escape_string($ruid) . " ORDER BY `updated` DESC LIMIT 0, 30";
 			$result = mysql_query($query);
 			if(!$result)
 			{
-				echo 'There was an error with the query.';
+				echo 'There was an error with the query desktop.';
 				exit;
 			}
 			$count = mysql_num_rows($result);
@@ -1014,7 +1015,7 @@ class AFTWUser extends Config{
 									Last Activity
 								</div>
 								<div class="session-center-column">
-									<b>';
+									<span style="font-weight:bold;" title="' . date('r',$row['updated']) .'">';
 								if(date('Ymd') == date('Ymd', $row['updated']))
 								{
 									// today
@@ -1022,10 +1023,10 @@ class AFTWUser extends Config{
 								}
 								else
 								{
-									echo date('F j',$row['updated']) . ' at ' . date('h:i a',$row['updated']);
+									echo date('F j \a\t h:i a',$row['updated']);
 								}
 								echo '
-									</b>
+									</span>
 								</div>
 							</div>
 							<div class="session-inside-row" style="padding:2px 0 2px 0;">
@@ -1057,6 +1058,83 @@ class AFTWUser extends Config{
 			{
 				echo '<div align="center">There are no active logins sessions for this account.</div>';
 			}
+			echo '</div>';
+			echo '
+			<div class="desktop-sessions-wrapper" style="margin-top:10px;">
+				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active API Sessions</div>';
+			$query = "
+			SELECT 
+				`developers_api_sessions`.`id`, 
+				`developers_api_sessions`.`date`, 
+				`developers_api_sessions`.`ip`, 
+				`developers`.`name` FROM `developers_api_sessions`, `developers` 
+			WHERE 
+				`developers_api_sessions`.`uid` = " . mysql_real_escape_string($ruid) . "
+				AND `developers`.`id`=`developers_api_sessions`.`did`
+				ORDER BY `date` DESC LIMIT 0, 30";
+			$result = mysql_query($query);
+			if(!$result)
+			{
+				echo 'There was an error with the query api.';
+				exit;
+			}
+			$count = mysql_num_rows($result);
+			if($count > 0)
+			{
+				while($row = mysql_fetch_assoc($result))
+				{
+					echo '
+					<div class="full-session-row" id="desktop-session-' . $row['id'] . '">
+						<div class="session-micro-row-left">
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									Last Activity
+								</div>
+								<div class="session-center-column">
+									<span style="font-weight:bold;" title="' . date('r',$row['updated']) .'">';
+								if(date('Ymd') == date('Ymd', $row['date']))
+								{
+									// today
+									echo 'Today at ' . date('h:i a',$row['date']);
+								}
+								else
+								{
+									echo date('F j \a\t h:i a',$row['date']);
+								}
+								echo '
+									</span>
+								</div>
+							</div>
+							<div class="session-inside-row" style="padding:2px 0 2px 0;">
+								<div class="session-left-column">
+									Location
+								</div>
+								<div class="session-center-column">
+									' . $row['ip'] . '
+								</div>
+							</div>
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									External App Info
+								</div>
+								<div class="session-center-column">
+									' . $row['name'] . '
+								</div>
+							</div>
+						</div>
+						<div class="session-micro-row-right">
+							<div align="center">
+								<a href="#" onClick="alert(\'Its coming soon, dont worry!\'); return false;">End Session</a>
+							</div>
+						</div>
+					</div>';
+				}
+			}
+			else
+			{
+				echo '<div align="center">There are no active logins sessions for this account.</div>';
+			}
+			echo '</div>';
 		}
 	}
 	
