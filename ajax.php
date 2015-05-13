@@ -1,16 +1,10 @@
 <?php
-include('includes/siteroot.php');
-session_start();
-if(isset($_COOKIE['cookie_id'])){
-	$globalnonid = $_COOKIE['cookie_id'];
-}
-else if(isset($_SESSION['user_id'])){
-	$globalnonid = $_SESSION['user_id'];
-}
-else {
-	$globalnonid = 0;
-}
-$profileArray = checkLoginStatus($globalnonid,$_SERVER['REMOTE_ADDR'],$_SERVER['HTTP_USER_AGENT']);
+include_once('includes/siteroot.php');
+include_once('includes/classes/config.class.php');
+include_once('includes/classes/sessions.class.php');
+$CheckSession = new Sessions();
+$profileArray = $CheckSession->checkUserSession();
+
 if($profileArray[2] == 0)
 {
 	$aonly = "AND aonly='0'";
