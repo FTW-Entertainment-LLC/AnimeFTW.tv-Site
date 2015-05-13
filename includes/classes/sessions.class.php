@@ -93,6 +93,35 @@ class Sessions extends Config {
 		return array($Logged,$globalnonid,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$html5,$ssl);
 	}
 	
+	public function logoutOfSession()
+	{
+		// Set the domain..
+		$ThisDomain = ".animeftw.tv";
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$ThisDomain = ".ftwdevs.com";
+		}
+		// remove it from the database.
+		$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+		
+		$result = mysql_query($query);
+		if(!$result)
+		{
+			echo 'Error processing the update ' . mysql_error();
+			echo $query;
+		}
+		else
+		{
+			// set the sessions
+			setcookie("au", "", time() - (60*60*24*365), "/", $ThisDomain, 0, 1);
+			setcookie("hh", "", time() - (60*60*24*365), "/", $ThisDomain, 0, 1);
+			setcookie("vd", "", time() - (60*60*24*365), "/", $ThisDomain, 0, 1);
+			
+			// redirect them to the login page
+			header("location: /login");
+		}
+	}
+	
 	private function getOS()
 	{
 		$os_platform    =   "Unknown OS Platform";
