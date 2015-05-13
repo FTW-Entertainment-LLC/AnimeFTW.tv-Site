@@ -955,7 +955,6 @@ class AFTWUser extends Config{
 		}
 		else
 		{
-			
 			echo '
 			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Site Logins</div>';
 			$query = "SELECT * FROM `logins` WHERE uid = " . mysql_real_escape_string($ruid) . " ORDER BY `logins`.`date` DESC LIMIT 0, 40";
@@ -976,6 +975,87 @@ class AFTWUser extends Config{
 						<div style="width:50%;display:inline-block;">' . $row['agent'] . '</div>
 					</div>';
 				}
+			}
+		}
+	}
+	
+	public function UserSessions($profileArray,$ruid)
+	{
+		$this->UserArray = $profileArray;
+		
+		// This will show the 
+		if(($this->UserArray[2] != 1 && $this->UserArray[2] != 2) && ($ruid != $this->UserArray[1]))
+		{
+			echo 'There was an error in your request.';
+			//echo '<br />'.$_SERVER['REQUEST_URI'];
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+		}
+		else
+		{
+			echo '
+			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active Desktop Sessions</div>';
+			$query = "SELECT `id`, `updated`, `agent`, `ip` FROM `user_session` WHERE `uid` = $ruid ORDER BY `updated` DESC LIMIT 0, 30";
+			$result = mysql_query($query);
+			if(!$result)
+			{
+				echo 'There was an error with the query.';
+				exit;
+			}
+			$count = mysql_num_rows($result);
+			if($count > 0)
+			{
+				while($row = mysql_fetch_assoc($result))
+				{
+					echo '
+					<div class="full-session-row" id="desktop-session-' . $row['id'] . '">
+						<div class="session-micro-row-left">
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									Last Activity
+								</div>
+								<div class="session-center-column">
+									<b>';
+								if(date('Ymd') == date('Ymd', $row['updated']))
+								{
+									// today
+									echo 'Today at ' . date('h:i a',$row['updated']);
+								}
+								else
+								{
+									echo date('F j',$row['updated']) . ' at ' . date('h:i a',$row['updated']);
+								}
+								echo '
+									</b>
+								</div>
+							</div>
+							<div class="session-inside-row" style="padding:2px 0 2px 0;">
+								<div class="session-left-column">
+									Location
+								</div>
+								<div class="session-center-column">
+									' . $row['ip'] . '
+								</div>
+							</div>
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									Device Info
+								</div>
+								<div class="session-center-column">
+									' . $this->getBrowser($row['agent']) . ' on ' . $this->getOS($row['agent']) . '
+								</div>
+							</div>
+						</div>
+						<div class="session-micro-row-right">
+							<div align="center">
+								<a href="#" onClick="alert(\'Its coming soon, dont worry!\'); return false;">End Session</a>
+							</div>
+						</div>
+					</div>';
+				}
+			}
+			else
+			{
+				echo '<div align="center">There are no active logins sessions for this account.</div>';
 			}
 		}
 	}
@@ -1552,5 +1632,3 @@ class AFTWUser extends Config{
 		}
 	}
 }
-
-?>

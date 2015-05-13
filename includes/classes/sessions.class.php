@@ -23,7 +23,7 @@ class Sessions extends Config {
 		//  hh - hash - shared secret, uid and mktime
 		//  vd - hash based on the user agent (just the browser) and the username
 		$randomkey = $this->generateRandomString(200);
-		$vdkey = MD5($this->getOS() . $username . "dcb93b6e8d4fdcc8be4bc95e61ee1a28" . time());
+		$vdkey = MD5($this->getOS($_SERVER['HTTP_USER_AGENT']) . $username . "dcb93b6e8d4fdcc8be4bc95e61ee1a28" . time());
 		// Set the domain..
 		$ThisDomain = ".animeftw.tv";
 		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
@@ -35,7 +35,7 @@ class Sessions extends Config {
 		setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $ThisDomain, 0, 1);
 		setcookie("vd", $vdkey, time() + (60*60*24*365), "/", $ThisDomain, 0, 1);
 		// set the information in the database.
-		$query = "INSERT INTO `" . $this->MainDB . "`.`user_session` (`id`, `added`, `updated`, `uid`, `agent`, `validate`) VALUES ('" . mysql_real_escape_string($vdkey) . "', '" . time() . "', '" . time() ."', '" . $id . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "', '" . mysql_real_escape_string($randomkey) . "')";
+		$query = "INSERT INTO `" . $this->MainDB . "`.`user_session` (`id`, `added`, `updated`, `uid`, `agent`, `validate`, `ip`) VALUES ('" . mysql_real_escape_string($vdkey) . "', '" . time() . "', '" . time() ."', '" . $id . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "', '" . mysql_real_escape_string($randomkey) . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
 		
 		$result = mysql_query($query);
 		if(!$result)

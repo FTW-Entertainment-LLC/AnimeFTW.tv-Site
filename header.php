@@ -77,7 +77,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 		echo '<link rel="stylesheet" href="/christmas.css?v=4000" type="text/css" />';
 	}
 	else {
-		echo '<link rel="stylesheet" href="/aftw.css?v=4003" type="text/css" />';
+		echo '<link rel="stylesheet" href="/aftw.css?v=4004" type="text/css" />';
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 0))
 	{

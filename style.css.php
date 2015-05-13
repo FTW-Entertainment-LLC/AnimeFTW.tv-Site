@@ -533,44 +533,17 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 .user-settings-link-header{display:inline-block;border-top:#D1D1D1 1px solid; border-right:1px solid #D1D1D1; border-left:1px solid #D1D1D1;padding:0 5px 0 5px;border-top-left-radius:5px;border-top-right-radius:5px;}
 .user-settings-link-header a {color:black;}
 .header-active {background-color:#D1D1D1}
-
-
-#upload-wrapper {
-	width: 70%;
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 50px;
-	background: #F5F5F5;
-	padding: 50px;
-	border-radius: 10px;
-	box-shadow: 1px 1px 3px #AAA;
-}
-#upload-wrapper h3 {
-	padding: 0px 0px 10px 0px;
-	margin: 0px 0px 20px 0px;
-	margin-top: -30px;
-	border-bottom: 1px dotted #DDD;
-}
-#upload-wrapper input[type=file] {
-	border: 1px solid #DDD;
-	padding: 6px;
-	background: #FFF;
-	border-radius: 5px;
-}
-#upload-wrapper #submit-btn {
-	border: none;
-	padding: 10px;
-	background: #61BAE4;
-	border-radius: 5px;
-	color: #FFF;
-}
-#output{
-	padding: 5px;
-	font-size: 12px;
-}
-#output img {
-	border: 1px solid #DDD;
-	padding: 5px;
-}
+.full-session-row {padding:5px;border-left:1px solid #D1D1D1;border-bottom:1px solid #D1D1D1;border-right:1px solid #D1D1D1;}
+.session-micro-row-left {display:inline-block;width:305px;vertical-align:top;}
+.session-inside-row {padding:2px 0 2px 0;}
+.session-left-column {display:inline-block;width:145px;text-align:right;padding-right:3px;}
+.session-center-column {display:inline-block;width:145px;text-align:left;}
+.session-micro-row-right {display:inline-block;width:100px;vertical-align:top;}
+#upload-wrapper {width: 70%;margin-right: auto;margin-left: auto;margin-top: 50px;background: #F5F5F5;padding: 50px;border-radius: 10px;box-shadow: 1px 1px 3px #AAA;}
+#upload-wrapper h3 {padding: 0px 0px 10px 0px;margin: 0px 0px 20px 0px;margin-top: -30px;border-bottom: 1px dotted #DDD;}
+#upload-wrapper input[type=file] {border: 1px solid #DDD;padding: 6px;background: #FFF;border-radius: 5px;}
+#upload-wrapper #submit-btn {border: none;padding: 10px;background: #61BAE4;border-radius: 5px;color: #FFF;}
+#output{padding: 5px;font-size: 12px;}
+#output img {border: 1px solid #DDD;padding: 5px;}
 ';
 ?>
