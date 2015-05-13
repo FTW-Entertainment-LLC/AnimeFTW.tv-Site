@@ -591,7 +591,7 @@ class Config {
 		return $os_platform;
 	}
 
-	public function getBrowser()
+	public function getBrowser($agent)
 	{
 		$browser        =   "Unknown Browser";
 		$browser_array  =   array(
