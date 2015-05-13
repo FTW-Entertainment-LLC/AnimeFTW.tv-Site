@@ -1,23 +1,7 @@
 <?php
-include('includes/global_functions.php');
-include('includes/classes/pages.class.php');
-include('includes/classes/toplist.class.php');
-
-session_start();
-if(isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
-	if(isset($_COOKIE['cookie_id'])){
-		$globalnonid = $_COOKIE['cookie_id'];
-	} 
-	else if(isset($_SESSION['user_id'])){
-		$globalnonid = $_SESSION['user_id']; 
-	}
-	else {
-		$globalnonid = 0;
-	}
-}
-else {
-	$globalnonid = 0;
-}
+include_once('includes/global_functions.php');
+include_once('includes/classes/pages.class.php');
+include_once('includes/classes/toplist.class.php');
 
 if($_SERVER['SERVER_PORT'] == 443)
 {
@@ -27,8 +11,6 @@ else
 {
 	$Host = 'http://img02.animeftw.tv';
 }
-
-$profileArray = checkLoginStatus($globalnonid,$_SERVER['REMOTE_ADDR'],$_SERVER['HTTP_USER_AGENT']);
 
 $globalvarsquery = mysql_query("SELECT * FROM global_settings WHERE id='1'");
 
@@ -96,7 +78,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 		//echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
 	}	
 }
-if(isset($_GET['view']) && $_GET['view'] == 'user'){
+if(isset($_GET['view']) && $_GET['view'] == 'user')
+{
+
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
 	//include_once 'includes/global_functions.php';
 	//include_once 'includes/aftw.class.php';
 	$id = $_GET['uid'];
@@ -334,7 +322,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 	}
 }
 if(isset($_GET['view']) && $_GET['view'] == 'settings'){
-	include('includes/classes/config.class.php');
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	include('includes/classes/users.class.php');
 	$u = new AFTWUser();
 	if(isset($_GET['go']) && $_GET['go'] == 'password'){
@@ -407,7 +399,12 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 		}
 	}
 }
-if(isset($_GET['view']) && $_GET['view'] == 'profile'){
+if(isset($_GET['view']) && $_GET['view'] == 'profile')
+{
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
 	if(isset($_GET['subview'])){
 		if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
 		}
@@ -557,8 +554,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile'){
 		echo 'Error: You have chosen an invalid subroutine.';
 	}
 }
-if(isset($_GET['view']) && $_GET['view'] == 'management'){
-
+if(isset($_GET['view']) && $_GET['view'] == 'management')
+{
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	if(isset($_GET['u'])){
 		if($_GET['u'] != $profileArray[1] && !isset($_GET['phpcli-auth'])){
 			echo 'ERROR: S-M3';
@@ -585,6 +587,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'management'){
 }
 if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 {
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
 	if(isset($_GET['mode']) && $_GET['mode'] == 'comment-votes')
 	{
 		if(!isset($_GET['cid']) || !is_numeric($_GET['cid']))
@@ -629,7 +635,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'tracker')
 {
-	include('includes/classes/config.class.php');
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
 	include('includes/classes/tracker.class.php');
 	$tr = new AFTWTracker();
 	if(isset($_GET['subview']) && $_GET['subview'] == 'add-entry')
@@ -673,11 +682,16 @@ if(isset($_GET['view']) && $_GET['view'] == 'tracker')
 	
 	
 }
-if(isset($_GET['view']) && $_GET['view'] == 'notifications'){
+if(isset($_GET['view']) && $_GET['view'] == 'notifications')
+{
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	if($profileArray[0] == 0){
 	}
 	else {
-		include('includes/classes/config.class.php');
 		include('includes/classes/notifications.class.php');
 		$N = new AFTWNotifications();
 		if(!isset($_GET['show'])){
@@ -699,7 +713,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'notifications'){
 }
 if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 {
-	include('includes/classes/config.class.php');
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	include('includes/classes/watchlist.class.php');
 	if(isset($_GET['function']) && $_GET['function'] == 'submit-form')
 	{
@@ -717,7 +735,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 		}
 	}
 }
-if(isset($_GET['view']) && $_GET['view'] == 'donate'){
+if(isset($_GET['view']) && $_GET['view'] == 'donate')
+{
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	if($profileArray[0] == 0){
 	}
 	else {
@@ -728,7 +752,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'donate'){
 		$d->ScriptsOutput();
 	}
 }
-if(isset($_GET['view']) && $_GET['view'] == 'uploads'){
+if(isset($_GET['view']) && $_GET['view'] == 'uploads')
+{
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	if($profileArray[0] == 0 || ($profileArray[2] == 0 || $profileArray[2] == 3)){
 	}
 	else {
@@ -740,6 +770,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'uploads'){
 }
 if(isset($_GET['view']) && $_GET['view'] == 'profile-comments')
 {
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	if(!isset($_GET['uid']) || !is_numeric($_GET['uid']))
 	{
 	}
@@ -916,18 +951,21 @@ if(isset($_GET['view']) && $_GET['view'] == 'tooltip')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 {
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	if(isset($_GET['page']) && isset($_GET['id']))
 	{
 		if(isset($_GET['show']) && $_GET['show'] == 'episodes')
 		{
-			include('includes/classes/config.class.php');
 			include('includes/classes/videos.class.php');
 			$V = new AFTWVideos();
 			$V->showAvailableVideos(0,$_GET['id'],1,TRUE);
 		}
 		else if(isset($_GET['show']) && $_GET['show'] == 'watchlist')
 		{
-			include('includes/classes/config.class.php');
 			include('includes/classes/watchlist.class.php');
 			$W = new AFTWWatchlist($profileArray);
 			// if the stage is set, it's a new addition.
@@ -950,6 +988,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 {
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/sessions.class.php');
+	$CheckSession = new Sessions();
+	$profileArray = $CheckSession->checkUserSession();
+	
 	############ Configuration ##############
 	$thumb_square_size      = 200; //Thumbnails will be cropped to 200x200 pixels
 	$max_image_size         = 500; //Maximum image size (height and width)
@@ -1113,5 +1156,3 @@ if(isset($_GET['view']) && $_GET['view'] == 'anime-requests')
 		Hani I moved all of your functions to the request.class.php script, similar to the cart-admin function where everything happens there instead of here (less clutter, more organized)
 	*/
 }
-include 'includes/closedb.php';
-?>
