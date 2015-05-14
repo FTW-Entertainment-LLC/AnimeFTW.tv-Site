@@ -1048,7 +1048,7 @@ class AFTWUser extends Config{
 						</div>
 						<div class="session-micro-row-right">
 							<div align="center">
-								<a href="#" onClick="alert(\'Its coming soon, dont worry!\'); return false;">End Session</a>
+								<a href="#" class="end-session-desktop" id="session-' . $row['id'] . '">End Session</a>
 							</div>
 						</div>
 					</div>';
@@ -1084,7 +1084,7 @@ class AFTWUser extends Config{
 				while($row = mysql_fetch_assoc($result))
 				{
 					echo '
-					<div class="full-session-row" id="desktop-session-' . $row['id'] . '">
+					<div class="full-session-row" id="api-session-' . $row['id'] . '">
 						<div class="session-micro-row-left">
 							<div class="session-inside-row">
 								<div class="session-left-column">
@@ -1124,7 +1124,7 @@ class AFTWUser extends Config{
 						</div>
 						<div class="session-micro-row-right">
 							<div align="center">
-								<a href="#" onClick="alert(\'Its coming soon, dont worry!\'); return false;">End Session</a>
+								<a href="#" class="end-session-api" id="session-' . $row['id'] . '">End Session</a>
 							</div>
 						</div>
 					</div>';
@@ -1134,7 +1134,29 @@ class AFTWUser extends Config{
 			{
 				echo '<div align="center">There are no active logins sessions for this account.</div>';
 			}
-			echo '</div>';
+			echo '</div>
+			<script>
+				$(".end-session-desktop").on("click", function(){
+					var this_id = $(this).attr("id").substring(8);
+					$.ajax({
+						url: "/scripts.php?view=profile&subview=manage-session&type=0&uid=' . $ruid . '&id=" + this_id,
+						cache: false
+					}).done(function(html){
+						$("#desktop-session-" + this_id).hide();
+					});
+					return false;
+				});
+				$(".end-session-api").on("click", function(){
+					var this_id = $(this).attr("id").substring(8);
+					$.ajax({
+						url: "/scripts.php?view=profile&subview=manage-session&type=1&uid=' . $ruid . '&id=" + this_id,
+						cache: false
+					}).done(function(html){
+						$("#api-session-" + this_id).hide();
+					});
+					return false;
+				});
+			</script>';
 		}
 	}
 	

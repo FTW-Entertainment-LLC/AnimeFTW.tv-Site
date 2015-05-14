@@ -403,8 +403,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 {
 	include_once('includes/classes/config.class.php');
 	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Session = new Sessions();
+	$profileArray = $Session->checkUserSession();
 	if(isset($_GET['subview'])){
 		if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
 		}
@@ -544,6 +544,24 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 					}
 				}
 				echo 'success';
+			}
+			else if($_GET['subview'] == 'manage-session')
+			{
+				if(!isset($_GET['type']))
+				{
+					echo 'Action not successful.';
+				}
+				else
+				{
+					if(isset($_GET['allsessions']))
+					{
+						$Session->removeSession($_GET['type'],TRUE);
+					}
+					else
+					{
+						$Session->removeSession($_GET['type']);
+					}
+				}
 			}
 			else {
 				echo 'Error: No subview here.';

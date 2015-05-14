@@ -121,4 +121,63 @@ class Sessions extends Config {
 			header("location: /login");
 		}
 	}
+	
+	public function removeSession($Type=0,$allSessions = false)
+	{
+		if(($this->UserArray[2] == 1 || $this->UserArray[2] == 2) || $this->UserArray[1] == $_GET['uid'])
+		{
+			if($Type == 0)
+			{
+				// desktop session
+				if($allSessions != false)
+				{
+					// We will want to remove ALL sessions of the requested.
+					$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `uid` = " . mysql_real_escape_string($_GET['uid']);
+					
+					if($_GET['uid'] == $this->UserArray[1])
+					{
+						// if the user id is the same as the logged in user, we want to ensure that the existing session is not logged out.
+						$queryAddon = " AND `id` != " . mysql_real_escape_string($_COOKIE['vd']);
+					}
+					else
+					{
+						// nope, give em hell and banish all of the sessions.
+						$queryAddon = "";
+					}
+				}
+				else
+				{
+					// only one session.
+					$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_GET['id']) . "'";
+				}
+			}
+			else
+			{
+				// api sessions
+				if($allSessions != false)
+				{
+					// We will want to remove ALL sessions of the requested, since this is not a current session thing, we can remove all, all the time.
+					$query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `uid` = " . mysql_real_escape_string($_GET['uid']);
+				}
+				else
+				{
+					// only one session.
+					$query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `id` = '" . mysql_real_escape_string($_GET['id']) . "'";
+				}
+			}
+			// result
+			$result = mysql_query($query);
+			
+			if(!$result)
+			{
+				echo 'Error in executing the Query.';
+				exit;
+			}
+			echo 'Success';
+		}
+		else
+		{
+			echo 'PERMISSION DENIED.';
+		}
+	}
 }

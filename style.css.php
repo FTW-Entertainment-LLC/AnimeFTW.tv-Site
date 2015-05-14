@@ -131,7 +131,7 @@ div.highlightBlue::-moz-selection{color:#FFF;background:#093}
 #va{width:990px;height:78px;margin:0px auto}
 #va .head{font-family:Arial,Helvetica,sans-serif;font-size:24px;padding:5px 0px 5px 5px}
 #va .headend{font-family:Arial,Helvetica,sans-serif;font-size:20px;padding:5px 5px 5px 0px}
-#ua{width:990px;margin:0px auto;float:center;text-align:left;margin-top:-44px}
+#ua{width:990px;margin:0px auto;text-align:left;margin-top:-44px}
 #ua .head{font-family:Arial,Helvetica,sans-serif;font-size:24px;padding:5px 0px 5px 5px}
 #ua .headend{font-family:Arial,Helvetica,sans-serif;color:#999;font-size:12px;font-style:italic;padding:0px 5px 5px 5px}
 .ucleft{border-right:solid 1px #CCC;margin-right:15px}
@@ -164,15 +164,15 @@ div#left div{padding-top:10px}
 .tooltip{display:none;background:transparent url("' . $C->Host . $stylelocation . 'blue_arrow.png");font-size:12px;height:70px;width:160px;padding:25px;color:#fff}
 .pane-subnav{display:none;padding:7px 5px 2px 5px;margin-bottom:-29px;border-top:0;height:20px;font-size:12px;background-color:#F3F3F3;width:500px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;-webkit-box-shadow:0 8px 20px 0 #cdcdcd;box-shadow:0 8px 20px 0 #cdcdcd}
 .panes{padding-right:480px}
-#RegisterForm{background:#333;padding:15px 20px;color:#eee;width:800px;margin:0 auto;position:relative;border-radius:5px;-webkit-border-radius:5px}
+#RegisterForm{background:#333;padding:15px 20px;color:#eee;width:800px;margin:0 auto;position:relative;border-radius:5px;}
 #RegisterForm fieldset{border:0;margin:0;padding:0;background:#333 url(https://flowplayer.org/tools/img/logo-medium.png) no-repeat scroll 215px 40px}
 #RegisterForm h3{color:#eee;margin-top:0px}
 #RegisterForm p{font-size:11px}
-#RegisterForm input{border:1px solid #444;background-color:#666;padding:5px;color:#ddd;font-size:12px;text-shadow:1px 1px 1px #000;border-radius:4px;-webkit-border-radius:4px}
+#RegisterForm input{border:1px solid #444;background-color:#666;padding:5px;color:#ddd;font-size:12px;text-shadow:1px 1px 1px #000;border-radius:4px;}
 #RegisterForm input:focus{color:#fff;background-color:#777}
 #RegisterForm input:active{background-color:#888}
 #RegisterForm button{outline:0;border:1px solid #666}
-.error{height:15px;background-color:#FFFE36;font-size:11px;border:1px solid #E1E16D;padding:4px 10px;color:#000;display:none;border-radius:4px;-webkit-border-radius:4px;-webkit-border-bottom-left-radius:0;-webkit-border-top-left-radius:0;box-shadow:0 0 6px #ddd;-webkit-box-shadow:0 0 6px #ddd}
+.error{height:15px;background-color:#FFFE36;font-size:11px;border:1px solid #E1E16D;padding:4px 10px;color:#000;display:none;border-radius:4px;box-shadow:0 0 6px #ddd;-webkit-box-shadow:0 0 6px #ddd}
 .error p{margin:0}
 label{display:block;font-size:11px;color:#ccc}
 #terms label{float:left}
@@ -181,7 +181,7 @@ label{display:block;font-size:11px;color:#ccc}
 #RegisterForm label{font-size:11px;margin-top:20px;display:block}
 #RegisterForm label input{display:block}
 .clear{clear:both;height:15px}
-.error{margin:0 0 2px;padding:2px 6px;border-radius:4px;-webkit-border-radius:4px}
+.error{margin:0 0 2px;padding:2px 6px;border-radius:4px;}
 .error em{border:10px solid;border-color:#FFFE36 transparent transparent;bottom:-17px;display:block;height:0;left:60px;position:absolute;width:0}
 .video-div{background:#F7F7F7;padding:5px}
 #button{height:32px;width:184px;padding-left:700px}
@@ -196,7 +196,7 @@ a.feature01:hover .overlay01{position:absolute;z-index:3;width:154px;height:86px
 a.feature01 .overlay01 .caption01,img.caption01{position:absolute;height:30px;line-height:30px;width:100%;z-index:3;text-indent:-9999em;color:#000;font-size:11px;bottom:0;overflow:hidden}
 a.feature01:hover .caption01{text-indent:10px;background:rgb(17,180,233);background:rgba(17,180,233,0.75)}
 a.feature01 img{display:block}
-#NT_copy{background-color:#333;color:#FFF;font-weight:bold;font-size:10px;font-family:"Trebuchet MS";width:400px;left:0;top:0;padding:4px;position:absolute;text-align:left;z-index:20;border-radius:0 10px 10px 10px;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=87);-moz-opacity:.87;-khtml-opacity:.87;opacity:.87}
+#NT_copy{background-color:#333;color:#FFF;font-weight:bold;font-size:10px;font-family:"Trebuchet MS";width:400px;left:0;top:0;padding:4px;position:absolute;text-align:left;z-index:20;border-radius:0 10px 10px 10px;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=87);-moz-opacity:.87;-khtml-opacity:.87;opacity:.87;}
 #ajax_tooltipObj{z-index:1000000;text-align:left}
 #ajax_tooltipObj div{position:relative}
 #ajax_tooltipObj .ajax_tooltip_arrow{;width:20px;position:absolute;left:0px;top:0px;background-repeat:no-repeat;background-position:center left;z-index:1000005;height:60px}
@@ -323,12 +323,12 @@ iframe{margin:0px;padding:0px;clip:rect(10px,auto,auto,auto)}
 .top10{margin:-5px 0 0 -20px}
 .swMain{ position:relative; display:block; margin:0; padding:0; border:0px solid #CCC; overflow:visible; float:left; width:980px}
 .swMain .stepContainer{ display:block; position:relative; margin:0; padding:0;  border:0px solid #CCC;  overflow:hidden; clear:both; height:300px}
-.swMain .stepContainer div.content{ display:block; position:absolute;  float:left; margin:0; padding:5px;  border:1px solid #CCC; font:normal 12px Verdana,Arial,Helvetica,sans-serif; color:#5A5655;  background-color:#F8F8F8;  height:300px; text-align:left; overflow:visible;  z-index:88; -webkit-border-radius:5px; border-radius:5px; width:968px; clear:both}
-.swMain div.actionBar{ display:block; position:relative; clear:both; margin: 3px 0 0 0;  border: 1px solid #CCC; padding: 0;  color: #5A5655;  background-color: #F8F8F8; height:40px; text-align:left; overflow:auto;  z-index:88; -webkit-border-radius:5px;border-radius :5px; left:0}
-.swMain .stepContainer .StepTitle{ display:block; position:relative; margin:0;  border:1px solid #E0E0E0; padding:5px;  font:bold 16px Verdana,Arial,Helvetica,sans-serif; color:#5A5655;  background-color:#E0E0E0; clear:both; text-align:left; z-index:88; -webkit-border-radius:5px;border-radius:5px}
+.swMain .stepContainer div.content{ display:block; position:absolute;  float:left; margin:0; padding:5px;  border:1px solid #CCC; font:normal 12px Verdana,Arial,Helvetica,sans-serif;color:#5A5655;background-color:#F8F8F8;height:300px;text-align:left;overflow:visible;z-index:88;border-radius:5px; width:968px; clear:both}
+.swMain div.actionBar{ display:block; position:relative; clear:both; margin: 3px 0 0 0;  border: 1px solid #CCC; padding: 0;  color: #5A5655;  background-color: #F8F8F8; height:40px;text-align:left;overflow:auto;z-index:88;border-radius :5px;left:0}
+.swMain .stepContainer .StepTitle{ display:block; position:relative; margin:0;  border:1px solid #E0E0E0; padding:5px;  font:bold 16px Verdana,Arial,Helvetica,sans-serif; color:#5A5655;background-color:#E0E0E0;clear:both;text-align:left;z-index:88;border-radius:5px}
 .swMain ul.anchor{ position:relative; display:block; float:left; list-style:none; padding:0px;  margin:10px 0;  clear:both; border:0px solid #CCC;  background:transparent}
 .swMain ul.anchor li{ position:relative; display:block; margin:0; padding:0; padding-left:3px; padding-right:3px; border:0px solid #E0E0E0;  float:left}
-.swMain ul.anchor li a{ display:block; position:relative; float:left; margin:0; padding:3px; height:60px; width:230px; text-decoration:none; outline-style:none;border-radius:5px; -webkit-border-radius:5px; z-index:99}
+.swMain ul.anchor li a{ display:block; position:relative; float:left; margin:0; padding:3px; height:60px; width:230px; text-decoration:none; outline-style:none;border-radius:5px;z-index:99}
 .swMain ul.anchor li a .stepNumber{ position:relative; float:left; width:30px; text-align:center; padding:5px; padding-top:0; font:bold 45px Verdana,Arial,Helvetica,sans-serif}
 .swMain ul.anchor li a .stepDesc{ position:relative; display:block; float:left; text-align:left; padding:5px; font:bold 20px Verdana,Arial,Helvetica,sans-serif}
 .swMain ul.anchor li a .stepDesc small{ font:normal 12px Verdana,Arial,Helvetica,sans-serif}
@@ -340,22 +340,22 @@ iframe{margin:0px;padding:0px;clip:rect(10px,auto,auto,auto)}
 .swMain ul.anchor li a.disabled:hover{ color:#CCC;  background:#E6E6E6}
 .swMain ul.anchor li a.error{ color:#6c6c6c !important;  background:#f08f75 !important; border:1px solid #fb3500 !important}
 .swMain ul.anchor li a.error:hover{ color:#000 !important}
-.swMain .buttonNext{ display:block; float:right; margin:5px 3px 0 3px; padding:5px; text-decoration:none; text-align:center; font:bold 13px Verdana,Arial,Helvetica,sans-serif; width:100px; color:#FFF; outline-style:none; background-color: #5A5655; border:1px solid #5A5655;border-radius:5px;-webkit-border-radius:5px}
+.swMain .buttonNext{ display:block; float:right; margin:5px 3px 0 3px; padding:5px; text-decoration:none; text-align:center; font:bold 13px Verdana,Arial,Helvetica,sans-serif; width:100px; color:#FFF; outline-style:none; background-color: #5A5655; border:1px solid #5A5655;border-radius:5px;}
 .swMain .buttonDisabled{ color:#F8F8F8 !important; background-color:#CCC !important; border:1px solid #CCC !important; cursor:text}
-.swMain .buttonPrevious{ display:block; float:right; margin:5px 3px 0 3px; padding:5px; text-decoration:none; text-align:center; font:bold 13px Verdana,Arial,Helvetica,sans-serif; width:100px; color:#FFF; outline-style:none; background-color: #5A5655; border:1px solid #5A5655; border-radius :5px; -webkit-border-radius:5px}
-.swMain .buttonFinish{ display:block; float:right; margin:5px 10px 0 3px; padding:5px; text-decoration:none; text-align:center; font:bold 13px Verdana,Arial,Helvetica,sans-serif; width:100px; color:#FFF; outline-style:none; background-color: #5A5655; border:1px solid #5A5655; border-radius :5px; -webkit-border-radius:5px}
+.swMain .buttonPrevious{ display:block; float:right; margin:5px 3px 0 3px; padding:5px; text-decoration:none; text-align:center; font:bold 13px Verdana,Arial,Helvetica,sans-serif; width:100px; color:#FFF; outline-style:none; background-color: #5A5655; border:1px solid #5A5655; border-radius :5px;}
+.swMain .buttonFinish{ display:block; float:right; margin:5px 10px 0 3px; padding:5px; text-decoration:none; text-align:center; font:bold 13px Verdana,Arial,Helvetica,sans-serif; width:100px; color:#FFF; outline-style:none; background-color: #5A5655; border:1px solid #5A5655; border-radius :5px;}
 .txtBox{  border:1px solid #CCC;  color:#5A5655;  font:13px Verdana,Arial,Helvetica,sans-serif;  padding:2px;  width:430px}
 .txtBox2{  border:1px solid #CCC;  color:#5A5655;  font:13px Verdana,Arial,Helvetica,sans-serif;  padding:2px;  width:143px}
 .txtBox3{  border:1px solid #CCC;  color:#5A5655;  font:13px Verdana,Arial,Helvetica,sans-serif;  padding:2px;  width:70px}
 .txtBox:focus,.txtBox2:focus,.txtBox3:focus{  border:1px solid #0C90BB}
-.swMain .loader{  position:relative;   display:none;  float:left;   margin:2px 0 0 2px;  padding:8px 10px 8px 40px;  border:1px solid #FFD700;  font:bold 13px Verdana,Arial,Helvetica,sans-serif;  color:#5A5655;background:#FFF url(' . $C->Host . $stylelocation . '/loader.gif) no-repeat 5px;border-radius :5px; -webkit-border-radius:5px; z-index:998}
-.swMain .msgBox{ position:relative;  display:none; float:left; margin:4px 0 0 5px; padding:5px; border:1px solid #FFD700; background-color:#FFD;font:normal 12px Verdana,Arial,Helvetica,sans-serif; color:#5A5655;border-radius :5px; -webkit-border-radius:5px; z-index:999; min-width:200px}
+.swMain .loader{  position:relative;   display:none;  float:left;   margin:2px 0 0 2px;  padding:8px 10px 8px 40px;  border:1px solid #FFD700;  font:bold 13px Verdana,Arial,Helvetica,sans-serif;  color:#5A5655;background:#FFF url(' . $C->Host . $stylelocation . '/loader.gif) no-repeat 5px;border-radius :5px;z-index:998}
+.swMain .msgBox{ position:relative;  display:none; float:left; margin:4px 0 0 5px; padding:5px; border:1px solid #FFD700; background-color:#FFD;font:normal 12px Verdana,Arial,Helvetica,sans-serif; color:#5A5655;border-radius :5px;z-index:999; min-width:200px}
 .swMain .msgBox .content{ font:normal 12px Verdana,Arial,Helvetica,sans-serif; padding:0px; float:left}
 .swMain .msgBox .close{ border:1px solid #CCC; border-radius:3px; color:#CCC; display:block; float:right; margin:0 0 0 5px; outline-style:none; padding:0 2px 0 2px; position:relative; text-align:center; text-decoration:none}
 .swMain .msgBox .close:hover{ color:#0C90BB; border:1px solid #0C90BB}
 .loginForm{border:1px solid #CCC;color:#5A5655;font:13px Verdana,Arial,Helvetica,sans-serif;padding:2px}
 .loginForm:focus{ border:1px solid #0C90BB}
-#uploadbox{display:none;width:400px;border:10px solid #666;border:10px solid rgba(82,82,82,0.698);border-radius:8px;-webkit-border-radius:8px}
+#uploadbox{display:none;width:400px;border:10px solid #666;border:10px solid rgba(82,82,82,0.698);border-radius:8px;}
 #uploadbox div{padding:10px;border:1px solid #202020;background-color:#fff;font-family:"lucida grande",tahoma,verdana,arial,sans-serif}
 #uploadbox h2{margin:-11px;margin-bottom:0px;color:#fff;background-color:#202020;padding:5px 10px;border:1px solid #3B5998;font-size:20px}
 div.feature02{position:relative}
@@ -402,7 +402,7 @@ div.feature02 img{display:block}
 .apple_overlay .close{background-image:url(' . $C->Host . $stylelocation . 'close.png);position:absolute;right:5px;top:5px;cursor:pointer;height:35px;width:35px}
 .forum_button{float:right;font-size:13px;position:relative;overflow:hidden;padding:5px 0 0 0}
 .forum_button span{}
-.forum_button a{float:left;background:#FFF url(' . $C->Host . $stylelocation . 'forum_button.png) 105px 9px no-repeat; border:2px solid #747478;color:#555;display:inline-block;width:110px;padding:4px 0 6px 8px;text-align:left;margin-left:20px;border-radius:3px;text-decoration:none;-webkit-border-radius:3px}
+.forum_button a{float:left;background:#FFF url(' . $C->Host . $stylelocation . 'forum_button.png) 105px 9px no-repeat; border:2px solid #747478;color:#555;display:inline-block;width:110px;padding:4px 0 6px 8px;text-align:left;margin-left:20px;border-radius:3px;text-decoration:none;}
 .forum_button a:hover{background:#' . $styletextcolor . ' url(' . $C->Host . $stylelocation . 'forum_button.png) 105px -16px no-repeat;border:2px solid #' . $styletextcolor . ';color:#fff}
 .oddrow{background-color:#E4E4E4}
 .evenrow{background-color:#D3D3D3}
@@ -447,7 +447,7 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 #tbl-wl:hover{padding:3px;border-color:#CCC;border-style:dashed;border-width:thin;}
 .whitelist_more{display:none;}
 #tbl-wl:hover .whitelist_more{display:block;float:right;z-index:1;padding:5px;}
-.all-rounded {-webkit-border-radius: 5px;border-radius: 5px;}
+.all-rounded {border-radius: 5px;}
 .spacer {display: block;}
 #progress-bar {width: 300px;margin: 0 auto;background: #cccccc;border: 3px solid #f2f2f2;}
 #progress-bar-percentage {background: #3063A5;padding: 5px 0px;color: #FFF;font-weight: bold;text-align: center;}
@@ -455,7 +455,7 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 #pagingControls li{display:inline;padding:0 0.2em}
 .management-nav{font-size:9px;float:right;margin-top:-25px;}
 .management-nav a{padding:2px 2px 0 2px;}
-.management-nav a:hover{background-color: #' . $styletextcolor . ';border-left-radius:5px;border-radius:5px;}
+.management-nav a:hover{background-color: #' . $styletextcolor . ';border-radius:5px;}
 #SizBar{margin:0 0 0 40px;}
 #SizeBar a{text-decoration:none;}
 #SizeBar a:hover{text-decoration:none;}
