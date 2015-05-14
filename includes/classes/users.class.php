@@ -1023,7 +1023,7 @@ class AFTWUser extends Config{
 								}
 								else
 								{
-									echo date('F j \a\t h:i a',$row['updated']);
+									echo date('M j \a\t h:i a',$row['updated']);
 								}
 								echo '
 									</span>
@@ -1099,7 +1099,7 @@ class AFTWUser extends Config{
 								}
 								else
 								{
-									echo date('F j \a\t h:i a',$row['date']);
+									echo date('M j \a\t h:i a',$row['date']);
 								}
 								echo '
 									</span>
