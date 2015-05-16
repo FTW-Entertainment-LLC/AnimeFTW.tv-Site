@@ -28,13 +28,7 @@ class Config {
 			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
 		}
 		
-		if($_SERVER['PHP_SELF'] == 'email.class.php')
-		{
-		}
-		else
-		{
-			$this->BuildUser(); // build our user array
-		}
+		$this->BuildUser(); // build our user array
 			
 		if($_SERVER['SERVER_PORT'] == 443)
 		{
