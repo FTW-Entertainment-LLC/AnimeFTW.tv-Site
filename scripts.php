@@ -406,7 +406,9 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 	$Session = new Sessions();
 	$profileArray = $Session->checkUserSession();
 	if(isset($_GET['subview'])){
-		if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
+		if(!isset($_GET['id']) || (!is_numeric($_GET['id']) && (!is_numeric($_GET['id']) && $_GET['subview'] != 'manage-session')))
+		{
+			echo 'One of these things is not like the other (error).';
 		}
 		else {
 			$uid = mysql_escape_string($_GET['id']);

@@ -1005,6 +1005,11 @@ class AFTWUser extends Config{
 			$count = mysql_num_rows($result);
 			if($count > 0)
 			{
+				// we need to define the current session if the user doing the request is the same user logged in
+				if($ruid == $this->UserArray[1])
+				{
+					$currentSession = $_COOKIE['vd'];
+				}
 				while($row = mysql_fetch_assoc($result))
 				{
 					echo '
@@ -1047,8 +1052,18 @@ class AFTWUser extends Config{
 							</div>
 						</div>
 						<div class="session-micro-row-right">
-							<div align="center">
-								<a href="#" class="end-session-desktop" id="session-' . $row['id'] . '">End Session</a>
+							<div align="center">';
+							if(isset($currentSession) && $currentSession == $row['id'])
+							{
+								echo '
+								<span title="You cannot remove your current session. Sorry.">Current Session</span>';								
+							}
+							else
+							{
+								echo '
+								<a href="#" class="end-session-desktop" id="session-' . $row['id'] . '">End Session</a>';
+							}
+							echo '
 							</div>
 						</div>
 					</div>';
@@ -1132,7 +1147,7 @@ class AFTWUser extends Config{
 			}
 			else
 			{
-				echo '<div align="center">There are no active logins sessions for this account.</div>';
+				echo '<div align="center">There are no active api based sessions for this account.</div>';
 			}
 			echo '</div>
 			<script>
@@ -1142,6 +1157,7 @@ class AFTWUser extends Config{
 						url: "/scripts.php?view=profile&subview=manage-session&type=0&uid=' . $ruid . '&id=" + this_id,
 						cache: false
 					}).done(function(html){
+						alert(html);
 						$("#desktop-session-" + this_id).hide();
 					});
 					return false;

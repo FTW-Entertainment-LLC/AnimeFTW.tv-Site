@@ -27,8 +27,14 @@ class Config {
 		{
 			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
 		}
-	
-		$this->BuildUser(); // build our user array
+		
+		if($_SERVER['PHP_SELF'] == 'email.class.php')
+		{
+		}
+		else
+		{
+			$this->BuildUser(); // build our user array
+		}
 			
 		if($_SERVER['SERVER_PORT'] == 443)
 		{
@@ -58,7 +64,11 @@ class Config {
 		$count = mysql_result($result, 0);
 		if($count > 0)
 		{
-			$query = "SELECT `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `html5`, `ssl` FROM users WHERE ID='" . mysql_real_escape_string($_COOKIE['au']) . "'";
+			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `updated` = " . time() . " WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+			$result = mysql_query($query);
+			unset($query);
+			unset($result);
+			$query = "SELECT `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `html5`, `ssl`, `advanceActive`, `UploadsVisit` FROM users WHERE ID='" . mysql_real_escape_string($_COOKIE['au']) . "'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
 			$Logged = 1;

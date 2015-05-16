@@ -41,13 +41,13 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					if(isEmail($userName))
 					{
 						// if the username is an email, we change the query string a bit.
-						$query = 'SELECT `ID`, `Username`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
 					}
 					else
 					{
 						$userName = makeUrlFriendly($userName);
 						// if the username is a real username.. then we use a different string.
-						$query = 'SELECT `ID`, `Username`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
 					}
 					
 					if ( $db->RecordCount ( $query ) == 1 )
@@ -64,6 +64,9 @@ $PageTitle = 'Login - AnimeFTW.TV';
 							$query = "INSERT INTO `logins` (`ip`, `date`, `uid`, `agent`) VALUES
 		('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row->ID."', '".$_SERVER['HTTP_USER_AGENT']."')";
 							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
+							
+							// send an email to the user.
+							$Session->sendEmailToUser($row->Email);
 							
 							if ($last_page == '')
 							{

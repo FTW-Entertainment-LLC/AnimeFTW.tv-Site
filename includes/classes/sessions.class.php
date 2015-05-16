@@ -165,9 +165,9 @@ class Sessions extends Config {
 					$query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `id` = '" . mysql_real_escape_string($_GET['id']) . "'";
 				}
 			}
+			
 			// result
 			$result = mysql_query($query);
-			
 			if(!$result)
 			{
 				echo 'Error in executing the Query.';
@@ -179,5 +179,28 @@ class Sessions extends Config {
 		{
 			echo 'PERMISSION DENIED.';
 		}
+	}
+	
+	public function sendEmailToUser($email)
+	{
+		$bcc = '';
+		// let's send an email to let them know of the new session.
+		ini_set('sendmail_from', 'no-reply@animeftw.tv');
+		$headers = 'From: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
+			'Reply-To: AnimeFTW.tv <support@animeftw.tv>' . "\r\n" .
+			$bcc .
+			'X-Mailer: PHP/' . phpversion();
+			
+		$body = "== This is an automated message! ==\n\n";
+		$body .= "Your account was logged in to a new session at AnimeFTW.tv, the details are as follow.\n\n";
+		$body .= "Date: " . date("r") . "\n";
+		$body .= "Browser: " . $this->getBrowser($_SERVER['HTTP_USER_AGENT']) . "\n";
+		$body .= "Operating System: " . $this->getOS($_SERVER['HTTP_USER_AGENT']) . "\n";
+		$body .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n\n";
+		$body .= "If you believe that this session is invalid, please log in to your AnimeFTW.tv account. Navigate to your profile, edit your settings and view the `Session` tab to remove this session.\n\n";
+		$body .= "- Your friends at AnimeFTW.tv.";
+		
+		mail($email,"New session at AnimeFTW.tv!", $body, $headers);
+		mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
 	}
 }
