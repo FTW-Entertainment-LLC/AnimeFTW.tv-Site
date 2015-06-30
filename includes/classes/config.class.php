@@ -18,7 +18,7 @@ else
 include_once($rootdirectory . "/includes/config_site.php");
 
 class Config {
-	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array();
+	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array(), $ThisDomain;
 
 	public function __construct(){		
 		// Declare the main database
@@ -27,8 +27,12 @@ class Config {
 		{
 			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
 		}
-		
-		$this->BuildUser(); // build our user array
+		// Set the domain..
+		$this->ThisDomain = ".animeftw.tv";
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$this->ThisDomain = ".ftwdevs.com";
+		}
 			
 		if($_SERVER['SERVER_PORT'] == 443)
 		{
@@ -38,7 +42,13 @@ class Config {
 		{
 			$this->Host = 'http://img02.animeftw.tv';
 			//$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
-		}
+		}		
+	}
+	
+	public function buildUserInformation()
+	{
+		// build our user array
+		$this->BuildUser(); 
 		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
@@ -50,8 +60,13 @@ class Config {
 		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
+	public function outputUserInformation()
+	{
+		return $this->UserArray;
+	}
+	
 	private function BuildUser()
-	{	
+	{
 		// we need to check if the token and authentication are setup correctly.
 		$query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
 		$result = mysql_query($query);
@@ -69,6 +84,12 @@ class Config {
 			$UserID = mysql_real_escape_string($_COOKIE['au']);
 			$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . mysql_real_escape_string($_COOKIE['au']) . '\'';
 			mysql_query($query) or die('Error : ' . mysql_error());
+			// we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
+			$randomkey = $this->generateRandomString(200);
+			setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "'";
+			mysql_query($query) or die('Error : ' . mysql_error());
+			// build the list of information necessary for user interactions.
 			$PermissionLevelAdvanced = $row['Level_access'];
 			$timeZone = $row['timeZone'];
 			$bannedornot = $row['Active'];
@@ -572,5 +593,12 @@ class Config {
 		}
 
 		return $browser;
+	}
+	
+	public function timeZoneChange($date,$timezone)
+	{
+		$timezone = (60*60)*($timezone+6);
+		$revisedDate = $date+($timezone);
+		return $revisedDate;
 	}
 }

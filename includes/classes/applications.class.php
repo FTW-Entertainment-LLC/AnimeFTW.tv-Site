@@ -6,8 +6,8 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-include('includes/config.php');
-include('includes/newsOpenDb.php');
+include_once('includes/config.php');
+include_once('includes/newsOpenDb.php');
 
 class Applications {
 	private $profileArray, $application_round, $applications_status;

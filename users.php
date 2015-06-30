@@ -1,5 +1,8 @@
 <?php
-include('init.php');
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
+include_once('includes/classes/users.class.php');
 
 if(isset($_GET['username'])){$uname = $_GET['username'];}
 else {$uname = 0;}
@@ -25,8 +28,8 @@ else
 	$ImageHost = 'http://img02.animeftw.tv';
 }
 
-include('header.php');
-include('header-nav.php');
+include_once('header.php');
+include_once('header-nav.php');
 echo psa($profileArray,1);
 //$index_global_message = "NOTICE! The Member Pages are still under development, please be aware that things are still set statically for design purposes.";
 	if($IsThereAUser == 1){
@@ -221,5 +224,5 @@ echo psa($profileArray,1);
 				</div>';
 	}
 	// End Main BG
-	include('footer.php');
+	include_once('footer.php');
 	?>

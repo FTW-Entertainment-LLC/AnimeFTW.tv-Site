@@ -7,10 +7,16 @@
 \****************************************************************/
 
 class Review extends Config {
+	var $UserArray;
 
 	public function __construct()
 	{
 		parent::__construct();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	// Shows the reviews for a certain series.

@@ -24,6 +24,7 @@ class AnimeRequest extends Config{
 	var $max_pages;
 	var $fid = 7; //forum id
 	var $rpp = 25; //requests per page
+	var $UserArray;
 	
 	public function getRemainingVotes()
 	{
@@ -36,6 +37,11 @@ class AnimeRequest extends Config{
 							 requests.status = 1 AND 
 							 request_votes.voted_by = ".$this->UserArray[1]."");
 		return mysql_result($result, 0);
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function getOldVotes()

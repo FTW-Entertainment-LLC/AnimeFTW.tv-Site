@@ -17,7 +17,7 @@ else {
 	echo "			<td align='right'>\n";
 	echo "				<div class='header-log'>";	
 	include_once("includes/classes/user_nav.class.php");
-	$uin = new AFTWUserNav();
+	$uin = new AFTWUserNav($profileArray);
 	$uin->Output();
 	echo "				</div>\n";
 	//echo "				<div class='header-sort'></div>\n";
@@ -80,6 +80,7 @@ else {
 							</span>
 						</form>";
 	echo "				<div class='search-text'>";
+	include_once('includes/classes/pages.class.php');
 	$pt = new AFTWpage();
 	$pt->LatestNews();
 	echo "				</div><div id='SearchResults'></div>";

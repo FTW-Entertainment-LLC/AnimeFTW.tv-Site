@@ -1,9 +1,11 @@
 <?php
-include('init.php');
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
 $PageTitle = 'Anime Requests - AnimeFTW.TV';
-include('header.php');
-include('header-nav.php');
-include('includes/classes/request.class.php');
+include_once('header.php');
+include_once('header-nav.php');
+include_once('includes/classes/request.class.php');
 
 $r = new AnimeRequest();
 
@@ -28,4 +30,4 @@ echo "</td>\n";
 echo "</tr>\n</table>\n";
 // End Main BG
 	
-include('footer.php');
+include_once('footer.php');

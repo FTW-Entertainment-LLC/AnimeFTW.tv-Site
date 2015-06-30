@@ -1,5 +1,7 @@
 <?php
-include('init.php');
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
 $v = new AFTWVideos(); //Build our videos
 
 if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && !isset($_GET['page']))

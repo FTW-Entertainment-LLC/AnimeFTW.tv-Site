@@ -1,12 +1,10 @@
 <?php
-session_start();
+//session_start();
 if($_SERVER['PHP_SELF'] == '/request.php')
 {
 	ob_start(); //Needed so i can use header to change location, to find the correct page for a specific request.
-}	
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+}
+	$profileArray = $Config->outputUserInformation();
 	  // only set this if you wish to set a login only policy
 	if($_SERVER['REQUEST_URI'] == '/user' || $_SERVER['REQUEST_URI'] == '/user/')
 	{
@@ -27,7 +25,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && $_SERVER['SERVER_PORT'] == 443 && ($profileArray[2] == 3 || $profileArray[13] == 0))
 	{
-		header('location: http://www.animeftw.tv'.$_SERVER['REQUEST_URI']);
+		header('location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	}
 	if($_SERVER['HTTP_HOST'] == 'animeftw.com' || $_SERVER['HTTP_HOST'] == 'www.animeftw.com' || $_SERVER['HTTP_HOST'] == 'www.animeftw.net' ||  $_SERVER['HTTP_HOST'] == 'animeftw.net'){
 		header("location: http://www.animeftw.tv".$_SERVER['REQUEST_URI']);

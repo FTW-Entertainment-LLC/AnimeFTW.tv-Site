@@ -1,6 +1,7 @@
 <?php
-include('init.php');
-
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
 if($_SERVER['SERVER_PORT'] == '80')
 {
 	header("location: https://www.animeftw.tv".$_SERVER['REQUEST_URI']);

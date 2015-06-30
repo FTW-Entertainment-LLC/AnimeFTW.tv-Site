@@ -82,9 +82,9 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 {
 
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	//include_once 'includes/global_functions.php';
 	//include_once 'includes/aftw.class.php';
 	$id = $_GET['uid'];
@@ -323,11 +323,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 }
 if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	
-	include('includes/classes/users.class.php');
+	include_once('includes/classes/users.class.php');
 	$u = new AFTWUser();
 	if(isset($_GET['go']) && $_GET['go'] == 'password'){
 		$u->PasswordSettings($profileArray[2],$_GET['id'],$profileArray[1],$profileArray[3]);
@@ -402,18 +402,21 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 if(isset($_GET['view']) && $_GET['view'] == 'profile')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$Session = new Sessions();
-	$profileArray = $Session->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
+	
 	if(isset($_GET['subview'])){
 		if(!isset($_GET['id']) || (!is_numeric($_GET['id']) && (!is_numeric($_GET['id']) && $_GET['subview'] != 'manage-session')))
 		{
 			echo 'One of these things is not like the other (error).';
 		}
 		else {
-			$uid = mysql_escape_string($_GET['id']);
-			if($_GET['subview'] == 'friendbutton'){
-				if($profileArray[0] == 0){
+			$uid = mysql_real_escape_string($_GET['id']);
+			if($_GET['subview'] == 'friendbutton')
+			{
+				if($profileArray[0] == 0)
+				{
 					echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Login to Add Friends</span></a>";
 				}
 				else {
@@ -549,6 +552,9 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 			}
 			else if($_GET['subview'] == 'manage-session')
 			{
+				include_once('includes/classes/sessions.class.php');
+				$Session = new Sessions();
+				$Session->connectProfile($profileArray);
 				if(!isset($_GET['type']))
 				{
 					echo 'Action not successful.';
@@ -577,9 +583,9 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 if(isset($_GET['view']) && $_GET['view'] == 'management')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	
 	if(isset($_GET['u'])){
 		if($_GET['u'] != $profileArray[1] && !isset($_GET['phpcli-auth'])){
@@ -589,8 +595,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'management')
 			$uid = mysql_escape_string($_GET['u']);
 			$q = mysql_fetch_array(mysql_query("SELECT Level_access AS la FROM users WHERE ID='".$uid."'"));
 			if($q['la'] == 1 || $q['la'] == 2){
-				include('includes/classes/config.class.php');
-				include('includes/classes/management.class.php');
+				include_once('includes/classes/config.class.php');
+				include_once('includes/classes/management.class.php');
 				$m = new AFTWManagement();
 				$m->Con($uid,$application_round);
 				if(!isset($_GET['node'])){$node = 'error';} else {$node = $_GET['node'];}
@@ -608,9 +614,9 @@ if(isset($_GET['view']) && $_GET['view'] == 'management')
 if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	if(isset($_GET['mode']) && $_GET['mode'] == 'comment-votes')
 	{
 		if(!isset($_GET['cid']) || !is_numeric($_GET['cid']))
@@ -656,11 +662,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 if(isset($_GET['view']) && $_GET['view'] == 'tracker')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
-	include('includes/classes/tracker.class.php');
+	$Config = new Config();
+	$Config->buildUserInformation();
+	include_once('includes/classes/tracker.class.php');
 	$tr = new AFTWTracker();
+	$tr->connectProfile($Config->outputUserInformation());
 	if(isset($_GET['subview']) && $_GET['subview'] == 'add-entry')
 	{
 		if(!isset($_GET['id']) || !is_numeric($_GET['id']))
@@ -705,15 +711,16 @@ if(isset($_GET['view']) && $_GET['view'] == 'tracker')
 if(isset($_GET['view']) && $_GET['view'] == 'notifications')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
-	
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	if($profileArray[0] == 0){
 	}
 	else {
-		include('includes/classes/notifications.class.php');
+		include_once('includes/classes/notifications.class.php');
 		$N = new AFTWNotifications();
+		$N->connectProfile($profileArray);
+		
 		if(!isset($_GET['show'])){
 			$N->Output();
 		}
@@ -734,14 +741,15 @@ if(isset($_GET['view']) && $_GET['view'] == 'notifications')
 if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	
-	include('includes/classes/watchlist.class.php');
+	include_once('includes/classes/watchlist.class.php');
 	if(isset($_GET['function']) && $_GET['function'] == 'submit-form')
 	{
 		$W = new AFTWWatchlist($profileArray);
+		$W->connectProfile($Config->outputUserInformation());
 		$W->processFormData();
 	}
 	else
@@ -758,51 +766,34 @@ if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 if(isset($_GET['view']) && $_GET['view'] == 'donate')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	
 	if($profileArray[0] == 0){
 	}
 	else {
-		include('includes/classes/config.class.php');
-		include('includes/classes/donate.class.php');
+		include_once('includes/classes/donate.class.php');
 		$d = new AFTWDonate();
 		$d->Build($profileArray);
 		$d->ScriptsOutput();
 	}
 }
-if(isset($_GET['view']) && $_GET['view'] == 'uploads')
-{
-	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
-	
-	if($profileArray[0] == 0 || ($profileArray[2] == 0 || $profileArray[2] == 3)){
-	}
-	else {
-		include('includes/classes/config.class.php');
-		include('includes/classes/uploads.class.php');
-		$u = new Uploads();
-		$u->Output();
-	}
-}
 if(isset($_GET['view']) && $_GET['view'] == 'profile-comments')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	
 	if(!isset($_GET['uid']) || !is_numeric($_GET['uid']))
 	{
 	}
 	else
 	{
-		include('includes/classes/config.class.php');
-		include('includes/classes/users.class.php');
+		include_once('includes/classes/users.class.php');
 		$u = new AFTWUser();
+		$u->connectProfile($profileArray);
 		$u->get_id($_GET['uid']);
 		if(isset($_GET['page']))
 		{
@@ -817,25 +808,29 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile-comments')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'toplist')
 {
-	include('includes/classes/config.v2.class.php');
-	include('includes/classes/toplist.v2.class.php');
+	include_once('includes/classes/config.v2.class.php');
+	include_once('includes/classes/toplist.v2.class.php');
 	
 	$TopList = new toplist();
 	$TopList->scriptsFunctions();
 }
 if(isset($_GET['view']) && $_GET['view'] == 'cart')
 {
-	include('includes/classes/config.class.php');
-	include('includes/classes/store.class.php');
+	include_once('includes/classes/config.class.php');
+	$Config = new Config();
+	$Config->buildUserInformation();
+	include_once('includes/classes/store.class.php');
 	
 	if(isset($_POST) && isset($_POST['verify_sign']))
 	{
 		$ProcessOrder = new ProcessOrders(); 
+		$ProcessOrder->connectProfile($Config->outputUserInformation());
 		$ProcessOrder->init($_POST);
 	}
 	else
 	{
 		$Cart = new Shopping_Cart('aftw_cart');
+		$Cart->connectProfile($Config->outputUserInformation());
 		
 		if ( !empty($_GET['order_code']) && !empty($_GET['quantity']) ) 
 		{
@@ -864,30 +859,35 @@ if(isset($_GET['view']) && $_GET['view'] == 'cart')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'cart-admin')
 {
-	include('includes/classes/config.class.php');
-	include('includes/classes/store.class.php');
-	
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/store.class.php');
+	$Config = new Config();
+	$Config->buildUserInformation();
 	$Store = new Store();
+	$Store->connectProfile($Config->outputUserInformation());
 	$Store->AdminInit();
 }
 if(isset($_GET['view']) && $_GET['view'] == 'episodes')
 {
-	include('includes/classes/config.class.php');
-	include('includes/classes/videos.class.php');
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/videos.class.php');
 	if(!isset($_GET['page']) || !is_numeric($_GET['page']) || !isset($_GET['sid']) || !isset($_GET['epnumber']))
 	{
 		echo 'Error';
 	}
 	else
 	{
+		$Config = new Config();
+		$Config->buildUserInformation();
 		$V = new AFTWVideos();
+		$V->connectProfile($Config->outputUserInformation());
 		$V->NextEpisodesV2();
 	}
 }
 if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 {
-	include("includes/classes/config.v2.class.php");
-	include("includes/classes/episode.v2.class.php");
+	include_once("includes/classes/config.v2.class.php");
+	include_once("includes/classes/episode.v2.class.php");
 	if(!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['time']))
 	{
 		echo 'We were unable to process your request.';
@@ -912,8 +912,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 if(isset($_GET['view']) && $_GET['view'] == 'commentsv2')
 {
 	
-	include("includes/classes/config.v2.class.php");
-	include("includes/classes/comments.v2.class.php");
+	include_once("includes/classes/config.v2.class.php");
+	include_once("includes/classes/comments.v2.class.php");
 	if(isset($_GET['process']))
 	{
 		// processing data
@@ -947,9 +947,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'tooltip')
 	{
 		if(isset($_GET['id']) && is_numeric($_GET['id']))
 		{
-			include('includes/classes/config.class.php');
-			include('includes/classes/videos.class.php');
+			include_once('includes/classes/config.class.php');
+			include_once('includes/classes/videos.class.php');
+			$Config = new Config();
+			$Config->buildUserInformation();
 			$V = new AFTWVideos();
+			$V->connectProfile($Config->outputUserInformation());
+			
 			if(isset($_GET['image']))
 			{
 				$V->showEpisodeTooltip($_GET['id'],1);
@@ -972,22 +976,23 @@ if(isset($_GET['view']) && $_GET['view'] == 'tooltip')
 if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
 	
 	if(isset($_GET['page']) && isset($_GET['id']))
 	{
 		if(isset($_GET['show']) && $_GET['show'] == 'episodes')
 		{
-			include('includes/classes/videos.class.php');
+			include_once('includes/classes/videos.class.php');
 			$V = new AFTWVideos();
+			
+			$V->connectProfile($Config->outputUserInformation());
 			$V->showAvailableVideos(0,$_GET['id'],1,TRUE);
 		}
 		else if(isset($_GET['show']) && $_GET['show'] == 'watchlist')
 		{
-			include('includes/classes/watchlist.class.php');
-			$W = new AFTWWatchlist($profileArray);
+			include_once('includes/classes/watchlist.class.php');
+			$W = new AFTWWatchlist($Config->outputUserInformation());
 			// if the stage is set, it's a new addition.
 			if(isset($_GET['stage']) && $_GET['stage'] == 'add-series')
 			{
@@ -1009,9 +1014,9 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 {
 	include_once('includes/classes/config.class.php');
-	include_once('includes/classes/sessions.class.php');
-	$CheckSession = new Sessions();
-	$profileArray = $CheckSession->checkUserSession();
+	$Config = new Config();
+	$Config->buildUserInformation();
+	$profileArray = $Config->outputUserInformation();
 	
 	############ Configuration ##############
 	$thumb_square_size      = 200; //Thumbnails will be cropped to 200x200 pixels
@@ -1060,76 +1065,84 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 		if($image_res)
 		{
 			$errormsg = '';
-			if($profileArray[1] == $_POST['uid'] || $profileArray[2] == 1 || $profileArray[2] == 2)
-			{				
-				$target_dir = "/home/mainaftw/public_html/images/avatars/";
-				$uploadOk = 1;
-				$imageFileType = pathinfo($_FILES["image_file"]["name"],PATHINFO_EXTENSION);
-				$filename = 'user' . $profileArray[1] . '.' . $imageFileType;
-				$target_file = $target_dir . $filename;
-				// Check if image file is a actual image or fake image
-				$check = getimagesize($_FILES["image_file"]["tmp_name"]);
-				if($check !== false)
-				{
-					$uploadOk = 1;
-				}
-				else
-				{
-					$errormsg .= "File is not an image.";
-					$uploadOk = 0;
-				}
-				// Check file size
-				if($profileArray[2] == 3)
-				{
-					$filesize = '153600';
-				}
-				else
-				{
-					$filesize = '307200';
-				}
-				if($_FILES["image_file"]["size"] > $filesize)
-				{
-					$errormsg .= "Sorry, your file is too large. ";
-					$uploadOk = 0;
-				}
-				// Allow certain file formats
-				if(strtolower($imageFileType) != "jpg" && strtolower($imageFileType) != "png" && strtolower($imageFileType) != "jpeg" && strtolower($imageFileType) != "gif")
-				{
-					$errormsg .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed. " . $imageFileType . ' ';
-					$uploadOk = 0;
-				}
-				// Check if $uploadOk is set to 0 by an error
-				if($uploadOk == 0)
-				{
-					echo '<img src="/images/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
-					$errormsg .= "Sorry, your file was not uploaded.";
-					// if everything is ok, try to upload file
-				}
-				else
-				{
-					if(move_uploaded_file($_FILES["image_file"]["tmp_name"], $target_file))
-					{
-						include_once("includes/classes/ftp.class.php");
-
-						$ftp = new FTP("zeus.ftwentertainment.com");
-						$ftp->login("remote@images.animeftw.tv", "mui(;Qg_5T~+");
-						$ftp->put($target_file, "avatars/" . $filename);
-						$errormsg .= "Upload Successful! <br />Populating the CDN may take some time if the image was the same extension.";
-						mysql_query("UPDATE `users` SET `avatarActivate` = 'yes', `avatarExtension` = '" . mysql_real_escape_string($imageFileType) . "' WHERE `ID` = " . mysql_real_escape_string($_POST['uid']));
-						/* We have succesfully resized and created thumbnail image
-						We can now output image to user's browser or store information in the database*/
-						echo '<img src="/images/avatars/' . $filename . '" alt="user-avatar" />';
-					}
-					else
-					{
-						echo '<img src="/images/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
-						$errormsg .= "Sorry, there was an error uploading your file.";
-					}
-				}
+			// check to make sure that the size for a basic member isnt stupid huge..
+			if($profileArray[2] == 3 && ($image_height > 150 || $image_width > 150))
+			{
+				$errormsg .= "Dimensions are greater than 150x150.";
 			}
 			else
 			{
-				$errormsg .= 'You do not have access to this function.';
+				if($profileArray[1] == $_POST['uid'] || $profileArray[2] == 1 || $profileArray[2] == 2)
+				{				
+					$target_dir = "/home/mainaftw/public_html/images/avatars/";
+					$uploadOk = 1;
+					$imageFileType = pathinfo($_FILES["image_file"]["name"],PATHINFO_EXTENSION);
+					$filename = 'user' . $profileArray[1] . '.' . $imageFileType;
+					$target_file = $target_dir . $filename;
+					// Check if image file is a actual image or fake image
+					$check = getimagesize($_FILES["image_file"]["tmp_name"]);
+					if($check !== false)
+					{
+						$uploadOk = 1;
+					}
+					else
+					{
+						$errormsg .= "File is not an image.";
+						$uploadOk = 0;
+					}
+					// Check file size
+					if($profileArray[2] == 3)
+					{
+						$filesize = '153600';
+					}
+					else
+					{
+						$filesize = '307200';
+					}
+					if($_FILES["image_file"]["size"] > $filesize)
+					{
+						$errormsg .= "Sorry, your file is too large. ";
+						$uploadOk = 0;
+					}
+					// Allow certain file formats
+					if(strtolower($imageFileType) != "jpg" && strtolower($imageFileType) != "png" && strtolower($imageFileType) != "jpeg" && strtolower($imageFileType) != "gif")
+					{
+						$errormsg .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed. " . $imageFileType . ' ';
+						$uploadOk = 0;
+					}
+					// Check if $uploadOk is set to 0 by an error
+					if($uploadOk == 0)
+					{
+						echo '<img src="/images/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
+						$errormsg .= "Sorry, your file was not uploaded.";
+						// if everything is ok, try to upload file
+					}
+					else
+					{
+						if(move_uploaded_file($_FILES["image_file"]["tmp_name"], $target_file))
+						{
+							include_once("includes/classes/ftp.class.php");
+
+							$ftp = new FTP("zeus.ftwentertainment.com");
+							$ftp->login("remote@images.animeftw.tv", "mui(;Qg_5T~+");
+							$ftp->put($target_file, "avatars/" . $filename);
+							$errormsg .= "Upload Successful! <br />Populating the CDN may take some time if the image was the same extension.";
+							mysql_query("UPDATE `users` SET `avatarActivate` = 'yes', `avatarExtension` = '" . mysql_real_escape_string($imageFileType) . "' WHERE `ID` = " . mysql_real_escape_string($_POST['uid']));
+							/* We have succesfully resized and created thumbnail image
+							We can now output image to user's browser or store information in the database*/
+							echo '<img src="/images/avatars/' . $filename . '" alt="user-avatar" />';
+						}
+						else
+						{
+							echo '<img src="/images/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
+							$errormsg .= "Sorry, there was an error uploading your file.";
+						}
+					}
+				}
+				else
+				{
+					$errormsg .= 'You do not have access to this function.';
+				}
 			}
 			echo $errormsg;
 			imagedestroy($image_res); //freeup memory
@@ -1154,13 +1167,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'reviews')
 {
-	include('includes/classes/config.class.php');
-	include('includes/classes/reviews.class.php');
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/reviews.class.php');
 	$R = new Review();
 	$R->processReview();
 }
 if(isset($_POST['method'])){
-	include('includes/classes/management.class.php');
+	include_once('includes/classes/management.class.php');
 	$m = new AFTWManagement();
 	$m->PostProcess();
 }
@@ -1168,8 +1181,8 @@ if(isset($_POST['method'])){
 // A built in function totally designed to be managed from the requests class.
 if(isset($_GET['view']) && $_GET['view'] == 'anime-requests')
 {
-	include('includes/classes/config.class.php');
-	include('includes/classes/request.class.php');
+	include_once('includes/classes/config.class.php');
+	include_once('includes/classes/request.class.php');
 	$AR = new AnimeRequest();
 	$AR->initFunctions(); // We initialize the backend functions handler, this way everything happens IN the class file.
 	/*

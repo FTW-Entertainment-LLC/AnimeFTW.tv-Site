@@ -10,9 +10,12 @@ class AFTWUserNav extends Config {
 	/****************************\
 	# Variables and constructors #
 	\****************************/
+	var $UserArray;
 	
-	public function __construct($DummyArray = NULL){
+	public function __construct($UserArray){
 		parent::__construct();
+		// Because this is not taking the information as it is declared outside of the config class.. we need to manually bridge the two here.
+		$this->UserArray = $UserArray;
 	}
 	
 	public function Output(){
