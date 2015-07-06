@@ -22,7 +22,7 @@ class AniDB extends Config{ //Needed for modrecord
 	public function __construct()
 	{
 		parent::__construct();
-		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com'||$_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 		{
 			$this->rootdirectory = $_SERVER['DOCUMENT_ROOT'];
 		}
