@@ -53,7 +53,7 @@ class Config {
 		$dbuser = 'mainaftw_anime';
 		$dbpass = '26V)YPh:|IJG';
 		$dbname = 'mainaftw_anime';
-		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com'||$_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 		{
 			// this will be for development connections only.
 			$dbuser = 'devadmin_anime';

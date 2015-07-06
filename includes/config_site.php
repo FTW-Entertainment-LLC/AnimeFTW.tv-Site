@@ -6,7 +6,7 @@ $newsdbhost = '10.151.1.10';
 $newsdbuser = 'mainaftw_anime';
 $newsdbpass = '26V)YPh:|IJG';
 $newsdbname = 'mainaftw_anime';
-if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com'||$_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 {
 	// this will be for development connections only.
 	$newsdbhost 		= '10.151.1.10';
