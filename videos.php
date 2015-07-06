@@ -1,7 +1,12 @@
 <?php
-include('init.php');
+include_once('includes/classes/config.class.php');
+include_once('includes/classes/videos.class.php');
+include_once('includes/classes/pages.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
 $v = new AFTWVideos(); //Build our videos
 $p = new AFTWpage();
+$v->connectProfile($Config->outputUserInformation());
 if(isset($_GET['type']) && $_GET['type'] == 'anime'){
 	if(isset($_GET['seo'])){$seo = $_GET['seo'];}else{$seo = '';}
 	if(isset($_GET['eid'])){$eid = $_GET['eid'];}else{$eid = '';}
@@ -58,7 +63,7 @@ function bodyTopInfo($message,$bdybr){
 					echo "</div>\n";
 					echo "<br />";
 					echo "<div id=\"lister\">";
-					echo '<br />'.tagCloud('anime').'<br />';
+					echo '<br />'.$v->tagCloud('anime').'<br />';
 					echo $v->showListing(0,$_GET['param'],$profileArray[2],0);
 					echo "</div>";
 				}
@@ -72,7 +77,7 @@ function bodyTopInfo($message,$bdybr){
 						echo "</div>\n";
 						echo "<br />";
 						echo "<div id=\"lister\">";
-						echo '<br />'.tagCloud('anime').'<br />';
+						echo '<br />'.$v->tagCloud('anime').'<br />';
 						echo $v->showListing(0,$_GET['vtype'],$profileArray[2],1);
 						echo "</div>";
 					}
@@ -95,7 +100,7 @@ function bodyTopInfo($message,$bdybr){
 					echo "</div>\n";
 					echo "<br />";
 					echo "<div id=\"lister\">";
-					echo '<br />'.tagCloud('anime').'<br />';
+					echo '<br />'.$v->tagCloud('anime').'<br />';
 					echo $v->showListing(0,$_GET['param'],$profileArray[2],2);
 					echo "</div>";
 				}
@@ -115,7 +120,7 @@ function bodyTopInfo($message,$bdybr){
 				echo "<br />";
 				echo '<div align="center" ><a href="#" id="tagcloud-toggle">:: Toggle the Tag Cloud ::</a></div>';
 				echo "<div id=\"tagcloud\" style=\"display:none\">";
-				echo '<br />'.tagCloud('anime').'<br />';
+				echo '<br />'.$v->tagCloud('anime').'<br />';
 				echo "</div><br /><div id=\"lister\">";
 				echo $v->showListing(0,NULL,$profileArray[2],0);
 				echo "</div></div>";
@@ -127,7 +132,7 @@ function bodyTopInfo($message,$bdybr){
 				<h2>AnimeFTW.tv\'s Drama Selection</h2>
 				<p class="description">Drama Selection for AnimeFTW.tv</p>
 				<div id="lister">';
-				echo '<br />'.tagCloud('drama').'<br />';
+				echo '<br />'.$v->tagCloud('drama').'<br />';
 				echo $v->showListing(1,NULL,$profileArray[2],0);
 				echo '</div></div>';
 			}
@@ -138,7 +143,7 @@ function bodyTopInfo($message,$bdybr){
 				<h2>AMV\'s Uploaded to AnimeFTW.tv\'s Servers</h2>
 				<p class="description">AMVs listed Below</p>
 				<div id="lister">';
-				echo '<br />'.tagCloud('amvs').'<br />';
+				echo '<br />'.$v->tagCloud('amvs').'<br />';
 				echo $v->showListing(2,NULL,$profileArray[2],0);
 				echo '</div></div>';
 			}

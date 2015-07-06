@@ -11,7 +11,7 @@
   #################################################
  
 	session_start();
-	require_once "includes/siteroot.php";
+	require_once "includes/classes/config.class.php";
  	require_once "aftw-commonf.php";
 	require_once "config-parse.php";
  
@@ -68,6 +68,7 @@
 		
 		# Information based functions
 		private function ReadBox($mode,$page) {
+			$Config = new Config();
 			$messages = array();			
 			$id = $this->userID;
 			
@@ -84,7 +85,8 @@
 					$query = mysql_query("SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `rid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
 					while($row = mysql_fetch_assoc($query)) {
 						$row['from'] = $this::nameFromId($row['sid']);
-						$newtime = timeZoneChange($row['date'],$this->profileArray[3]);
+						
+						$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
 						$newtime = date("D M d Y, h:i a",$newtime);
 						$row['time'] = $newtime;
 						$row['isowner'] = true;
@@ -101,7 +103,7 @@
 					$query = mysql_query("SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
 					while($row = mysql_fetch_assoc($query)) {
 						$row['from'] = $this::nameFromId($row['rid']);
-						$newtime = timeZoneChange($row['date'],$this->profileArray[3]);
+						$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
 						$newtime = date("D M d Y, h:i a",$newtime);
 						$row['time'] = $newtime;
 						$row['isowner'] = false;
@@ -118,7 +120,7 @@
 					$query = mysql_query("SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='1' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
 					while($row = mysql_fetch_assoc($query)) {
 						$row['from'] = $this::nameFromId($row['rid']);
-						$newtime = timeZoneChange($row['date'],$this->profileArray[3]);
+						$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
 						$newtime = date("D M d Y, h:i a",$newtime);
 						$row['time'] = $newtime;
 						$row['isowner'] = false;
@@ -158,7 +160,7 @@
 				
 					$boxname = $this::lang("MESSAGE_READMES",$this->config);
 					$mes_row = mysql_fetch_assoc($mes_query);
-					$newtime = timeZoneChange($mes_row['date'],$this->profileArray[3]);
+					$newtime = $Config->timeZoneChange($mes_row['date'],$this->profileArray[3]);
 					$newtime = date("D M d Y, h:i a",$newtime);
 					$tpl = str_replace("%id%",$mes_row['id'],$tpl);
 					$tpl = str_replace("%message%",nl2br($mes_row['msgBody']),$tpl);
@@ -243,9 +245,9 @@
 		}
 		
 		private function getID() {
-			$user = (isset($_COOKIE['cookie_id'])) ? $_COOKIE['cookie_id'] : 0;
-			$user = (isset($_SESSION['user_id'])) ? $_SESSION['user_id'] : $user;
-			$this->profileArray = checkLoginStatus($user,$_SERVER['REMOTE_ADDR'],$_SERVER['HTTP_USER_AGENT']);
+			$Config = new Config();
+			$Config->buildUserInformation();
+			$this->profileArray = $Config->outputUserInformation();
 			return $this->profileArray[1];
 		}
 		

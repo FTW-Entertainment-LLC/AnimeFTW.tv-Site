@@ -1582,7 +1582,7 @@ class AFTWUser extends Config{
 				echo '<a name="'.$cid.'"></a><div id="c'.$cid.'" class="side-body floatfix">';
 				echo '<div id="dropmsg0" class="dropcontent">';
 				echo '<div style="float:right;">'.$avatar.'</div>'; // avatar ftw
-				echo '<div style="padding-bottom:2px;">'.checkUserName($Username).' - <span title="Posted '.date('l, F jS, o \a\t g:i a',$dated).'">'.date('M jS',$dated).'</span></div>'; //title of the comment
+				echo '<div style="padding-bottom:2px;">'.$this->formatUsername($ID).' - <span title="Posted '.date('l, F jS, o \a\t g:i a',$dated).'">'.date('M jS',$dated).'</span></div>'; //title of the comment
 				echo '<div style="max-width:195px;word-wrap:break-word;">'.$comments.'</div>';	// Comment goes here
 				echo '</div></div>';
 				echo $bottomd;

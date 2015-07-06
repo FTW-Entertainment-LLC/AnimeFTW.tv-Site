@@ -17,13 +17,18 @@ class AFTWNotifications extends Config {
 	*/
 	
 	//#- Vars -#\\
-	var $uid, $darray;
+	var $uid, $darray, $UserArray;
 	
 	//#- Contruct -#\\
 	public function __construct($uid = NULL)
 	{
 		parent::__construct();
 		$this->darray = array(1 => 86400, 2 => 172800, 3 => 259200, 4 => 345600, 5 => 432000, 6 => 518400, 7 => 604800);
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	//#- Output -#\\

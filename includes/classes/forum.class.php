@@ -8,7 +8,7 @@
 
 class AFTWForum extends Config {
 
-	var $action, $forum, $thread, $s, $profileArray;
+	var $action, $forum, $thread, $s;
 
 	public function __construct()
 	{
@@ -16,9 +16,9 @@ class AFTWForum extends Config {
 	}
 	
 	// small constructor for my vars..
-	public function buildVars($action,$profileArray){
+	public function buildVars($action){
 		$this->action = $action;
-		$this->profileArray = $profileArray;
+		$this->profileArray = $this->UserArray;
 	}
 	
 	// Small Copyright function, cause i can..	
@@ -35,7 +35,7 @@ class AFTWForum extends Config {
 				echo $this->showActiveTopics($this->profileArray[2],$this->profileArray[3]); 
 			}
 			else if($this->action == 'post'){
-				include('includes/postview.function.php'); 
+				include_once('includes/postview.function.php'); 
 			}
 			else if($this->action == 'modaction'){
 				//echo $_POST['modcheck'];

@@ -10,7 +10,7 @@
 
 class Comment extends Config {
 
-	var $PerPage, $Epid, $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	var $PerPage, $Epid, $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes, $UserArray;
 
 	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL,$Epid=0)
 	{
@@ -28,6 +28,11 @@ class Comment extends Config {
 		$this->PerPage				= 20;
 		$this->Epid					= $Epid;		// Episode ID, always helpful.
 		
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function showComments()
@@ -133,7 +138,12 @@ class Comment extends Config {
 					url: "/scripts.php?view=commentsv2&epid=' . $this->Epid . '&sub=post",
 					data: $(\'#commentformv2\').serialize(),
 					success: function(html) {
-						$("#comments1").load("/scripts.php?view=commentsv2&epid=' . $this->Epid . '&highlight=true");
+						if(html.indexOf("Success") >= 0){
+							$("#comments1").load("/scripts.php?view=commentsv2&epid=' . $this->Epid . '&highlight=true");
+						}
+						else {
+							alert("There was an issue processing that comment.");
+						}
 					}
 				});
 				return false;
@@ -339,12 +349,14 @@ class Comment extends Config {
 		$dated = date("Y-m-d H:i:s");
 		$is_approved = 1;
 		
+		
 		$pid = $this->mysqli->real_escape_string($pid);
 		$comment = strip_tags($comment);
 		$comment = nl2br($comment);
 		//insert the comment
 		$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, page_id, dated, is_approved, uid, epid, type) VALUES (NULL, '$comment', '$spoiler', '$ip', '0', '$dated', '$is_approved', '$uid', '$epid', '0') ";
 		$this->mysqli->query($query);
+		echo 'Success';
 	}
 	
 	public function bool_totalComments($id)

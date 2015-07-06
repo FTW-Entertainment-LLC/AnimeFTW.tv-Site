@@ -8,13 +8,18 @@
 
 class Store extends Config {
 	
-	private $options, $CatArray, $Item, $OrderStatusArray;
+	private $options, $CatArray, $Item, $OrderStatusArray, $UserArray;
 	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->ParseOptions();
 		$this->BuildStoreCategories();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function StoreInit()
@@ -812,6 +817,7 @@ class Shopping_Cart extends Config {
 	var $cart_id;
 	var $total_items;
 	var $total_weight;
+	var $UserArray;
 	
 	/**
 	 * __construct() - Constructor. This assigns the name of the cart
@@ -824,6 +830,11 @@ class Shopping_Cart extends Config {
 		parent::__construct();
 		$this->cart_name = $name;
 		$this->BuildItemArray();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	private function BuildItemArray()
@@ -1320,11 +1331,16 @@ class Shopping_Cart extends Config {
 
 class ProcessOrders extends Config {
 	
-	var $PostData;
+	var $PostData, $UserArray;
 	
 	public function __construct()
 	{
 		parent::__construct();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function init($PostData)

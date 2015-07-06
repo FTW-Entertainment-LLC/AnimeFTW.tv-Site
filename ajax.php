@@ -1,9 +1,10 @@
 <?php
-include_once('includes/siteroot.php');
 include_once('includes/classes/config.class.php');
-include_once('includes/classes/sessions.class.php');
-$CheckSession = new Sessions();
-$profileArray = $CheckSession->checkUserSession();
+include_once('includes/classes/search.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
+$Search = new Search();
+$profileArray = $Config->outputUserInformation();
 
 if($profileArray[2] == 0)
 {
@@ -24,15 +25,23 @@ function strpos_arr($haystack, $needle) {
     }
     return false;
 }
-if(isset($_POST['q']))
+if(isset($_POST['q']) || isset($_GET['q']))
 {
+	if(isset($_GET['q']))
+	{
+		$q = $_GET['q'];
+	}
+	else
+	{
+		$q = $_POST['q'];
+	}
 	if($profileArray[0] == 0)
 	{
 		echo '<li><div align="center" style="color:black;padding:2px;">Due to DMCA Abuse, this feature has been removed for unregistered members.</div></li>';
 	}
 	else
 	{
-		$SearchInput = strtolower($_POST['q']);
+		$SearchInput = strtolower($q);
 		$SearchInput = mysql_real_escape_string($SearchInput);
 		//$episodeSearch = strpos($SearchInput,'episode');
 		$episodeSearch = strpos_arr($SearchInput,array('episode','ep','movie','ova'));
@@ -51,7 +60,7 @@ if(isset($_POST['q']))
 		}
 		else
 		{
-			$WordCount = adv_count_words($SearchInput);
+			$WordCount = $Search->adv_count_words($SearchInput);
 			$SearchExplode = explode(" ", $SearchInput);
 			if(strpos($SearchInput,'ep') !== false || strpos($SearchInput,'episode') !== false)
 			{
@@ -109,30 +118,31 @@ if(isset($_POST['q']))
 			{
 				$Name = utf8_encode(stripslashes($City['V1']));
 				if($City['V2'] == '1'){
-					$V1 = checkUserNameNoLink($Name);
 					$ModifiedV1 = '';
+					$V1 = $Name;
 					$query   = mysql_query("SELECT id FROM friends WHERE reqFriend='".$City['V4']."' AND Asker='".$profileArray[1]."'");
 					$tm = mysql_num_rows($query);
 					if($tm == 1){$V2 = '- <span style="color:#006600;">Friend</span>';}else{$V2 = '- <span style="color:#CC0000;">User</span>';}
 					$V3 = '/user/'.$City['V1'];
 					$V4 = '';
-					$sphoto = '<img src="'.getImageUrl('x-sm',$City['V4'],'user').'" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" />';
+					//$sphoto = '<img src="' . $Search->getImageUrl('x-sm',$City['V4'],'user') . '" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" />';
+					$sphoto = $Config->formatAvatar($City['V4'],'blank',FALSE,TRUE);
 				}
-				else if ($City['V2'] == 'divx' || $City['V2'] == 'mkv')
+				else if ($City['V2'] == 'divx' || $City['V2'] == 'mkv' || $City['V2'] == 'mp4')
 				{ 
 					$V1 = stripslashes($City['V3']);
 					$V2 = '';
-					$V3 = '/anime/'.seoCheck($SeriesNameFull).'/'.$movoep.'-'.$City['V1'];
+					$V3 = '/anime/' . $Search->seoCheck($SeriesNameFull) . '/' . $movoep . '-' . $City['V1'];
 					$V4 = '';
-					$sphoto = '<img src="http://static.ftw-cdn.com/site-images/video-images/'.$City['V4'].'_'.$City['V1'].'_screen.jpeg" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" height="50px" />';
+					$sphoto = '<img src="' . $Config->Host . '/video-images/'.$City['V4'].'_'.$City['V1'].'_screen.jpeg" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" height="50px" />';
 				}
 				else{	
 					$V1 = $Name;
 					$ModifiedV1 = $V1;
 					$V2 = '- <span style="color:#0066CC;">Anime</span>';
 					$V3 = '/anime/'.$City['V3'].'/';
-					$V4 = seriesStatistics($City['V4']);
-					$sphoto = '<img src="'.getImageUrl('x-sm',$City['V4'],'anime').'" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" />';
+					$V4 = $Search->seriesStatistics($City['V4']);
+					$sphoto = '<img src="' . $Search->getImageUrl('x-sm',$City['V4'],'anime') . '" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" />';
 				} //32 chars long..
 				
 				$Name = str_replace($SearchInput, '<span class="highlight">'.$SearchInput.'</span>', $Name);

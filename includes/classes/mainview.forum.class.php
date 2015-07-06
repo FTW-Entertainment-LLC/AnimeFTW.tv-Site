@@ -51,7 +51,7 @@ class AFTWForumMain extends Config {
 				$puid = $row5['puid']; 
 				$ptitle = $row5['ttitle']; 
 				$pdate = $row5['pdate']; 
-				$pdate2 = timeZoneChange($pdate,$this->timezone);
+				$pdate2 = $this->timeZoneChange($pdate,$this->timezone);
 				if ($pdate2 == ''){$pdate1 = '';$ptitle1 = '';$GetLastPost = "<img src='/images/forumimages/lastpost.gif' border='0'  alt='Last Post' />";$Username = '';
 			  	} 
 				else {

@@ -10,7 +10,7 @@ class Episode extends Config {
 
 	public $Data, $UserID, $DevArray, $MessageCodes;
 	
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL,$DirectUserArray = NULL)
 	{
 		parent::__construct();
 		$this->Data = $Data;

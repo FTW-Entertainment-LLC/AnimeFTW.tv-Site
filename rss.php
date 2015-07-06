@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/rss+xml charset=UTF-8');
+// "application/rss+xml charset=UTF-8"
 include("init.php");
 session_start();
 
@@ -21,7 +22,7 @@ if(!isset($_GET['type']))
 echo '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-    <atom:link rel="self" type="application/rss+xml" href="https://www.animeftw.tv/rss" />
+    <atom:link rel="self" type="application/rss+xml" href="https://www.animeftw.tv/rss/threads" />
     <title>Latest News and Updates from AnimeFTW.tv</title>
     <link>http://www.animeftw.tv/</link>
     <description>Latest News for AnimeFTW.tv</description>
@@ -66,7 +67,7 @@ else
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
 >
 <channel>
-    <atom:link rel="self" type="application/rss+xml" href="https://www.animeftw.tv/rss" />
+    <atom:link rel="self" type="application/rss+xml" href="https://www.animeftw.tv/rss/episodes" />
     <title>Latest 50 Episodes from AnimeFTW.tv</title>
     <link>http://www.animeftw.tv/anime</link>
     <description>View the latest 50 episodes from AnimeFTW.tv!</description>
@@ -134,7 +135,7 @@ echo '
 		echo '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-    <atom:link rel="self" type="application/rss+xml" href="https://www.animeftw.tv/rss" />
+    <atom:link rel="self" type="application/rss+xml" href="https://www.animeftw.tv/rss/series" />
     <title>Latest 20 Series from AnimeFTW.tv</title>
     <link>http://www.animeftw.tv/anime</link>
     <description>View the latest 20 series from AnimeFTW.tv!</description>
