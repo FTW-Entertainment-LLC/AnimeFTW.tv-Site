@@ -8,10 +8,34 @@
 \****************************************************************/
 
 
+/*
+getRemainingVotes()
+In: nothing
+Out: Gets the current users votes count.
 
-//TODO:
-//Search function
-//Redirect Video Techs to the management board to claim a series(?)
+getOldVotes()
+In: nothing
+Out: Gets the count of the users old total count.
+
+getCurrentMaxVotes()
+In: Nothing
+Out: Gets the users current max votes.
+
+canEdit()
+in: Nothing
+Out: True if the user is a Admin, Manager or Mod(?), false otherwise.
+
+getMaxVotes()
+In: Nothing
+Out: Gets the max votes of a user, 5 if normal. 
+
+init()
+In: Nothing
+Out: Echos the request page.
+
+*/
+
+
 class AnimeRequest extends Config{
 	var $uid;
 	var $maxvotes;
@@ -51,12 +75,12 @@ class AnimeRequest extends Config{
 		return mysql_result($result, 0);
 	}
 	
-	public function getMaxVotes()
+	public function getCurrentMaxVotes()
 	{
 		return $this->maxvotes;
 	}
 	
-	function setMaxVotes()
+	function getMaxVotes()
 	{
 		if($this->UserArray[2]==0){
 			return 0;
@@ -74,10 +98,9 @@ class AnimeRequest extends Config{
 	}
 	function init()
 	{
-		$amount = $this->SingleVarQuery("SELECT count(*) AS amount FROM requests", "amount");
-		$this->max_pages = ceil($amount / $this->rpp);
+		
 		$this->uid = $this->UserArray[1];
-		$this->maxvotes = $this->setMaxVotes();
+		$this->maxvotes = $this->getMaxVotes();
 		$this->votes = $this->getRemainingVotes();
 		$this->oldvotes = $this->getOldVotes();
 		if($this->canEdit()||$this->UserArray[2]==5)
@@ -356,6 +379,8 @@ class AnimeRequest extends Config{
 				$searchquery = $searchquery."user_requests.Username LIKE '%".$susername."%' ";
 			}
 		}
+		
+		
 		$query = "SELECT user_requests.*, COUNT(voted_to) AS vote_count
 			FROM user_requests
 			LEFT JOIN request_votes
@@ -365,7 +390,10 @@ class AnimeRequest extends Config{
 			ORDER BY $sort
 			LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
 		//echo $query."<br>";
+		
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		
+		$this->max_pages = ceil(mysql_num_rows($result) / $this->rpp);
 		$i = 0;
 		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
 			//echo $uid;
@@ -595,7 +623,7 @@ class AnimeRequest extends Config{
 				return; //The user will already have recieved an "Anime not found" error if it fails.
 			}
 			$episodes = $AniDB->getEpisodeCount($AID);
-			$description = $AniDB->getDescription($AID);
+			$description = nl2br($AniDB->getDescription($AID));
 			$type = $AniDB->getSeriesType($AID);
 			if($type=="TV Series"||$type=="Web"){
 				$type = 1;
@@ -662,9 +690,9 @@ class AnimeRequest extends Config{
 	public function checkAmountOfVotes()
 	{
 		echo $this->getRemainingVotes() . '<br />';
-		$this->maxvotes = $this->setMaxVotes();
+		$this->maxvotes = $this->getMaxVotes();
 		echo $this->maxvotes . '<br />';
-		if($this->getRemainingVotes()<$this->setMaxVotes())
+		if($this->getRemainingVotes()<$this->getMaxVotes())
 		{
 			$rid = $_GET["requestanimevote"];
 			$query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysql_real_escape_string($rid) . ")"; // Added the escape string, cant have people doing silly stuff..
@@ -1105,7 +1133,7 @@ class AnimeRequest extends Config{
 	private function vote($rid)
 	{
 		echo $this->getRemainingVotes() . '<br />';
-		$this->maxvotes = $this->setMaxVotes();
+		$this->maxvotes = $this->getMaxVotes();
 		echo $this->maxvotes . '<br />';
 		if($this->getRemainingVotes()<$this->maxvotes) //Check if it's possible to vote
 		{
