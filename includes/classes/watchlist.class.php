@@ -147,7 +147,7 @@ class AFTWWatchlist {
 				if($this->UserArray[1] == $_GET['id'] || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)){
 					echo '<script>
 						$(".watchlist-element-icon").click(function() {
-							$("#" + $(this).attr(\'id\') + "-ed").load("//www.animeftw.tv/scripts.php?view=watchlist&node=subprofileview&stage=before&id=" + $(this).attr(\'id\'));
+							$("#" + $(this).attr(\'id\') + "-ed").load("/scripts.php?view=watchlist&node=subprofileview&stage=before&id=" + $(this).attr(\'id\'));
 							$(".watchlist-element-ub").hide(500);
 							$("#" + $(this).attr(\'id\') + "-ed").show(500);
 						});
@@ -229,7 +229,7 @@ class AFTWWatchlist {
 				$currentep = mysql_real_escape_string($_GET['Currentep']);
 				$Comment = mysql_real_escape_string(urldecode($_GET['Comment']));
 				$Comment = htmlspecialchars($Comment);
-				$query = "UPDATE `mainaftw_anime`.`watchlist` SET `update` = '".time()."', `status` = '".$status."', `email` = '".$Email."', `currentep` = '".$currentep."', `tracker` = '".$UpdateType."', `tracker_latest` = '".$TrackerLatest."', `comment` = '".$Comment."' WHERE `watchlist`.`id` = ".$wid;
+				$query = "UPDATE `watchlist` SET `update` = '".time()."', `status` = '".$status."', `email` = '".$Email."', `currentep` = '".$currentep."', `tracker` = '".$UpdateType."', `tracker_latest` = '".$TrackerLatest."', `comment` = '".$Comment."' WHERE `watchlist`.`id` = ".$wid;
 				//echo $query;
 				mysql_query($query);
 				echo '<span style="color:#E30707;font-size:10px;" id="update-text">Update Succesful!<br /></span>';

@@ -128,12 +128,24 @@ class Review extends Config {
 		}
 		if($this->UserArray[0] == 1)
 		{
-			$query = "SELECT `id` FROM `reviews` WHERE `uid` = " . $this->UserArray[1] . " AND `sid` = $sid";
+			$query = "SELECT `id`, `approved` FROM `reviews` WHERE `uid` = " . $this->UserArray[1] . " AND `sid` = $sid";
 			$result = mysql_query($query);
 			
 			if(mysql_num_rows($result) > 0)
 			{
-				echo '<div style="font-size:20px;margin:10px;color:#d0d0d0;" align="center" id="missing-reviews-placeholder">You currently have a pending review for this series, fear not, it should be approved soon.</div>';
+				$row = mysql_fetch_assoc($result);
+				if($row['approved'] == 2){
+					// denied review
+					echo '<div style="font-size:20px;margin:10px;color:#d0d0d0;" align="center" id="missing-reviews-placeholder">We\'re sorry, but your review was rejected.<br />Please PM a staff member for further information.</div>';
+				}
+				else if($row['approved'] == 1){
+					// approved review
+					echo '<div style="font-size:20px;margin:10px;color:#d0d0d0;" align="center" id="missing-reviews-placeholder">Thank you for your Successful review. We look forward to more reviews in the future!</div>';
+				}
+				else {
+					// pending review
+					echo '<div style="font-size:20px;margin:10px;color:#d0d0d0;" align="center" id="missing-reviews-placeholder">You currently have a pending review for this series, fear not, it should be approved soon.</div>';
+				}
 			}
 			else
 			{

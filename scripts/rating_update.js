@@ -47,7 +47,7 @@ var xmlHttp = null;
 
 // Calculate the rating
 function rate(rating,id,show5,showPerc,showVotes,uid){
-
+	
 	xmlHttp = GetXmlHttpObject()
 	
 	if(xmlHttp == null){
@@ -127,11 +127,11 @@ function rate(rating,id,show5,showPerc,showVotes,uid){
 				
 			}
 		} else {
-			loader.innerHTML = '<img src="https://www.animeftw.tv/images/rating_loading.gif" alt="loading" />';	
+			loader.innerHTML = '<img src="/images/rating_loading.gif" alt="loading" />';	
 		}
 	
 	}
-	var url = "https://www.animeftw.tv/includes/rating_process.php";
+	var url = "/includes/rating_process.php";
 	var params = "id="+id+"&rating="+rating+"&uid="+uid;
 	xmlHttp.open("POST",url,true);
 	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

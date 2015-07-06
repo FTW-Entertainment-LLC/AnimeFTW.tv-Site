@@ -10,7 +10,7 @@
 
 class toplist extends Config {
 
-	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes, $UserArray;
 	var $Categories = array(); // added 10/10/2014 by robotman321
 
 	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
@@ -21,6 +21,11 @@ class toplist extends Config {
 		$this->DevArray = $DevArray;
 		$this->AccessLevel = $AccessLevel;
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	// Parses through script variables sent via the scripts.php file

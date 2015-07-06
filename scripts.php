@@ -749,7 +749,6 @@ if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 	if(isset($_GET['function']) && $_GET['function'] == 'submit-form')
 	{
 		$W = new AFTWWatchlist($profileArray);
-		$W->connectProfile($Config->outputUserInformation());
 		$W->processFormData();
 	}
 	else
@@ -811,7 +810,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'toplist')
 	include_once('includes/classes/config.v2.class.php');
 	include_once('includes/classes/toplist.v2.class.php');
 	
+	$Config = new Config();
+	$Config->buildUserInformation();
 	$TopList = new toplist();
+	$TopList->connectProfile($Config->outputUserInformation());
 	$TopList->scriptsFunctions();
 }
 if(isset($_GET['view']) && $_GET['view'] == 'cart')
@@ -894,8 +896,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 	}
 	else
 	{
+		$Config = new Config();
+		$Config->buildUserInformation();
 		// let's process the request because they at least gave us some decent information.
 		$Episode = new Episode($_GET);
+		$Episode->
 		$output = $Episode->array_recordEpisodeTime();
 		if($output['status'] == 201)
 		{
@@ -914,10 +919,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'commentsv2')
 	
 	include_once("includes/classes/config.v2.class.php");
 	include_once("includes/classes/comments.v2.class.php");
+	$Config = new Config();
+	$Config->buildUserInformation();
 	if(isset($_GET['process']))
 	{
 		// processing data
 		$Comments = new Comment();
+		$Comments->connectProfile($Config->outputUserInformation());
 		$Comments->processComment();
 	}
 	else
@@ -929,6 +937,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'commentsv2')
 		else
 		{
 			$Comments = new Comment(NULL,NULL,NULL,NULL,$_GET['epid']);
+			$Comments->connectProfile($Config->outputUserInformation());
 			// this is where we will post everything
 			if(isset($_GET['sub']))
 			{
@@ -1168,8 +1177,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 if(isset($_GET['view']) && $_GET['view'] == 'reviews')
 {
 	include_once('includes/classes/config.class.php');
+	$Config = new Config();
+	$Config->buildUserInformation();
 	include_once('includes/classes/reviews.class.php');
 	$R = new Review();
+	$R->connectProfile($Config->outputUserInformation());
 	$R->processReview();
 }
 if(isset($_POST['method'])){

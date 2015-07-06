@@ -1132,6 +1132,7 @@ class AFTWVideos extends Config{
 						';
 						include_once("reviews.class.php");
 						$Review = new Review();
+						$Review->connectProfile($this->UserArray);
 						$Review->showSeriesReviews($SeriesArray[0]);
 						echo '
 						</div>';

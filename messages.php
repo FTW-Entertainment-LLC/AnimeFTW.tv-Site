@@ -1,9 +1,8 @@
 <?php
- require "init.php";
  require "aftw-commonf.php";
  require "config-parse.php";
  Class Messages extends Common {
-	private $config;
+	private $config, $UserArray;
  	public function __construct() {
 		$this->config = new PMConfig();
 		
@@ -13,6 +12,10 @@
 		} else {
 			$PageTitle = str_replace("%siteroot%","",$this::lang("MESSAGE_TITLE",$this->config));
 		}
+		require_once "includes/classes/config.class.php";
+		$Config = new Config(); 
+		$Config->buildUserInformation();
+		$this->UserArray = $Config->outputUserInformation();
 	
 		include('header.php');
 		include('header-nav.php');
@@ -80,8 +83,10 @@
 				$total = mysql_query("SELECT FOUND_ROWS()");
 				$trow = mysql_fetch_assoc($total);
 				while($row = mysql_fetch_assoc($query)) {
+					include_once('includes/classes/config.class.php');
+					$Config = new Config();
+					$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
 					$row['from'] = $this::nameFromId($row['sid']);
-					$newtime = timeZoneChange($row['date'],$this->profileArray[3]);
 					$newtime = date("D M d Y, h:i a",$newtime);
 					$row['time'] = $newtime;
 					$row['isowner'] = true;
@@ -109,7 +114,9 @@
 				$trow = mysql_fetch_assoc($total);
 				while($row = mysql_fetch_assoc($query)) {
 					$row['from'] = $this::nameFromId($row['rid']);
-					$newtime = timeZoneChange($row['date'],$this->profileArray[3]);
+					include_once('includes/classes/config.class.php');
+					$Config = new Config();
+					$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
 					$newtime = date("D M d Y, h:i a",$newtime);
 					$row['time'] = $newtime;
 					$row['isowner'] = false;
@@ -131,7 +138,9 @@
 				$trow = mysql_fetch_assoc($total);
 				while($row = mysql_fetch_assoc($query)) {
 					$row['from'] = $this::nameFromId($row['rid']);
-					$newtime = timeZoneChange($row['date'],$this->profileArray[3]);
+					include_once('includes/classes/config.class.php');
+					$Config = new Config();
+					$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
 					$newtime = date("D M d Y, h:i a",$newtime);
 					$row['time'] = $newtime;
 					$row['isowner'] = false;
@@ -205,7 +214,9 @@
 			
 				$boxname = $this::lang("MESSAGE_READMES",$this->config);
 				$mes_row = mysql_fetch_assoc($mes_query);
-				$newtime = timeZoneChange($mes_row['date'],$this->profileArray[3]);
+				include_once('includes/classes/config.class.php');
+				$Config = new Config();
+				$newtime = $Config->timeZoneChange($mes_row['date'],$this->profileArray[3]);
 				$newtime = date("D M d Y, h:i a",$newtime);
 				
 				$pos = stripos($mes_row['msgSubject'],"RE: ");
@@ -248,27 +259,25 @@
 	}
 	
 	private function getID() {
-		$user = (isset($_COOKIE['cookie_id'])) ? $_COOKIE['cookie_id'] : 0;
-		$user = (isset($_SESSION['user_id'])) ? $_SESSION['user_id'] : $user;
-		$this->profileArray = checkLoginStatus($user,$_SERVER['REMOTE_ADDR'],$_SERVER['HTTP_USER_AGENT']);
+		$this->profileArray = $this->UserArray;
 		return $this->profileArray[1];
 	}
 	
 	private function idFromName($name) {
-		$id_query = mysql_query("SELECT `id` FROM `users` WHERE `username`='$name'");
+		$id_query = mysql_query("SELECT `ID` FROM `users` WHERE `Username`='$name'");
 		if(mysql_num_rows($id_query) == 1) {
 			$id_row = mysql_fetch_assoc($id_query);
-			return $id_row['id'];
+			return $id_row['ID'];
 		} else {
 			return NULL;
 		}
 	}
 	
 	private function nameFromId($id) {
-		$name_query = mysql_query("SELECT `username` FROM `users` WHERE `id`='$id'");
+		$name_query = mysql_query("SELECT `Username` FROM `users` WHERE `ID`='$id'");
 		if(mysql_num_rows($name_query) == 1) {
 			$name_row = mysql_fetch_assoc($name_query);
-			return $name_row['username'];
+			return $name_row['Username'];
 		} else {
 			return FALSE;
 		}
@@ -373,4 +382,3 @@
 	}
  }
  new Messages();
-?>

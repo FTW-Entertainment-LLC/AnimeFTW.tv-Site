@@ -42,7 +42,10 @@ class Config {
 		{
 			$this->Host = 'http://img02.animeftw.tv';
 			//$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
-		}		
+		}
+		
+		// build the site default settings..
+		$this->array_buildDefaultSiteSettings();
 	}
 	
 	public function buildUserInformation()
@@ -52,9 +55,6 @@ class Config {
 		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
-		
-		// build the site default settings..
-		$this->array_buildDefaultSiteSettings();
 		
 		// generate the list of recently viewed videos.
 		$this->array_buildRecentlyWatchedEpisodes();
@@ -406,18 +406,27 @@ class Config {
 		return $fixedUsername;
 	}
 	
-	public function formatAvatar($ID,$target = 'self')
+	public function formatAvatar($ID,$target = 'self',$link = TRUE,$height = NULL)
 	{
 		$query = "SELECT `ID`, `Username`, `avatarActivate`, `avatarExtension` FROM `users` WHERE `ID`='" . mysql_real_escape_string($ID) . "'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_assoc($result);
+		if($height != NULL)
+		{
+			// we are overriding the styles.
+			$style = ' style="height:50px;width:50px;border:0;padding-right:5px;padding-top:3px;"';
+		}
+		else {
+			// just kidding..
+			$style = '';
+		}
 		if($row['avatarActivate'] == 'no')
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" height="50px" border="0" />';
+			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" height="50px" border="0"' . $style . ' />';
 		}
 		else
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" height="60px" border="0" />';
+			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" height="60px" border="0"' . $style . ' />';
 		}
 		if($target == 'blank')
 		{
@@ -427,7 +436,13 @@ class Config {
 		{
 			$linklocation = '';
 		}
-		$fixedAvatar = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $row['Username'] . '"' . $linklocation . '>' . $avatar . '</a>';
+		if($link != FALSE)
+		{
+			$fixedAvatar = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $row['Username'] . '"' . $linklocation . '>' . $avatar . '</a>';
+		}
+		else {
+			$fixedAvatar = $avatar;
+		}
 		return $fixedAvatar;
 	}
 	
