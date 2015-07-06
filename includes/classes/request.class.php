@@ -98,8 +98,7 @@ class AnimeRequest extends Config{
 	}
 	function init()
 	{
-		$amount = $this->SingleVarQuery("SELECT count(*) AS amount FROM requests", "amount");
-		$this->max_pages = ceil($amount / $this->rpp);
+		
 		$this->uid = $this->UserArray[1];
 		$this->maxvotes = $this->getMaxVotes();
 		$this->votes = $this->getRemainingVotes();
@@ -380,6 +379,8 @@ class AnimeRequest extends Config{
 				$searchquery = $searchquery."user_requests.Username LIKE '%".$susername."%' ";
 			}
 		}
+		
+		
 		$query = "SELECT user_requests.*, COUNT(voted_to) AS vote_count
 			FROM user_requests
 			LEFT JOIN request_votes
@@ -389,7 +390,10 @@ class AnimeRequest extends Config{
 			ORDER BY $sort
 			LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
 		//echo $query."<br>";
+		
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		
+		$this->max_pages = ceil(mysql_num_rows($result) / $this->rpp);
 		$i = 0;
 		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
 			//echo $uid;
