@@ -393,7 +393,11 @@ class AnimeRequest extends Config{
 		
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		
-		$this->max_pages = ceil(mysql_num_rows($result) / $this->rpp);
+		$pages_query = "SELECT COUNT(*) AS amount
+			FROM user_requests
+			".$searchquery;
+		$total_results = $this->SingleVarQuery($pages_query, "amount");
+		$this->max_pages = ceil($total_results / $this->rpp);
 		$i = 0;
 		while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
 			//echo $uid;
