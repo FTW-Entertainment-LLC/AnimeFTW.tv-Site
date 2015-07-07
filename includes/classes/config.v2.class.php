@@ -14,12 +14,13 @@ class Config {
 	{
 		$this->StatsDB = 'mainaftw_stats'; // declare the stats DB
 		$this->MainDB = 'mainaftw_anime'; // Main DB for everything else
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
+		}
 		
 		// Initialize the Database connection!
 		$this->DB_Con();
-		
-		// constructs all of the details about the user.
-		$this->array_constructUser(); 
 		
 		// this is for the usage of the CDN, all images will be there and if its secure we want to use it.
 		if($_SERVER['SERVER_PORT'] == 443)
@@ -32,14 +33,36 @@ class Config {
 			//$this->ImageHost = 'http://d206m0dw9i4jjv.cloudfront.net';
 		}
 		
+		// build the site default settings..
+		$this->array_buildDefaultSiteSettings();
+	}
+	
+	#----------------------------------------------------------------
+	# function buildUserInformation
+	# Builds all user details, settings and Watched Episodes on Demand
+	# @public
+	#----------------------------------------------------------------
+	public function buildUserInformation()
+	{
+		// constructs all of the details about the user.
+		$this->array_constructUser();  
+		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
 		
-		// build the site default settings..
-		$this->array_buildDefaultSiteSettings();
-		
 		// generate the list of recently viewed videos.
 		$this->array_buildRecentlyWatchedEpisodes();
+	}
+	
+	#----------------------------------------------------------------
+	# function outputUserInformation
+	# Gateway function when subclasses dont link properly.
+	# @public
+	#----------------------------------------------------------------
+	
+	public function outputUserInformation()
+	{
+		return $this->UserArray;
 	}
 	
 	#----------------------------------------------------------------
@@ -86,49 +109,44 @@ class Config {
 			$result = $this->mysqli->query($query) or die('Error : ' . $this->mysqli->error);
 			$row = $result->fetch_assoc();
 			$UserID = $row['uid'];
-		}
-		else
-		{
-			@session_start();
-			if(isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE))
-			{
-				if(isset($_COOKIE['cookie_id']))
-				{
-					$UserID = $_COOKIE['cookie_id'];
-				} 
-				else if(isset($_SESSION['user_id']))
-				{
-					$UserID = $_SESSION['user_id']; 
-				} 
-			}
-			else
-			{
-				$UserID = NULL;
-			}
-		}
-		if($UserID != NULL)
-		{
+			
 			$query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($UserID) . "'";
 			$result = $this->mysqli->query($query) or die('Error : ' . $this->mysqli->error);
 			$row = $result->fetch_assoc();
+		}
+		else
+		{			
+			// we need to check if the token and authentication are setup correctly. (site token)
+			$query = "SELECT id as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . $this->mysqli->real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->mysqli->real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . $this->mysqli->real_escape_string($_COOKIE['hh']) . "'";
 			
-			// check to see if the cookie or the session is set, if either one are, let them pass!
-			if((isset($_COOKIE['authenticate']) && $_COOKIE['authenticate'] == md5($_SERVER['REMOTE_ADDR'] . $row['Password'] . $_SERVER['HTTP_USER_AGENT'])) || isset($_SESSION['user_id']) || isset($Token))
-			{
-				$this->UserArray['logged-in'] .= 1;
-				foreach($row AS $key => $value)
-				{
-					$this->UserArray[$key] .= $value;
-				}
-				$this->UserArray['FancyUsername'] .= $this->string_fancyUsername(0,$row['Username'],$row['Active'],$row['Level_access'],$row['advancePreffix'],$row['advanceImage']);
-				//they clear the authentication process...
-				$this->mysqli->query('UPDATE `' . $this->MainDB . '`.`users` SET `lastActivity` = \''.time().'\' WHERE ID=\'' . $this->mysqli->real_escape_string($UserID) . '\'');
+			$result = $this->mysqli->query($query);
+			$count = mysqli_num_rows($result);
+			
+			if($count > 0) {
+				$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `updated` = " . time() . " WHERE `id` = '" . $this->mysqli->real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->mysqli->real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . $this->mysqli->real_escape_string($_COOKIE['hh']) . "'";
+				$result = $this->mysqli->query($query);
+				unset($query);
+				unset($result);
+				$query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($_COOKIE['au']) . "'";
+				$result = $this->mysqli->query($query);
+				$row = $result->fetch_assoc();
+				$UserID = $row['ID'];
 			}
-			else 
+			else {
+				$UserID = NULL;
+			}			
+		}
+		if($UserID != NULL)
+		{
+			
+			$this->UserArray['logged-in'] .= 1;
+			foreach($row AS $key => $value)
 			{
-				// user is not logged in, let's reject everything.
-				$this->UserArray['logged-in'] .= 0;
+				$this->UserArray[$key] .= $value;
 			}
+			$this->UserArray['FancyUsername'] .= $this->string_fancyUsername(0,$row['Username'],$row['Active'],$row['Level_access'],$row['advancePreffix'],$row['advanceImage']);
+			//they clear the authentication process...
+			$this->mysqli->query('UPDATE `' . $this->MainDB . '`.`users` SET `lastActivity` = \''.time().'\' WHERE ID=\'' . $this->mysqli->real_escape_string($UserID) . '\'');
 		}
 		else 
 		{
@@ -543,6 +561,79 @@ class Config {
 			$this->Categories[$row['id']]['name'] = $row['name'];
 			$this->Categories[$row['id']]['description'] = $row['description'];
 		}
+	}
+	
+	public function generateRandomString($length = 10)
+	{
+		$randomString = substr(str_shuffle(MD5(microtime())), 0, $length);
+		return $randomString;
+	}
+	
+	public function getOS($agent)
+	{
+		$os_platform    =   "Unknown OS Platform";
+		$os_array       =   array(
+			'/windows nt 10/i'     	=>  'Windows 10',
+			'/windows nt 6.3/i'     =>  'Windows 8.1',
+			'/windows nt 6.2/i'     =>  'Windows 8',
+			'/windows nt 6.1/i'     =>  'Windows 7',
+			'/windows nt 6.0/i'     =>  'Windows Vista',
+			'/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
+			'/windows nt 5.1/i'     =>  'Windows XP',
+			'/windows xp/i'         =>  'Windows XP',
+			'/windows nt 5.0/i'     =>  'Windows 2000',
+			'/windows me/i'         =>  'Windows ME',
+			'/win98/i'              =>  'Windows 98',
+			'/win95/i'              =>  'Windows 95',
+			'/win16/i'              =>  'Windows 3.11',
+			'/macintosh|mac os x/i' =>  'Mac OS X',
+			'/mac_powerpc/i'        =>  'Mac OS 9',
+			'/linux/i'              =>  'Linux',
+			'/ubuntu/i'             =>  'Ubuntu',
+			'/iphone/i'             =>  'iPhone',
+			'/ipod/i'               =>  'iPod',
+			'/ipad/i'               =>  'iPad',
+			'/android/i'            =>  'Android',
+			'/blackberry/i'         =>  'BlackBerry',
+			'/webos/i'              =>  'Mobile'
+		);
+
+		foreach($os_array as $regex => $value)
+		{
+			if(preg_match($regex, $agent))
+			{
+				$os_platform    =   $value;
+			}
+		}
+
+		return $os_platform;
+	}
+
+	public function getBrowser($agent)
+	{
+		$browser        =   "Unknown Browser";
+		$browser_array  =   array(
+			'/msie/i'       =>  'Internet Explorer',
+			'/firefox/i'    =>  'Firefox',
+			'/safari/i'     =>  'Safari',
+			'/chrome/i'     =>  'Chrome',
+			'/opera/i'      =>  'Opera',
+			'/netscape/i'   =>  'Netscape',
+			'/maxthon/i'    =>  'Maxthon',
+			'/konqueror/i'  =>  'Konqueror',
+			'/mobile/i'     =>  'Handheld Browser',
+			'/palemoon/i'	=>	'Palemoon'
+		);
+
+		foreach($browser_array as $regex => $value)
+		{
+			if(preg_match($regex,  $agent))
+			{
+				$browser    =   $value;
+			}
+		}
+
+		return $browser;
 	}
 	
 	public function array_buildAPICodes()

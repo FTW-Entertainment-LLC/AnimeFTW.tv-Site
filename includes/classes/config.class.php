@@ -15,14 +15,25 @@ else
 	$rootdirectory = '/home/mainaftw/public_html';
 }
 
-include($rootdirectory . "/includes/config_site.php");
-include($rootdirectory . "/includes/newsOpenDb.php");
+include_once($rootdirectory . "/includes/config_site.php");
 
 class Config {
-	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array();
+	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array(), $ThisDomain;
 
-	public function __construct(){
-		$this->BuildUser(); // build our user array
+	public function __construct(){		
+		// Declare the main database
+		$this->MainDB = 'mainaftw_anime';
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
+		}
+		// Set the domain..
+		$this->ThisDomain = ".animeftw.tv";
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		{
+			$this->ThisDomain = ".ftwdevs.com";
+		}
+			
 		if($_SERVER['SERVER_PORT'] == 443)
 		{
 			$this->Host = 'https://d206m0dw9i4jjv.cloudfront.net';
@@ -33,96 +44,70 @@ class Config {
 			//$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
 		}
 		
-		// Declare the main database
-		$this->MainDB = 'mainaftw_anime';
+		// build the site default settings..
+		$this->array_buildDefaultSiteSettings();
+	}
+	
+	public function buildUserInformation()
+	{
+		// build our user array
+		$this->BuildUser(); 
 		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
-		
-		// build the site default settings..
-		$this->array_buildDefaultSiteSettings();
 		
 		// generate the list of recently viewed videos.
 		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
-	private function BuildUser(){
-		@session_start();
-	    if(isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
-			if(isset($_COOKIE['cookie_id'])) {
-				$UserID = $_COOKIE['cookie_id'];
-			} 
-			else if(isset($_SESSION['user_id'])){
-				$UserID = $_SESSION['user_id']; 
-			} 
-		}
-		else {
-			$UserID = NULL;
-		}
-		if($UserID != NULL){
-			$query = "SELECT `Username`, `Password`, `viewNotifications`, `UploadsVisit`, `Email`, `Active`, `Level_access`, `canDownload`, `advanceActive`, `forumBan`, `messageBan`, `postBan`, `timeZone`, `theme`, `html5`, `ssl` FROM users WHERE ID='$UserID'";
+	public function outputUserInformation()
+	{
+		return $this->UserArray;
+	}
+	
+	private function BuildUser()
+	{
+		// we need to check if the token and authentication are setup correctly.
+		$query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+		$result = mysql_query($query);
+		$count = mysql_result($result, 0);
+		if($count > 0)
+		{
+			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `updated` = " . time() . " WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+			$result = mysql_query($query);
+			unset($query);
+			unset($result);
+			$query = "SELECT `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `html5`, `ssl`, `advanceActive`, `UploadsVisit` FROM users WHERE ID='" . mysql_real_escape_string($_COOKIE['au']) . "'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			if(isset($_COOKIE['authenticate']) && $_COOKIE['authenticate'] == md5 ( $_SERVER['REMOTE_ADDR'] . $row['Password'] . $_SERVER['HTTP_USER_AGENT'] ) ) {
-				//they clear the authentication process...
-				$Logged = 1;
-				mysql_query('UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $UserID . '\'');
-				$PermissionLevelAdvanced = $row['Level_access'];
-				$timeZone = $row['timeZone'];
-				$bannedornot = $row['Active'];
-				$name = $row['Username'];
-				$canDownload = $row['canDownload'];
-				$postBan = $row['postBan'];
-				$siteTheme = $row['theme'];
-				$forumBan = $row['forumBan'];
-				$messageBan = $row['messageBan'];
-				$viewNotifications = $row['viewNotifications'];
-				$AdvanceActive = $row['advanceActive'];
-				$UploadsVisit = $row['UploadsVisit'];
-				$html5 = $row['html5'];
-				$ssl = $row['ssl'];
-			}
-			else 
-			{
-				if(isset($_SESSION['user_id'])){
-					$Logged = 1;
-					$PermissionLevelAdvanced = $row['Level_access'];
-					mysql_query('UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $UserID . '\'');
-					$timeZone = $row['timeZone'];
-					$bannedornot = $row['Active'];
-					$name = $row['Username'];
-					$canDownload = $row['canDownload'];
-					$postBan = $row['postBan'];
-					$siteTheme = $row['theme'];
-					$forumBan = $row['forumBan'];
-					$messageBan = $row['messageBan'];
-					$viewNotifications = $row['viewNotifications'];
-					$AdvanceActive = $row['advanceActive'];
-					$UploadsVisit = $row['UploadsVisit'];
-					$html5 = $row['html5'];
-					$ssl = $row['ssl'];
-				}
-				else {
-					$Logged = 0;
-					$PermissionLevelAdvanced = 0;
-					$timeZone = '-6';
-					$canDownload = 0;
-					$siteTheme = 0;
-					$postBan = 0;
-					$name = '';
-					$bannedornot = 0;
-					$UserID = 0;
-					$forumBan = 0;
-					$messageBan = 0;
-					$viewNotifications = 0;
-					$AdvanceActive = 0;
-					$UploadsVisit = 0;
-					$html5 = 0;
-					$ssl = 0;
-				}
-			}
+			$Logged = 1;
+			$UserID = mysql_real_escape_string($_COOKIE['au']);
+			$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . mysql_real_escape_string($_COOKIE['au']) . '\'';
+			mysql_query($query) or die('Error : ' . mysql_error());			
+			// we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
+			// we have the ability to turn this off just in case we have some incompatibility issues..
+			$randomkey = $this->generateRandomString(200);
+			setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "'";
+			mysql_query($query) or die('Error : ' . mysql_error());
+			// build the list of information necessary for user interactions.
+			$PermissionLevelAdvanced = $row['Level_access'];
+			$timeZone = $row['timeZone'];
+			$bannedornot = $row['Active'];
+			$name = $row['Username'];
+			$canDownload = $row['canDownload'];
+			$postBan = $row['postBan'];
+			$siteTheme = $row['theme'];
+			$forumBan = $row['forumBan'];
+			$messageBan = $row['messageBan'];
+			$viewNotifications = $row['viewNotifications'];
+			$AdvanceActive = $row['advanceActive'];
+			$UploadsVisit = $row['UploadsVisit'];
+			$html5 = $row['html5'];
+			$ssl = $row['ssl'];
 		}
-		else {
+		else
+		{
 			$Logged = 0;
 			$PermissionLevelAdvanced = 0;
 			$timeZone = '-6';
@@ -135,8 +120,6 @@ class Config {
 			$forumBan = 0;
 			$messageBan = 0;
 			$viewNotifications = 0;
-			$AdvanceActive = 0;
-			$UploadsVisit = 0;
 			$html5 = 0;
 			$ssl = 0;
 		}
@@ -424,18 +407,27 @@ class Config {
 		return $fixedUsername;
 	}
 	
-	public function formatAvatar($ID,$target = 'self')
+	public function formatAvatar($ID,$target = 'self',$link = TRUE,$height = NULL)
 	{
 		$query = "SELECT `ID`, `Username`, `avatarActivate`, `avatarExtension` FROM `users` WHERE `ID`='" . mysql_real_escape_string($ID) . "'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_assoc($result);
+		if($height != NULL)
+		{
+			// we are overriding the styles.
+			$style = ' style="height:50px;width:50px;border:0;padding-right:5px;padding-top:3px;"';
+		}
+		else {
+			// just kidding..
+			$style = '';
+		}
 		if($row['avatarActivate'] == 'no')
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" height="50px" border="0" />';
+			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" height="50px" border="0"' . $style . ' />';
 		}
 		else
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" height="60px" border="0" />';
+			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" height="60px" border="0"' . $style . ' />';
 		}
 		if($target == 'blank')
 		{
@@ -445,7 +437,13 @@ class Config {
 		{
 			$linklocation = '';
 		}
-		$fixedAvatar = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $row['Username'] . '"' . $linklocation . '>' . $avatar . '</a>';
+		if($link != FALSE)
+		{
+			$fixedAvatar = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $row['Username'] . '"' . $linklocation . '>' . $avatar . '</a>';
+		}
+		else {
+			$fixedAvatar = $avatar;
+		}
 		return $fixedAvatar;
 	}
 	
@@ -538,5 +536,85 @@ class Config {
 			$this->Categories[$row['id']]['name'] = $row['name'];
 			$this->Categories[$row['id']]['description'] = $row['description'];
 		}
+	}
+	
+	public function generateRandomString($length = 10)
+	{
+		$randomString = substr(str_shuffle(MD5(microtime())), 0, $length);
+		return $randomString;
+	}
+	
+	public function getOS($agent)
+	{
+		$os_platform    =   "Unknown OS Platform";
+		$os_array       =   array(
+			'/windows nt 10/i'     	=>  'Windows 10',
+			'/windows nt 6.3/i'     =>  'Windows 8.1',
+			'/windows nt 6.2/i'     =>  'Windows 8',
+			'/windows nt 6.1/i'     =>  'Windows 7',
+			'/windows nt 6.0/i'     =>  'Windows Vista',
+			'/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
+			'/windows nt 5.1/i'     =>  'Windows XP',
+			'/windows xp/i'         =>  'Windows XP',
+			'/windows nt 5.0/i'     =>  'Windows 2000',
+			'/windows me/i'         =>  'Windows ME',
+			'/win98/i'              =>  'Windows 98',
+			'/win95/i'              =>  'Windows 95',
+			'/win16/i'              =>  'Windows 3.11',
+			'/macintosh|mac os x/i' =>  'Mac OS X',
+			'/mac_powerpc/i'        =>  'Mac OS 9',
+			'/linux/i'              =>  'Linux',
+			'/ubuntu/i'             =>  'Ubuntu',
+			'/iphone/i'             =>  'iPhone',
+			'/ipod/i'               =>  'iPod',
+			'/ipad/i'               =>  'iPad',
+			'/android/i'            =>  'Android',
+			'/blackberry/i'         =>  'BlackBerry',
+			'/webos/i'              =>  'Mobile'
+		);
+
+		foreach($os_array as $regex => $value)
+		{
+			if(preg_match($regex, $agent))
+			{
+				$os_platform    =   $value;
+			}
+		}
+
+		return $os_platform;
+	}
+
+	public function getBrowser($agent)
+	{
+		$browser        =   "Unknown Browser";
+		$browser_array  =   array(
+			'/msie/i'       =>  'Internet Explorer',
+			'/firefox/i'    =>  'Firefox',
+			'/safari/i'     =>  'Safari',
+			'/chrome/i'     =>  'Chrome',
+			'/opera/i'      =>  'Opera',
+			'/netscape/i'   =>  'Netscape',
+			'/maxthon/i'    =>  'Maxthon',
+			'/konqueror/i'  =>  'Konqueror',
+			'/mobile/i'     =>  'Handheld Browser',
+			'/palemoon/i'	=>	'Palemoon'
+		);
+
+		foreach($browser_array as $regex => $value)
+		{
+			if(preg_match($regex,  $agent))
+			{
+				$browser    =   $value;
+			}
+		}
+
+		return $browser;
+	}
+	
+	public function timeZoneChange($date,$timezone)
+	{
+		$timezone = (60*60)*($timezone+6);
+		$revisedDate = $date+($timezone);
+		return $revisedDate;
 	}
 }

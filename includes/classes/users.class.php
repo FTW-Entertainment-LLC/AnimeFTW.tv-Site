@@ -31,6 +31,11 @@ class AFTWUser extends Config{
 		}
 	}
 	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
+	}
+	
 	//grab our username
 	function get_username($username){
 		$this->username = $username;
@@ -344,20 +349,8 @@ class AFTWUser extends Config{
 		}
 		else
 		{
-			echo '
-			<div class="fds">
-				<div class="user-settings-link-header header-active" id="account-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',0); return false;">Account Settings</a></div>
-				<div class="user-settings-link-header" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>
-				';
-				if($profileArray[2] == 1 || $profileArray[2] == 2)
-				{
-					echo '
-				<div class="user-settings-link-header" id="user-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',2); return false;">Account Logs</a></div>';
-				}
-				echo '
-			</div><br />';
 			echo '<form method="POST" name="ProfileEdit" id="ProfileEdit">';	
-			$query = "SELECT * FROM users WHERE ID='".mysql_real_escape_string($ruid)."'";
+			$query = "SELECT * FROM users WHERE ID='" . mysql_real_escape_string($ruid) . "'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
 			$ID = $row['ID'];
@@ -788,229 +781,22 @@ class AFTWUser extends Config{
 			<dl>
 				<dt>Country:</dt>
 				<dd><select name="country" class="loginForm">
-				<option value=""'; if($country == ''){echo' selected ';} echo '>Select Your Country</option>
-				<option value="Afghanistan"'; if($country == 'Afghanistan'){echo' selected ';} echo '>Afghanistan</option>
-				<option value="Albania"'; if($country == 'Albania'){echo' selected ';} echo '>Albania</option>
-				<option value="Algeria"'; if($country == 'Algeria'){echo' selected ';} echo '>Algeria</option>
-				<option value="American Samoa"'; if($country == 'American Samoa'){echo' selected ';} echo '>American Samoa</option>
-				<option value="Andorra"'; if($country == 'Andorra'){echo' selected ';} echo '>Andorra</option>
-				<option value="Angola"'; if($country == 'Angola'){echo' selected ';} echo '>Angola</option>
-				<option value="Anguilla"'; if($country == 'Anguilla'){echo' selected ';} echo '>Anguilla</option>
-				<option value="Antigua and Barbuda"'; if($country == 'Antigua and Barbuda'){echo' selected ';} echo '>Antigua and Barbuda</option>
-				<option value="Argentina"'; if($country == 'Argentina'){echo' selected ';} echo '>Argentina</option>
-				<option value="Armenia"'; if($country == 'Armenia'){echo' selected ';} echo '>Armenia</option>
-				<option value="Aruba"'; if($country == 'Aruba'){echo' selected ';} echo '>Aruba</option>
-				<option value="Australia"'; if($country == 'Australia'){echo' selected ';} echo '>Australia</option>
-				<option value="Austria"'; if($country == 'Austria'){echo' selected ';} echo '>Austria</option>
-				<option value="Azerbaijan"'; if($country == 'Azerbaijan'){echo' selected ';} echo '>Azerbaijan</option>
-				<option value="Bahamas, The"'; if($country == 'Bahamas, The'){echo' selected ';} echo '>Bahamas, The</option>
-				<option value="Bahrain"'; if($country == 'Bahrain'){echo' selected ';} echo '>Bahrain</option>
-				<option value="Bangladesh"'; if($country == 'Bangladesh'){echo' selected ';} echo '>Bangladesh</option>
-				<option value="Barbados"'; if($country == 'Barbados'){echo' selected ';} echo '>Barbados</option>
-				<option value="Belarus"'; if($country == 'Belarus'){echo' selected ';} echo '>Belarus</option>
-				<option value="Belgium"'; if($country == 'Belgium'){echo' selected ';} echo '>Belgium</option>
-				<option value="Belize"'; if($country == 'Belize'){echo' selected ';} echo '>Belize</option>
-				<option value="Benin"'; if($country == 'Benin'){echo' selected ';} echo '>Benin</option>
-				<option value="Bermuda"'; if($country == 'Bermuda'){echo' selected ';} echo '>Bermuda</option>
-				<option value="Bhutan"'; if($country == 'Bhutan'){echo' selected ';} echo '>Bhutan</option>
-				<option value="Bolivia"'; if($country == 'Bolivia'){echo' selected ';} echo '>Bolivia</option>
-				<option value="Bosnia and Herzegovinia"'; if($country == 'Bosnia and Herzegovinia'){echo' selected ';} echo '>Bosnia and Herzegovinia</option>
-				<option value="Botswana"'; if($country == 'Botswana'){echo' selected ';} echo '>Botswana</option>
-				<option value="Brazil"'; if($country == 'Brazil'){echo' selected ';} echo '>Brazil</option>
-				<option value="British Virgin Islands"'; if($country == 'British Virgin Islands'){echo' selected ';} echo '>British Virgin Islands</option>
-				<option value="Brunei"'; if($country == 'Brunei'){echo' selected ';} echo '>Brunei</option>
-				<option value="Bulgaria"'; if($country == 'Bulgaria'){echo' selected ';} echo '>Bulgaria</option>
-				<option value="Burkina Faso"'; if($country == 'Burkina Faso'){echo' selected ';} echo '>Burkina Faso</option>
-				<option value="Burundi"'; if($country == 'Burundi'){echo' selected ';} echo '>Burundi</option>
-				<option value="Cambodia"'; if($country == 'Cambodia'){echo' selected ';} echo '>Cambodia</option>
-				<option value="Cameroon"'; if($country == 'Cameroon'){echo' selected ';} echo '>Cameroon</option>
-				<option value="Canada"'; if($country == 'Canada'){echo' selected ';} echo '>Canada</option>
-				<option value="Cape Verda"'; if($country == 'Cape Verda'){echo' selected ';} echo '>Cape Verda</option>
-				<option value="Cayman Islands"'; if($country == 'Cayman Islands'){echo' selected ';} echo '>Cayman Islands</option>
-				<option value="Central African Republic"'; if($country == 'Central African Republic'){echo' selected ';} echo '>Central African Republic</option>
-				<option value="Chad"'; if($country == 'Chad'){echo' selected ';} echo '>Chad</option>
-				<option value="Chile"'; if($country == 'Chile'){echo' selected ';} echo '>Chile</option>
-				<option value="China"'; if($country == 'China'){echo' selected ';} echo '>China</option>
-				<option value="Colombia"'; if($country == 'Colombia'){echo' selected ';} echo '>Colombia</option>
-				<option value="Comoros"'; if($country == 'Comoros'){echo' selected ';} echo '>Comoros</option>
-				<option value="Congo - Democratic Republic of the"'; if($country == 'Congo - Democratic Republic of the'){echo' selected ';} echo '>Congo - Democratic Republic of the</option>
-				<option value="Congo - Republic of the"'; if($country == 'Congo - Republic of the'){echo' selected ';} echo '>Congo - Republic of the</option>
-				<option value="Cook Islands"'; if($country == 'Cook Islands'){echo' selected ';} echo '>Cook Islands</option>
-				<option value="Costa Rica"'; if($country == 'Costa Rica'){echo' selected ';} echo '>Costa Rica</option>
-				<option value="Croatia"'; if($country == 'Croatia'){echo' selected ';} echo '>Croatia</option>
-				<option value="Cuba"'; if($country == 'Cuba'){echo' selected ';} echo '>Cuba</option>
-				<option value="Cyprus"'; if($country == 'Cyprus'){echo' selected ';} echo '>Cyprus</option>
-				<option value="Czech Republic"'; if($country == 'Czech Republic'){echo' selected ';} echo '>Czech Republic</option>
-				<option value="Denmark"'; if($country == 'Denmark'){echo' selected ';} echo '>Denmark</option>
-				<option value="Djibouti"'; if($country == 'Djibouti'){echo' selected ';} echo '>Djibouti</option>
-				<option value="Dominica"'; if($country == 'Dominica'){echo' selected ';} echo '>Dominica</option>
-				<option value="Dominican Republic"'; if($country == 'Dominican Republic'){echo' selected ';} echo '>Dominican Republic</option>
-				<option value="Ecuador"'; if($country == 'Ecuador"'){echo' selected ';} echo '>Ecuador</option>
-				<option value="Egypt"'; if($country == 'Egypt'){echo' selected ';} echo '>Egypt</option>
-				<option value="El Salvador"'; if($country == 'El Salvador'){echo' selected ';} echo '>El Salvador</option>
-				<option value="Equatorial Guinea"'; if($country == 'Equatorial Guinea'){echo' selected ';} echo '>Equatorial Guinea</option>
-				<option value="Eritrea"'; if($country == 'Eritrea'){echo' selected ';} echo '>Eritrea</option>
-				<option value="Estonia"'; if($country == 'Estonia'){echo' selected ';} echo '>Estonia</option>
-				<option value="Ethiopia"'; if($country == 'Ethiopia'){echo' selected ';} echo '>Ethiopia</option>
-				<option value="Falkland Islands"'; if($country == 'Falkland Islands'){echo' selected ';} echo '>Falkland Islands</option>
-				<option value="Faroe Islands"'; if($country == 'Faroe Islands'){echo' selected ';} echo '>Faroe Islands</option>
-				<option value="Fiji"'; if($country == 'Fiji'){echo' selected ';} echo '>Fiji</option>
-				<option value="Finland"'; if($country == 'Finland'){echo' selected ';} echo '>Finland</option>
-				<option value="France"'; if($country == 'France'){echo' selected ';} echo '>France</option>
-				<option value="French Polynesia"'; if($country == 'French Polynesia'){echo' selected ';} echo '>French Polynesia</option>
-				<option value="Gabon"'; if($country == 'Gabon'){echo' selected ';} echo '>Gabon</option>
-				<option value="Gambia, The"'; if($country == 'Gambia, The'){echo' selected ';} echo '>Gambia, The</option>
-				<option value="Georgia"'; if($country == 'Georgia'){echo' selected ';} echo '>Georgia</option>
-				<option value="Germany"'; if($country == 'Germany'){echo' selected ';} echo '>Germany</option>
-				<option value="Ghana"'; if($country == 'Ghana'){echo' selected ';} echo '>Ghana</option>
-				<option value="Gibraltar"'; if($country == 'Gibralter'){echo' selected ';} echo '>Gibraltar</option>
-				<option value="Greece"'; if($country == 'Greece'){echo' selected ';} echo '>Greece</option>
-				<option value="Greenland"'; if($country == 'Greenland'){echo' selected ';} echo '>Greenland</option>
-				<option value="Grenada"'; if($country == 'Grenada'){echo' selected ';} echo '>Grenada</option>
-				<option value="Guam"'; if($country == 'Guam'){echo' selected ';} echo '>Guam</option>
-				<option value="Guatemala"'; if($country == 'Guatemala'){echo' selected ';} echo '>Guatemala</option>
-				<option value="Guernsey"'; if($country == 'Guernsey'){echo' selected ';} echo '>Guernsey</option>
-				<option value="Guinea"'; if($country == 'Guinea'){echo' selected ';} echo '>Guinea</option>
-				<option value="Guinea Bissau"'; if($country == 'Guinea Bissau'){echo' selected ';} echo '>Guinea Bissau</option>
-				<option value="Guyana"'; if($country == 'Guyana'){echo' selected ';} echo '>Guyana</option>
-				<option value="Haiti"'; if($country == 'Haiti'){echo' selected ';} echo '>Haiti</option>
-				<option value="Holy See - Vatican City"'; if($country == 'Holy See - Vatican City'){echo' selected ';} echo '>Holy See Vatican City</option>
-				<option value="Honduras"'; if($country == 'Honduras'){echo' selected ';} echo '>Honduras</option>
-				<option value="Hong Kong"'; if($country == 'Hong Kong'){echo' selected ';} echo '>Hong Kong</option>
-				<option value="Hungary"'; if($country == 'Hungary'){echo' selected ';} echo '>Hungary</option>
-				<option value="Iceland"'; if($country == 'Iceland'){echo' selected ';} echo '>Iceland</option>
-				<option value="India"'; if($country == 'India'){echo' selected ';} echo '>India</option>
-				<option value="Indonesia"'; if($country == 'Indonesia'){echo' selected ';} echo '>Indonesia</option>
-				<option value="Iran"'; if($country == 'Iran'){echo' selected ';} echo '>Iran</option>
-				<option value="Iraq"'; if($country == 'Iraq'){echo' selected ';} echo '>Iraq</option>
-				<option value="Ireland"'; if($country == 'Ireland'){echo' selected ';} echo '>Ireland</option>
-				<option value="Isle of Man"'; if($country == 'Isle of Man'){echo' selected ';} echo '>Isle of Man</option>
-				<option value="Italy"'; if($country == 'Italy'){echo' selected ';} echo '>Italy</option>
-				<option value="Ivory Coast"'; if($country == 'Ivory Coast'){echo' selected ';} echo '>Ivory Coast</option>
-				<option value="Jamaica"'; if($country == 'Jamaica'){echo' selected ';} echo '>Jamaica</option>
-				<option value="Japan"'; if($country == 'Japan'){echo' selected ';} echo '>Japan</option>
-				<option value="Jersey"'; if($country == 'Jersey'){echo' selected ';} echo '>Jersey</option>
-				<option value="Jordan"'; if($country == 'Jordan'){echo' selected ';} echo '>Jordan</option>
-				<option value="Kazakhstan"'; if($country == 'Kazakhstan'){echo' selected ';} echo '>Kazakhstan</option>
-				<option value="Kenya"'; if($country == 'Kenya'){echo' selected ';} echo '>Kenya</option>
-				<option value="Kiribati"'; if($country == 'Kiribati'){echo' selected ';} echo '>Kiribati</option>
-				<option value="Korea - North"'; if($country == 'Korea - North'){echo' selected ';} echo '>Korea - North</option>
-				<option value="Korea - South"'; if($country == 'Korea - South'){echo' selected ';} echo '>Korea - South</option>
-				<option value="Kuwait"'; if($country == 'Kuwait'){echo' selected ';} echo '>Kuwait</option>
-				<option value="Kyrgyzstan"'; if($country == 'Kyrgyzstan'){echo' selected ';} echo '>Kyrgyzstan</option>
-				<option value="Laos"'; if($country == 'Laos'){echo' selected ';} echo '>Laos</option>
-				<option value="Latvia"'; if($country == 'Latvia'){echo' selected ';} echo '>Latvia</option>
-				<option value="Lebanon"'; if($country == 'Lebanon'){echo' selected ';} echo '>Lebanon</option>
-				<option value="Lesotho"'; if($country == 'Lesotho'){echo' selected ';} echo '>Lesotho</option>
-				<option value="Liberia"'; if($country == 'Liberia'){echo' selected ';} echo '>Liberia</option>
-				<option value="Liechtenstein"'; if($country == 'Liechtenstein'){echo' selected ';} echo '>Liechtenstein</option>
-				<option value="Lithuania"'; if($country == 'Lithuania'){echo' selected ';} echo '>Lithuania</option>
-				<option value="Luxembourg"'; if($country == 'Luxembourg'){echo' selected ';} echo '>Luxembourg</option>
-				<option value="Lybia"'; if($country == 'Lybia'){echo' selected ';} echo '>Lybia</option>
-				<option value="Macedonia"'; if($country == 'Macedonia'){echo' selected ';} echo '>Macedonia</option>
-				<option value="Madagascar"'; if($country == 'Madagascar'){echo' selected ';} echo '>Madagascar</option>
-				<option value="Madeira"'; if($country == 'Madeira'){echo' selected ';} echo '>Madeira</option>
-				<option value="Malawi"'; if($country == 'Malawi'){echo' selected ';} echo '>Malawi</option>
-				<option value="Malaysia"'; if($country == 'Malaysia'){echo' selected ';} echo '>Malaysia</option>
-				<option value="Maldives"'; if($country == 'Maldives'){echo' selected ';} echo '>Maldives</option>
-				<option value="Mali"'; if($country == 'Mali'){echo' selected ';} echo '>Mali</option>
-				<option value="Malta"'; if($country == 'Malta'){echo' selected ';} echo '>Malta</option>
-				<option value="Marshall Islands"'; if($country == 'Marshall Islands'){echo' selected ';} echo '>Marshall Islands</option>
-				<option value="Mauritania"'; if($country == 'Mauritania'){echo' selected ';} echo '>Mauritania</option>
-				<option value="Mauritius"'; if($country == 'Mauritius'){echo' selected ';} echo '>Mauritius</option>
-				<option value="Mexico"'; if($country == 'Mexico'){echo' selected ';} echo '>Mexico</option>
-				<option value="Micronesia"'; if($country == 'Micronesia'){echo' selected ';} echo '>Micronesia</option>
-				<option value="Midway Islands"'; if($country == 'Midway Islands'){echo' selected ';} echo '>Midway Islands</option>
-				<option value="Moldova"'; if($country == 'Moldova'){echo' selected ';} echo '>Moldova</option>
-				<option value="Monaco"'; if($country == 'Monaco'){echo' selected ';} echo '>Monaco</option>
-				<option value="Mongolia"'; if($country == 'Mongolia'){echo' selected ';} echo '>Mongolia</option>
-				<option value="Montserrat"'; if($country == 'Montserrat'){echo' selected ';} echo '>Montserrat</option>
-				<option value="Morocco"'; if($country == 'Morocco'){echo' selected ';} echo '>Morocco</option>
-				<option value="Mozambique"'; if($country == 'Mozambique'){echo' selected ';} echo '>Mozambique</option>
-				<option value="Myanmar"'; if($country == 'Myanmar'){echo' selected ';} echo '>Myanmar</option>
-				<option value="Namibia"'; if($country == 'Namibia'){echo' selected ';} echo '>Namibia</option>
-				<option value="Nauru"'; if($country == 'Nauru'){echo' selected ';} echo '>Nauru</option>
-				<option value="Nepal"'; if($country == 'Nepal'){echo' selected ';} echo '>Nepal</option>
-				<option value="Netherlands Antilles"'; if($country == 'Netherlands Antilles'){echo' selected ';} echo '>Netherlands Antilles</option>
-				<option value="Netherlands"'; if($country == 'Netherlands'){echo' selected ';} echo '>Netherlands</option>
-				<option value="New Zealand"'; if($country == 'New Zealand'){echo' selected ';} echo '>New Zealand</option>
-				<option value="Nicaragua"'; if($country == 'Nicaragua'){echo' selected ';} echo '>Nicaragua</option>
-				<option value="Niger"'; if($country == 'Niger'){echo' selected ';} echo '>Niger</option>
-				<option value="Nigeria"'; if($country == 'Nigeria'){echo' selected ';} echo '>Nigeria</option>
-				<option value="Niue"'; if($country == 'Niue'){echo' selected ';} echo '>Niue</option>
-				<option value="Norfolk Island"'; if($country == 'Norfolk Island'){echo' selected ';} echo '>Norfolk Island</option>
-				<option value="Norway"'; if($country == 'Norway'){echo' selected ';} echo '>Norway</option>
-				<option value="Oman"'; if($country == 'Oman'){echo' selected ';} echo '>Oman</option>
-				<option value="Pakistan"'; if($country == 'Pakistan'){echo' selected ';} echo '>Pakistan</option>
-				<option value="Palau"'; if($country == 'Palau'){echo' selected ';} echo '>Palau</option>
-				<option value="Palestine"'; if($country == 'Palestine'){echo' selected ';} echo '>Palestine</option>
-				<option value="Panama"'; if($country == 'Panama'){echo' selected ';} echo '>Panama</option>
-				<option value="Papua New Guinea"'; if($country == 'Papua New Guinea'){echo' selected ';} echo '>Papua New Guinea</option>
-				<option value="Paraguay"'; if($country == 'Paraguay'){echo' selected ';} echo '>Paraguay</option>
-				<option value="Peru"'; if($country == 'Peru'){echo' selected ';} echo '>Peru</option>
-				<option value="Philippines"'; if($country == 'Philippines'){echo' selected ';} echo '>Philippines</option>
-				<option value="Pitcairn Islands"'; if($country == 'Pitcairn Islands'){echo' selected ';} echo '>Pitcairn Islands</option>
-				<option value="Poland"'; if($country == 'Poland'){echo' selected ';} echo '>Poland</option>
-				<option value="Portugal"'; if($country == 'Portugal'){echo' selected ';} echo '>Portugal</option>
-				<option value="Puerto Rico"'; if($country == 'Puerto Rico'){echo' selected ';} echo '>Puerto Rico</option>
-				<option value="Qatar"'; if($country == 'Qatar'){echo' selected ';} echo '>Qatar</option>
-				<option value="Romania"'; if($country == 'Romania'){echo' selected ';} echo '>Romania</option>
-				<option value="Russia"'; if($country == 'Russia'){echo' selected ';} echo '>Russia</option>
-				<option value="Rwanda"'; if($country == 'Rwanda'){echo' selected ';} echo '>Rwanda</option>
-				<option value="Saint Helena"'; if($country == 'Saint Helena'){echo' selected ';} echo '>Saint Helena</option>
-				<option value="Saint Kitts and Nevis"'; if($country == 'Saint Kitts and Nevis'){echo' selected ';} echo '>Saint Kitts and Nevis</option>
-				<option value="Saint Lucia"'; if($country == 'Saint Lucia'){echo' selected ';} echo '>Saint Lucia</option>
-				<option value="Saint Vincent and the Grenadines"'; if($country == 'Saint Vincent and the Grenadines'){echo' selected ';} echo '>Saint Vincent and the Grenadines</option>
-				<option value="Samoa"'; if($country == 'Samoa'){echo' selected ';} echo '>Samoa</option>
-				<option value="San Marino"'; if($country == 'San Marino'){echo' selected ';} echo '>San Marino</option>
-				<option value="Saudi Arabia"'; if($country == 'Saudi Arabia'){echo' selected ';} echo '>Saudi Arabia</option>
-				<option value="Scotland"'; if($country == 'Scotland'){echo' selected ';} echo '>Scotland</option>
-				<option value="Senegal"'; if($country == 'Senegal'){echo' selected ';} echo '>Senegal</option>
-				<option value="Seychelles"'; if($country == 'Seychelles'){echo' selected ';} echo '>Seychelles</option>
-				<option value="Sierra Leone"'; if($country == 'Sierra Leone'){echo' selected ';} echo '>Sierra Leone</option>
-				<option value="Singapore"'; if($country == 'Singapore'){echo' selected ';} echo '>Singapore</option>
-				<option value="Slovakia"'; if($country == 'Slovakia'){echo' selected ';} echo '>Slovakia</option>
-				<option value="Slovenia"'; if($country == 'Slovenia'){echo' selected ';} echo '>Slovenia</option>
-				<option value="Solomon Islands"'; if($country == 'Solomon Islands'){echo' selected ';} echo '>Solomon Islands</option>
-				<option value="Somalia"'; if($country == 'Somalia'){echo' selected ';} echo '>Somalia</option>
-				<option value="South Africa"'; if($country == 'South Africa'){echo' selected ';} echo '>South Africa</option>
-				<option value="Spain"'; if($country == 'Spain'){echo' selected ';} echo '>Spain</option>
-				<option value="Sri Lanka"'; if($country == 'Sri Lanka'){echo' selected ';} echo '>Sri Lanka</option>
-				<option value="Sudan"'; if($country == 'Sudan'){echo' selected ';} echo '>Sudan</option>
-				<option value="Suriname"'; if($country == 'Suriname'){echo' selected ';} echo '>Suriname</option>
-				<option value="Swaziland"'; if($country == 'Swaziland'){echo' selected ';} echo '>Swaziland</option>
-				<option value="Sweden"'; if($country == 'Sweden'){echo' selected ';} echo '>Sweden</option>
-				<option value="Switzerland"'; if($country == 'Switzerland'){echo' selected ';} echo '>Switzerland</option>
-				<option value="Syria"'; if($country == 'Syria'){echo' selected ';} echo '>Syria</option>
-				<option value="Taiwan"'; if($country == 'Taiwan'){echo' selected ';} echo '>Taiwan</option>
-				<option value="Tajikistan"'; if($country == 'Tajikistan'){echo' selected ';} echo '>Tajikistan</option>
-				<option value="Tanzania"'; if($country == 'Tanzania'){echo' selected ';} echo '>Tanzania</option>
-				<option value="Thailand"'; if($country == 'Thailand'){echo' selected ';} echo '>Thailand</option>
-				<option value="Togo"'; if($country == 'Togo'){echo' selected ';} echo '>Togo</option>
-				<option value="Tonga"'; if($country == 'Tonga'){echo' selected ';} echo '>Tonga</option>
-				<option value="Trinidad and Tobago"'; if($country == 'Trinidad and Tobago'){echo' selected ';} echo '>Trinidad and Tobago</option>
-				<option value="Tunisia"'; if($country == 'Tunisia'){echo' selected ';} echo '>Tunisia</option>
-				<option value="Turkey"'; if($country == 'Turkey'){echo' selected ';} echo '>Turkey</option>
-				<option value="Turkmenistan"'; if($country == 'Turkmenistan'){echo' selected ';} echo '>Turkmenistan</option>
-				<option value="Turks and Caicos Islands"'; if($country == 'Turks and Caicos Islands'){echo' selected ';} echo '>Turks and Caicos Islands</option>
-				<option value="Tuvalu"'; if($country == 'Tuvalu'){echo' selected ';} echo '>Tuvalu</option>
-				<option value="Uganda"'; if($country == 'Uganda'){echo' selected ';} echo '>Uganda</option>
-				<option value="Ukraine"'; if($country == 'Ukraine'){echo' selected ';} echo '>Ukraine</option>
-				<option value="United Arab Emirates"'; if($country == 'United Arab Emirates'){echo' selected ';} echo '>United Arab Emirates</option>
-				<option value="United Kingdom"'; if($country == 'United Kingdom'){echo' selected ';} echo '>United Kingdom</option>
-				<option value="United States"'; if($country == 'United States'){echo' selected ';} echo '>United States</option>
-				<option value="Uruguay"'; if($country == 'Uruguay'){echo' selected ';} echo '>Uruguay</option>
-				<option value="Uzbekistan"'; if($country == 'Uzbekistan'){echo' selected ';} echo '>Uzbekistan</option>
-				<option value="Vanuatu"'; if($country == 'Vanuatu'){echo' selected ';} echo '>Vanuatu</option>
-				<option value="Venezuela"'; if($country == 'Venezuela'){echo' selected ';} echo '>Venezuela</option>
-				<option value="Vietnam"'; if($country == 'Vietnam'){echo' selected ';} echo '>Vietnam</option>
-				<option value="Virgin Islands"'; if($country == 'Virgin Islands'){echo' selected ';} echo '>Virgin Islands</option>
-				<option value="Wales"'; if($country == 'Wales'){echo' selected ';} echo '>Wales</option>
-				<option value="Yemen"'; if($country == 'Yemen'){echo' selected ';} echo '>Yemen</option>
-				<option value="Yugoslavia"'; if($country == 'Yugoslavia'){echo' selected ';} echo '>Yugoslavia</option>
-				<option value="Zambia"'; if($country == 'Zambia'){echo' selected ';} echo '>Zambia</option>
-				<option value="Zimbabwe"'; if($country == 'Zimbabwe'){echo' selected ';} echo '>Zimbabwe</option>
-				
+				<option value=""'; if($country == ''){echo' selected ';} echo '>Select Your Country</option>';
+				$query = "SELECT `name`, `value` FROM `site_variables` WHERE `type` = 1 ORDER BY `name` ASC";
+				$result = mysql_query($query);
+				while($row = mysql_fetch_assoc($result))
+				{
+					if($row['name'] == $country)
+					{
+						$selected  = ' selected="selected"';
+					}
+					else
+					{
+						$selected  = '';
+					}
+					echo '<option value="' . $row['name'] . '"' . $selected . '>' . $row['name'] . '</option>';
+				}
+				echo '
 				</select></dd>
 			</dl>
 			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Contact Information</div>
@@ -1174,13 +960,7 @@ class AFTWUser extends Config{
 		}
 		else
 		{
-			
 			echo '
-			<div class="fds">
-				<div class="user-settings-link-header" id="account-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',0); return false;">Account Settings</a></div>
-				<div class="user-settings-link-header" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>
-				<div class="user-settings-link-header header-active" id="user-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',2); return false;">Account Logs</a></div>
-			</div><br />
 			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Site Logins</div>';
 			$query = "SELECT * FROM `logins` WHERE uid = " . mysql_real_escape_string($ruid) . " ORDER BY `logins`.`date` DESC LIMIT 0, 40";
 			$result = mysql_query($query);
@@ -1201,6 +981,203 @@ class AFTWUser extends Config{
 					</div>';
 				}
 			}
+		}
+	}
+	
+	public function UserSessions($profileArray,$ruid)
+	{
+		$this->UserArray = $profileArray;
+		
+		// This will show the 
+		if(($this->UserArray[2] != 1 && $this->UserArray[2] != 2) && ($ruid != $this->UserArray[1]))
+		{
+			echo 'There was an error in your request.';
+			//echo '<br />'.$_SERVER['REQUEST_URI'];
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+		}
+		else
+		{
+			echo '
+			<div class="desktop-sessions-wrapper">
+				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active Desktop Sessions</div>';
+			$query = "SELECT `id`, `updated`, `agent`, `ip` FROM `user_session` WHERE `uid` = " . mysql_real_escape_string($ruid) . " ORDER BY `updated` DESC LIMIT 0, 30";
+			$result = mysql_query($query);
+			if(!$result)
+			{
+				echo 'There was an error with the query desktop.';
+				exit;
+			}
+			$count = mysql_num_rows($result);
+			if($count > 0)
+			{
+				// we need to define the current session if the user doing the request is the same user logged in
+				if($ruid == $this->UserArray[1])
+				{
+					$currentSession = $_COOKIE['vd'];
+				}
+				while($row = mysql_fetch_assoc($result))
+				{
+					echo '
+					<div class="full-session-row" id="desktop-session-' . $row['id'] . '">
+						<div class="session-micro-row-left">
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									Last Activity
+								</div>
+								<div class="session-center-column">
+									<span style="font-weight:bold;" title="' . date('r',$row['updated']) .'">';
+								if(date('Ymd') == date('Ymd', $row['updated']))
+								{
+									// today
+									echo 'Today at ' . date('h:i a',$row['updated']);
+								}
+								else
+								{
+									echo date('M j \a\t h:i a',$row['updated']);
+								}
+								echo '
+									</span>
+								</div>
+							</div>
+							<div class="session-inside-row" style="padding:2px 0 2px 0;">
+								<div class="session-left-column">
+									Location
+								</div>
+								<div class="session-center-column">
+									' . $row['ip'] . '
+								</div>
+							</div>
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									Device Info
+								</div>
+								<div class="session-center-column">
+									' . $this->getBrowser($row['agent']) . ' on ' . $this->getOS($row['agent']) . '
+								</div>
+							</div>
+						</div>
+						<div class="session-micro-row-right">
+							<div align="center">';
+							if(isset($currentSession) && $currentSession == $row['id'])
+							{
+								echo '
+								<span title="You cannot remove your current session. Sorry.">Current Session</span>';								
+							}
+							else
+							{
+								echo '
+								<a href="#" class="end-session-desktop" id="session-' . $row['id'] . '">End Session</a>';
+							}
+							echo '
+							</div>
+						</div>
+					</div>';
+				}
+			}
+			else
+			{
+				echo '<div align="center">There are no active logins sessions for this account.</div>';
+			}
+			echo '</div>';
+			echo '
+			<div class="desktop-sessions-wrapper" style="margin-top:10px;">
+				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active API Sessions</div>';
+			$query = "
+			SELECT 
+				`developers_api_sessions`.`id`, 
+				`developers_api_sessions`.`date`, 
+				`developers_api_sessions`.`ip`, 
+				`developers`.`name` FROM `developers_api_sessions`, `developers` 
+			WHERE 
+				`developers_api_sessions`.`uid` = " . mysql_real_escape_string($ruid) . "
+				AND `developers`.`id`=`developers_api_sessions`.`did`
+				ORDER BY `date` DESC LIMIT 0, 30";
+			$result = mysql_query($query);
+			if(!$result)
+			{
+				echo 'There was an error with the query api.';
+				exit;
+			}
+			$count = mysql_num_rows($result);
+			if($count > 0)
+			{
+				while($row = mysql_fetch_assoc($result))
+				{
+					echo '
+					<div class="full-session-row" id="api-session-' . $row['id'] . '">
+						<div class="session-micro-row-left">
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									Last Activity
+								</div>
+								<div class="session-center-column">
+									<span style="font-weight:bold;" title="' . date('r',$row['updated']) .'">';
+								if(date('Ymd') == date('Ymd', $row['date']))
+								{
+									// today
+									echo 'Today at ' . date('h:i a',$row['date']);
+								}
+								else
+								{
+									echo date('M j \a\t h:i a',$row['date']);
+								}
+								echo '
+									</span>
+								</div>
+							</div>
+							<div class="session-inside-row" style="padding:2px 0 2px 0;">
+								<div class="session-left-column">
+									Location
+								</div>
+								<div class="session-center-column">
+									' . $row['ip'] . '
+								</div>
+							</div>
+							<div class="session-inside-row">
+								<div class="session-left-column">
+									External App Info
+								</div>
+								<div class="session-center-column">
+									' . $row['name'] . '
+								</div>
+							</div>
+						</div>
+						<div class="session-micro-row-right">
+							<div align="center">
+								<a href="#" class="end-session-api" id="session-' . $row['id'] . '">End Session</a>
+							</div>
+						</div>
+					</div>';
+				}
+			}
+			else
+			{
+				echo '<div align="center">There are no active api based sessions for this account.</div>';
+			}
+			echo '</div>
+			<script>
+				$(".end-session-desktop").on("click", function(){
+					var this_id = $(this).attr("id").substring(8);
+					$.ajax({
+						url: "/scripts.php?view=profile&subview=manage-session&type=0&uid=' . $ruid . '&id=" + this_id,
+						cache: false
+					}).done(function(html){
+						alert(html);
+						$("#desktop-session-" + this_id).hide();
+					});
+					return false;
+				});
+				$(".end-session-api").on("click", function(){
+					var this_id = $(this).attr("id").substring(8);
+					$.ajax({
+						url: "/scripts.php?view=profile&subview=manage-session&type=1&uid=' . $ruid . '&id=" + this_id,
+						cache: false
+					}).done(function(html){
+						$("#api-session-" + this_id).hide();
+					});
+					return false;
+				});
+			</script>';
 		}
 	}
 	
@@ -1226,16 +1203,6 @@ class AFTWUser extends Config{
 			<form id="SiteSettings">
 			<input type="hidden" name="method" value="EditSiteSettings" />
 			<input type="hidden" name="uid" value="' . $ruid . '" />
-			<div class="fds">
-				<div class="user-settings-link-header" id="account-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',0); return false;">Account Settings</a></div>
-				<div class="user-settings-link-header header-active" id="site-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',1); return false;">Site Settings</a></div>';
-				if($profileArray[2] == 1 || $profileArray[2] == 2)
-				{
-					echo '
-				<div class="user-settings-link-header" id="user-setting-header"><a href="#" onClick="loadSettings(' . $ruid . ',2); return false;">Account Logs</a></div>';
-				}
-				echo '
-			</div><br />
 			<div align="center">
 				Manage your site, email and security settings for AnimeFTW.tv with this form.
 			</div>
@@ -1620,7 +1587,7 @@ class AFTWUser extends Config{
 				echo '<a name="'.$cid.'"></a><div id="c'.$cid.'" class="side-body floatfix">';
 				echo '<div id="dropmsg0" class="dropcontent">';
 				echo '<div style="float:right;">'.$avatar.'</div>'; // avatar ftw
-				echo '<div style="padding-bottom:2px;">'.checkUserName($Username).' - <span title="Posted '.date('l, F jS, o \a\t g:i a',$dated).'">'.date('M jS',$dated).'</span></div>'; //title of the comment
+				echo '<div style="padding-bottom:2px;">'.$this->formatUsername($ID).' - <span title="Posted '.date('l, F jS, o \a\t g:i a',$dated).'">'.date('M jS',$dated).'</span></div>'; //title of the comment
 				echo '<div style="max-width:195px;word-wrap:break-word;">'.$comments.'</div>';	// Comment goes here
 				echo '</div></div>';
 				echo $bottomd;
@@ -1785,6 +1752,85 @@ class AFTWUser extends Config{
 			return 0;
 		}
 	}
+	
+	public function showFriendProfileButton($uid,$profileArray)
+	{
+		if($profileArray[0] == 0)
+		{
+			echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Login to Add Friends</span></a>";
+		}
+		else {
+			// scripts.php?view=profile&subview=friendbutton&id=$id&add=before
+			$result1 = mysql_query("SELECT Level_access FROM users WHERE ID='".$profileArray[1]."'") or die('Error : ' . mysql_error());
+			$row1 = mysql_fetch_array($result1);
+			$Level_accessbeta = $row1['Level_access'];
+			if($Level_accessbeta != 3){$allowedFriends = 100;}
+			else {$allowedFriends = 20;}
+			if(!isset($_GET['add']) || $_GET['add'] == 'before'){
+				$result1 = mysql_query("SELECT ID FROM users WHERE ID='".mysql_real_escape_string($uid)."'") or die('Error : ' . mysql_error());
+				$row1 = mysql_fetch_array($result1);
+				$total_useres_with_name = mysql_num_rows($result1);
+				if($total_useres_with_name == 0){}
+				else {
+					$FID = $row1['ID'];
+					$query  = "SELECT permGranted FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysql_real_escape_string($uid)."'";
+					$result = mysql_query($query) or die('Error : ' . mysql_error());
+					$onlyFriendships = mysql_num_rows($result);
+					if($onlyFriendships == 1){
+						$permGranted = $row['permGranted'];
+						if($permGranted == 'yes'){
+							echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
+						}
+						else {
+							echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
+						}
+					}
+					else if ($profileArray[1] == $uid){
+						echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>This is You</span></a>";
+					}
+					else {
+						$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."'";
+						$result = mysql_query($query) or die('Error : ' . mysql_error());
+						$numberoffriends = mysql_num_rows($result);
+						if($numberoffriends < $allowedFriends){
+							echo "<a href=\"#\" onclick=\"$('#friendscheck').load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
+						}
+						else {
+							echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Friends Maxed out.</span></a>";
+						}
+					}
+				}
+			}
+			else if ($_GET['add'] == 'after'){
+				$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysql_real_escape_string($uid)."'";
+				$result = mysql_query($query) or die('Error : ' . mysql_error());
+				$onlyFriendships = mysql_num_rows($result);
+				if($onlyFriendships == 0 && $profileArray[1] != $uid){
+					$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate) VALUES ('%s', '%s', '%s', '%s')",
+						mysql_real_escape_string($uid, $conn),
+						mysql_real_escape_string($profileArray[1], $conn),
+						mysql_real_escape_string('no', $conn),
+						mysql_real_escape_string(time(), $conn));
+					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+					//phase one done, next we find out what we just inserted was..
+					$result1 = mysql_query("SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysql_error());
+					$row1 = mysql_fetch_array($result1);
+					//we have our target. Proceed.
+					$query = sprintf("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES ('%s', '%s', '%s', '%s', NULL, NULL)",
+						mysql_real_escape_string($uid, $conn),
+						mysql_real_escape_string(time(), $conn),
+						mysql_real_escape_string('1', $conn),
+						mysql_real_escape_string($row1['id'], $conn));
+					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+					echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
+				}
+				else {
+					echo "Error";
+				}
+			}
+			else  {
+				echo 'Error.';
+			}
+		}
+	}
 }
-
-?>

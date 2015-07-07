@@ -5,7 +5,11 @@
 		header("location: https://www.animeftw.tv".$_SERVER['REQUEST_URI']);
 		exit;
 	}
-include('init.php');
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
+include_once('includes/classes/stats.class.php');
+include_once('includes/classes/toplist.class.php');
 if(strpos($_SERVER['REQUEST_URI'], 'store'))
 {
 	$PageTitle = 'Store - AnimeFTW.TV';
@@ -68,7 +72,7 @@ if (isset($_GET['rf'])){
 	echo "</tr>\n</table>\n";
 	echo "<br />\n<br />\n";
 	}
-    function news() 
+    function news($Config) 
 	{
 		//12 for staff, 14 for staff and ams
 		if($profileArray[2] == 1 || $profileArray[2] == 2 || $profileArray[2] == 4 || $profileArray[2] == 5 || $profileArray[2] == 6)
@@ -97,7 +101,7 @@ if (isset($_GET['rf'])){
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'><a href='/forums/".$fseo."/topic-".$tid."/'>".$ttitle."</a></span>\n";
 			echo "<br />\n";
-			echo "<span class='poster'>Posted on ".date("m.d.y",$tdate)." by ".checkUserNameNumber($tpid)."</span>\n";
+			echo "<span class='poster'>Posted on ".date("m.d.y",$tdate)." by ".$Config->formatUsername($tpid)."</span>\n";
 			echo "</div>\n";
 			echo "<div class='tbl'>".$pbody."</div>\n";
 			echo "<br />\n";
@@ -108,7 +112,7 @@ if (isset($_GET['rf'])){
 	echo "<td valign='top' class='main-mid'>\n";
 	if(!isset($_GET['node']))
 	{
-		echo news();
+		echo news($Config);
 	}
 	else if($_GET['node'] == 'stats')
 	{
@@ -477,11 +481,13 @@ if (isset($_GET['rf'])){
 	else if($_GET['node'] == 'store'){
 		include('includes/classes/store.class.php');
 		$S = new Store();
+		$S->connectProfile($profileArray);
 		$S->StoreInit();
 	}
 	else {
 		include('includes/classes/content.class.php');
 		$C = new Content();
+		$C->connectProfile($profileArray);
 		$C->Output();
 	}
 	echo "</td>\n";

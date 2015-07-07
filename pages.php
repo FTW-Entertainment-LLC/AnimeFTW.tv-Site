@@ -1,5 +1,7 @@
 <?php
-include('includes/siteroot.php');
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
 $PageTitle = 'AnimeFTW.tv Registration | '.$_SERVER['HTTP_HOST'].' | Your DivX Anime streaming Source!';
 
 include('header.php');

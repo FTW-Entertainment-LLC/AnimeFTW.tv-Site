@@ -65,7 +65,7 @@ class AFTWFooter extends Config {
 			$query1  = "SELECT fseo FROM forums_forum WHERE fid='$tfid'";
 			$result1 = mysql_query($query1) or die('Error : ' . mysql_error());
 			$row1 = mysql_fetch_array($result1);
-			echo "<a href='/forums/".$row1['fseo']."/topic-".$tid."/s-0' class='side' title='Posted by ".checkUserNameNumberNoLink($tpid)."'>".stripslashes($ttitle)."</a>\n";
+			echo "<a href='/forums/".$row1['fseo']."/topic-".$tid."/s-0' class='side'>".stripslashes($ttitle)."</a>\n";
 			echo "<br />\n";
 			if($i < 4){echo "<div class='panel-line'></div>\n";}
 			$i++;

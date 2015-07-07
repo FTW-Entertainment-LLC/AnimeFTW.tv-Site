@@ -1,5 +1,8 @@
 <?php
-include('init.php');
+//include('init.php');
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
 $PageTitle = "Forums - AnimeFTW.TV";
 //include('includes/forums.functions.php');
 if(isset($_GET['view'])){$GETview = $_GET['view'];}else{$GETview = '';}
@@ -215,8 +218,8 @@ if(isset($_POST['doreply']))
 		}
 	}
 }
-include('header.php');
-include('header-nav.php');
+include_once('header.php');
+include_once('header-nav.php');
 $forum_global_message = "We want to thank everyone, these forums were redesigned from the ground up to be more user friendly and making reading topics interesting!";
 	echo psa($profileArray);
 
@@ -228,13 +231,13 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 	echo "</tr>\n</table>\n";
 	
 	echo "<br />\n<br />\n";
-			include('includes/classes/forum.class.php');
-			include('includes/classes/mainview.forum.class.php');
-			include('includes/classes/forumview.forum.class.php');
-			include('includes/classes/threads.forum.class.php');
-			include('includes/classes/threadview.forum.class.php');
+			include_once('includes/classes/forum.class.php');
+			include_once('includes/classes/mainview.forum.class.php');
+			include_once('includes/classes/forumview.forum.class.php');
+			include_once('includes/classes/threads.forum.class.php');
+			include_once('includes/classes/threadview.forum.class.php');
 			$f = new AFTWForum();
-			$f->buildVars(@$_GET['action'],$profileArray);
+			$f->buildVars(@$_GET['action']);
 			$f->Output();	
 	// End Main BG
     echo "</td>\n";
@@ -246,5 +249,5 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 	echo "<td align='center'>".$f->Copyright()."</td>\n";
 	echo "</tr>\n</table>\n";
 		
-include('footer.php'); 
+include_once('footer.php'); 
 ?>

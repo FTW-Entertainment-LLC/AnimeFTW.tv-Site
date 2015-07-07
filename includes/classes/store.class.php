@@ -9,12 +9,18 @@
 class Store extends Config {
 	
 	private $options, $CatArray, $Item, $OrderStatusArray;
+	var $UserArray;
 	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->ParseOptions();
 		$this->BuildStoreCategories();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function StoreInit()
@@ -812,6 +818,7 @@ class Shopping_Cart extends Config {
 	var $cart_id;
 	var $total_items;
 	var $total_weight;
+	var $UserArray;
 	
 	/**
 	 * __construct() - Constructor. This assigns the name of the cart
@@ -824,6 +831,11 @@ class Shopping_Cart extends Config {
 		parent::__construct();
 		$this->cart_name = $name;
 		$this->BuildItemArray();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	private function BuildItemArray()
@@ -974,7 +986,9 @@ class Shopping_Cart extends Config {
 		{
 			// there are no carts for this user.. so we should really make one..
 			mysql_query("INSERT INTO `store_cart` (`id`, `active`, `uid`, `date`, `ip`, `agent`) VALUES (NULL, '0', '" . $this->UserArray[1] . "', '" . time() . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "');");
-			$results = mysql_query("SELECT * FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0");
+			$query = "SELECT * FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0";
+			$results = mysql_query($query);
+			//echo $query;
 			$this->current_cart = mysql_fetch_array($results);
 			return FALSE;
 		}
@@ -1149,6 +1163,7 @@ class Shopping_Cart extends Config {
 	public function ShowCart()
 	{
 	$Cart = new Shopping_Cart('shopping_cart');
+	$Cart->connectProfile($this->UserArray);
 	echo '
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -1320,11 +1335,16 @@ class Shopping_Cart extends Config {
 
 class ProcessOrders extends Config {
 	
-	var $PostData;
+	var $PostData, $UserArray;
 	
 	public function __construct()
 	{
 		parent::__construct();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function init($PostData)

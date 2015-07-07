@@ -1,4 +1,4 @@
- <?php
+<?php
 /****************************************************************\
 ## FileName: email.class.php									 
 ## Author: Brad Riemann										 
@@ -177,6 +177,22 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Body = $variable;
 			
 			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management New Series Notification');");
+		}
+		else if($Type == 9)
+		{
+			// emails for the failing to log in to the Management console.
+			$this->Subject = 'New Session at AnimeFTW.tv!';
+			$this->Body = $Var1;
+			
+			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
+		}
+		else if($Type == 10)
+		{
+			// emails for the failing to log in to the Management console.
+			$this->Subject = 'AnimeFTW.tv Session Removal!';
+			$this->Body = $Var1;
+			
+			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Session Removed.');");
 		}
 		else
 		{

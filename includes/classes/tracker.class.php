@@ -9,7 +9,7 @@
 //include('includes/classes/config.class.php');
 class AFTWTracker extends Config {
 	// Vars	
-	var $pp, $tz, $sigim, $host, $ruid;	
+	var $pp, $tz, $sigim, $host, $ruid, $UserArray;	
 	
 	public function __construct()
 	{
@@ -26,6 +26,11 @@ class AFTWTracker extends Config {
 		$this->sigim = array('air','blacklagoon','codegeass','deathnote','elfenlied','exia','ichigo','kamina','loulu','luckystar','naruto','rukia','sasuke','trigun','whentheycry');
 		$this->host = $_SERVER['HTTP_HOST'];
 		$this->ruid = mysql_real_escape_string(htmlentities($ruid));
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function ShowTracker($page)

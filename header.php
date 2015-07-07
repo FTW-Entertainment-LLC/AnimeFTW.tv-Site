@@ -1,31 +1,10 @@
 <?php
-session_start();
-if($_SERVER['PHP_SELF'] == '/request.php'){
+//session_start();
+if($_SERVER['PHP_SELF'] == '/request.php')
+{
 	ob_start(); //Needed so i can use header to change location, to find the correct page for a specific request.
 }
-    if ( isset($_COOKIE['cookie_id']) || (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE)) {
-		if(isset($_COOKIE['cookie_id'])) {
-		   $globalnonid = $_COOKIE['cookie_id'];
-	  	} 
-		else if(isset($_SESSION['user_id'])) { $globalnonid = $_SESSION['user_id']; 
-		} 
-	}
-	else {
-		$globalnonid = NULL;
-	}
-	$profileArray = checkLoginStatus($globalnonid,$_SERVER['REMOTE_ADDR'],$_SERVER['HTTP_USER_AGENT']);
-	
-	// Upgrading the site mechanism
-	/*if($profileArray[2] == 1)
-	{
-		// admin is allowed through
-	}
-	else
-	{
-		header('location: https://www.animeftw.tv/upgrading.html');
-		exit;
-	}*/
-	
+	$profileArray = $Config->outputUserInformation();
 	  // only set this if you wish to set a login only policy
 	if($_SERVER['REQUEST_URI'] == '/user' || $_SERVER['REQUEST_URI'] == '/user/')
 	{
@@ -46,7 +25,7 @@ if($_SERVER['PHP_SELF'] == '/request.php'){
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && $_SERVER['SERVER_PORT'] == 443 && ($profileArray[2] == 3 || $profileArray[13] == 0))
 	{
-		header('location: http://www.animeftw.tv'.$_SERVER['REQUEST_URI']);
+		header('location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	}
 	if($_SERVER['HTTP_HOST'] == 'animeftw.com' || $_SERVER['HTTP_HOST'] == 'www.animeftw.com' || $_SERVER['HTTP_HOST'] == 'www.animeftw.net' ||  $_SERVER['HTTP_HOST'] == 'animeftw.net'){
 		header("location: http://www.animeftw.tv".$_SERVER['REQUEST_URI']);
@@ -96,7 +75,7 @@ if($_SERVER['PHP_SELF'] == '/request.php'){
 		echo '<link rel="stylesheet" href="/christmas.css?v=4000" type="text/css" />';
 	}
 	else {
-		echo '<link rel="stylesheet" href="/aftw.css?v=4003" type="text/css" />';
+		echo '<link rel="stylesheet" href="/aftw.css?v=4004" type="text/css" />';
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 0))
 	{

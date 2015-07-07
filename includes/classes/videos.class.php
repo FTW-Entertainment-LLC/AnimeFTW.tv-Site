@@ -29,6 +29,11 @@ class AFTWVideos extends Config{
 		$this->buildCategories();
 	}
 	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
+	}
+	
 	//Lets get the ID number.. Whatever it is..
 	public function get_id($id){
 		$this->id = $id;
@@ -82,6 +87,35 @@ class AFTWVideos extends Config{
 			}
 		}
 		return $pt;
+	}
+	
+	public function tagCloud($list){
+		include_once('wordcloud.class.php');
+		$cloud = new wordcloud();
+		$getBooks = mysql_query("SELECT name FROM categories ORDER BY name DESC");
+		if ($getBooks)
+		{
+			while ($rowBooks = mysql_fetch_assoc($getBooks))
+			{
+				//$getTags = explode(' ', $rowBooks['category']);
+				$getTags = split(", ", $rowBooks['name']);
+				foreach ($getTags as $key => $value)
+				{
+					$value = trim($value);
+					$cloud->addWord($value);
+				}
+			}
+		}
+		$cloud->orderBy('word','ASC');
+		$myCloud = $cloud->showCloud('array');
+		if (is_array($myCloud))
+		{
+			//$myCloud = natcasesort($myCloud);
+			foreach ($myCloud as $key => $value)
+			{
+				echo ' <a href="/'.$list.'/sort/'.$value['word'].'" class="size'.$value['range'].'">'.$value['word'].'</a> &nbsp;';
+			}
+		}
 	}
 	
 	#-------------------------------------------------------------
@@ -446,7 +480,7 @@ class AFTWVideos extends Config{
 		else
 		{
 			// we first check to see if the user has watched this, to be in the timer array.
-			if(array_key_exists($EpisodeArray[15],$this->RecentEps))
+			if(@array_key_exists($EpisodeArray[15],$this->RecentEps))
 			{
 				echo '<!-- key exists -->';
 				// success. However, we need to check the timestamp against our current time, if its > 4 weeks or is more than 95% of the way through the video, let's just let it go.
@@ -742,6 +776,7 @@ class AFTWVideos extends Config{
 	#------------------------------------------------------------
 	
 	public function DisplaySeries($SeoN,$seo = NULL,$eid = NULL,$oid = NULL,$mid = NULL) {
+		
 		if($seo == NULL){ //No seo, NO FOOD FOR YOU!
 			echo 'ERROR: No series was chosen. ERROR: NL0001.';
 		}
@@ -840,6 +875,7 @@ class AFTWVideos extends Config{
 															<div style="margin:0 0 3px -5px;font-size:12px;color:#a8a8a8;">Episode Tracking:</div>';
 														include_once("tracker.class.php");
 														$Tracker = new AFTWTracker();
+														$Tracker->connectProfile($this->UserArray);
 														$Tracker->currentEpisodeAvailability($EpisodeArray[10]);
 														echo '
 													</div>
@@ -1044,7 +1080,7 @@ class AFTWVideos extends Config{
 										</div>
 										<div style="padding-top:10px;">
 											<div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Site Rank:</div>
-											<div style="font-size:12px;color:#242424;">' . $this->seriesTopSeriesRank($SeriesArray[0]) . '</div>
+											<div style="font-size:12px;color:#242424;">' . $this->seriesTopSeriesRank($SeriesArray) . '</div>
 										</div>
 									</div>
 									<div style="display:inline-block;width:48%;vertical-align:top;">';
@@ -1096,6 +1132,7 @@ class AFTWVideos extends Config{
 						';
 						include_once("reviews.class.php");
 						$Review = new Review();
+						$Review->connectProfile($this->UserArray);
 						$Review->showSeriesReviews($SeriesArray[0]);
 						echo '
 						</div>';
@@ -1427,6 +1464,7 @@ class AFTWVideos extends Config{
 		}
 	
 		$query  = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`videotype`, `episode`.`image`, `episode`.`Movie`, `series`.`seriesname`, `series`.`seoname` FROM `episode`, `series` WHERE  `episode`.`sid`='$sid' AND `episode`.`Movie`='$MovieAllowed' AND `episode`.`ova`='$OvaAllowed' AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` ASC" . $LimitBy;
+		
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		
 		$count = mysql_num_rows($result);
@@ -1710,15 +1748,29 @@ class AFTWVideos extends Config{
 		return false;
 	}
 	
-	private function seriesTopSeriesRank($seriesId)
+	private function seriesTopSeriesRank($SeriesArray)
 	{
 		$query = "SELECT lastPosition, currentPosition FROM site_topseries WHERE seriesId='".$seriesId."' ORDER BY currentPosition ASC ";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
+		$count = mysql_num_rows($result);
 		$lastPosition = $row['lastPosition'];
 		$currentPosition = $row['currentPosition'];
 		$singleRank = '';
-		$listedName = checkSeries2($seriesId);
+		if($SeriesArray['OVA'] == 0)
+		{
+			if($SeriesArray['moviesOnly'] == 0)
+			{
+				$filmType = 'anime';
+			}
+			else {
+				$filmType = 'movies';
+			}
+		}
+		else {
+			$filmType = 'ovas';
+		}
+		
 		if($currentPosition < $lastPosition)
 		{
 			$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
@@ -1732,9 +1784,9 @@ class AFTWVideos extends Config{
 			$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
 		}
 
-		if($listedName == 'na')
+		if($count < 1)
 		{
-			$singleRank .= 'This Series is not Ranked on the Top list';
+			$singleRank .= 'This Series is not Ranked on the Top list.';
 		}
 		else 
 		{
@@ -1744,7 +1796,7 @@ class AFTWVideos extends Config{
 			}
 			else
 			{
-				$singleRank .= $listedName.' is ranked #<b>'.$Rank."</b> on AnimeFTW.tv\n";
+				$singleRank .= '<a href="/' . $filmType . '/' . $SeriesArray['seoname'] . '/">' . stripslashes($SeriesArray['fullSeriesName']) . '</a> is ranked #<b>'.$Rank."</b> on AnimeFTW.tv\n";
 			}
 		}		
 		return $singleRank;
