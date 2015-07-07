@@ -83,8 +83,9 @@ class Config {
 			$Logged = 1;
 			$UserID = mysql_real_escape_string($_COOKIE['au']);
 			$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . mysql_real_escape_string($_COOKIE['au']) . '\'';
-			mysql_query($query) or die('Error : ' . mysql_error());
+			mysql_query($query) or die('Error : ' . mysql_error());			
 			// we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
+			// we have the ability to turn this off just in case we have some incompatibility issues..
 			$randomkey = $this->generateRandomString(200);
 			setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
 			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "'";

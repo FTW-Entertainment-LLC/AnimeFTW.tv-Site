@@ -415,83 +415,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 			$uid = mysql_real_escape_string($_GET['id']);
 			if($_GET['subview'] == 'friendbutton')
 			{
-				if($profileArray[0] == 0)
-				{
-					echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Login to Add Friends</span></a>";
-				}
-				else {
-					// scripts.php?view=profile&subview=friendbutton&id=$id&add=before
-					$result1 = mysql_query("SELECT Level_access FROM users WHERE ID='".$profileArray[1]."'") or die('Error : ' . mysql_error());
-					$row1 = mysql_fetch_array($result1);
-					$Level_accessbeta = $row1['Level_access'];
-					if($Level_accessbeta != 3){$allowedFriends = 100;}
-					else {$allowedFriends = 20;}
-					if($_GET['add'] == 'before'){
-						$result1 = mysql_query("SELECT ID FROM users WHERE ID='".mysql_real_escape_string($uid)."'") or die('Error : ' . mysql_error());
-						$row1 = mysql_fetch_array($result1);
-						$total_useres_with_name = mysql_num_rows($result1);
-						if($total_useres_with_name == 0){}
-						else {
-							$FID = $row1['ID'];
-							$query  = "SELECT permGranted FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysql_real_escape_string($uid)."'";
-							$result = mysql_query($query) or die('Error : ' . mysql_error());
-							$onlyFriendships = mysql_num_rows($result);
-							if($onlyFriendships == 1){
-								$permGranted = $row['permGranted'];
-								if($permGranted == 'yes'){
-									echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
-								}
-								else {
-									echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
-								}
-							}
-							else if ($profileArray[1] == $uid){
-								echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='/images/adduserv2.png' alt='' /><span>This is You</span></a>";
-							}
-							else {
-								$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."'";
-								$result = mysql_query($query) or die('Error : ' . mysql_error());
-								$numberoffriends = mysql_num_rows($result);
-								if($numberoffriends < $allowedFriends){
-									echo "<a href=\"#\" onclick=\"$('#friendscheck').load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
-								}
-								else {
-									echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Friends Maxed out.</span></a>";
-								}
-							}
-						}
-					}
-					else if ($_GET['add'] == 'after'){
-						$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysql_real_escape_string($uid)."'";
-						$result = mysql_query($query) or die('Error : ' . mysql_error());
-						$onlyFriendships = mysql_num_rows($result);
-						if($onlyFriendships == 0 && $profileArray[1] != $uid){
-							$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate) VALUES ('%s', '%s', '%s', '%s')",
-								mysql_real_escape_string($uid, $conn),
-								mysql_real_escape_string($profileArray[1], $conn),
-								mysql_real_escape_string('no', $conn),
-								mysql_real_escape_string(time(), $conn));
-							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
-							//phase one done, next we find out what we just inserted was..
-							$result1 = mysql_query("SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysql_error());
-							$row1 = mysql_fetch_array($result1);
-							//we have our target. Proceed.
-							$query = sprintf("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES ('%s', '%s', '%s', '%s', NULL, NULL)",
-								mysql_real_escape_string($uid, $conn),
-								mysql_real_escape_string(time(), $conn),
-								mysql_real_escape_string('1', $conn),
-								mysql_real_escape_string($row1['id'], $conn));
-							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
-							echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
-						}
-						else {
-							echo "Error";
-						}
-					}
-					else  {
-						echo 'Error.';
-					}
-				}
+				include_once('includes/classes/users.class.php');
+				$Users = new AFTWUser();
+				$Users->connectProfile($profileArray);
+				$Users->showFriendProfileButton();
 			}
 			else if($_GET['subview'] == 'friend-notification')
 			{
