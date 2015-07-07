@@ -481,11 +481,13 @@ if (isset($_GET['rf'])){
 	else if($_GET['node'] == 'store'){
 		include('includes/classes/store.class.php');
 		$S = new Store();
+		$S->connectProfile($profileArray);
 		$S->StoreInit();
 	}
 	else {
 		include('includes/classes/content.class.php');
 		$C = new Content();
+		$C->connectProfile($profileArray);
 		$C->Output();
 	}
 	echo "</td>\n";

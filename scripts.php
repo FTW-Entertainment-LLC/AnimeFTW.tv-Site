@@ -854,7 +854,6 @@ if(isset($_GET['view']) && $_GET['view'] == 'cart')
 				$Cart->setItemQuantity($order_code, 0);
 			}
 		}
-		
 		$Cart->save();
 		$Cart->ShowCart();
 	}
