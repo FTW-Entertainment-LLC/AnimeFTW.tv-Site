@@ -128,7 +128,7 @@ class AFTWThreads extends Config {
 					$total_thread_posts2 = $total_thread_posts-1;
 					echo $total_thread_posts2;
 					echo "</td>\n";
-					echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>".checkUserNameNumber($tpid)."</td>\n";	
+					echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>".$this->formatUsername($tpid)."</td>\n";	
 					echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$tviews."</td>\n";
 			
 					//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
