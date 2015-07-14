@@ -430,11 +430,11 @@ class Config {
 		}
 		if($row['avatarActivate'] == 'no')
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" height="50px" border="0"' . $style . ' />';
+			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" border="0"' . $style . ' />';
 		}
 		else
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" height="60px" border="0"' . $style . ' />';
+			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" border="0"' . $style . ' />';
 		}
 		if($target == 'blank')
 		{

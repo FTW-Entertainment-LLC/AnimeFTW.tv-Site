@@ -6,7 +6,7 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-class AFTWForum extends Config {
+class Forum extends Config {
 
 	var $action, $forum, $thread, $s;
 
@@ -16,9 +16,9 @@ class AFTWForum extends Config {
 	}
 	
 	// small constructor for my vars..
-	public function buildVars($action){
+	public function buildVars($action,$UserArray){
 		$this->action = $action;
-		$this->profileArray = $this->UserArray;
+		$this->profileArray = $UserArray;
 	}
 	
 	// Small Copyright function, cause i can..	
@@ -132,7 +132,11 @@ class AFTWForum extends Config {
 		echo "</table></td></tr>";
 		echo "</table></div><br /><br /><br />";
 	}
-
+	
+	public function addTopicView($tid) {
+		$query = "UPDATE forums_threads SET tviews = tviews+1 WHERE tid = $tid";
+		$result = mysql_query($query);		
+	}
 }
 
 

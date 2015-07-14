@@ -231,13 +231,14 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 	echo "</tr>\n</table>\n";
 	
 	echo "<br />\n<br />\n";
+			include_once('includes/classes/forumpaging.class.php');	
 			include_once('includes/classes/forum.class.php');
+			$f = new Forum();
 			include_once('includes/classes/mainview.forum.class.php');
 			include_once('includes/classes/forumview.forum.class.php');
 			include_once('includes/classes/threads.forum.class.php');
 			include_once('includes/classes/threadview.forum.class.php');
-			$f = new AFTWForum();
-			$f->buildVars(@$_GET['action']);
+			$f->buildVars(@$_GET['action'],$profileArray);
 			$f->Output();	
 	// End Main BG
     echo "</td>\n";
