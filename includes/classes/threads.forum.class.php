@@ -138,9 +138,9 @@ class AFTWThreads extends Config {
 					$pid = $row02['pid'];
 					$puid = $row02['puid'];
 					$pdate3 = $row02['pdate'];
-					$pdate3 = timeZoneChange($pdate3,$this->timezone);
+					$pdate3 = $this->timeZoneChange($pdate3,$this->timezone);
 					$pdate4 = date("M j Y, h:i A",$pdate3);
-					$last_post_by = "<a href='/forums/".$this->fseo."/topic-".$tid."/showlastpost'>Last post by:</a>&nbsp;".checkUserNameNumber($puid);
+					$last_post_by = "<a href='/forums/".$this->fseo."/topic-".$tid."/showlastpost'>Last post by:</a>&nbsp;".$this->formatUsername($puid);
 			
 					echo "<td width='1%' class='tbl1' style='white-space:nowrap'>".$pdate4."<br />".$last_post_by."</td>\n";
 			
