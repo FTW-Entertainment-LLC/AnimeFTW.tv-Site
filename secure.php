@@ -143,6 +143,20 @@ else if($_GET['node'] == 'register'){
 								$output = preg_replace("/\W/e" , "" , $output);
 								return strtolower($output);
 							}
+							function checkFakeEmail($subject) {
+								$fakes = array("10minutemail.com","20minutemail.com","anonymbox.com","beefmilk.com","bsnow.net","bugmenot.com","deadaddress.com","despam.it","disposeamail.com","dodgeit.com","dodgit.com","dontreg.com","e4ward.com","emailias.com","emailwarden.com","enterto.com","gishpuppy.com","goemailgo.com","greensloth.com","guerrillamail.com","guerrillamailblock.com","hidzz.com","incognitomail.net","jetable.org","kasmail.com","lifebyfood.com","lookugly.com","mailcatch.com","maileater.com","mailexpire.com","mailin8r.com","mailinator.com","mailinator.net","mailinator2.com","mailmoat.com","mailnull.com","meltmail.com","mintemail.com","mt2009.com","myspamless.com","mytempemail.com","mytrashmail.com","netmails.net","odaymail.com","pookmail.com","shieldedmail.com","smellfear.com","sneakemail.com","sogetthis.com","soodonims.com","spam.la","spamavert.com","spambox.us","spamcero.com","spamex.com","spamfree24.com","spamfree24.de","spamfree24.eu","spamfree24.info","spamfree24.net","spamfree24.org","spamgourmet.com","spamherelots.com","spamhole.com","spaml.com","spammotel.com","spamobox.com","spamspot.com","tempemail.net","tempinbox.com","tempomail.fr","temporaryinbox.com","tempymail.com","thisisnotmyrealemail.com","trash2009.com","trashmail.net","trashymail.com","tyldd.com","yopmail.com","zoemail.com","tradermail.info","zippymail.info","suremail.info","safetymail.info","binkmail.com","tradermail.info","zippymail.info","suremail.info","safetymail.info","PutThisInYourSpamDatabase.com","SpamHerePlease.com","SendSpamHere.com","chogmail.com","SpamThisPlease.com","frapmail.com","obobbo.com","devnullmail.com","bobmail.info","slopsbox.com");
+								
+								$num_bots=0;
+								foreach($fakes as $num=>$fakes){
+								preg_match("/".$fakes."/i", $subject, $matches);
+									if(count($matches) >0){
+									$num_bots++;
+									}
+									else{
+									}
+								}
+								return $num_bots;
+							}
 							if($_POST['google'] != '9'){
 								$error = 'You have failed the bot check, please try again.';
 								$FailCheck = TRUE;
