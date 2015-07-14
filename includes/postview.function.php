@@ -216,14 +216,14 @@ else {
 				echo "<table>";
 				while(list($puid,$pdate,$pbody) = mysql_fetch_array($result001)){
 					$pbody = stripslashes($pbody);
-					$pdate = timeZoneChange($pdate,$this->profileArray[3]);
+					$pdate = $this->timeZoneChange($pdate,$this->profileArray[3]);
 					$pdate = date("M j Y, h:i A",$pdate);	
 					if($i % 2){$class = " class=\"oddrow\"";}
 					else {$class = " class=\"evenrow\"";}
 					echo "<tr".$class.">";
 					echo "<td>
 					<div style=\"padding:5px;\">
-					<div style=\"float:left;vertical-align:top;padding-bottom:5px;\">".checkUserNameNumber($puid)."<br /><span style=\"font-size:9px;\">Posted:<br /><i> $pdate</i></span></div>
+					<div style=\"float:left;vertical-align:top;padding-bottom:5px;\">".$this->formatUsername($puid)."<br /><span style=\"font-size:9px;\">Posted:<br /><i> $pdate</i></span></div>
 					<div style=\"float:right;width:800px;padding-left:10px;padding-bottom:5px;vertical-align:top;\">$pbody</div>
 					</div>
 					</td>";
