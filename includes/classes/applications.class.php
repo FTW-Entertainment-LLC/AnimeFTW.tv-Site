@@ -6,13 +6,11 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-include_once('includes/config.php');
-include_once('includes/newsOpenDb.php');
-
-class Applications {
+class Applications extends Config {
 	private $profileArray, $application_round, $applications_status;
 	
 	public function __construct($profileArray){
+		parent::__construct();
 		$this->profileArray = $profileArray;
 		$this->ApplicationSettings();
 	}
@@ -653,16 +651,17 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 				echo "</div><br />";
 				echo '<div align="center">';
 				echo '<h2>Site Owners/Administrators</h2>';
-						$query  = "SELECT ID, Username, personalMsg, avatarExtension FROM users WHERE Level_access='1' ORDER BY Username";
+						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='1' ORDER BY Username";
 						$result = mysql_query($query) or die('Error : ' . mysql_error());
 						$a = 0; // variable for each user
 						$b = 5; // base multiple of 5 per row
 						$c = 1; // multiples times b so when A == B*C it makes another row
 						echo '<table cellpadding="10">';
-						while(list($ID,$Username,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
+						while(list($ID,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
 						{
-							$avatar = '<img src="/images/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';
-							$user = '<td align="center" valign="top"><div style="padding-bottom:10px">'.$personalMsg.'</div>'.$avatar.'<div style="padding-top:5px;">'.checkUserName($Username).'</div></td>';
+							if($avatarExtension == ''){ $avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="" border="0" width="100px" />';}
+							else {$avatar = '<img src="' . $this->Host . '/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}
+							$user = '<td align="center" valign="top"><div style="padding-bottom:10px">'.$personalMsg.'</div>'.$avatar.'<div style="padding-top:5px;">'.$this->formatUsername($ID).'</div></td>';
 							if($a == ($b*$c))
 							{
 								echo '</tr>'."\n";
@@ -680,16 +679,17 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						 <br />
 						 <h2>Site Managers</h2>
 						';
-						$query  = "SELECT ID, Username, personalMsg, avatarExtension FROM users WHERE Level_access='2' ORDER BY Username";
+						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='2' ORDER BY Username";
 						$result = mysql_query($query) or die('Error : ' . mysql_error());
 						$e = 0; // variable for each user
 						$f = 5; // base multiple of 5 per row
 						$g = 1; // multiples times b so when A == B*C it makes another row
 						echo '<table cellpadding="10">';
-						while(list($ID,$Username,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
+						while(list($ID,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
 						{
-							$avatar = '<img src="/images/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';
-							$user = '<td align="center" valign="top"><div style="padding-bottom:10px">'.$personalMsg.'</div>'.$avatar.'<div style="padding-top:5px;">'.checkUserName($Username).'</div></td>';
+							if($avatarExtension == ''){ $avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="" border="0" width="100px" />';}
+							else {$avatar = '<img src="' . $this->Host . '/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}
+							$user = '<td align="center" valign="top"><div style="padding-bottom:10px">'.$personalMsg.'</div>'.$avatar.'<div style="padding-top:5px;">'.$this->formatUsername($ID).'</div></td>';
 							if($e == ($f*$g))
 							{
 								echo '</tr>'."\n";
@@ -707,17 +707,17 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						 <br />
 						 <h2>Site Staff</h2>
 						';
-						$query  = "SELECT ID, Username, personalMsg, avatarExtension FROM users WHERE Level_access='4' OR Level_access='5' OR Level_access='6' ORDER BY Username";
+						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='4' OR Level_access='5' OR Level_access='6' ORDER BY Username";
 						$result = mysql_query($query) or die('Error : ' . mysql_error());
 						$a = 0; // variable for each user
 						$b = 5; // base multiple of 5 per row
 						$c = 1; // multiples times b so when A == B*C it makes another row
 						echo '<table cellpadding="10">';
-						while(list($ID,$Username,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
+						while(list($ID,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
 						{
-							if($avatarExtension == ''){ $avatar = '<img src="/images/avatars/default.gif" alt="" border="0" width="100px" />';}
-							else {$avatar = '<img src="/images/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}
-							$user = '<td align="center" valign="top"><div style="padding-bottom:10px">'.$personalMsg.'</div>'.$avatar.'<div style="padding-top:5px;">'.checkUserName($Username).'</div></td>';
+							if($avatarExtension == ''){ $avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="" border="0" width="100px" />';}
+							else {$avatar = '<img src="' . $this->Host . '/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}
+							$user = '<td align="center" valign="top"><div style="padding-bottom:10px">'.$personalMsg.'</div>'.$avatar.'<div style="padding-top:5px;">'.$this->formatUsername($ID).'</div></td>';
 							if($a == ($b*$c))
 							{
 								echo '</tr>'."\n";
@@ -735,5 +735,3 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						</div>';
 	}
 }
-
-?>
