@@ -67,7 +67,7 @@ class Register extends Config {
 										if(mysql_num_rows($results) == 1)
 										{
 											$row = mysql_fetch_assoc($results);
-											$message = "Dear ".$row['Username'].", this is your activation link to join our website at animeftw.tv. \n\nIn order to confirm your membership please click on the following link: http://www.animeftw.tv/confirm?ID=" . $row['ID'] . "&key=" . $row['Random_key'] . "\n\nAfter you confirm your status with us, please go visit http://www.animeftw.tv/rules - our Rules and http://www.animeftw.tv/faq - our FAQ and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place. \n\nThank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! http://www.animeftw.tv/rules - Found here \n\nRegards, \n\nFTW Entertainment LLC & AnimeFTW Staff.";
+											$message = "Dear ".$row['Username'].", this is your activation link to join our website at animeftw.tv. \n\nIn order to confirm your membership please click on the following link: https://www.animeftw.tv/confirm?ID=" . $row['ID'] . "&key=" . $row['Random_key'] . "\n\nAfter you confirm your status with us, please go visit https://www.animeftw.tv/rules - our Rules and https://www.animeftw.tv/faq - our FAQ and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place. \n\nThank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! https://www.animeftw.tv/rules - Found here \n\nRegards, \n\nFTW Entertainment LLC & AnimeFTW Staff.";
 											
 											// First check to see if they want to recieve notifications from site pms
 											if(isset($_POST['sitepmnote']) && $_POST['sitepmnote'] == 1)
@@ -131,6 +131,40 @@ class Register extends Config {
 			}
 			return $OutputArray;
 		}
+	}
+	
+	public function confirmAccount()
+	{
+		$OutputArray = array('error' => NULL, 'msg' => NULL);
+		if ( $_GET['ID'] != '' && is_numeric ( $_GET['ID'] ) == TRUE && strlen ( $_GET['key'] ) == 32 && ctype_alnum( $_GET['key'] ) == TRUE ) {
+			$query = "SELECT ID, Password, Random_key, Active FROM `users` WHERE ID = " . $this->sanitizeInput($_GET['ID']);
+			$result = mysql_query($query);
+			
+			if(mysql_num_rows($result) == 1)
+			{
+				$row = mysql_fetch_assoc($result);
+				if( $row['Active'] == 1 ) {
+					$OutputArray['error'] = 'This member is already active ! Please login to your account.';
+				}
+				elseif($row['Random_key'] != $_GET['key'] ) {
+					$OutputArray['error'] = 'The confirmation key that was generated for this member does not match with the one entered !';
+				}
+				else {
+					$update = mysql_query("UPDATE `users` SET Active = 1 WHERE ID=" . $this->sanitizeInput($row['ID']));
+					include_once('sessions.class.php');
+					$Session = new Sessions();
+					$Session->setUserSessionData($row['ID'],$row['Username'],TRUE);
+					header("Location: /");
+				}
+			}
+			else {		
+				$OutputArray['error'] = 'User not found !';		
+			}
+		}
+		else {
+			$OutputArray['error'] = 'Invalid data provided !';
+		}
+		return $OutputArray;
 	}
 	
 	private function checkUnique($field,$compared)

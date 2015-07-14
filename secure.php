@@ -56,8 +56,6 @@ $PageTitle = 'Login - AnimeFTW.TV';
 						$row = $db->getRow ( $query );
 						if ( $row->Active == 1 )
 						{
-							include 'includes/config.php';
-							include 'includes/newsOpenDb.php';
 							$Session->setUserSessionData($row->ID,$row->Username,(@$_POST['remember'])?TRUE:FALSE);
 							//set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
 							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
@@ -347,7 +345,7 @@ else {
 		echo "<td valign='top' class='main-mid'>\n";
 		echo '<table align="center" border="0" cellpadding="0" cellspacing="0">
 	<tr><td>';
-		if ( isset ( $error ) )	{
+		if ( isset ( $error ) && isset($noReg) && $noReg != 'yes' )	{
 			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
 			echo "</tr>\n</table>\n";
