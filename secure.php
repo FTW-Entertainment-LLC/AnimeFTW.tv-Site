@@ -108,132 +108,13 @@ $PageTitle = 'Login - AnimeFTW.TV';
 	}
 }
 else if($_GET['node'] == 'register'){
-	if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
-		if($_POST['agreement'] == 'yes'){
-			require_once('includes/settings.php');
-			$postUsername = $_POST['username'];
-			$postUsername = substr($postUsername, 0, 20);
-			if(($_POST['issubmit'] && $_POST['_submit_check']) == 1){
-				if ( $_POST['username'] != '' && $_POST['password'] != '' && ($_POST['password'] == $_POST['cpassword']) && ($_POST['email'] == $_POST['cemail']) && valid_email ( $_POST['email'] ) == TRUE ){
-					if(!isset($_POST['agreement'])){
-						$error = 'You did not agree with our ToS and our Rules. Please try again.';
-						$FailCheck = TRUE;
-					}
-					else {
-						if ( ! checkUnique ( 'Username', $_POST['username'] ) )
-						{
-							$error = 'Username already taken. Please try again!';
-							$FailCheck = TRUE;
-						}
-						else if ( ! checkUnique ( 'display_name', $_POST['username'] ) )
-						{
-							$error = 'Username already taken. Please try again!';
-							$FailCheck = TRUE;
-						}
-						else if ( ! checkUnique ( 'Email', $_POST['email'] ) )
-						{
-							$error = 'The email you used is associated with another user. Please try again or use the "forgot password" feature!';
-							$FailCheck = TRUE;
-						}
-						else {	 
-							function makeUrlFriendly($postUsername) {
-								// Replace spaces with underscores
-								$output = preg_replace("/\s/e" , "_" , $postUsername);
-								// Remove non-word characters
-								$output = preg_replace("/\W/e" , "" , $output);
-								return strtolower($output);
-							}
-							function checkFakeEmail($subject) {
-								$fakes = array("10minutemail.com","20minutemail.com","anonymbox.com","beefmilk.com","bsnow.net","bugmenot.com","deadaddress.com","despam.it","disposeamail.com","dodgeit.com","dodgit.com","dontreg.com","e4ward.com","emailias.com","emailwarden.com","enterto.com","gishpuppy.com","goemailgo.com","greensloth.com","guerrillamail.com","guerrillamailblock.com","hidzz.com","incognitomail.net","jetable.org","kasmail.com","lifebyfood.com","lookugly.com","mailcatch.com","maileater.com","mailexpire.com","mailin8r.com","mailinator.com","mailinator.net","mailinator2.com","mailmoat.com","mailnull.com","meltmail.com","mintemail.com","mt2009.com","myspamless.com","mytempemail.com","mytrashmail.com","netmails.net","odaymail.com","pookmail.com","shieldedmail.com","smellfear.com","sneakemail.com","sogetthis.com","soodonims.com","spam.la","spamavert.com","spambox.us","spamcero.com","spamex.com","spamfree24.com","spamfree24.de","spamfree24.eu","spamfree24.info","spamfree24.net","spamfree24.org","spamgourmet.com","spamherelots.com","spamhole.com","spaml.com","spammotel.com","spamobox.com","spamspot.com","tempemail.net","tempinbox.com","tempomail.fr","temporaryinbox.com","tempymail.com","thisisnotmyrealemail.com","trash2009.com","trashmail.net","trashymail.com","tyldd.com","yopmail.com","zoemail.com","tradermail.info","zippymail.info","suremail.info","safetymail.info","binkmail.com","tradermail.info","zippymail.info","suremail.info","safetymail.info","PutThisInYourSpamDatabase.com","SpamHerePlease.com","SendSpamHere.com","chogmail.com","SpamThisPlease.com","frapmail.com","obobbo.com","devnullmail.com","bobmail.info","slopsbox.com");
-								
-								$num_bots=0;
-								foreach($fakes as $num=>$fakes){
-								preg_match("/".$fakes."/i", $subject, $matches);
-									if(count($matches) >0){
-									$num_bots++;
-									}
-									else{
-									}
-								}
-								return $num_bots;
-							}
-							if($_POST['google'] != '9'){
-								$error = 'You have failed the bot check, please try again.';
-								$FailCheck = TRUE;
-							}
-							else {
-								$splitEmail = explode("@",$_POST['email']);
-								$finalEmailCheck = checkFakeEmail($splitEmail[1]);
-								if($finalEmailCheck >0){
-									$error = 'The email you have provided has been marked as spam, please try a different email!';
-									$FailCheck = TRUE;
-								}
-								else
-								{
-									$query = $db->query ( "INSERT INTO users (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $db->qstr ( makeUrlFriendly("$postUsername") ) . ", " . $db->qstr ( makeUrlFriendly("$postUsername") ) . ", " . $db->qstr ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $db->qstr ( $_POST['email'] ) . ", '" . random_string ( 'alnum', 32 ) . "', '" . mysql_real_escape_string(@$_POST['firstname']) . "', '" . mysql_real_escape_string(@$_POST['gender']) . "', '" . mysql_real_escape_string(@$_POST['ageDate']) . "', '" . mysql_real_escape_string(@$_POST['ageMonth']) . "', '" . mysql_real_escape_string(@$_POST['ageYear']) . "', '".$_SERVER['REMOTE_ADDR']."', '".mysql_real_escape_string($_POST['timeZone'])."')" );
-									$getUser = "SELECT `ID`, `Username`, `Email`, `Random_key` FROM `users` WHERE `Username` = " . $db->qstr ( makeUrlFriendly("$postUsername") ) . "";
-									if ( $db->RecordCount ( $getUser ) == 1 )
-									{			
-										$row = $db->getRow ( $getUser );
-										$subject = "Activation email from AnimeFTW.tv";
-										$message = "Dear ".$row->Username.", this is your activation link to join our website at animeftw.tv. <br /><br /> In order to confirm your membership please click on the following link: <a href=\"http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "\">http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "</a> <br /><br />After you confirm your status with us, please go visit <a href=\"http://www.animeftw.tv/rules\">our Rules</a> and <a href=\"http://www.animeftw.tv/faq\">our FAQ</a> and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place.<br /><br />Thank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! <a href=\"http://www.animeftw.tv/rules\">Found here</a><br /><br /> Regards,<br /><br />FTW Entertainment LLC & AnimeFTW Staff.";
-										
-										// First check to see if they want to recieve notifications from site pms
-										if(isset($_POST['sitepmnote']) && $_POST['sitepmnote'] == 1)
-										{
-											// they opted for the default, nothing needed
-										}
-										else
-										{
-											// they don't want to receive our emails :(
-											$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
-										}
-										// check to see if they want to receive admin emails
-										if(isset($_POST['notifications']) && $_POST['notifications'] == 1)
-										{
-											// nope, they want us to email them!
-										}
-										else
-										{
-											// sandpanda..
-											$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
-										}
-										if(send_email($subject, $row->Email, $message))
-										{
-											$msg = 'Account registered as: '.$row->Username.'. Please check your email ('.$row->Email.') for details on how to activate it.';
-											$noReg = 'yes';
-										}
-										else
-										{
-											$error = 'I managed to register your membership but failed to send the validation email. Please contact the admin at support@animeftw.tv';
-										}
-									}
-									else {
-										$error = 'Account Creation Complete, E-mail was not sent, please have the email re-sent using <a href="/email-resend">this form</a> Using your New nickname: '.makeUrlFriendly("$postUsername");
-										$FailCheck = TRUE;
-									}
-								}
-							}
-						}
-					}
-				}
-				else {		
-					$error = 'There was an error in your data. Please make sure you filled in all the required data, you provided a valid email address and that the password fields match one another.';
-					$FailCheck = TRUE;	
-				}
-			}
-			else {
-				$error = 'ERROR: You did not submit from AnimeFTW.tv!';
-				$FailCheck = TRUE;	
-				// $msg = TRUE;
-				# in a real application, you should send an email, create an account, etc
-			}
-		}
-		else {
-			$error = 'You failed to agree to our Terms of Service and our Rules, please evaluate your registration for errors.';
-			$FailCheck = TRUE;	
-		}
-	}
+	include_once('includes/classes/register.class.php');
+	$Register = new Register();
+	$OutputArray = $Register->registerAccount();
+	$error = $OutputArray['error'];
+	$FailCheck = $OutputArray['FailCheck'];
+	$noReg = $OutputArray['noReg'];
+	
 	$PageTitle = 'Account Registration  - AnimeFTW.TV';
 }
 else if($_GET['node'] == 'forgot-password'){
