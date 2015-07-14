@@ -181,7 +181,7 @@ class Config {
 			*/
 			$query = "SELECT deny FROM permissions_objects WHERE permission_id = " . $permission . " AND ((type = 1 AND oid = ".$this->UserArray[2].") OR (type = 2 AND oid = ".$this->UserArray[1]."))";
 			$results = mysql_query($query);   
-			$count = mysql_num_rows($results);
+			$count = @mysql_num_rows($results);
 			if($count > 0)
 			{    
                 $Deny = 0;
