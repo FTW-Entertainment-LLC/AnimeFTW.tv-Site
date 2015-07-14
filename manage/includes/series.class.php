@@ -12,7 +12,7 @@ class Series extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		if(isset($_POST['method']) && $_POST['method'] == 'AdminSeriesSearch')
 		{
 			$this->adminSeriesSearch();

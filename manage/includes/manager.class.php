@@ -9,10 +9,12 @@
 \****************************************************************/
 
 class Manager extends Config {
+	var $UserArray;
 
-	public function __construct()
+	public function __construct($UserArray)
 	{
 		parent::__construct();
+		$this->UserArray = $UserArray;
 	}
 	
 	public function bodyCode()
@@ -22,7 +24,7 @@ class Manager extends Config {
 		This year has been a fantastic year for us, we have had some great staff members. <br />Have a Safe and Happy Holidays and remember, if you will be out for extended time to let a manager know!
 		
 		*/
-		$Data = '
+		echo '
 		<div id="manager-wrapper">
 			<div id="body-wrapper">
 				<div>
@@ -30,15 +32,26 @@ class Manager extends Config {
 					<div style="float:right;margin-top:-2px;"><a href="?logout" title="Log out"><img src="/images/new-icons/logout_new.png" alt="" style="width:20px;" /></a></div>
 					</div>
 				</div>
-				<div id="left-column">
-					' . $this->headerCode() . '
+				<div id="left-column">' . $this->headerCode() . '
 				</div>
-				<div id="right-column">
-					<div  class="body-container">Loading your requested data.. hopefully.</div>
+				<div id="right-column">';
+		if(isset($_COOKIE['manage-tab']))
+		{
+			$RequestedNode = $_COOKIE['manage-tab'];
+			$RequestedClass = 'includes/' . $RequestedNode . '.class.php';
+			include($RequestedClass); //we include the file, since it exists
+			$Class = ucwords($RequestedNode); //This will fix the first letter of the class, so it fits with our standards.
+			$C = new $Class;
+		}
+		else
+		{
+			include_once('uploads.class.php');
+			$U = new Uploads();
+		}
+		echo '
 				</div>
 			</div>
 		</div>';
-		return $Data;
 	}
 	
 	private function headerCode()

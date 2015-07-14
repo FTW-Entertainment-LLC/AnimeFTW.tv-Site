@@ -1,16 +1,17 @@
 <?php
 include("../includes/classes/config.class.php");
 $C = new Config();
+$C->buildUserInformation();
 
 // we need to sift out people..
 if($C->UserArray[0] == 0)
 {
-	header("location: http://www.animeftw.tv/");
+	header("location: http://" . $_SERVER['HTTP_HOST'] . "/");
 	exit;
 }
 else if($C->UserArray[2] == 3)
 {
-	header("location: http://www.animeftw.tv/");
+	header("location: http://" . $_SERVER['HTTP_HOST'] . "/");
 	exit;	
 }
 else
@@ -35,15 +36,15 @@ if(isset($_GET['logout']))
 if($L->checkSessions() == FALSE)
 {
 	// they are not logged in, so we need to go through the process.
-	$Body = $L->loginCode();
+	//$Body = $L->loginCode();
 	$Title = 'Welcome, Friend.';
 	$ManagementJS = '';
 }
 else
 {
 	include("includes/manager.class.php");
-	$M = new Manager();
-	$Body = $M->bodyCode();
+	$M = new Manager($C->UserArray);
+	//$Body = $M->bodyCode();
 	$Title = 'AnimeFTW.tv Site Manager - Home';
 	$ManagementJS = '<script src="assets/management.js"></script>
 		<script src="assets/select2.min.js"></script>
@@ -86,8 +87,15 @@ echo '<!doctype html>
 		</script>
 	</head>
 	<body>
-	<div id="hov-msg">&nbsp;</div>
-	' . $Body . '
+	<div id="hov-msg">&nbsp;</div>';
+	// Had to put this down here so it went into the right area.
+	if($ManagementJS == ''){
+		echo $L->loginCode();
+	}
+	else {
+		echo $M->bodyCode();
+	}
+echo '
 	<div class="modal"></div>';
 	if($C->UserArray[1] == 1)
 	{
@@ -125,4 +133,3 @@ echo '<!doctype html>
 	echo '
 	</body>
 </html>';
-?>

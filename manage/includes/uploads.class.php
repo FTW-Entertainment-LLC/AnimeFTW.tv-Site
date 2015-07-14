@@ -9,8 +9,9 @@
 class Uploads extends Config {
 	
 	//#- Public Functions -#\\
-	public function __construct(){
-		parent::__construct();
+	public function __construct()
+	{
+		parent::__construct(TRUE);
 		$this->deployUploads();
 	}
 	
@@ -41,7 +42,7 @@ class Uploads extends Config {
 			{
 				if(isset($_GET['id']) && is_numeric($_GET['id']) && $this->ValidatePermission(78) == TRUE)
 				{
-					mysql_query("DELETE FROM uestatus WHERE id = " . mysql_real_escape_string($_GET['id'])) or die(mysql_error());
+					mysql_query("DELETE FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['id'])) or die(mysql_error());
 					$this->Mod("Delete Upload entry, id: " . $_GET['id']);
 				}
 				else

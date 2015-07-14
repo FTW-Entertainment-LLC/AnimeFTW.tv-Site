@@ -12,7 +12,7 @@ class Applications extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		$this->buildAppData(); // pulls together all of the data for applications.. not much.. but usable later in life
 		if(isset($_GET['subnode']))
 		{

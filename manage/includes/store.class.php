@@ -10,7 +10,7 @@ class Store extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		echo '<div class="body-container srow">';
 		$this->storeAdminInterface();
 		echo '</div>';
