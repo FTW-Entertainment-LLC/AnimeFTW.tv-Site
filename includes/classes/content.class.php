@@ -14,7 +14,7 @@ class Content extends Config {
 	# Vars			   #
 	\******************/
 	
-	var $uid;
+	var $uid, $UserArray;
 	
 	/******************\
 	# Public Functions #
@@ -32,6 +32,11 @@ class Content extends Config {
 		else {
 			echo 'Error 404, that page was not found.';
 		}
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	/******************\

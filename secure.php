@@ -28,7 +28,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 		$last_page = $_POST['last_page'];
 		include_once('includes/classes/sessions.class.php');
 		$Session = new Sessions();
-		require_once ( 'includes/settings.php' );
+		//require_once ( 'includes/settings.php' );
 		if(!isset($_POST['cookies-set']) || (isset($_POST['cookies-set']) && $_POST['cookies-set'] == 1))
 		{
 			$error = 'Your Cookies are not enabled, you will not be able to login to AnimeFTW.tv without cookies enabled.';
@@ -42,26 +42,24 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					if(isEmail($userName))
 					{
 						// if the username is an email, we change the query string a bit.
-						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
 					}
 					else
 					{
 						$userName = makeUrlFriendly($userName);
 						// if the username is a real username.. then we use a different string.
-						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
 					}
-					
-					if ( $db->RecordCount ( $query ) == 1 )
+					$result = mysql_query($query);
+					if(mysql_num_rows($result) == 1)
 					{
-						$row = $db->getRow ( $query );
-						if ( $row->Active == 1 )
+						$row = mysql_fetch_assoc($result);
+						if ( $row['Active'] == 1 )
 						{
-							$Session->setUserSessionData($row->ID,$row->Username,(@$_POST['remember'])?TRUE:FALSE);
-							//set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
+							$Session->setUserSessionData($row['ID'],$row['Username'],(@$_POST['remember'])?TRUE:FALSE);
 							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
 							mysql_query($query) or die('Error : ' . mysql_error());
-							$query = "INSERT INTO `logins` (`ip`, `date`, `uid`, `agent`) VALUES
-		('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row->ID."', '".$_SERVER['HTTP_USER_AGENT']."')";
+							$query = "INSERT INTO `" . $Config->MainDB . "`.`logins` (`ip`, `date`, `uid`, `agent`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row['ID']."', '".$_SERVER['HTTP_USER_AGENT']."')";
 							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
 							
 							// send an email to the user.

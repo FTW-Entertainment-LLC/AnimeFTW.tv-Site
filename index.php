@@ -2,7 +2,7 @@
 
 	if(strpos($_SERVER['REQUEST_URI'], 'store') && $_SERVER['SERVER_PORT'] == '80')
 	{	
-		header("location: https://www.animeftw.tv".$_SERVER['REQUEST_URI']);
+		header("location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit;
 	}
 include_once('includes/classes/config.class.php');

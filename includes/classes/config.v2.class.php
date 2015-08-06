@@ -14,7 +14,7 @@ class Config {
 	{
 		$this->StatsDB = 'mainaftw_stats'; // declare the stats DB
 		$this->MainDB = 'mainaftw_anime'; // Main DB for everything else
-		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 		{
 			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
 		}
