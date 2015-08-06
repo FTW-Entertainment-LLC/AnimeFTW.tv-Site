@@ -162,7 +162,7 @@ if (isset($_GET['rf'])){
 				$i =0;
   				while(list($ID,$lastActivity) = mysql_fetch_array($result19))
 				{
-					$lastActivity = timeZoneChange($lastActivity,$profileArray[3]);
+					$lastActivity = $Config->timeZoneChange($lastActivity,$profileArray[3]);
 					
 					echo checkUserNameNumber($ID,$lastActivity);
 					if($i <= $ucount)
