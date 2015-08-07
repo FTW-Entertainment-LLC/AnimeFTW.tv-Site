@@ -64,7 +64,6 @@ $PageTitle = 'Login - AnimeFTW.TV';
 							
 							// send an email to the user.
 							$Session->sendEmailToUser($row->Email);
-							
 							if ($last_page == '')
 							{
 								header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
@@ -93,7 +92,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 						$query = "INSERT INTO `failed_logins` (`name`, `password`, `ip`, `date`) VALUES
 		('" . mysql_real_escape_string($userName) . "', '" . mysql_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
 						mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
-						$error = 'Login failed! Password or Username is Incorrect.<br />'.checkFailedLogins($_SERVER['REMOTE_ADDR']);
+						$error = 'Login failed! Password or Username is Incorrect.<br />'.$Config->checkFailedLogins($_SERVER['REMOTE_ADDR']);
 					}
 				}
 				else {

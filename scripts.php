@@ -846,7 +846,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'commentsv2')
 	include_once("includes/classes/config.v2.class.php");
 	include_once("includes/classes/comments.v2.class.php");
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	if(isset($_GET['process']))
 	{
 		// processing data
@@ -885,7 +885,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'tooltip')
 			include_once('includes/classes/config.class.php');
 			include_once('includes/classes/videos.class.php');
 			$Config = new Config();
-			$Config->buildUserInformation();
+			$Config->buildUserInformation(TRUE);
 			$V = new AFTWVideos();
 			$V->connectProfile($Config->outputUserInformation());
 			

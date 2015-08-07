@@ -624,4 +624,45 @@ class Config {
 		$revisedDate = $date+($timezone);
 		return $revisedDate;
 	}
+	
+	
+	#-------------------------------------------------------------
+	# Function checkFailedLogins
+	# Checks failed logins against the server,
+	# once it hits 5 then it blocks the user for 15 minutes by 
+	# setting a cookie that expires in 15 min.
+	#-------------------------------------------------------------
+			
+	public function checkFailedLogins($ip) {
+		$fivebefore = time()-300;
+		$query1 = "SELECT ip FROM `failed_logins` where date>='".$fivebefore."' AND ip='".$ip."'";
+		$result1 = mysql_query($query1);
+		$total_fails = mysql_num_rows($result1);
+		if($total_fails == 1){
+			$statement = '1 of 5 Failed Login attempts Used.';
+		}
+		else if ($total_fails == 2){
+			$statement = '2 of 5 Failed Login attempts Used.';
+		}
+		else if ($total_fails == 3){
+			$statement = '3 of 5 Failed Login attempts Used.';
+		}
+		else if ($total_fails == 4){
+			$statement = '4 of 5 Failed Login attempts Used.';
+		}
+		else {
+			$statement = '5 of 5 Failed Login attempts Used.<br /> You will be forbidden from logging in for the next 15 minutes.';
+			$this->setFailedLoginCookie();
+		}
+		return $statement;
+	}
+	
+	#-------------------------------------------------------------
+	# Function setFailedLoginCookie
+	# sets a cookie saying a user cannot login for 15 min
+	#-------------------------------------------------------------
+			
+	private function setFailedLoginCookie(){
+		setcookie ( "__flc", time() + 900, time() + 900, '/' );
+	}
 }
