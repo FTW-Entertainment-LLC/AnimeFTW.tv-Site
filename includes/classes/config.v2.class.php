@@ -10,11 +10,11 @@ class Config {
 	
 	public $UserArray = array(), $PermArray, $ImageHost, $StatsDB, $MainDB, $MessageCodes, $SettingsArray, $DefaultSettingsArray, $RecentEps=array();
 
-	public function __construct()
+	public function __construct($autoBuildUser = FALSE)
 	{
 		$this->StatsDB = 'mainaftw_stats'; // declare the stats DB
 		$this->MainDB = 'mainaftw_anime'; // Main DB for everything else
-		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 		{
 			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
 		}
@@ -35,6 +35,14 @@ class Config {
 		
 		// build the site default settings..
 		$this->array_buildDefaultSiteSettings();
+		// we want to build the user info by default so it can be usable by all subclassess.. sometimes...
+		if($autoBuildUser == TRUE){
+			// build our user array
+			$this->array_constructUser(TRUE); 
+			
+			// construct the site settings for the user, if they are logged in..
+			$this->array_buildSiteSettings();
+		}
 	}
 	
 	#----------------------------------------------------------------
@@ -42,16 +50,14 @@ class Config {
 	# Builds all user details, settings and Watched Episodes on Demand
 	# @public
 	#----------------------------------------------------------------
-	public function buildUserInformation()
+	
+	public function buildUserInformation($remote = FALSE)
 	{
-		// constructs all of the details about the user.
-		$this->array_constructUser();  
+		// build our user array
+		$this->array_constructUser($remote); 
 		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
-		
-		// generate the list of recently viewed videos.
-		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
 	#----------------------------------------------------------------
@@ -98,7 +104,7 @@ class Config {
 	# on the website.
 	# @private
 	#----------------------------------------------------------------
-	private function array_constructUser()
+	private function array_constructUser($remote = FALSE)
 	{
 		// We need to check to see if the user logged in is through the website or the api
 		if(isset($_GET['token']) || isset($_POST['token']))
@@ -130,6 +136,14 @@ class Config {
 				$query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($_COOKIE['au']) . "'";
 				$result = $this->mysqli->query($query);
 				$row = $result->fetch_assoc();
+				if($remote == FALSE)
+				{
+					// we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
+					$randomkey = $this->generateRandomString(200);
+					setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+					$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" .  $this->mysqli->real_escape_string($_COOKIE['vd']) . "'";
+					$this->mysqli->query($query);
+				}
 				$UserID = $row['ID'];
 			}
 			else {

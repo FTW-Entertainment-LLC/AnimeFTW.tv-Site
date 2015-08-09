@@ -40,7 +40,6 @@ class Sessions extends Config {
 		if(!$result)
 		{
 			echo 'Error processing the update ' . mysql_error();
-			echo $query;
 		}
 	}
 	

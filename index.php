@@ -2,7 +2,7 @@
 
 	if(strpos($_SERVER['REQUEST_URI'], 'store') && $_SERVER['SERVER_PORT'] == '80')
 	{	
-		header("location: https://www.animeftw.tv".$_SERVER['REQUEST_URI']);
+		header("location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit;
 	}
 include_once('includes/classes/config.class.php');
@@ -162,7 +162,7 @@ if (isset($_GET['rf'])){
 				$i =0;
   				while(list($ID,$lastActivity) = mysql_fetch_array($result19))
 				{
-					$lastActivity = timeZoneChange($lastActivity,$profileArray[3]);
+					$lastActivity = $Config->timeZoneChange($lastActivity,$profileArray[3]);
 					
 					echo checkUserNameNumber($ID,$lastActivity);
 					if($i <= $ucount)
@@ -481,11 +481,13 @@ if (isset($_GET['rf'])){
 	else if($_GET['node'] == 'store'){
 		include('includes/classes/store.class.php');
 		$S = new Store();
+		$S->connectProfile($profileArray);
 		$S->StoreInit();
 	}
 	else {
 		include('includes/classes/content.class.php');
 		$C = new Content();
+		$C->connectProfile($profileArray);
 		$C->Output();
 	}
 	echo "</td>\n";

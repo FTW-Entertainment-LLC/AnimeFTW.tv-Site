@@ -844,7 +844,7 @@ class AFTWVideos extends Config{
 								}
 								else
 								{
-									$date = date('F jS Y', timeZoneChange($EpisodeArray[6],$this->UserArray[3]));
+									$date = date('F jS Y', $this->timeZoneChange($EpisodeArray[6],$this->UserArray[3]));
 								}
 								/* echo '<div id="command" align="left"><a class="lightSwitcher" href="javascript:void(0)">Turn down the lights</a></div>'; */
 								echo '

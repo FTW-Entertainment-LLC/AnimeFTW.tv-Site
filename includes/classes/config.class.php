@@ -6,7 +6,7 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com'||$_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
+if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
 {
 	$rootdirectory = $_SERVER['DOCUMENT_ROOT'];
 }
@@ -18,9 +18,9 @@ else
 include_once($rootdirectory . "/includes/config_site.php");
 
 class Config {
-	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array(), $ThisDomain;
+	public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array(), $ThisDomain, $ValidatePermission;
 
-	public function __construct(){		
+	public function __construct($autoBuildUser = FALSE){		
 		// Declare the main database
 		$this->MainDB = 'mainaftw_anime';
 		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
@@ -46,18 +46,23 @@ class Config {
 		
 		// build the site default settings..
 		$this->array_buildDefaultSiteSettings();
+		// we want to build the user info by default so it can be usable by all subclassess.. sometimes...
+		if($autoBuildUser == TRUE){
+			// build our user array
+			$this->BuildUser(TRUE); 
+			
+			// construct the site settings for the user, if they are logged in..
+			$this->array_buildSiteSettings();
+		}
 	}
 	
-	public function buildUserInformation()
+	public function buildUserInformation($remote = FALSE)
 	{
 		// build our user array
-		$this->BuildUser(); 
+		$this->BuildUser($remote); 
 		
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
-		
-		// generate the list of recently viewed videos.
-		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
 	public function outputUserInformation()
@@ -65,7 +70,7 @@ class Config {
 		return $this->UserArray;
 	}
 	
-	private function BuildUser()
+	private function BuildUser($remote)
 	{
 		// we need to check if the token and authentication are setup correctly.
 		$query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
@@ -84,11 +89,14 @@ class Config {
 			$UserID = mysql_real_escape_string($_COOKIE['au']);
 			$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . mysql_real_escape_string($_COOKIE['au']) . '\'';
 			mysql_query($query) or die('Error : ' . mysql_error());
-			// we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
-			$randomkey = $this->generateRandomString(200);
-			setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "'";
-			mysql_query($query) or die('Error : ' . mysql_error());
+			if($remote == FALSE)
+			{
+				// we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
+				$randomkey = $this->generateRandomString(200);
+				setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+				$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "'";
+				mysql_query($query) or die('Error : ' . mysql_error());
+			}
 			// build the list of information necessary for user interactions.
 			$PermissionLevelAdvanced = $row['Level_access'];
 			$timeZone = $row['timeZone'];
@@ -173,7 +181,7 @@ class Config {
 			*/
 			$query = "SELECT deny FROM permissions_objects WHERE permission_id = " . $permission . " AND ((type = 1 AND oid = ".$this->UserArray[2].") OR (type = 2 AND oid = ".$this->UserArray[1]."))";
 			$results = mysql_query($query);   
-			$count = mysql_num_rows($results);
+			$count = @mysql_num_rows($results);
 			if($count > 0)
 			{    
                 $Deny = 0;
@@ -422,11 +430,11 @@ class Config {
 		}
 		if($row['avatarActivate'] == 'no')
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" height="50px" border="0"' . $style . ' />';
+			$avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="avatar" border="0"' . $style . ' />';
 		}
 		else
 		{
-			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" height="60px" border="0"' . $style . ' />';
+			$avatar = '<img src="' . $this->Host . '/avatars/user' . $row['ID'] . '.' . $row['avatarExtension'] . '" alt="User avatar" border="0"' . $style . ' />';
 		}
 		if($target == 'blank')
 		{
@@ -615,5 +623,46 @@ class Config {
 		$timezone = (60*60)*($timezone+6);
 		$revisedDate = $date+($timezone);
 		return $revisedDate;
+	}
+	
+	
+	#-------------------------------------------------------------
+	# Function checkFailedLogins
+	# Checks failed logins against the server,
+	# once it hits 5 then it blocks the user for 15 minutes by 
+	# setting a cookie that expires in 15 min.
+	#-------------------------------------------------------------
+			
+	public function checkFailedLogins($ip) {
+		$fivebefore = time()-300;
+		$query1 = "SELECT ip FROM `failed_logins` where date>='".$fivebefore."' AND ip='".$ip."'";
+		$result1 = mysql_query($query1);
+		$total_fails = mysql_num_rows($result1);
+		if($total_fails == 1){
+			$statement = '1 of 5 Failed Login attempts Used.';
+		}
+		else if ($total_fails == 2){
+			$statement = '2 of 5 Failed Login attempts Used.';
+		}
+		else if ($total_fails == 3){
+			$statement = '3 of 5 Failed Login attempts Used.';
+		}
+		else if ($total_fails == 4){
+			$statement = '4 of 5 Failed Login attempts Used.';
+		}
+		else {
+			$statement = '5 of 5 Failed Login attempts Used.<br /> You will be forbidden from logging in for the next 15 minutes.';
+			$this->setFailedLoginCookie();
+		}
+		return $statement;
+	}
+	
+	#-------------------------------------------------------------
+	# Function setFailedLoginCookie
+	# sets a cookie saying a user cannot login for 15 min
+	#-------------------------------------------------------------
+			
+	private function setFailedLoginCookie(){
+		setcookie ( "__flc", time() + 900, time() + 900, '/' );
 	}
 }

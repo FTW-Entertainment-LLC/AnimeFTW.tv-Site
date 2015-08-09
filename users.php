@@ -91,16 +91,20 @@ echo psa($profileArray,1);
 			</script>';
 		}
 		echo "</div><br />";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent1').slideDown();return false;\"  title=\"\"><img src='/images/userv2.png' alt='' /><span class=''>My Profile</span></a></div>";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent2').slideDown();return false;\"  title=\"\"><img src='/images/usercontactv2.png' alt='' /><span class=''>Contact Details</span></a></div>";
-		echo "<div class='linfo'><span id=\"friendscheck\">Loading..</span></div>";
-		echo "<div class='linfo'><a href=\"/pm/compose/".$u->UserArray['ID']."\" title=\"\"><img src='/images/pmuserv2.png' alt='' /><span>Send a Site PM</span></a></div>";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent3').slideDown(); $('#comments1').load('/scripts.php?view=comments&id=".$u->UserArray['ID']."&zone=-6'); return false;\"  title=\"\" id=\"tablink3\"><img src='/images/usercommentsv2.png' alt='' /><span>View My Comments</span></a></div>";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='/images/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>";		
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='/images/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>";		
+		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent1').slideDown();return false;\"  title=\"\"><img src='/images/userv2.png' alt='' /><span class=''>My Profile</span></a></div>\n";
+		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent2').slideDown();return false;\"  title=\"\"><img src='/images/usercontactv2.png' alt='' /><span class=''>Contact Details</span></a></div>\n";
+		if($profileArray[0] == 1){
+			echo "<div class='linfo'>";
+			echo $u->showFriendProfileButton($u->UserArray['ID'],$profileArray);
+			echo "</div>\n";
+			echo "<div class='linfo'><a href=\"/pm/compose/".$u->UserArray['ID']."\" title=\"\"><img src='/images/pmuserv2.png' alt='' /><span>Send a Site PM</span></a></div>\n";
+		}
+		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent3').slideDown(); $('#comments1').load('/scripts.php?view=comments&id=".$u->UserArray['ID']."&zone=-6'); return false;\"  title=\"\" id=\"tablink3\"><img src='/images/usercommentsv2.png' alt='' /><span>View My Comments</span></a></div>\n";
+		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='/images/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>\n";		
+		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='/images/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>\n";		
 		if($u->UserArray['ID'] == $profileArray[1]){
-			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='/images/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>";			
-			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='/images/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>";			
+			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='/images/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>\n";			
+			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='/images/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>\n";			
 		}
 		else if($profileArray[2] == 1 || $profileArray[2] == 2){
 			echo "<div class='linfo'><a href=\"#\" onclick=\"$('.tab-content').slideUp(); $('#tabcontent5').slideDown(); $('#profilesettings').load('/scripts.php?view=settings&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink5\"><img src='/images/usersetv2.png' alt='' /><span>Edit Their Settings</span></a></div>";
@@ -145,7 +149,6 @@ echo psa($profileArray,1);
 		echo "
 				<script type='text/javascript'>
 				$('#fb1').load('/scripts.php?view=friendbar&id=".$u->UserArray['ID']."&zone=-6');
-				$('#friendscheck').load('/scripts.php?view=profile&subview=friendbutton&id=".$u->UserArray['ID']."&add=before');
 				</script>
 				<script type=\"text/javascript\" src=\"/scripts/instantedit.js\"></script>
 				<script>

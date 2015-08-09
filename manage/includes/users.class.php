@@ -10,7 +10,7 @@ class Users extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		if(isset($_GET['cookie']))
 		{
 			$this->tabCookie($_GET['cookie']);

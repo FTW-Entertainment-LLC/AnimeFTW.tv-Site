@@ -10,7 +10,7 @@ class Emails extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		echo '<div  class="body-container">Right column stuff.</div>';
 	}
 	

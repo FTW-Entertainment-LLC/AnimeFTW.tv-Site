@@ -1,6 +1,6 @@
 <?php
 include("includes/classes/config.class.php");
-$C = new Config();
+$C = new Config(TRUE);
 if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
        header("HTTP/1.1 304 Not Modified");
        exit;

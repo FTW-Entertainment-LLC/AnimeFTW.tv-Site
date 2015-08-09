@@ -8,7 +8,7 @@ include_once('header-nav.php');
 include_once('includes/classes/request.class.php');
 
 $r = new AnimeRequest();
-
+$r->connectProfile($profileArray);
 echo psa($profileArray);
 
 // Start Main BG

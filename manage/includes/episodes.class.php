@@ -10,7 +10,7 @@ class Episodes extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		echo '<div  class="body-container srow">';
 		$this->deployEpisodes();
 		echo '</div>';

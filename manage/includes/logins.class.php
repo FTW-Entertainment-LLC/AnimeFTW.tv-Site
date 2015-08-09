@@ -12,7 +12,7 @@ class Logins extends Config {
 	
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		$this->LoginError = '';
 	}
 	
@@ -157,7 +157,7 @@ class Logins extends Config {
 						if(data.indexOf("Success") >= 0)
 						{
 							$("#login-error-wrapper").hide().html(\'<div class="welcome-row" style="margin-bottom:-5px;"><div id="welcome-msg">Login Successful. Redirecting..</div></div>\').delay(500).fadeIn();
-							setTimeout(function(){ window.location = "http://www.animeftw.tv/manage/"; }, 3000);
+							setTimeout(function(){ window.location = "https://' . $_SERVER['HTTP_HOST'] . '/manage/"; }, 3000);
 						}
 						else
 						{
