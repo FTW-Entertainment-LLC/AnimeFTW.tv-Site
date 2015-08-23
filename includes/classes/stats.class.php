@@ -111,7 +111,7 @@ class AFTWstats extends Config {
 					$date = 'Unknown';
 				}
 				else {
-					$date = timeZoneChange($date,$this->zone);
+					$date = $this->timeZoneChange($date,$this->zone);
 					$date = date("M j Y, h:i A",$date);
 				}
 				echo '<div align="center"><span style="font-weight:bold;"><a href="/anime/'.$seoname.'/ep-'.$epnumber.'">' . $epname . '</a></span><br />Posted in: <a href="/anime/'.$seoname.'/">' . $fullSeriesName . '</a><br />Added on: '.$date.'</div><br />';

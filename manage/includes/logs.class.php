@@ -10,7 +10,7 @@ class Logs extends Config {
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		echo '<div  class="body-container">';
 		$link = 'ajax.php?node=logs'; // base url
 		if(!isset($_GET['stage']))

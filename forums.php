@@ -85,11 +85,11 @@ if(isset($_POST['doreply']))
 			if ($mod_options == 'nowt')
 			{
 				$query = sprintf("INSERT INTO forums_threads (ttitle, tpid, tfid, tdate, tupdated) VALUES ('%s', '%s', '%s', '%s', '%s')",
-					mysql_real_escape_string($submittitle, $conn),
-					mysql_real_escape_string($puid, $conn),
-					mysql_real_escape_string($fid, $conn),
-					mysql_real_escape_string($date, $conn),
-					mysql_real_escape_string($tupdated, $conn));
+					mysql_real_escape_string($submittitle),
+					mysql_real_escape_string($puid),
+					mysql_real_escape_string($fid),
+					mysql_real_escape_string($date),
+					mysql_real_escape_string($tupdated));
 				mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 			}
 			else
@@ -98,37 +98,37 @@ if(isset($_POST['doreply']))
 				{
 					$modoption = 1;
 					$query = sprintf("INSERT INTO forums_threads (ttitle, tpid, tfid, tdate, tupdated, tstickied) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-					mysql_real_escape_string($submittitle, $conn),
-					mysql_real_escape_string($puid, $conn),
-					mysql_real_escape_string($fid, $conn),
-					mysql_real_escape_string($date, $conn),
-					mysql_real_escape_string($tupdated, $conn),
-					mysql_real_escape_string($modoption, $conn));
+					mysql_real_escape_string($submittitle),
+					mysql_real_escape_string($puid),
+					mysql_real_escape_string($fid),
+					mysql_real_escape_string($date),
+					mysql_real_escape_string($tupdated),
+					mysql_real_escape_string($modoption));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 				}
 				else if ($mod_options == 'close')
 				{
 					$modoption = 1;
 					$query = sprintf("INSERT INTO forums_threads (ttitle, tpid, tfid, tdate, tupdated, tclosed) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-					mysql_real_escape_string($submittitle, $conn),
-					mysql_real_escape_string($puid, $conn),
-					mysql_real_escape_string($fid, $conn),
-					mysql_real_escape_string($date, $conn),
-					mysql_real_escape_string($tupdated, $conn),
-					mysql_real_escape_string($modoption, $conn));
+					mysql_real_escape_string($submittitle),
+					mysql_real_escape_string($puid),
+					mysql_real_escape_string($fid),
+					mysql_real_escape_string($date),
+					mysql_real_escape_string($tupdated),
+					mysql_real_escape_string($modoption));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 				}
 				else
 				{
 					$modoption = 1;
 					$query = sprintf("INSERT INTO forums_threads (ttitle, tpid, tfid, tdate, tupdated, tstickied, tclosed) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-					mysql_real_escape_string($submittitle, $conn),
-					mysql_real_escape_string($puid, $conn),
-					mysql_real_escape_string($fid, $conn),
-					mysql_real_escape_string($date, $conn),
-					mysql_real_escape_string($tupdated, $conn),
-					mysql_real_escape_string($modoption, $conn),
-					mysql_real_escape_string($modoption, $conn));
+					mysql_real_escape_string($submittitle),
+					mysql_real_escape_string($puid),
+					mysql_real_escape_string($fid),
+					mysql_real_escape_string($date),
+					mysql_real_escape_string($tupdated),
+					mysql_real_escape_string($modoption),
+					mysql_real_escape_string($modoption));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 				}
 			}
@@ -138,14 +138,14 @@ if(isset($_POST['doreply']))
 			$ptid3 = $row006['tid'];
 			$pistopic = 1;
 			$query2 = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, pistopic, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($ptid3, $conn),
-				mysql_real_escape_string($puid, $conn),
-				mysql_real_escape_string($fid, $conn),
-				mysql_real_escape_string($submittitle, $conn),
-				mysql_real_escape_string($date, $conn),
-				mysql_real_escape_string($submitbody, $conn),
-				mysql_real_escape_string($pistopic, $conn),
-				mysql_real_escape_string($userIp, $conn));
+				mysql_real_escape_string($ptid3),
+				mysql_real_escape_string($puid),
+				mysql_real_escape_string($fid),
+				mysql_real_escape_string($submittitle),
+				mysql_real_escape_string($date),
+				mysql_real_escape_string($submitbody),
+				mysql_real_escape_string($pistopic),
+				mysql_real_escape_string($userIp));
 			mysql_query($query2) or die('Could not connect, way to go retard:' . mysql_error());
 			$query005 = "SELECT tid, tfid FROM forums_threads WHERE tdate='$date'";
 				$result005 = mysql_query($query005) or die('Error : ' . mysql_error());
@@ -163,14 +163,14 @@ if(isset($_POST['doreply']))
 			$total_thread_posts = mysql_num_rows($query2) or die("Error: ". mysql_error(). " with query ". $query2);
 			$new_post_id = $total_thread_posts+1;
 			$query = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, ptispost, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($tid , $conn),
-				mysql_real_escape_string($puid, $conn),
-				mysql_real_escape_string($fid, $conn),
-				mysql_real_escape_string($submittitle, $conn),
-				mysql_real_escape_string($date, $conn),
-				mysql_real_escape_string($submitbody, $conn),
-				mysql_real_escape_string($new_post_id, $conn),
-				mysql_real_escape_string($userIp, $conn));
+				mysql_real_escape_string($tid ),
+				mysql_real_escape_string($puid),
+				mysql_real_escape_string($fid),
+				mysql_real_escape_string($submittitle),
+				mysql_real_escape_string($date),
+				mysql_real_escape_string($submitbody),
+				mysql_real_escape_string($new_post_id),
+				mysql_real_escape_string($userIp));
 			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 			$query = 'UPDATE forums_threads SET tupdated=\'' . mysql_escape_string($tupdated) . '\'WHERE tid=' . $tid . '';
 			mysql_query($query) or die('Error : ' . mysql_error());
@@ -231,13 +231,14 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 	echo "</tr>\n</table>\n";
 	
 	echo "<br />\n<br />\n";
+			include_once('includes/classes/forumpaging.class.php');	
 			include_once('includes/classes/forum.class.php');
+			$f = new Forum();
 			include_once('includes/classes/mainview.forum.class.php');
 			include_once('includes/classes/forumview.forum.class.php');
 			include_once('includes/classes/threads.forum.class.php');
 			include_once('includes/classes/threadview.forum.class.php');
-			$f = new AFTWForum();
-			$f->buildVars(@$_GET['action']);
+			$f->buildVars(@$_GET['action'],$profileArray);
 			$f->Output();	
 	// End Main BG
     echo "</td>\n";

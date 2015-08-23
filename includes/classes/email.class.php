@@ -25,6 +25,7 @@ class Email extends Config {
 	{
 		$this->BuildTemplate($Type,$Var1);
 		$this->NewSendMail($this->Subject,$this->To,$this->Body,$this->BCC);
+		return TRUE;
 	}
 	
 	private function NewSendMail($subject,$to,$body,$bcc = NULL)
@@ -193,6 +194,14 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Body = $Var1;
 			
 			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Session Removed.');");
+		}
+		else if($Type == 11)
+		{
+			// emails for the failing to log in to the Management console.
+			$this->Subject = 'Activation email from AnimeFTW.tv';
+			$this->Body = $Var1;
+			
+			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Account Registration');");
 		}
 		else
 		{

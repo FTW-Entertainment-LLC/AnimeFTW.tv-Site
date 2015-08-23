@@ -77,7 +77,7 @@ class AFTWThreads extends Config {
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];
 			$pdate3 = $row02['pdate'];
-			$pdate3 = timeZoneChange($pdate3,$this->timezone);
+			$pdate3 = $this->timeZoneChange($pdate3,$this->timezone);
 			$pdate4 = date("M j Y, h:i A",$pdate3);
 			$last_post_by = "<a href='/forums/".$this->fseo."/topic-".$tid."/showlastpost'>Last post by:</a>&nbsp;" . $this->formatUsername($puid);
 			echo "<td width='1%' class='tbl1' style='white-space:nowrap'>".$pdate4."<br />".$last_post_by."</td>\n";
@@ -128,7 +128,7 @@ class AFTWThreads extends Config {
 					$total_thread_posts2 = $total_thread_posts-1;
 					echo $total_thread_posts2;
 					echo "</td>\n";
-					echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>".checkUserNameNumber($tpid)."</td>\n";	
+					echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>".$this->formatUsername($tpid)."</td>\n";	
 					echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$tviews."</td>\n";
 			
 					//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
@@ -138,9 +138,9 @@ class AFTWThreads extends Config {
 					$pid = $row02['pid'];
 					$puid = $row02['puid'];
 					$pdate3 = $row02['pdate'];
-					$pdate3 = timeZoneChange($pdate3,$this->timezone);
+					$pdate3 = $this->timeZoneChange($pdate3,$this->timezone);
 					$pdate4 = date("M j Y, h:i A",$pdate3);
-					$last_post_by = "<a href='/forums/".$this->fseo."/topic-".$tid."/showlastpost'>Last post by:</a>&nbsp;".checkUserNameNumber($puid);
+					$last_post_by = "<a href='/forums/".$this->fseo."/topic-".$tid."/showlastpost'>Last post by:</a>&nbsp;".$this->formatUsername($puid);
 			
 					echo "<td width='1%' class='tbl1' style='white-space:nowrap'>".$pdate4."<br />".$last_post_by."</td>\n";
 			

@@ -28,7 +28,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 		$last_page = $_POST['last_page'];
 		include_once('includes/classes/sessions.class.php');
 		$Session = new Sessions();
-		require_once ( 'includes/settings.php' );
+		//require_once ( 'includes/settings.php' );
 		if(!isset($_POST['cookies-set']) || (isset($_POST['cookies-set']) && $_POST['cookies-set'] == 1))
 		{
 			$error = 'Your Cookies are not enabled, you will not be able to login to AnimeFTW.tv without cookies enabled.';
@@ -42,33 +42,28 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					if(isEmail($userName))
 					{
 						// if the username is an email, we change the query string a bit.
-						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
 					}
 					else
 					{
 						$userName = makeUrlFriendly($userName);
 						// if the username is a real username.. then we use a different string.
-						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM ' . DBPREFIX . 'users WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
 					}
-					
-					if ( $db->RecordCount ( $query ) == 1 )
+					$result = mysql_query($query);
+					if(mysql_num_rows($result) == 1)
 					{
-						$row = $db->getRow ( $query );
-						if ( $row->Active == 1 )
+						$row = mysql_fetch_assoc($result);
+						if ( $row['Active'] == 1 )
 						{
-							include 'includes/config.php';
-							include 'includes/newsOpenDb.php';
-							$Session->setUserSessionData($row->ID,$row->Username,(@$_POST['remember'])?TRUE:FALSE);
-							//set_login_sessions ( $row->ID, $row->Password, ( @$_POST['remember'] ) ? TRUE : FALSE );
+							$Session->setUserSessionData($row['ID'],$row['Username'],(@$_POST['remember'])?TRUE:FALSE);
 							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
 							mysql_query($query) or die('Error : ' . mysql_error());
-							$query = "INSERT INTO `logins` (`ip`, `date`, `uid`, `agent`) VALUES
-		('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row->ID."', '".$_SERVER['HTTP_USER_AGENT']."')";
+							$query = "INSERT INTO `" . $Config->MainDB . "`.`logins` (`ip`, `date`, `uid`, `agent`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row['ID']."', '".$_SERVER['HTTP_USER_AGENT']."')";
 							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
 							
 							// send an email to the user.
 							$Session->sendEmailToUser($row->Email);
-							
 							if ($last_page == '')
 							{
 								header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
@@ -97,7 +92,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 						$query = "INSERT INTO `failed_logins` (`name`, `password`, `ip`, `date`) VALUES
 		('" . mysql_real_escape_string($userName) . "', '" . mysql_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
 						mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
-						$error = 'Login failed! Password or Username is Incorrect.<br />'.checkFailedLogins($_SERVER['REMOTE_ADDR']);
+						$error = 'Login failed! Password or Username is Incorrect.<br />'.$Config->checkFailedLogins($_SERVER['REMOTE_ADDR']);
 					}
 				}
 				else {
@@ -108,118 +103,13 @@ $PageTitle = 'Login - AnimeFTW.TV';
 	}
 }
 else if($_GET['node'] == 'register'){
-	if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
-		if($_POST['agreement'] == 'yes'){
-			require_once('includes/settings.php');
-			$postUsername = $_POST['username'];
-			$postUsername = substr($postUsername, 0, 20);
-			if(($_POST['issubmit'] && $_POST['_submit_check']) == 1){
-				if ( $_POST['username'] != '' && $_POST['password'] != '' && ($_POST['password'] == $_POST['cpassword']) && ($_POST['email'] == $_POST['cemail']) && valid_email ( $_POST['email'] ) == TRUE ){
-					if(!isset($_POST['agreement'])){
-						$error = 'You did not agree with our ToS and our Rules. Please try again.';
-						$FailCheck = TRUE;
-					}
-					else {
-						if ( ! checkUnique ( 'Username', $_POST['username'] ) )
-						{
-							$error = 'Username already taken. Please try again!';
-							$FailCheck = TRUE;
-						}
-						else if ( ! checkUnique ( 'display_name', $_POST['username'] ) )
-						{
-							$error = 'Username already taken. Please try again!';
-							$FailCheck = TRUE;
-						}
-						else if ( ! checkUnique ( 'Email', $_POST['email'] ) )
-						{
-							$error = 'The email you used is associated with another user. Please try again or use the "forgot password" feature!';
-							$FailCheck = TRUE;
-						}
-						else {	 
-							function makeUrlFriendly($postUsername) {
-								// Replace spaces with underscores
-								$output = preg_replace("/\s/e" , "_" , $postUsername);
-								// Remove non-word characters
-								$output = preg_replace("/\W/e" , "" , $output);
-								return strtolower($output);
-							}
-							if($_POST['google'] != '9'){
-								$error = 'You have failed the bot check, please try again.';
-								$FailCheck = TRUE;
-							}
-							else {
-								$splitEmail = explode("@",$_POST['email']);
-								$finalEmailCheck = checkFakeEmail($splitEmail[1]);
-								if($finalEmailCheck >0){
-									$error = 'The email you have provided has been marked as spam, please try a different email!';
-									$FailCheck = TRUE;
-								}
-								else
-								{
-									$query = $db->query ( "INSERT INTO users (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $db->qstr ( makeUrlFriendly("$postUsername") ) . ", " . $db->qstr ( makeUrlFriendly("$postUsername") ) . ", " . $db->qstr ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $db->qstr ( $_POST['email'] ) . ", '" . random_string ( 'alnum', 32 ) . "', '" . mysql_real_escape_string(@$_POST['firstname']) . "', '" . mysql_real_escape_string(@$_POST['gender']) . "', '" . mysql_real_escape_string(@$_POST['ageDate']) . "', '" . mysql_real_escape_string(@$_POST['ageMonth']) . "', '" . mysql_real_escape_string(@$_POST['ageYear']) . "', '".$_SERVER['REMOTE_ADDR']."', '".mysql_real_escape_string($_POST['timeZone'])."')" );
-									$getUser = "SELECT `ID`, `Username`, `Email`, `Random_key` FROM `users` WHERE `Username` = " . $db->qstr ( makeUrlFriendly("$postUsername") ) . "";
-									if ( $db->RecordCount ( $getUser ) == 1 )
-									{			
-										$row = $db->getRow ( $getUser );
-										$subject = "Activation email from AnimeFTW.tv";
-										$message = "Dear ".$row->Username.", this is your activation link to join our website at animeftw.tv. <br /><br /> In order to confirm your membership please click on the following link: <a href=\"http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "\">http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "</a> <br /><br />After you confirm your status with us, please go visit <a href=\"http://www.animeftw.tv/rules\">our Rules</a> and <a href=\"http://www.animeftw.tv/faq\">our FAQ</a> and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place.<br /><br />Thank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! <a href=\"http://www.animeftw.tv/rules\">Found here</a><br /><br /> Regards,<br /><br />FTW Entertainment LLC & AnimeFTW Staff.";
-										
-										// First check to see if they want to recieve notifications from site pms
-										if(isset($_POST['sitepmnote']) && $_POST['sitepmnote'] == 1)
-										{
-											// they opted for the default, nothing needed
-										}
-										else
-										{
-											// they don't want to receive our emails :(
-											$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
-										}
-										// check to see if they want to receive admin emails
-										if(isset($_POST['notifications']) && $_POST['notifications'] == 1)
-										{
-											// nope, they want us to email them!
-										}
-										else
-										{
-											// sandpanda..
-											$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
-										}
-										if(send_email($subject, $row->Email, $message))
-										{
-											$msg = 'Account registered as: '.$row->Username.'. Please check your email ('.$row->Email.') for details on how to activate it.';
-											$noReg = 'yes';
-										}
-										else
-										{
-											$error = 'I managed to register your membership but failed to send the validation email. Please contact the admin at support@animeftw.tv';
-										}
-									}
-									else {
-										$error = 'Account Creation Complete, E-mail was not sent, please have the email re-sent using <a href="/email-resend">this form</a> Using your New nickname: '.makeUrlFriendly("$postUsername");
-										$FailCheck = TRUE;
-									}
-								}
-							}
-						}
-					}
-				}
-				else {		
-					$error = 'There was an error in your data. Please make sure you filled in all the required data, you provided a valid email address and that the password fields match one another.';
-					$FailCheck = TRUE;	
-				}
-			}
-			else {
-				$error = 'ERROR: You did not submit from AnimeFTW.tv!';
-				$FailCheck = TRUE;	
-				// $msg = TRUE;
-				# in a real application, you should send an email, create an account, etc
-			}
-		}
-		else {
-			$error = 'You failed to agree to our Terms of Service and our Rules, please evaluate your registration for errors.';
-			$FailCheck = TRUE;	
-		}
-	}
+	include_once('includes/classes/register.class.php');
+	$Register = new Register();
+	$OutputArray = $Register->registerAccount();
+	$error = $OutputArray['error'];
+	$FailCheck = $OutputArray['FailCheck'];
+	$noReg = $OutputArray['noReg'];
+	
 	$PageTitle = 'Account Registration  - AnimeFTW.TV';
 }
 else if($_GET['node'] == 'forgot-password'){
@@ -452,7 +342,7 @@ else {
 		echo "<td valign='top' class='main-mid'>\n";
 		echo '<table align="center" border="0" cellpadding="0" cellspacing="0">
 	<tr><td>';
-		if ( isset ( $error ) )	{
+		if ( isset ( $error ) && isset($noReg) && $noReg != 'yes' )	{
 			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
 			echo "</tr>\n</table>\n";

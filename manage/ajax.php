@@ -1,6 +1,6 @@
 <?php
 include("../includes/classes/config.class.php");
-
+$Config = new Config();
 
 if(isset($_POST['method']))
 {

@@ -6,7 +6,7 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-class AFTWForum extends Config {
+class Forum extends Config {
 
 	var $action, $forum, $thread, $s;
 
@@ -16,9 +16,9 @@ class AFTWForum extends Config {
 	}
 	
 	// small constructor for my vars..
-	public function buildVars($action){
+	public function buildVars($action,$UserArray){
 		$this->action = $action;
-		$this->profileArray = $this->UserArray;
+		$this->profileArray = $UserArray;
 	}
 	
 	// Small Copyright function, cause i can..	
@@ -119,7 +119,7 @@ class AFTWForum extends Config {
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];
 			$pdate3 = $row02['pdate'];
-			$pdate3 = timeZoneChange($pdate3,$timeZone);
+			$pdate3 = $this->timeZoneChange($pdate3,$timeZone);
 			$pdate4 = date("M j Y, h:i A",$pdate3);
 			// hidden..
 			$ThreadHidden = "";
@@ -127,12 +127,16 @@ class AFTWForum extends Config {
 			{
 				$ThreadHidden = "<span style='color:gray;'>Hidden:</span> ";
 			}
-			echo "<tr><td class='row1'>" . $ThreadHidden . "<a href='/forums/$fseo/topic-$tid/s-0'>$ttitle</a></td><td class='row1' align='center'><a href='/forums/$fseo/'>$ftitle</a></td><td class='row1' align='center'>".$this->formatUsername($tpid)."</td><td class='row1' align='center'>$total_thread_posts</td><td class='row1' align='center'>$tviews</td><td class='row1' align='center'>$pdate4<br /><a href='/forums/$fseo/topic-$tid/showlastpost'>Last post by:</a><b>".checkUserNameNumber($puid)."</b></td></tr>";
+			echo "<tr><td class='row1'>" . $ThreadHidden . "<a href='/forums/$fseo/topic-$tid/s-0'>$ttitle</a></td><td class='row1' align='center'><a href='/forums/$fseo/'>$ftitle</a></td><td class='row1' align='center'>".$this->formatUsername($tpid)."</td><td class='row1' align='center'>$total_thread_posts</td><td class='row1' align='center'>$tviews</td><td class='row1' align='center'>$pdate4<br /><a href='/forums/$fseo/topic-$tid/showlastpost'>Last post by:</a><b>".$this->formatUsername($puid)."</b></td></tr>";
 		}
 		echo "</table></td></tr>";
 		echo "</table></div><br /><br /><br />";
 	}
-
+	
+	public function addTopicView($tid) {
+		$query = "UPDATE forums_threads SET tviews = tviews+1 WHERE tid = $tid";
+		$result = mysql_query($query);		
+	}
 }
 
 

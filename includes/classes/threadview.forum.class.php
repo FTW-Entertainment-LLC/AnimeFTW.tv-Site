@@ -6,7 +6,7 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-class AFTWThreadView extends Config{
+class AFTWThreadView extends Forum{
 	var $start, $tid, $fseo, $paging, $profileArray;
 	
 	public function __construct()
@@ -51,7 +51,7 @@ class AFTWThreadView extends Config{
 					</div><br />";
 			}
 			else {
-				echo addTopicView($topicid);
+				echo $this->addTopicView($topicid);
 				echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/$fseo/'>$ftitle</a>&nbsp;&gt;&nbsp;$ttitle</div><br />";
 				echo "<table style='width:100%' cellspacing='0'>
 				<tr>
@@ -103,10 +103,10 @@ class AFTWThreadView extends Config{
 					
 					
 					$ptitle = stripslashes($ptitle);
-					$pdate = timeZoneChange($pdate,$this->profileArray[3]);
+					$pdate = $this->timeZoneChange($pdate,$this->profileArray[3]);
 					
 					//get the user who posted this...
-					$query003 = "SELECT Level_access, firstName, gender, country, avatarActivate, personalMsg, avatarExtension, memberTitle, signatureActive, Signature FROM users WHERE ID='$puid'";
+					$query003 = "SELECT Level_access, firstName, gender, country, personalMsg, memberTitle, signatureActive, Signature FROM users WHERE ID='$puid'";
 					$result003 = mysql_query($query003) or die('Error : ' . mysql_error());
 					$row003 = mysql_fetch_array($result003);
 		
@@ -128,9 +128,7 @@ class AFTWThreadView extends Config{
 						$country003 = $row003['country'];
 					}
 	    
-					$avatarActivate003 = $row003['avatarActivate'];
 					$personalMsg003 = $row003['personalMsg'];
-					$avatarExtension003 = $row003['avatarExtension'];
 					$memberTitle003 = $row003['memberTitle'];
 					$signatureActive003 = $row003['signatureActive'];
 					$Signature003 = $row003['Signature'];
@@ -170,11 +168,7 @@ class AFTWThreadView extends Config{
 						
 						echo "<td valign='top' class='tbl2' style='width:160px;'>\n";
 						echo "<div align='center'>\n";
-					if($avatarActivate003 == 'yes') { 
-						echo "<img src='/images/avatars/user".$puid.'.'.$avatarExtension003."' alt='User Avatar' /><br /><br />\n";
-					  } else { 
-						echo "<img src='/images/avatars/default.gif' alt='User Avatar' /><br /><br />\n";
-					  }
+						echo $this->formatAvatar($puid,'self',FALSE);
 						echo "<span class='small'>";
 						if($memberTitle003 == 'none') { } 
 						else {echo "<img src='/images/stafficons/".$memberTitle003.".png' alt='Member Title' border='0' /><br />\n";}
@@ -245,11 +239,7 @@ class AFTWThreadView extends Config{
 					
 						echo "<td valign='top' class='tbl2' style='width:160px; padding-left:10px;'>\n";
 						echo "<div align='center'>\n";
-					if($avatarActivate003 == 'yes') { 
-						echo "<img src='/images/avatars/user".$puid.'.'.$avatarExtension003."' alt='User Avatar' /><br /><br />\n";
-					  } else { 
-						echo "<img src='/images/avatars/default.gif' alt='User Avatar' /><br /><br />\n";
-					  }
+						echo $this->formatAvatar($puid,'self',FALSE);
 						echo "<span class='small'>";
 						if($memberTitle003 == 'none') { } 
 						else {echo "<img src='/images/stafficons/".$memberTitle003.".png' alt='Member Title' border='0' /><br />\n";}

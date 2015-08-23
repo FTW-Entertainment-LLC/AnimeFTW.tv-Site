@@ -1,37 +1,13 @@
 <?php
-include('init.php');
-	include ( 'includes/settings.php' );
-
-	if ( $_GET['ID'] != '' && numeric ( $_GET['ID'] ) == TRUE && strlen ( $_GET['key'] ) == 32 && alpha_numeric ( $_GET['key'] ) == TRUE ) {
-		$query = "SELECT ID, Password, Random_key, Active FROM " . DBPREFIX . "users WHERE ID = " . $db->qstr ( $_GET['ID'] );
-		
-		if ( $db->RecordCount ( $query ) == 1 ) {
-			$row = $db->getRow ( $query );
-			if ( $row->Active == 1 ) {
-				$error = 'This member is already active !';
-			}
-			elseif ( $row->Random_key != $_GET['key'] ) {
-				$error = 'The confirmation key that was generated for this member does not match with the one entered !';
-			}
-			else {
-				$update = $db->query ( "UPDATE " . DBPREFIX . "users SET Active = 1 WHERE ID=" . $db->qstr ( $row->ID ) );
-				if ( REDIRECT_AFTER_CONFIRMATION ) {
-					//don't echo put anything before this line
-					set_login_sessions ( $row->ID, $row->Password, FALSE );
-					header ( "Location: https://www.animeftw.tv/login");
-				}
-				else {
-					$msg = 'Congratulations !  You just confirmed your membership !<br /><br /> Now go Visit your <a href="http://animeftw.tv/edit">member profile</a> and update it accordingly :D !';
-				}
-			}
-		}
-		else {		
-			$error = 'User not found !';		
-		}
-	}
-	else {
-		$error = 'Invalid data provided !';
-	}
+include_once('includes/classes/config.class.php');
+$Config = new Config();
+$Config->buildUserInformation();
+include_once('includes/classes/register.class.php');
+$Register = new Register();
+$OutputArray = $Register->confirmAccount();
+$msg = $OutputArray['msg'];
+$error = $OutputArray['error'];
+	
 $PageTitle = 'Confirm Registration - AnimeFTW.tv';
 
 include('header.php');
