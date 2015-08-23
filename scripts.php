@@ -1120,8 +1120,11 @@ if(isset($_POST['method'])){
 if(isset($_GET['view']) && $_GET['view'] == 'anime-requests')
 {
 	include_once('includes/classes/config.class.php');
+	$Config = new Config();
+	$Config->buildUserInformation(TRUE);
 	include_once('includes/classes/request.class.php');
 	$AR = new AnimeRequest();
+	$AR->connectProfile($Config->outputUserInformation());
 	$AR->initFunctions(); // We initialize the backend functions handler, this way everything happens IN the class file.
 	/*
 		Hani I moved all of your functions to the request.class.php script, similar to the cart-admin function where everything happens there instead of here (less clutter, more organized)
