@@ -54,7 +54,6 @@ class Sessions extends Config {
 	{
 		// remove it from the database.
 		$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
-		
 		$result = mysql_query($query);
 		if(!$result)
 		{
@@ -151,7 +150,7 @@ class Sessions extends Config {
 		$body .= "If you believe that this session is invalid, please log in to your AnimeFTW.tv account. Navigate to your profile, edit your settings and view the `Session` tab to remove this session.\n\n";
 		$body .= "- Your friends at AnimeFTW.tv.";
 		
-		//mail($email,"New session at AnimeFTW.tv!", $body, $headers);
-		//mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
+		mail($email,"New session at AnimeFTW.tv!", $body, $headers);
+		mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
 	}
 }

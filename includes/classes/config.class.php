@@ -73,9 +73,16 @@ class Config {
 	private function BuildUser($remote)
 	{
 		// we need to check if the token and authentication are setup correctly.
-		$query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
-		$result = mysql_query($query);
-		$count = mysql_result($result, 0);
+		if(!isset($_COOKIE['vd']) || !isset($_COOKIE['au']) || !isset($_COOKIE['hh']))
+		{
+			$count = 0;
+		}
+		else
+		{
+			$query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+			$result = mysql_query($query);
+			$count = mysql_result($result, 0);
+		}
 		if($count > 0)
 		{
 			$query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `updated` = " . time() . " WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";

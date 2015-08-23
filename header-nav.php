@@ -168,10 +168,11 @@ if(strlen(strstr($_SERVER['HTTP_USER_AGENT'], 'Firefox')) > 0 && $profileArray[0
         <div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;width:60%;border-radius:5px;">
 <span style="font-size:16px;">!!ATTENTION!!</span> <br />
 Your browser has been detected as being firefox.<br />
- Some FireFox users have experienced issues playing back videos, but are able to play with the latest Internet Explorer or Chrome.<br />
-We have found that an addon was enabled during an update, the update <b>OpenH264 Plugin from Csico Systems</b> needs to be disabled in your addons listing. <br />
-As soon as this is disabled, restart FireFox and attempt to view videos again.<br />
-If you have issues still, please post in the bug report forum.<br />
+Those that are using Firefox 37 and above, along with a fully up to date windows 7 system are experiencing issues such as:<br />
+Lack of audio after X minutes of playback, No playback at all, and/or no downloading of the videos.<br />
+We have been made aware that this issue is related to firefox, something was introduced that caused playback issues starting with FF 37. <br />
+<b>It is advised to downgrade to FF36 or use a different browser.</b><br />
+Other webmasters have found that the beta of FireFox 41 appears to fix this issue, however there are still a few months away from it going into the release branch.<br />
 Thank you, AnimeFTW.tv Staff.
         </div>
 </div>';
