@@ -1,6 +1,7 @@
 <?php
 include("../includes/classes/config.class.php");
 $Config = new Config();
+$Config->buildUserInformation(TRUE);
 
 if(isset($_POST['method']))
 {
@@ -23,7 +24,7 @@ if(isset($_POST['method']))
 	{
 		// an everything else catch..
 		include("includes/processData.class.php");
-		$pd = new processData();
+		$pd = new processData($Config->outputUserInformation());
 	}
 }
 
@@ -35,7 +36,7 @@ if(isset($_GET['node']))
 	{
 		include($RequestedClass); //we include the file, since it exists
 		$Class = ucwords($RequestedNode); //This will fix the first letter of the class, so it fits with our standards.
-		$C = new $Class; // dynamiclly drive the class.
+		$C = new $Class($Config->outputUserInformation()); // dynamiclly drive the class.
 		//$C->Output(); // This relies on us having the standard of Output() on all classes, so no slacking off!
 	}
 	else // the file doesnt exist so there is no class...

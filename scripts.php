@@ -83,7 +83,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	//include_once 'includes/global_functions.php';
 	//include_once 'includes/aftw.class.php';
@@ -324,7 +324,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	include_once('includes/classes/users.class.php');
@@ -403,7 +403,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	if(isset($_GET['subview'])){
@@ -511,7 +511,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'management')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	if(isset($_GET['u'])){
@@ -542,7 +542,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	if(isset($_GET['mode']) && $_GET['mode'] == 'comment-votes')
 	{
@@ -590,7 +590,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'tracker')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	include_once('includes/classes/tracker.class.php');
 	$tr = new AFTWTracker();
 	$tr->connectProfile($Config->outputUserInformation());
@@ -639,7 +639,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'notifications')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	if($profileArray[0] == 0){
 	}
@@ -669,7 +669,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	include_once('includes/classes/watchlist.class.php');
@@ -693,7 +693,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'donate')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	if($profileArray[0] == 0){
@@ -709,7 +709,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile-comments')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	if(!isset($_GET['uid']) || !is_numeric($_GET['uid']))
@@ -738,7 +738,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'toplist')
 	include_once('includes/classes/toplist.v2.class.php');
 	
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$TopList = new toplist();
 	$TopList->connectProfile($Config->outputUserInformation());
 	$TopList->scriptsFunctions();
@@ -747,7 +747,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'cart')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	include_once('includes/classes/store.class.php');
 	
 	if(isset($_POST) && isset($_POST['verify_sign']))
@@ -790,7 +790,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'cart-admin')
 	include_once('includes/classes/config.class.php');
 	include_once('includes/classes/store.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$Store = new Store();
 	$Store->connectProfile($Config->outputUserInformation());
 	$Store->AdminInit();
@@ -806,7 +806,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'episodes')
 	else
 	{
 		$Config = new Config();
-		$Config->buildUserInformation();
+		$Config->buildUserInformation(TRUE);
 		$V = new AFTWVideos();
 		$V->connectProfile($Config->outputUserInformation());
 		$V->NextEpisodesV2();
@@ -823,7 +823,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 	else
 	{
 		$Config = new Config();
-		$Config->buildUserInformation();
+		$Config->buildUserInformation(TRUE);
 		// let's process the request because they at least gave us some decent information.
 		$Episode = new Episode($_GET);
 		$Episode->
@@ -912,7 +912,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	
 	if(isset($_GET['page']) && isset($_GET['id']))
 	{
@@ -950,7 +950,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
 	
 	############ Configuration ##############
@@ -1104,15 +1104,19 @@ if(isset($_GET['view']) && $_GET['view'] == 'reviews')
 {
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation();
+	$Config->buildUserInformation(TRUE);
 	include_once('includes/classes/reviews.class.php');
 	$R = new Review();
 	$R->connectProfile($Config->outputUserInformation());
 	$R->processReview();
 }
 if(isset($_POST['method'])){
+	include_once('includes/classes/config.class.php');
+	$Config = new Config();
+	$Config->buildUserInformation(TRUE);
 	include_once('includes/classes/management.class.php');
 	$m = new AFTWManagement();
+	$m->connectProfile($Config->outputUserInformation());
 	$m->PostProcess();
 }
 

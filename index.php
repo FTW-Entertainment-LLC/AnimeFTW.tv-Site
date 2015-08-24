@@ -164,7 +164,7 @@ if (isset($_GET['rf'])){
 				{
 					$lastActivity = $Config->timeZoneChange($lastActivity,$profileArray[3]);
 					
-					echo checkUserNameNumber($ID,$lastActivity);
+					echo $Config->formatUsername($ID,'self',$lastActivity = NULL);
 					if($i <= $ucount)
 					{
 						echo ', ';

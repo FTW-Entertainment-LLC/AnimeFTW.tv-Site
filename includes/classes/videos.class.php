@@ -32,6 +32,7 @@ class AFTWVideos extends Config{
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
+		$this->array_buildSiteSettings(); // ADDED 8/23/2015 by Robotman321, connects the settings so we can use them.
 	}
 	
 	//Lets get the ID number.. Whatever it is..
@@ -574,7 +575,6 @@ class AFTWVideos extends Config{
 		echo '
 			</video>
 		</div>';
-			
 		// ADDED 09/19/14 - Robotman321
 		// The following will automagically add an entry to the toplist based on watching 65% of the video
 		// or getting past the 65% point..

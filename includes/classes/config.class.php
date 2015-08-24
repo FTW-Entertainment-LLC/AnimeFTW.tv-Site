@@ -60,7 +60,7 @@ class Config {
 	{
 		// build our user array
 		$this->BuildUser($remote); 
-		
+			
 		// construct the site settings for the user, if they are logged in..
 		$this->array_buildSiteSettings();
 	}
@@ -141,7 +141,7 @@ class Config {
 		$this->UserArray = $array;
 	}
 	
-	private function array_buildSiteSettings()
+	public function array_buildSiteSettings()
 	{
 		$this->SettingsArray = array();
 		
@@ -162,6 +162,7 @@ class Config {
 		}
 		else
 		{
+			$this->SettingsArray['0'] = 0;
 		}
 	}
 	

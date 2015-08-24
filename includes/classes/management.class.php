@@ -5,7 +5,7 @@
 ## Usage: Management Class and Functions
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
-include('includes/classes/config.class.php');
+include_once('includes/classes/config.class.php');
 
 class AFTWManagement extends Config {
 	var $uid, $appround;
@@ -16,6 +16,11 @@ class AFTWManagement extends Config {
 	
 	public function __construct(){
 		parent::__construct();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
 	}
 	
 	public function Con($uid,$appround){

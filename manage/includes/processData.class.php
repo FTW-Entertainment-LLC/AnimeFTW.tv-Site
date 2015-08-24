@@ -9,9 +9,12 @@
 
 class processData extends Config {
 
+	var $UserArray;
+
 	//#- Public Functions -#\\
-	public function __construct()
+	public function __construct($UserArray)
 	{
+		$this->UserArray = $UserArray;
 		parent::__construct();
 		parent::outputUserInformation();
 		include("../includes/classes/anidb.class.php");
@@ -643,6 +646,7 @@ class processData extends Config {
 		}
 		else {
 			echo 'You posted a method of: '.$_POST['method'].' And it has not been setup yet.';
+			print_r($this->ValidatePermission);
 		}
 	}
 	private function addEpisode(){

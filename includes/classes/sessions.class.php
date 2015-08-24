@@ -62,11 +62,14 @@ class Sessions extends Config {
 		}
 		else
 		{
+			// unset the values first.
+			unset($_COOKIE['au']);
+			unset($_COOKIE['hh']);
+			unset($_COOKIE['vd']);
 			// set the sessions
-			setcookie("au", "", time() - (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-			setcookie("hh", "", time() - (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-			setcookie("vd", "", time() - (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-			
+			setcookie("au", "", time() - 3600, "/");
+			setcookie("hh", "", time() - 3600, "/");
+			setcookie("vd", "", time() - 3600, "/");
 			// redirect them to the login page
 			header("location: /login");
 		}
@@ -131,26 +134,32 @@ class Sessions extends Config {
 		}
 	}
 	
-	public function sendEmailToUser($email)
+	public function sendEmailToUser($email,$uid)
 	{
-		$bcc = '';
-		// let's send an email to let them know of the new session.
-		ini_set('sendmail_from', 'no-reply@animeftw.tv');
-		$headers = 'From: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
-			'Reply-To: AnimeFTW.tv <support@animeftw.tv>' . "\r\n" .
-			$bcc .
-			'X-Mailer: PHP/' . phpversion();
+		// First check to see if they have beenw logged in from this specific users logins in the past so we dont spam them.
+		$query = "SELECT `id` FROM `" . $this->MainDB . "`.`user_session` WHERE `agent` = '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "' AND `ip` = '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "'";
+		$result = mysql_query($query);
+		if(mysql_num_rows($result) < 1)
+		{
+			$bcc = '';
+			// let's send an email to let them know of the new session.
+			ini_set('sendmail_from', 'no-reply@animeftw.tv');
+			$headers = 'From: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
+				'Reply-To: AnimeFTW.tv <support@animeftw.tv>' . "\r\n" .
+				$bcc .
+				'X-Mailer: PHP/' . phpversion();
+				
+			$body = "== This is an automated message! ==\n\n";
+			$body .= "Your account was logged in to a new session at AnimeFTW.tv, the details are as follow.\n\n";
+			$body .= "Date: " . date("r") . "\n";
+			$body .= "Browser: " . $this->getBrowser($_SERVER['HTTP_USER_AGENT']) . "\n";
+			$body .= "Operating System: " . $this->getOS($_SERVER['HTTP_USER_AGENT']) . "\n";
+			$body .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n\n";
+			$body .= "If you believe that this session is invalid, please log in to your AnimeFTW.tv account. Navigate to your profile, edit your settings and view the `Session` tab to remove this session.\n\n";
+			$body .= "- Your friends at AnimeFTW.tv.";
 			
-		$body = "== This is an automated message! ==\n\n";
-		$body .= "Your account was logged in to a new session at AnimeFTW.tv, the details are as follow.\n\n";
-		$body .= "Date: " . date("r") . "\n";
-		$body .= "Browser: " . $this->getBrowser($_SERVER['HTTP_USER_AGENT']) . "\n";
-		$body .= "Operating System: " . $this->getOS($_SERVER['HTTP_USER_AGENT']) . "\n";
-		$body .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n\n";
-		$body .= "If you believe that this session is invalid, please log in to your AnimeFTW.tv account. Navigate to your profile, edit your settings and view the `Session` tab to remove this session.\n\n";
-		$body .= "- Your friends at AnimeFTW.tv.";
-		
-		mail($email,"New session at AnimeFTW.tv!", $body, $headers);
-		mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
+			mail($email,"New session at AnimeFTW.tv!", $body, $headers);
+			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
+		}
 	}
 }

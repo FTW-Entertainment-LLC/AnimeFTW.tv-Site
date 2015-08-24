@@ -63,7 +63,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
 							
 							// send an email to the user.
-							$Session->sendEmailToUser($row['Email']);
+							$Session->sendEmailToUser($row['Email'],$row['ID']);
 							if ($last_page == '')
 							{
 								header ( "Location: http://".$_SERVER['HTTP_HOST']."/user/".$userName );
