@@ -2,7 +2,9 @@
 include_once('includes/classes/config.class.php');
 $Config = new Config();
 $Config->buildUserInformation();
+include_once('includes/classes/videos.class.php');
 $v = new AFTWVideos(); //Build our videos
+$v->connectProfile($Config->outputUserInformation());
 
 if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && !isset($_GET['page']))
 {
@@ -37,8 +39,7 @@ else if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && isset($_GET['page'
 	}
 }
 else 
-{
-								  
+{								  
 $PageTitle = 'Site Search - AnimeFTW.tv';
 include('header.php');
 include('header-nav.php');
