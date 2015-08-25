@@ -1688,20 +1688,21 @@ class AFTWVideos extends Config{
 			$subsearch = "fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%'" . $cat;
 		}
 		
-		$query   = "SELECT id, seriesName, fullSeriesName, seoname, ratingLink, category, total_reviews FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
+		$query   = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews`, `romaji`, `kanji` FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
 		
+		mysql_query("SET NAMES 'utf8'"); 
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$ts = mysql_num_rows($result);
 		if($ts > 0)
 		{
 			$i=0;
-			while(list($id,$seriesName,$fullSeriesName,$seoname,$ratingLink,$category,$total_reviews) = mysql_fetch_array($result))
+			while(list($id,$seriesName,$fullSeriesName,$seoname,$ratingLink,$category,$total_reviews,$romaji,$kanji) = mysql_fetch_array($result))
 			{
 				$fullSeriesName = stripslashes($fullSeriesName);
 				echo '<div class="item">'."\n";
 				echo '	<div class="searchdiv">'."\n";
 				echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="http://'.$_SERVER['HTTP_HOST'].'/images/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
-				echo '		<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.checkRomaji($seriesName).'<br />Kanji: '.checkKanji($seriesName).'<br />Categories: '."\n";
+				echo '		<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.$romaji.'<br />Kanji: '.$kanji.'<br />Categories: '."\n";
 				//$episodes = split(" , ",$category);
 				//foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/" . $this->Categories[$value]['name'] . "\">" . $this->Categories[$value]['name'] . "</a>, ";}
 				
