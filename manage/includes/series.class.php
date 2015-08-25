@@ -126,8 +126,8 @@ class Series extends Config {
 						<b>ID #:</b> ' . $id . '<br />
 						<b>Series Name:</b> ' . $fullSeriesName . '<br />
 						<b>Series Site Active?</b> '.$active.'<br />
-						<b>Kanji:</b> '.$romaji.'<br />
-						<b>Romaji:</b> '.$kanji.'<br />
+						<b>Kanji:</b> '.$kanji.'<br />
+						<b>Romaji:</b> '.$romaji.'<br />
 						<b>Video Server:</b> '.$videoServer.'<br />
 						<b>Still Airing?</b> '.$stillRelease.'<br />
 						<b>Movies only?</b> '.$moviesOnly.'<br />
