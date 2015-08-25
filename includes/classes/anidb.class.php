@@ -106,7 +106,7 @@ class AniDB extends Config{ //Needed for modrecord
 			echo 'Cant\'t get Anime information for the time being';
 			return;
 		}
-		
+		@unlink($filename);	
 		$ha = fopen($filename,"w");
 		$fputs = fputs($ha,$string);
 		if($fputs==false){
