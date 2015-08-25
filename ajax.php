@@ -2,7 +2,7 @@
 include_once('includes/classes/config.class.php');
 include_once('includes/classes/search.class.php');
 $Config = new Config();
-$Config->buildUserInformation();
+$Config->buildUserInformation(TRUE);
 $Search = new Search();
 $profileArray = $Config->outputUserInformation();
 
@@ -46,6 +46,7 @@ if(isset($_POST['q']) || isset($_GET['q']))
 		//$episodeSearch = strpos($SearchInput,'episode');
 		$episodeSearch = strpos_arr($SearchInput,array('episode','ep','movie','ova'));
 
+		mysql_query("SET NAMES 'utf8'"); 
 		if($episodeSearch === false)
 		{
 			// episode string NOT found
