@@ -604,6 +604,7 @@ class Config {
 		$browser        =   "Unknown Browser";
 		$browser_array  =   array(
 			'/msie/i'       =>  'Internet Explorer',
+			'/trident/i'    =>  'Internet Explorer',
 			'/firefox/i'    =>  'Firefox',
 			'/safari/i'     =>  'Safari',
 			'/chrome/i'     =>  'Chrome',
