@@ -396,7 +396,6 @@ class AnimeRequest extends Config{
 			ORDER BY $sort
 			LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
 		//echo $query."<br>";
-		
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		
 		$pages_query = "SELECT COUNT(*) AS amount
@@ -487,11 +486,17 @@ class AnimeRequest extends Config{
 				}
 				echo '</div></div>
 				<div class="col" style="width: 60px;">';
-				$this->selectField(array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $status, $id, "status", "changestatus");
-				
+				$StatusValue = $this->selectField(array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $status, $id, "status", "changestatus");
+				// ADDED 29/08/2014 to allow for linking of added series.
+				if($StatusValue == "Live" || $StatusValue == "Done" || $StatusValue == "Ongoing"){
+					$this->displayEnhancedStatusLink($anidb,$StatusValue);
+				}
+				else {
+					echo $StatusValue;
+				}
 				echo '</div>
 				<div class="col" style="width: 50px;">';
-				$this->selectField(array("Series", "OVA", "Movie"), $type, $id, "type", "changetype");
+				echo $this->selectField(array("Series", "OVA", "Movie"), $type, $id, "type", "changetype");
 				echo '</div>
 				<div class="col" style="width: 80px;">';
 				if($episodes==0){echo '?';}else{echo $episodes;};
@@ -1112,7 +1117,7 @@ class AnimeRequest extends Config{
 	private function selectField($msg, $status, $id, $option, $jsfunction){
 		if(!$this->editmode)
 		{
-			echo $msg[$status-1];
+			return $msg[$status-1];
 		}
 		else
 		{
@@ -1374,6 +1379,23 @@ class AnimeRequest extends Config{
 			echo "No one has voted yet.";
 		}
 	}
-	
+	private function displayEnhancedStatusLink($anidb,$status){
+		$query = "SELECT `series`.`seoname` FROM `uestatus`,`series` WHERE `uestatus`.`anidbsid`=$anidb AND `uestatus`.`sid` != 0 AND `series`.`id`=`uestatus`.`sid` LIMIT 0, 1";
+		
+		$result = mysql_query($query);
+		if(!$result){
+			echo "There was an error looking up the enhanced status. Try again later.";
+			exit;
+		}
+		// We check to see if there are any rows for this series, it might be in the ongoing or done section but it hasnt been added yet..
+		$count = mysql_num_rows($result);
+		if($count > 0){
+			$row = mysql_fetch_assoc($result);
+			echo '<a href="/anime/' . $row['seoname'] . '/" target="_blank" title="This is an active series, clicking opens a new tab/window.">' . $status . '</a>';
+		}
+		else {
+			echo $status;
+		}
+	}
 }
 ?>
