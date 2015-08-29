@@ -19,6 +19,7 @@ else
 	$PageTitle = 'AnimeFTW.TV';
 }
 $stats = new AFTWstats();
+$stats->connectProfile($Config->UserArray);
 $top = new AFTWtoplist();
 include('header.php');
 include('header-nav.php');
