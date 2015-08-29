@@ -76,7 +76,26 @@ class Uploads extends Config {
 			{
 				die("There was an error trying to load the selected section. Please let Brad know this was the request url: " . $_SERVER['REQUEST_URI']);
 			}
-			$this->BuildRow($Status);
+			// ADDED: 2015/08/29
+			// Checks if a video tech has 5 or more entries in the claimed/encoding/uploading boards at the same time..
+			if($this->UserArray[2] == 5 && (strtolower($Status) == 'claimed' || strtolower($Status) == 'encoding' || strtolower($Status) == 'uploading')){
+				$query = "SELECT COUNT(id) AS numrows FROM `uestatus` WHERE `user` = " . $this->UserArray[1] . " AND (`status` = 'claimed' OR `status` = 'uploading' OR `status` = 'encoding')";
+				$result = mysql_query($query);
+				if(!$result){
+					echo "There was an error while running the query to count entries, please try again.";
+					exit;
+				}
+				$row = mysql_fetch_assoc($result);
+				$Limited = TRUE;
+				if($row['numrows'] < 5){
+					// they can add a series.
+					$Limited = FALSE;
+				}
+			}
+			else {
+				$Limited = FALSE;
+			}
+			$this->BuildRow($Status,$Limited);
 		}
 		else
 		{
@@ -109,8 +128,27 @@ class Uploads extends Config {
 			{
 			}
 			else {
+				// ADDED: 2015/08/29
+				// Checks if a video tech has 5 or more entries in the claimed/encoding/uploading boards at the same time..
+				if($this->UserArray[2] == 5 && (strtolower($Status) == 'claimed' || strtolower($Status) == 'encoding' || strtolower($Status) == 'uploading')){
+					$query = "SELECT COUNT(id) AS numrows FROM `uestatus` WHERE `user` = " . $this->UserArray[1] . " AND (`status` = 'claimed' OR `status` = 'uploading' OR `status` = 'encoding')";
+					$result = mysql_query($query);
+					if(!$result){
+						echo "There was an error while running the query to count entries, please try again.";
+						exit;
+					}
+					$row = mysql_fetch_assoc($result);
+					$Limited = TRUE;
+					if($row['numrows'] < 5){
+						// they can add a series.
+						$Limited = FALSE;
+					}
+				}
+				else {
+					$Limited = FALSE;
+				}
 				echo '<div id="' . strtolower($Status) . '-wrapper">';
-				$this->BuildRow($Status);
+				$this->BuildRow($Status,$Limited);
 				echo '</div>';
 			}
 		}
@@ -209,15 +247,25 @@ class Uploads extends Config {
 			$this->Visit();
 	}
 	
-	private function BuildRow($Status)
+	private function BuildRow($Status,$Limited)
 	{
 		// $limit, hardcoded amount of entries per section
 		$limit = 60;
 		
+		if($Limited == FALSE){
+			// not limited...
+			$LimitedText = '<a href="#" onClick="UploadsFunction(\'add-series\',\'' . strtolower($Status) . '\'); return false;" title="Add a series to the ' . $Status . ' Section">Add</a>';
+		}
+		else {
+			$LimitedText = '<a href="#" onClick="alert(\'You have 5 entries in Encoding, Uploading or Claimed, finish a series before adding another.\'); return false;" title="Add a series to the ' . $Status . ' Section">Add</a>';
+		}
+		
 		echo '<div class="section-wrapper" style="width:870px;">';
 		echo '<div class="section-header-wrapper" style="width:860px;padding-top:7px;border-bottom:1px solid #e8e8e8;">
 				<div align="left" style="display:inline;width:820px;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:16px;">' . ucwords($Status) . '</div>
-				<div class="add-button" style="float:right;display:inline;width:40px;"><a href="#" onClick="UploadsFunction(\'add-series\',\'' . strtolower($Status) . '\'); return false;" title="Add a series to the ' . $Status . ' Section">Add</a></div>
+				<div class="add-button" style="float:right;display:inline;width:40px;">
+					' . $LimitedText . '
+				</div>
 			</div>';
 		
 		echo '<div class="uploads-row-top" style="width:860px;height:14px;padding-bottom:5px;border-bottom:1px solid #99e6ff;">
