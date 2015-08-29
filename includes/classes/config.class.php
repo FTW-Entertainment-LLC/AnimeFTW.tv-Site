@@ -585,7 +585,8 @@ class Config {
 			'/ipad/i'               =>  'iPad',
 			'/android/i'            =>  'Android',
 			'/blackberry/i'         =>  'BlackBerry',
-			'/webos/i'              =>  'Mobile'
+			'/webos/i'              =>  'Mobile',
+			'/cros/i'               =>  'ChromeOS',
 		);
 
 		foreach($os_array as $regex => $value)
