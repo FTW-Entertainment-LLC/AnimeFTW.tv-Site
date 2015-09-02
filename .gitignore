@@ -3,3 +3,4 @@ error_log
 images/avatars/
 cache/
 .ftpquota
+.idea/

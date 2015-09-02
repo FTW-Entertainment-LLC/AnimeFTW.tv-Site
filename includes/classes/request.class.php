@@ -751,7 +751,7 @@ class AnimeRequest extends Config{
 				</div>
 				<div class="table-row">
 					<div class="col" style="vertical-align:top;">Comment:</div>
-					<div class="col"><textarea rows="10" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;"></textarea></div>
+					<div class="col"><textarea rows="10" cols="50" name="requestanimedetails" id="requestanimedetails" style="resize: none;" placeholder="A comment why you want this series here. Do NOT write or copy/paste the synopsis here."></textarea></div>
 				</div>
 				<br>
 			</form>';

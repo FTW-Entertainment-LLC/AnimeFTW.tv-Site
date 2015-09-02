@@ -502,6 +502,17 @@ class AFTWVideos extends Config{
 		}
 		if($this->UserArray[2] == 3)
 		{
+			$randomValue = rand(0,3);
+			if($randomValue == 0 || $randomValue == 1 || $randomValue == 2){
+				$ad = "<script type='text/javascript' src='//eclkmpbn.com/adServe/banners?tid=58416_90312_0'></script>";
+			}
+			else {
+				$ad = '
+						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
+							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
+							Japanese study aids and more at J-List
+						</a>';
+			}
 			echo '
 			<div id="am-container">
 				<div align="center" style="padding:5px;">Please note, AnimeFTW.tv only streams using a custom build HTML5 Video player, all other players are NOT Supported.</div>
@@ -509,13 +520,10 @@ class AFTWVideos extends Config{
 				<div align="center">
 					<!-- Start J-List Affiliate Code -->
 					<div style="text-align: center; font-size: 12px;">
-						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
-							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
-							Japanese study aids and more at J-List
-						</a>
+						' . $ad . '
 					</div>
 					<!-- End J-List Affiliate Code -->
-					<br />And now a Word from our Sponsors.
+					<br />And now a Word from one of our Partners.
 					<br />
 					<a href="/advanced-signup">Sick of waiting for episodes to start? Signup for advanced membership <br />and help out the site with server costs while having no ads at all!</a>
 					<br /><br />
