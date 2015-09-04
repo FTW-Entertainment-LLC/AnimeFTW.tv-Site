@@ -324,11 +324,12 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation(TRUE);
+	$Config->buildUserInformation(FALSE);
 	$profileArray = $Config->outputUserInformation();
 	
 	include_once('includes/classes/users.class.php');
 	$u = new AFTWUser();
+	$u->connectProfile($profileArray);
 	if(isset($_GET['go']) && $_GET['go'] == 'password'){
 		$u->PasswordSettings($profileArray[2],$_GET['id'],$profileArray[1],$profileArray[3]);
 	}
