@@ -1429,7 +1429,7 @@ class AFTWUser extends Config{
 		{
 			if(($this->UserArray[2] != 1 && $this->UserArray[2] != 2) && ($_POST['uid'] != $this->UserArray[1]))
 			{
-				echo 'You are not authorized for this function. ';
+				echo 'You are not authorized for this function.';
 			}
 			else
 			{
