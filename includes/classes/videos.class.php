@@ -504,7 +504,11 @@ class AFTWVideos extends Config{
 		{
 			$randomValue = rand(0,3);
 			if($randomValue == 0 || $randomValue == 1 || $randomValue == 2){
-				$ad = "<script type='text/javascript' src='//eclkmpbn.com/adServe/banners?tid=58416_90312_0'></script>";
+				$ad = '
+						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
+							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
+							Japanese study aids and more at J-List
+						</a>';
 			}
 			else {
 				$ad = '
@@ -519,7 +523,7 @@ class AFTWVideos extends Config{
 				<div align="center"><form name="counter"><span>Your video will start in:<input type="text" name="d2" style="background:#F7F7F7;border:none;width:16px;"> seconds</span></form></div>
 				<div align="center">
 					<!-- Start J-List Affiliate Code -->
-					<div style="text-align: center; font-size: 12px;">
+					<div style="text-align: center; font-size: 12px;" align="center">
 						' . $ad . '
 					</div>
 					<!-- End J-List Affiliate Code -->
