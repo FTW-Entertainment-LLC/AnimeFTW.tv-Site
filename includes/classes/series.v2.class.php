@@ -169,7 +169,7 @@ class Series extends Config {
 		
 		$returneddata = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
 		$returneddata['total-series'] = $this->bool_totalSeriesAvailable();
-		$returneddata['start'] = $start;
+		$returneddata['start'] = rtrim($start, ',');
 		$returneddata['count'] = $count;
 		// include review information
 		include_once("review.v2.class.php");
