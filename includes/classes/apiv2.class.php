@@ -180,31 +180,29 @@ Class api extends Config {
 		
 		// Scripts..
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
-		$this->determineMethod(); // this will figure out if they are using POST or GET requests
+		$this->determineInput(); // this will figure out if they are using POST or GET requests
 		$this->determineStyle(); // This will figure out if it will be JSON or XML output
 		$this->launchAPI(); // This is the main method for the API, after we have done everything else we need to `initialize` the script.
 	}
 	
 	// function will determine what style it is, AND will also validate to make sure an application key is given
-	private function determineMethod()
+	private function determineInput()
 	{
-		if(isset($_POST['devkey']))
+		$input = Array();
+		// loop through the POST data, adding it to the input array.
+		foreach($_POST as $key => $value)
 		{
-			$this->Method = 'POST'; // This is a posted method, we need to indicate as such.
-			$this->parsePostData(); //we need to have the system parse through the post data.
+			$input[$key] = $value;
 		}
-		else
+		// Look through the GET data, adding it to the input array.
+		foreach($_GET as $key => $value)
 		{
-			if(isset($_GET['devkey']))
-			{
-				$this->Method = 'GET'; // this is a GET based method, we need to let the rest of the script know.
-				$this->parseGetData(); // since it is a GET function, we need to parse through the GET requests.
-			}
-			else
-			{
-				$this->reportResult(401);
-			}
+			$input[$key] = $value;
 		}
+		// This array will contain both POST and GET data.
+		// TODO: A way to handle duplicates, possibly responses back to client 
+		// Letting them know they can only submit one variable per request.
+		$this->Data = $input;
 	}
 	
 	// function will determine if the developer is requesting JSON or XML output. (We can expand later.)
@@ -225,18 +223,6 @@ Class api extends Config {
 		{
 			$this->Style = 'json';
 		}
-	}
-	
-	// function will parse through all POST data and subelegate appropriately.
-	private function parsePostData()
-	{
-		$this->Data = $_POST;
-	}
-	
-	// function will parse through all GET data and subelegate appropriately.
-	private function parseGetData()
-	{
-		$this->Data = $_GET;
 	}
 	
 	// Part of the API includes error reporting to the developers, this will need to output formats that 
