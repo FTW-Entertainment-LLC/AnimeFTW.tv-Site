@@ -110,7 +110,7 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Add a comment to a video'
 		),
-		'add-comment' => array(
+		'logout' => array(
 			'action' => 'logout',
 			'location' => 'user.v2.class.php', // action location
 			'classname' => 'User', // class name
