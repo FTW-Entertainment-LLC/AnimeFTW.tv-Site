@@ -1,5 +1,7 @@
 <?php
 
+$startTime = time();
+
 $base = dirname(__dir__);
 include $base . "/classes/config.class.php";
 
@@ -54,29 +56,48 @@ class ImageChecker extends Config {
 
 }
 
-$startTime = time();
-
 $lastIdQuery = mysql_query("SELECT `value` FROM settings WHERE `name`='verify_image_exists_last_id'");
 if (!$lastIdQuery)
-	die("Failed to get verify_image_exists_last_id.");
+	die("Failed to get verify_image_exists_last_id");
 
 $lastId = mysql_fetch_row($lastIdQuery);
 if (!$lastId)
-	die("Failed to get value from verify_image_exists_last_id.");
+	die("Failed to get value from verify_image_exists_last_id");
 
 //$lastId = intval($lastId); // Do we want to conform it to an Int?
 
-$seriesQuery = mysql_query("SELECT id, videoServer FROM series ORDER BY id LIMIT 1, {$lastId[0]}");
+$seriesQuery = mysql_query("SELECT id, videoServer FROM series WHERE `active`='yes' ORDER BY id LIMIT {$lastId[0]},1");
 if (!$seriesQuery)
-	die("Failed to get next series.");
+	die("Failed to get series");
 
 $series = mysql_fetch_row($seriesQuery);
-if (!$series)
-	die("Failed to get series value for #{$lastId}.");
+if (!$series) {
+	$countCheckQuery = mysql_query("SELECT count(*) FROM `series` WHERE `active`='yes'");
+
+	if ($countCheckQuery) {
+
+		$countCheck = mysql_fetch_row($countCheckQuery);
+		if (!$countCheck) {
+			die("Fatal: Failed to check to see if next ID is safe or end of list");
+		}
+
+		$nextId = $lastId[0];
+		if (++$nextId > $countCheck[0]) {
+			$nextId = 0;
+		}
+
+		$settingsQuery = mysql_query("UPDATE settings SET `value`='{$nextId}' WHERE `id` = '15'");
+
+	} else {
+		die("Fatal: Failed to check to see if next ID is safe or end of list");
+	}
+
+	die("Failed to get series value for #{$lastId[0]}");
+}
 
 $episodesQuery = mysql_query("SELECT epprefix, epnumber, id, seriesname, vidheight, vidwidth, movie, videotype, image FROM episode WHERE `sid`='{$series[0]}'");
 if (!$episodesQuery)
-	die("Failed to get episodes.");
+	die("Failed to get episodes");
 
 $missingImages = 0;
 $lyingImages = 0;
@@ -87,14 +108,16 @@ while ($episode = mysql_fetch_row($episodesQuery)) {
 	$exists = $imageChecker->check("{$episode[0]}_{$episode[1]}_screen.jpeg");
 	if (!$exists) {
 
-		$url = "http://{$series[1]}.animeftw.tv/fetch-pictures-v2.php?node=add&remote=true&seriesName={$episode[3]}&epprefix={$episode[0]}&epnumber={$episode[1]}&duration=360&vidwidth={$episode[4]}&vidheight={$episode[5]}&videotype={$episode[7]}&movie={$episode[8]}";
+		$url = "http://{$series[1]}.animeftw.tv/fetch-pictures-v2.php?node=add&remote=true&seriesName={$episode[3]}&epprefix={$episode[0]}&epnumber={$episode[1]}&durration=360&vidwidth={$episode[4]}&vidheight={$episode[5]}&videotype={$episode[7]}&movie={$episode[8]}";
 
 		$createResult = $imageChecker->createImage($url);
 
 		if ($createResult == "success") {
 			if ($episode[8] != 1) {
-				// TODO: update episode.image = 1
-				mysql_query("UPDATE episode SET image = 1 WHERE `id`='{$episode[2]}'");
+				$imageQuery = mysql_query("UPDATE episode SET image = 1 WHERE `id`='{$episode[2]}'");
+				if (!$imageQuery) {
+					// Log failure to update episode?
+				}
 			}
 		} else {
 			// Log failure where?
@@ -102,6 +125,11 @@ while ($episode = mysql_fetch_row($episodesQuery)) {
 
 	}
 
+}
+
+$settingsQuery = mysql_query("UPDATE settings SET `value`='" . ++$lastId[0] . "' WHERE `id` = '15'");
+if (!$settingsQuery) {
+	// What do...this is unrecoverable :L
 }
 
 $endTime = time();
