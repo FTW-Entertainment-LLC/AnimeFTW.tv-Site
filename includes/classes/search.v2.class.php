@@ -28,10 +28,14 @@ class Search extends Config {
 		$this->UserArray = $input;
 	}
 	
-	public function array_searchSeries($input,$count = NULL)
+	public function array_searchSeries($input = NULL,$count = NULL)
 	{
 		// build the cateogory listing.
 		$this->buildCategories();
+		
+		if($input == NULL){
+			$input = $this->Data['for'];
+		}
 		
 		if(isset($this->Data['start']))
 		{
@@ -63,7 +67,7 @@ class Search extends Config {
 		{
 			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";		
 		}
-		$result  = $this->mysqli->query(($query);
+		$result  = $this->mysqli->query($query);
 		$numrows = $result->num_rows;
 		if($numrows > 0)
 		{
