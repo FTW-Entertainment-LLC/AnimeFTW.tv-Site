@@ -64,15 +64,15 @@ class Search extends Config {
 		if($this->UserArray[2] == 0)
 		{
 			// the user is an unregistered user, give them limited information
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 100";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 50";
 		}
 		else if($this->UserArray[2] == 3)
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASCLIMIT 0, 100";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASCLIMIT 0, 50";
 		}
 		else
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 100";		
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 50";		
 		}
 		$result  = $this->mysqli->query($query);
 		$numrows = $result->num_rows;
@@ -81,6 +81,7 @@ class Search extends Config {
 			$results = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => 'Success, results displayed.');			
 			$results['start'] = rtrim($start, ',');
 			$results['count'] = $count;
+			$results['numrows'] = $numrows;
 			$i = 0;
 			while($row = $result->fetch_assoc())
 			{
