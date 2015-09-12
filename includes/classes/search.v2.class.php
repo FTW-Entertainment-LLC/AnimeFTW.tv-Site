@@ -28,7 +28,7 @@ class Search extends Config {
 		$this->UserArray = $input;
 	}
 	
-	public function array_searchSeries($input = NULL,$count = NULL)
+	public function array_siteSearch($input = NULL,$count = NULL)
 	{
 		// build the cateogory listing.
 		$this->buildCategories();
@@ -57,15 +57,15 @@ class Search extends Config {
 		if($this->UserArray[2] == 0)
 		{
 			// the user is an unregistered user, give them limited information
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
 		}
 		else if($this->UserArray[2] == 3)
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
 		}
 		else
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";		
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";		
 		}
 		$result  = $this->mysqli->query($query);
 		$numrows = $result->num_rows;
@@ -75,17 +75,16 @@ class Search extends Config {
 			$results['start'] = rtrim($start, ',');
 			$results['count'] = $count;
 			$i = 0;
-			while(list($id,$seriesName,$fullSeriesName,$seoname,$ratingLink,$category) = $result->fetch_assoc())
+			while($row = $result->fetch_assoc())
 			{
 				$fullSeriesName = stripslashes($fullSeriesName);
-				$results['results'][$i]['id'] = $id;
+				$results['results'][$i]['id'] = $row['id'];
 				$results['results'][$i]['type'] = 1;
-				$results['results'][$i]['seriesname'] = $seriesName;
-				$results['results'][$i]['fullSeriesName'] = $fullSeriesName;
-				$results['results'][$i]['seoname'] = $seoname;
-				$results['results'][$i]['ratingLink'] = $ratingLink;
-				$results['results'][$i]['category'] = $category;
-				$results['results'][$i]['totalReviews'] = $total_reviews;
+				$results['results'][$i]['seriesname'] = $row['seriesName'];
+				$results['results'][$i]['fullSeriesName'] = $row['fullSeriesName'];
+				$results['results'][$i]['seoname'] = $row['seoname'];
+				$results['results'][$i]['ratingLink'] = $row['ratingLink'];
+				$results['results'][$i]['category'] = $row['category'];
 				$i++;
 			}
 			return $results;
