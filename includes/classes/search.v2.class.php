@@ -34,7 +34,14 @@ class Search extends Config {
 		$this->buildCategories();
 		
 		if($input == NULL){
-			$input = $this->Data['for'];
+			if(!isset($this->Data['for'])){
+				// this is not set, so we cannot let them go through.., so we throw an error and exit the script.
+				return array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => 'Error, missing the for in the search string, please try again.');
+				exit;
+			}
+			else {
+				$input = $this->Data['for'];
+			}
 		}
 		
 		if(isset($this->Data['start']))
@@ -57,15 +64,15 @@ class Search extends Config {
 		if($this->UserArray[2] == 0)
 		{
 			// the user is an unregistered user, give them limited information
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 100";
 		}
 		else if($this->UserArray[2] == 3)
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASCLIMIT 0, 100";
 		}
 		else
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";		
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 100";		
 		}
 		$result  = $this->mysqli->query($query);
 		$numrows = $result->num_rows;
@@ -91,7 +98,7 @@ class Search extends Config {
 		}
 		else
 		{
-			$results = array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
+			$results = array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => 'No series found.');
 			return $results;
 		}
 	}
