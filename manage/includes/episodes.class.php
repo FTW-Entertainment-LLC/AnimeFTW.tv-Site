@@ -671,21 +671,8 @@ class Episodes extends Config {
 			else
 			{
 				$epid = mysql_real_escape_string($_GET['epid']);
-				$results = mysql_query("SELECT episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.Movie, episode.videotype, series.seriesname, series.videoServer FROM episode, series WHERE series.id=episode.sid AND episode.id = '".$epid."'");
-				$row = mysql_fetch_array($results);
-				$url = 'http://' . $row['videoServer'] . '.animeftw.tv/fetch-pictures-v2.php?node=add&remote=true&seriesName=' . $row['seriesname'] . '&epprefix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&durration=360&vidwidth=' . $row['vidwidth'] . '&vidheight=' . $row['vidheight'] . '&videotype=' . $row['videotype'] . '&movie=' . $row['Movie'];
-				//echo $url;
-				$createscript = $this->RemoteBuildEpImage($url);
-				if($createscript == 'Success')
-				{
-					echo '<script>alert("There was an error Creating that Image! Error: '.$createscript.'");</script>';
-				}
-				else
-				{
-					echo '<script>alert("Image Creation for ' . $row['seriesname'] . ' episode ' . $row['epnumber'] . ' Completed!"); </script>';
-				}
-				//echo '<div align="center">Image Creation has been completed<br />Please verify that the image has shown up below. If not, please alert brad asap.<br /><img src="http://static.ftw-cdn.com/site-images/video-images/'.$row['epprefix'].'_'.$row['epnumber'].'_screen.jpeg" alt="" height="200px" /><br /><br /><input type="button" value="Back to Episode Listing" name="edit" id="edit" onclick="ajax_loadContent(\'manageedit\',\''.$link.'&sname='.$row['seriesname'].'\'); return false;"></div>';
-				mysql_query("UPDATE episode SET image = 1, html5 = 1 WHERE id = $epid");
+				mysql_query("UPDATE episode SET image = 0 WHERE id = '{$epid}'");
+				echo "<script>alert(\"Image has been queued for image creation. Please check back in ~15 minutes\");</script>";
 			}
 		}
 	}
