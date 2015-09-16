@@ -671,7 +671,7 @@ class Episodes extends Config {
 			else
 			{
 				$epid = mysql_real_escape_string($_GET['epid']);
-				mysql_query("UPDATE episode SET image = 0 WHERE id = '{$epid}'");
+				mysql_query("UPDATE episode SET image = 0, updated = '" . time() . "' WHERE id = '{$epid}'");
 				echo "<script>alert(\"Image has been queued for image creation. Please check back in ~15 minutes\");</script>";
 			}
 		}

@@ -20,14 +20,13 @@
 	$timepast = $currenttime-900; // 15 minutes, one second 
 	$CronID = 1;
 
-	$newTimepast = date("Y-m-d h:i:s", $timepast);
 	// build the query that will tell us how many there were.
-	$newSql = "SELECT count(id) as id FROM episode WHERE updated IS NOT NULL AND updated >= '{$newTimepast}' AND image = 0";
+	$newSql = "SELECT count(id) as id FROM episode WHERE updated IS NOT NULL AND updated >= '{$timepast}' AND image = 0";
 	$results = mysql_query($newSql);
 	$row = mysql_fetch_array($results);
 	$reportback = '';
 	if($row['id'] > 0){
-		$newSql = "SELECT episode.id, series.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.Movie, episode.videotype, series.id, series.videoServer, series.fullSeriesName FROM episode, series WHERE series.id=episode.sid AND episode.updated IS NOT NULL AND episode.updated >= '{$newTimepast}' AND episode.image = 0";
+		$newSql = "SELECT episode.id, series.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.Movie, episode.videotype, series.id, series.videoServer, series.fullSeriesName FROM episode, series WHERE series.id=episode.sid AND episode.updated IS NOT NULL AND episode.updated >= '{$timepast}' AND episode.image = 0";
 		$query = mysql_query($newSql);
 		while(list($epid,$seriesname,$epprefix,$epnumber,$vidwidth,$vidheight,$Movie,$videotype,$sid,$videoServer,$fullSeriesName) = mysql_fetch_array($query)){
 			$newUrl = "http://{$videoServer}.animeftw.tv/scripts/fetch-pictures.php?seriesName={$seriesname}&seriesId={$sid}&epprefix={$epprefix}&epnumber={$epnumber}&epid={$epid}&duration=360&vidwidth={$vidwidth}&vidheight={$vidheight}&videotype={$videotype}&movie={$Movie}";
@@ -40,7 +39,7 @@
 			} else {
 				// TODO: Store Sprite sheet information from $response->sprite
 
-				mysql_query("UPDATE episode SET image = 1, html5 = 1 WHERE id = {$epid}");
+				mysql_query("UPDATE episode SET image = 1, html5 = 1, updated = '" . time() . "' WHERE id = {$epid}");
 			}
 		}
 	}
