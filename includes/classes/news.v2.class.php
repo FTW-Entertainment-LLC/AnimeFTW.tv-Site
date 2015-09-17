@@ -27,7 +27,7 @@ class News extends Config {
 		WHERE (t.tfid='1' OR t.tfid='2' OR t.tfid='9'" . $addonquery . ") AND p.pistopic='1' AND p.puid=t.tpid AND p.ptid=t.tid AND f.fid=t.tfid ORDER BY t.tid DESC LIMIT 0, 8";
 		$result = $this->mysqli->query($query);
 		
-		$returndata = array('status' => $this->MessageCodes["Result Codes"]["201"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+		$returndata = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["200"]["Message"]);
 		$count = $result->num_rows;
 		if($count > 0)
 		{
