@@ -56,6 +56,7 @@ class Episode extends Config {
 				// a result was found, build the array for return.
 				$results = '';
 				$videotype = $row['videotype'];
+				$results['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
 				$Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserID);
 				foreach($row AS $key => &$value)
 				{
@@ -98,13 +99,13 @@ class Episode extends Config {
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["03-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-400"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
 			}
 		}
 		else
 		{
 			// Nothing matched the information give, send back to them.
-			return array('status' => $this->MessageCodes["Result Codes"]["03-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-400"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
 		}
 	}
 	
@@ -142,6 +143,7 @@ class Episode extends Config {
 			
 			$finalresults = array();
 			// add the series specific info to the output
+			$finalresults['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
 			$finalresults['series-id'] = $this->Data['id']; // supply the series id
 			$finalresults['total-episodes'] = $this->bool_totalEpisodeAvailable($this->Data['id']); // total episodes in this series
 			$finalresults['count'] = $count; // supply the count
@@ -204,13 +206,13 @@ class Episode extends Config {
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["03-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-401"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["401"]["Message"]);
 			}
 		}
 		else
 		{
 			// Nothing matched the information give, send back to them.
-			return array('status' => $this->MessageCodes["Result Codes"]["03-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-400"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
 		}
 	}
 	
@@ -256,7 +258,7 @@ class Episode extends Config {
 					}
 					else
 					{
-						return array('status' => $this->MessageCodes["Result Codes"]["201"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+						return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["200"]["Message"]);
 					}
 				}
 				else
@@ -278,7 +280,7 @@ class Episode extends Config {
 					}
 					else
 					{
-						return array('status' => $this->MessageCodes["Result Codes"]["201"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+						return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["200"]["Message"]);
 					}
 				}
 			}
@@ -286,7 +288,7 @@ class Episode extends Config {
 		else
 		{
 			// missing some of the data.
-			return array('status' => $this->MessageCodes["Result Codes"]["03-402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-402"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["402"]["Message"]);
 		}
 	}
 }
