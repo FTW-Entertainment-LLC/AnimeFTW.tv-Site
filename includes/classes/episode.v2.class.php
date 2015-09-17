@@ -116,7 +116,7 @@ class Episode extends Config {
 		$finalresults = array();
 		$where = "";
 		$orderBy = "`episode`.`epnumber`";
-		
+		$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`";
 		// limit the query by a certain amount
 		if(isset($this->Data['count']) && is_numeric($this->Data['count']))
 		{
@@ -169,6 +169,7 @@ class Episode extends Config {
 			}
 			else {
 			}
+			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`fullSeriesName`, `series`.`seoname`";
 			$orderBy = "`episode`.`date` DESC";
 		}
 		else {
@@ -178,22 +179,21 @@ class Episode extends Config {
 			// Either this is a single series or the latest episodes listing, having neither is impossible.	
 			// change to UTF-8 so we can use kanji and romaji
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname` FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
 			//execute the query
-			echo $query;
 			$result = $this->mysqli->query($query);
 				
 			$finalresults = array();
 			// add the series specific info to the output
-			$finalresults['series-id'] = $this->Data['id']; // supply the series id
-			$finalresults['total-episodes'] = $this->bool_totalEpisodeAvailable($this->Data['id']); // total episodes in this series
-			$finalresults['count'] = $count; // supply the count
-			$finalresults['start'] = $startpoint; // supply the count
 				
 			$count = $result->num_rows;
 			if($count > 0)
 			{
 				$finalresults['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
+				$finalresults['series-id'] = $this->Data['id']; // supply the series id
+				$finalresults['total-episodes'] = $this->bool_totalEpisodeAvailable($this->Data['id']); // total episodes in this series
+				$finalresults['count'] = $count; // supply the count
+				$finalresults['start'] = $startpoint; // supply the count
 				// include the comment clas
 				include_once("comments.v2.class.php");
 				$Comment = new Comment(0);
@@ -230,7 +230,7 @@ class Episode extends Config {
 								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 							}
 						}
-						else if($key == 'seriesname' || $key == 'html5' || $key == 'sid')
+						else if($key == 'seriesname' || $key == 'html5')
 						{
 							// we don't need this..
 						}
