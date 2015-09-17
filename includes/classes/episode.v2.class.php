@@ -152,12 +152,12 @@ class Episode extends Config {
 			if(isset($this->Data['timeframe'])) {
 				// They can use m, s  or h at the end, this way we can do &timeframe=15m or timeframe=60s
 				$timeType = substr($this->Data['timeframe'], -1);
-				$timeFrame = substr($this->Date['timeframe'], 0, -1);
-				if($timeType == 'm') {
+				$timeFrame = substr($this->Data['timeframe'], 0, -1);
+				if(strtolower($timeType) == 'm') {
 					// Minutes timeframe.
 					$finalTime = time()-($timeFrame*60);
 				}
-				elseif($timeType == 'h') {
+				elseif(strtolower($timeType) == 'h') {
 					// hours
 					$finalTime = time()-($timeFrame*60*60);
 				}
@@ -180,6 +180,7 @@ class Episode extends Config {
 			$this->mysqli->query("SET NAMES 'utf8'");
 			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname` FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
 			//execute the query
+			echo $query;
 			$result = $this->mysqli->query($query);
 				
 			$finalresults = array();
