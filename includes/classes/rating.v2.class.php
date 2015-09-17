@@ -84,11 +84,11 @@ class Rating extends Config {
 			$result = $this->mysqli->query($query);
 			if(!$result)
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["06-400"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["201"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["200"]["Message"]);
 			}
 		}
 	}
