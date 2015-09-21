@@ -57,7 +57,7 @@ class Anime extends Config {
 	
 	private function buildEpisodeDisplay($epid)
 	{
-		$query = "SELECT series.fullSeriesName, episode.epnumber, episode.epprefix, episode.epname, episode.subGroup, episode.date, episode.image FROM episode, series WHERE series.seriesName=episode.seriesname AND episode.id = " . $this->mysqli->real_escape_string($epid);
+		$query = "SELECT series.id, series.fullSeriesName, episode.epnumber, episode.epprefix, episode.epname, episode.subGroup, episode.date, episode.image FROM episode, series WHERE series.seriesName=episode.seriesname AND episode.id = " . $this->mysqli->real_escape_string($epid);
 		$results = $this->mysqli->query($query);
 		
 		if(!$results)
@@ -67,7 +67,7 @@ class Anime extends Config {
 		}
 		$row = $results->fetch_assoc();
 		echo '<div align="left" style="padding:5px;font-size:16px;">Episode ' . $row['epnumber']  . ' of ' . $row['fullSeriesName'] . ' - ' . $row['epname'] . ' </div>';
-		$imagelink = $this->ImageHost . "/video-images/" . $row["epprefix"] . "_" . $row["epnumber"] . "_screen.jpeg";
+		$imagelink = "{$this->ImageHost}/video-images/{$row['id']}/{$epid}_screen.jpeg";
 		if($row['image'] == 0)
 		{ //If it doesn't have a image..
 			$imagelink = $this->ImageHost."/video-images/noimage.png";
@@ -250,7 +250,7 @@ class Anime extends Config {
 	
 	private function DisplayEpisodes($seriesName,$fullSeriesName)
 	{
-		$query = "SELECT id, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, uid, report, videotype, videoList, image, ova, hd FROM episode WHERE seriesname = '". $this->mysqli->real_escape_string($seriesName). "' AND Movie = 0 ORDER BY epnumber";
+		$query = "SELECT id, sid, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, uid, report, videotype, videoList, image, ova, hd FROM episode WHERE seriesname = '". $this->mysqli->real_escape_string($seriesName). "' AND Movie = 0 ORDER BY epnumber";
 		$results = $this->mysqli->query($query);
 		if(!$results)
 		{
@@ -266,7 +266,7 @@ class Anime extends Config {
 		
 		while($row = $results->fetch_assoc()) 
 		{
-			$imagelink = $this->ImageHost . "/video-images/" . $row["epprefix"] . "_" . $row["epnumber"] . "_screen.jpeg";
+			$imagelink = "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 			if($row['image'] == 0)
 			{ //If it doesn't have a image..
 				$imagelink = $this->ImageHost."/video-images/noimage.png";

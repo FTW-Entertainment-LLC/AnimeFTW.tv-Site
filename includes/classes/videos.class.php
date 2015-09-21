@@ -547,7 +547,7 @@ class AFTWVideos extends Config{
 		}
 		else
 		{
-			$epimage = $this->CDNHost . '/video-images/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_screen.jpeg';
+			$epimage = "{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_screen.jpeg";
 		}
 		// Autoplay functionality.
 		$autoplay = "";
@@ -1230,7 +1230,7 @@ class AFTWVideos extends Config{
 			}
 			else
 			{
-				$epimage = $this->CDNHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';
+				$epimage = "{$this->CDNHost}/video-images/{$SeriesArray[0]}/{$row['id']}_screen.jpeg";
 			}
 			if($row['epnumber'] == $EpisodeArray[0])
 			{
@@ -1506,7 +1506,7 @@ class AFTWVideos extends Config{
 				}
 				else 
 				{
-					$episodepreview = $this->CDNHost . '/video-images/'.$epPrefix.'_'.$epnumber.'_screen.jpeg';
+					$episodepreview = "{$this->CDNHost}/video-images/{$sid}/{$id}_screen.jpeg";
 				}
 				$epname    = stripslashes($epname);
 				
@@ -1830,7 +1830,7 @@ class AFTWVideos extends Config{
 	public function showEpisodeTooltip($id,$type = 0)
 	{
 		$id = mysql_real_escape_string($id);
-		$query = "SELECT `id`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `html5`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
+		$query = "SELECT `id`, `sid`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `html5`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
 		$result = mysql_query($query);
 		
 		$row = mysql_fetch_assoc($result);
@@ -1903,7 +1903,7 @@ class AFTWVideos extends Config{
 			}
 			else 
 			{
-				$episodepreview = $this->CDNHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';
+				$episodepreview = "{$this->CDNHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 			}
 			$DisplayImage = '
 			<div>

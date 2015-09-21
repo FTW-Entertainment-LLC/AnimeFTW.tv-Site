@@ -166,7 +166,7 @@ class Episode extends Config {
 					{
 						if($key == 'image')
 						{
-							$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';						
+							$finalresults['results'][$i]['image'] = "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 						}
 						else if($key == 'hd')
 						{
