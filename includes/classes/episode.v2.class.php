@@ -136,7 +136,7 @@ class Episode extends Config {
 			}
 			// change to UTF-8 so we can use kanji and romaji
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`spriteId`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname`, `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount FROM `" . $this->MainDB . "`.`episode`, LEFT JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episode`.`spriteId`, `" . $this->MainDB . "`.`series` WHERE `episode`.`sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` LIMIT $startpoint, $count";
+			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`spriteId`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname`, `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount FROM `" . $this->MainDB . "`.`episode` LEFT JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episode`.`spriteId`, `" . $this->MainDB . "`.`series` WHERE `episode`.`sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` LIMIT $startpoint, $count";
 			//execute the query
 			$result = $this->mysqli->query($query);
 			
@@ -215,7 +215,7 @@ class Episode extends Config {
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["03-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-401"]["Message"], 'debug' => $this->mysqli->error, "sql" => $query);
+				return array('status' => $this->MessageCodes["Result Codes"]["03-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-401"]["Message"]);
 			}
 		}
 		else
