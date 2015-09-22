@@ -1,70 +1,70 @@
 (function() {
   var defaults = {
-      0: {
-        src: 'example-thumbnail.png'
-      }
-    },
-    extend = function() {
-      var args, target, i, object, property;
-      args = Array.prototype.slice.call(arguments);
-      target = args.shift() || {};
-      for (i in args) {
-        object = args[i];
-        for (property in object) {
-          if (object.hasOwnProperty(property)) {
-            if (typeof object[property] === 'object') {
-              target[property] = extend(target[property], object[property]);
-            } else {
-              target[property] = object[property];
+        0: {
+          src: 'example-thumbnail.png'
+        }
+      },
+      extend = function() {
+        var args, target, i, object, property;
+        args = Array.prototype.slice.call(arguments);
+        target = args.shift() || {};
+        for (i in args) {
+          object = args[i];
+          for (property in object) {
+            if (object.hasOwnProperty(property)) {
+              if (typeof object[property] === 'object') {
+                target[property] = extend(target[property], object[property]);
+              } else {
+                target[property] = object[property];
+              }
             }
           }
         }
-      }
-      return target;
-    },
-    getComputedStyle = function(el, pseudo) {
-      return function(prop) {
-        if (window.getComputedStyle) {
-          return window.getComputedStyle(el, pseudo)[prop];
-        } else {
-          return el.currentStyle[prop];
-        }
-      };
-    },
-    offsetParent = function(el) {
-      if (el.nodeName !== 'HTML' && getComputedStyle(el)('position') === 'static') {
-        return offsetParent(el.offsetParent);
-      }
-      return el;
-    },
-    getVisibleWidth = function(el, width) {
-      var clip;
-
-      if (width) {
-        return parseFloat(width);
-      }
-
-      clip = getComputedStyle(el)('clip');
-      if (clip !== 'auto' && clip !== 'inherit') {
-        clip = clip.split(/(?:\(|\))/)[1].split(/(?:,| )/);
-        if (clip.length === 4) {
-          return (parseFloat(clip[1]) - parseFloat(clip[3]));
-        }
-      }
-      return 0;
-    },
-    getScrollOffset = function() {
-      if (window.pageXOffset) {
-        return {
-          x: window.pageXOffset,
-          y: window.pageYOffset
+        return target;
+      },
+      getComputedStyle = function(el, pseudo) {
+        return function(prop) {
+          if (window.getComputedStyle) {
+            return window.getComputedStyle(el, pseudo)[prop];
+          } else {
+            return el.currentStyle[prop];
+          }
         };
-      }
-      return {
-        x: document.documentElement.scrollLeft,
-        y: document.documentElement.scrollTop
+      },
+      offsetParent = function(el) {
+        if (el.nodeName !== 'HTML' && getComputedStyle(el)('position') === 'static') {
+          return offsetParent(el.offsetParent);
+        }
+        return el;
+      },
+      getVisibleWidth = function(el, width) {
+        var clip;
+
+        if (width) {
+          return parseFloat(width);
+        }
+
+        clip = getComputedStyle(el)('clip');
+        if (clip !== 'auto' && clip !== 'inherit') {
+          clip = clip.split(/(?:\(|\))/)[1].split(/(?:,| )/);
+          if (clip.length === 4) {
+            return (parseFloat(clip[1]) - parseFloat(clip[3]));
+          }
+        }
+        return 0;
+      },
+      getScrollOffset = function() {
+        if (window.pageXOffset) {
+          return {
+            x: window.pageXOffset,
+            y: window.pageYOffset
+          };
+        }
+        return {
+          x: document.documentElement.scrollLeft,
+          y: document.documentElement.scrollTop
+        };
       };
-    };
 
   /**
    * register the thubmnails plugin
@@ -112,7 +112,7 @@
 
     // keep track of the duration to calculate correct thumbnail to display
     duration = player.duration();
-    
+
     // when the container is MP4
     player.on('durationchange', function(event) {
       duration = player.duration();
@@ -181,7 +181,7 @@
     progressControl.on('touchmove', moveListener);
 
     moveCancel = function(event) {
-      div.style.left = '-10000000000000000000000000000000000000000000000000000000px';
+      div.style.left = '-100000px';
     };
 
     // move the placeholder out of the way when not hovering
