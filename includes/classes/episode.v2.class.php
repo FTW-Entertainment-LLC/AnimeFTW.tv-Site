@@ -215,7 +215,7 @@ class Episode extends Config {
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["03-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-401"]["Message"], 'debug' => $this->mysqli->error);
+				return array('status' => $this->MessageCodes["Result Codes"]["03-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["03-401"]["Message"], 'debug' => $this->mysqli->error, "sql" => $query);
 			}
 		}
 		else
