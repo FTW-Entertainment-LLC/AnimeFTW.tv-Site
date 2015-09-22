@@ -136,7 +136,7 @@ class Episode extends Config {
 			}
 			// change to UTF-8 so we can use kanji and romaji
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname` FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `episode`.`sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` LIMIT $startpoint, $count";
+			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`spriteId`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname`, `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series`, INNER JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episodes`.`spriteId` WHERE `episode`.`sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` LIMIT $startpoint, $count";
 			//execute the query
 			$result = $this->mysqli->query($query);
 			
@@ -167,6 +167,17 @@ class Episode extends Config {
 						if($key == 'image')
 						{
 							$finalresults['results'][$i]['image'] = "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
+						}
+						else if($key == "spriteId" && $value != null)
+						{
+							$finalresults['results'][$i]['sprite'] = [
+								"image"	=> "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg",
+								"width" => $row['spriteWidth'],
+								"height" => $row['spriteHeight'],
+								"total-width" => $row['spriteTotalWidth'],
+								"rate"	=> $row['spriteRate'],
+								"count"	=> $row['spriteCount'],
+							];
 						}
 						else if($key == 'hd')
 						{
