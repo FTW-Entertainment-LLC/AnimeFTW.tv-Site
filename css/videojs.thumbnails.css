@@ -33,5 +33,5 @@
 /* Required for Chrome, to prevent Horizontal Scroll bar from Appearing. */
 body {
   max-width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
