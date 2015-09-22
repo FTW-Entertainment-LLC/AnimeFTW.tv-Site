@@ -805,6 +805,7 @@ class AFTWVideos extends Config{
 			// Sprite exists. Lets load the Sprite Data
 
 			echo <<<HDOC
+
 			<script type="text/javascript">
 				video.thumbnails({\n
 HDOC;
