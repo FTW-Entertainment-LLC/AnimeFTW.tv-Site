@@ -823,7 +823,7 @@ HDOC;
 				echo "\t\t\t\t\t\t\theight: '{$SpriteArray['height']}px', \n";
 				echo "\t\t\t\t\t\t\tclip: 'rect(0, " . ($SpriteArray['width'] * ($i + 1)) . "px, {$SpriteArray['height']}px, " . ($SpriteArray['width'] * $i) . "px)'\n";
 
-				echo "\t\t\t\t\t\t}";
+				echo "\t\t\t\t\t\t}\n";
 
 				echo "\t\t\t\t\t},\n";
 			}
