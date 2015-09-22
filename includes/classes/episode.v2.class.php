@@ -190,7 +190,7 @@ class Episode extends Config {
 						{
 							// we don't need this..
 						}
-						else if(substr("sprite", 0, $key))
+						else if(strpos("sprite", $key))
 						{
 							if (!isset($finalresults['results'][$i]['sprite']) && $row['spriteId'] != null)
 								$finalresults['results'][$i]['sprite'] = [
