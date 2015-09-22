@@ -29,3 +29,9 @@
 .vjs-progress-control:active .vjs-thumbnail:active {
   opacity: 0;
 }
+
+/* Required for Chrome, to prevent Horizontal Scroll bar from Appearing. */
+body {
+  max-width: 100%;
+  overflow: hidden;
+}
