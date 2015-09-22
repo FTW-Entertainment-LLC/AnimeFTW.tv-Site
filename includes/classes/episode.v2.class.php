@@ -186,15 +186,15 @@ class Episode extends Config {
 								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 							}
 						}
-						else if($key == 'seriesname' || $key == 'html5' || $key == 'sid')
+						else if($key == 'seriesname' || $key == 'html5' || $key == 'sid' || $key == 'spriteId')
 						{
 							// we don't need this..
 						}
-						else if(strpos("sprite", $key))
+						else if(strpos($key, "sprite") !== false)
 						{
 							if (!isset($finalresults['results'][$i]['sprite']) && $row['spriteId'] != null)
 								$finalresults['results'][$i]['sprite'] = [
-									"image"	=> "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg",
+									"image"	=> "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_sprite.jpeg",
 									"width" => $row['spriteWidth'],
 									"height" => $row['spriteHeight'],
 									"total-width" => $row['spriteTotalWidth'],
