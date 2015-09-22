@@ -277,15 +277,15 @@ class AFTWVideos extends Config{
 		else if($mov == 'movie'){$movvar = "AND Movie='1' AND ova='0'";}
 		else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 		else {$movvar = NULL;}
-		$query   = "SELECT `id`, `sid`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `html5`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
+		$query   = "SELECT `id`, `sid`, `spriteId`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `html5`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$numEpisodes = mysql_num_rows($result);
 		if($numEpisodes == 0){
-			$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+			$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null);
 		}
 		else {
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
-			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],$row['html5'],$row['sid'],$row['id'],$row['views'],$row['Movie']);
+			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],$row['html5'],$row['sid'],$row['id'],$row['views'],$row['Movie'],$row['spriteId']);
 		}
 		return $episodeArray;
 	}
@@ -312,6 +312,26 @@ class AFTWVideos extends Config{
 			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],$row['html5'],$row['hd'],$row['kanji'],$row['romaji']);
 		}
 		return $seriesArray;
+	}
+
+	#-------------------------------------------------------------
+	# Function showSpriteInfo
+	# Give an Episode Id and it will return sprite info
+	# @Param: $EpisodeArray[18]
+	#-------------------------------------------------------------
+
+	private function showSpriteInfo($spriteId) {
+		if ($spriteId == null)
+			return false;
+
+		$sql	= "SELECT width, height, totalWidth, rate, count FROM sprites WHERE id='{$spriteId}'";
+		$query	= mysql_query($sql) or die('Error : ' . mysql_error());
+		$count	= mysql_num_rows($query);
+
+		if ($count == 0)
+			return false;
+
+		return mysql_fetch_array($query); // TODO: Switch to mysql_fetch_assoc and use Integer based indexing? -Nikey
 	}
 	
 	#-------------------------------------------------------------
@@ -449,7 +469,7 @@ class AFTWVideos extends Config{
 	# if the user's ip is not in the database already
 	#-------------------------------------------------------------
 	
-	private function Episode_Display($SeriesArray,$EpisodeArray,$moevar)
+	private function Episode_Display($SeriesArray,$EpisodeArray,$SpriteArray,$moevar)
 	{
 		function getUrl()
 		{
@@ -744,7 +764,7 @@ class AFTWVideos extends Config{
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
-				videojs(\'#aftw-player\', {
+				var video = videojs(\'#aftw-player\', {
 					plugins : {
 						resolutionSelector: {
 							// Pass any options here
@@ -767,7 +787,7 @@ class AFTWVideos extends Config{
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
-				videojs( \'#aftw-player\', {
+				var video = videojs( \'#aftw-player\', {
 					plugins : {
 						hotkeys: {
 							volumeStep: 0.1,
@@ -779,6 +799,42 @@ class AFTWVideos extends Config{
 				});
 			</script>';
 		}
+
+		// Added 9/22/15 by Nikey646, Output for sprite sheets if they exist.
+		if ($SpriteArray) {
+			// Sprite exists. Lets load the Sprite Data
+
+			echo <<<HDOC
+			<script type="text/javascript">
+				video.thumbnails({\n
+HDOC;
+
+			// TODO: Change "\t" to "	" if that is the preferred way of indenting html output -Nikey
+
+			for($i = 0; $i < $SpriteArray['count']; $i++) {
+				echo "\t\t\t\t\t" . $i * $SpriteArray['rate'] . ": {\n";
+				if ($i === 0)
+					echo "\t\t\t\t\t\tsrc: \"{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
+				echo "\t\t\t\t\t\tstyle: {\n";
+
+				echo "\t\t\t\t\t\t\tleft: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
+				if ($i == 0)
+					echo "\t\t\t\t\t\t\twidth: '{$SpriteArray['totalWidth']}px',\n";
+				echo "\t\t\t\t\t\t\theight: '{$SpriteArray['height']}px', \n";
+				echo "\t\t\t\t\t\t\tclip: 'rect(0, " . ($SpriteArray['width'] * ($i + 1)) . "px, {$SpriteArray['height']}px, " . ($SpriteArray['width'] * $i) . "px)'\n";
+
+				echo "\t\t\t\t\t\t}";
+
+				echo "\t\t\t\t\t},\n";
+			}
+
+			echo <<<HDOC
+				});
+			</script>
+HDOC;
+
+		}
+
 	}
 	
 	#------------------------------------------------------------
@@ -821,13 +877,15 @@ class AFTWVideos extends Config{
 						
 						if($EpisodeArray[11] == 1)
 						{ //Just to be SUPER sure, we need to check to make sure this episode is valid for this series.. 1 = awesomesauce
-							
+
 							if($this->UserArray[0] == 0 || $this->checkBanned() == FALSE)
 							{
 								echo '<br /><br /><br /><br /><br /><br /><div align="center" style="font-size:20px;">Error 404: There was no video found, please go back and try again.</div>';
 							}
 							else
 							{
+								$SpriteArray = $this->showSpriteInfo($EpisodeArray[18]);
+
 								echo "<div id='va'><br /><br /><br />";
 								echo "<span class='head'><a href='/anime/".$SeriesArray[2]."/' style='color:#000;'>".$SeriesArray[3]."</a></span><span class='headend'>, ".$type1." #".$EpisodeArray[0]."</span>";
 								echo "</div>";	
@@ -863,7 +921,7 @@ class AFTWVideos extends Config{
 								<div id="video-wrapper">
 									<div id="video-left-column">
 										<div class="video-player">';
-										 echo $this->Episode_Display($SeriesArray,$EpisodeArray,$moevar);
+										 echo $this->Episode_Display($SeriesArray,$EpisodeArray,$SpriteArray,$moevar);
 										 echo '
 										</div>
 										<div class="video-information">

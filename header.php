@@ -81,9 +81,11 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	{
 		// New Video CSS goes here
 		echo "\n".'	<link rel="stylesheet" href="/css/video-player.css?v=4.12.5" type="text/css" />'."\n";
+		echo '	<link rel="stylesheet" href="/css/videojs.thumbnails.css?v=4.12.5" type="text/css" />'."\n";
 		echo '	<script type="text/javascript" src="/scripts/video.js?v=4.12.5"></script>'."\n";
 		echo '	<script type="text/javascript" src="/scripts/video-quality-selector.js?v=4.12.5"></script>'."\n";
 		echo '	<script type="text/javascript" src="/scripts/videojs-hotkeys.min.js?v=4.12.5"></script>'."\n";
+		echo '	<script type="text/javascript" src="/scripts/videojs.thumbnails.js?v=4.12.5"></script>'."\n";
 	}
 	function psa($profileArray,$type = NULL){
 		if($type == 1){ // 1 is the users page stype..
