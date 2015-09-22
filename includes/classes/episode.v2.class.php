@@ -168,17 +168,6 @@ class Episode extends Config {
 						{
 							$finalresults['results'][$i]['image'] = "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 						}
-						else if($key == "spriteId" && $value != null)
-						{
-							$finalresults['results'][$i]['sprite'] = [
-								"image"	=> "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg",
-								"width" => $row['spriteWidth'],
-								"height" => $row['spriteHeight'],
-								"total-width" => $row['spriteTotalWidth'],
-								"rate"	=> $row['spriteRate'],
-								"count"	=> $row['spriteCount'],
-							];
-						}
 						else if($key == 'hd')
 						{
 							if($value == 2)
@@ -200,6 +189,18 @@ class Episode extends Config {
 						else if($key == 'seriesname' || $key == 'html5' || $key == 'sid')
 						{
 							// we don't need this..
+						}
+						else if(substr("sprite", 0, $key))
+						{
+							if (!isset($finalresults['results'][$i]['sprite']) && $row['spriteId'] != null)
+								$finalresults['results'][$i]['sprite'] = [
+									"image"	=> "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg",
+									"width" => $row['spriteWidth'],
+									"height" => $row['spriteHeight'],
+									"total-width" => $row['spriteTotalWidth'],
+									"rate"	=> $row['spriteRate'],
+									"count"	=> $row['spriteCount'],
+								];
 						}
 						else
 						{
