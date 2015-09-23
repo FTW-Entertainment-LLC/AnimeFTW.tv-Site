@@ -66,7 +66,7 @@ class toplist extends Config {
 		if($result)
 		{
 			$returnarray['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
-			$returnarray['message'] = $this->MessageCodes["Result Codes"]["200"]["Message"];
+			$returnarray['message'] = 'Request Successful.';
 			$returnarray['count'] = $count;
 			$i=0;
 			include_once("rating.v2.class.php");
