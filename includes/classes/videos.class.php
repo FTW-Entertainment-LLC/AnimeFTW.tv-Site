@@ -505,28 +505,28 @@ class AFTWVideos extends Config{
 			$randomValue = rand(0,3);
 			if($randomValue == 0 || $randomValue == 1 || $randomValue == 2){
 				$ad = '
-						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
-							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
-							Japanese study aids and more at J-List
-						</a>';
+						<!-- Begin BidVertiser code -->
+						<SCRIPT SRC="http://bdv.bidvertiser.com/BidVertiser.dbm?pid=341006&bid=842661" TYPE="text/javascript"></SCRIPT>
+						<!-- End BidVertiser code -->
+						<div>Issue with this ad? <a href="mailto:support@animeftw.tv?Subject=Issue%20with%20Bidvertizer%20Ad">Click here to send us an email!</a></div>';
 			}
 			else {
 				$ad = '
+						<!-- Start J-List Affiliate Code -->
 						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
 							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
 							Japanese study aids and more at J-List
-						</a>';
+						</a>
+						<!-- End J-List Affiliate Code -->';
 			}
 			echo '
 			<div id="am-container">
 				<div align="center" style="padding:5px;">Please note, AnimeFTW.tv only streams using a custom build HTML5 Video player, all other players are NOT Supported.</div>
 				<div align="center"><form name="counter"><span>Your video will start in:<input type="text" name="d2" style="background:#F7F7F7;border:none;width:16px;"> seconds</span></form></div>
 				<div align="center">
-					<!-- Start J-List Affiliate Code -->
 					<div style="text-align: center; font-size: 12px;" align="center">
 						' . $ad . '
 					</div>
-					<!-- End J-List Affiliate Code -->
 					<br />And now a Word from one of our Partners.
 					<br />
 					<a href="/advanced-signup">Sick of waiting for episodes to start? Signup for advanced membership <br />and help out the site with server costs while having no ads at all!</a>
