@@ -582,7 +582,7 @@ class AFTWVideos extends Config{
 		// All of the code for the HTML5 player is here.
 		echo '
 			<div id="aftw-video-wrapper"' . $hiddenstyle . ' align="center">
-				<video id="aftw-player" class="video-js vjs-default-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . '>';
+				<video id="aftw-player" class="video-js vjs-sublime-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . '>';
 				
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.				
