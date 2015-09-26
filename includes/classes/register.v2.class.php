@@ -11,7 +11,7 @@ class Register extends Config {
 	public $Data, $UserID, $DevArray;
 	private $AllowSpecialChars;
 	
-	private $MessageCodes = array (
+	$MessageCodes = array (
 		'About' => 'These are the available status codes for Registration feedback.',
 		'Result Codes' => array(
 			'01-200' => array(
@@ -43,7 +43,6 @@ class Register extends Config {
 				'Status' => '01-404',
 				'Message' => 'There was a missing registration piece, please try again.',
 				'Explanation' => 'A portion of the registration details were missing, so we have to make the user retry the steps.'
-			)
 		)
 	);
 
