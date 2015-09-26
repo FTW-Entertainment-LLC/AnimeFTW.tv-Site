@@ -80,24 +80,24 @@ class Register extends Config {
 					else
 					{
 						// failed.. just failed..
-						return array('status' => $this->MessageCodes["Result Codes"]["403"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-403"]["Message"]);
+						return array('status' => $this->MessageCodes["Result Codes"]["403"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["403"]["Message"]);
 					}
 				}
 				else
 				{
 					// The username was in use on the system already, let's let them know.
-					return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-400"]["Message"]);					
+					return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);					
 				}
 			}
 			else
 			{
 				// the email was not valid, we will need to let them know
-				return array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-402"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["402"]["Message"]);
 			}
 		}
 		else
 		{
-			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-404"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["404"]["Message"]);
 		}
 	}
 	
