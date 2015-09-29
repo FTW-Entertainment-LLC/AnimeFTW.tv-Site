@@ -82,7 +82,7 @@ class Episode extends Config {
 							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 						}
 					}
-					else if($key == 'seriesname' || $key == 'html5' || $key == 'sid')
+					else if($key == 'seriesname' || $key == 'sid')
 					{
 						// we don't need this..
 					}
@@ -230,7 +230,7 @@ class Episode extends Config {
 								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 							}
 						}
-						else if($key == 'seriesname' || $key == 'html5')
+						else if($key == 'seriesname')
 						{
 							// we don't need this..
 						}

@@ -277,7 +277,7 @@ class AFTWVideos extends Config{
 		else if($mov == 'movie'){$movvar = "AND Movie='1' AND ova='0'";}
 		else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 		else {$movvar = NULL;}
-		$query   = "SELECT `id`, `sid`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `html5`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
+		$query   = "SELECT `id`, `sid`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$numEpisodes = mysql_num_rows($result);
 		if($numEpisodes == 0){
@@ -285,7 +285,7 @@ class AFTWVideos extends Config{
 		}
 		else {
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
-			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],$row['html5'],$row['sid'],$row['id'],$row['views'],$row['Movie']);
+			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],1,$row['sid'],$row['id'],$row['views'],$row['Movie']);
 		}
 		return $episodeArray;
 	}
@@ -299,7 +299,7 @@ class AFTWVideos extends Config{
 	private function showSeriesInfo($seoname)
 	{
 		mysql_query("SET NAMES 'utf8'");
-		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, html5, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
+		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
 		$result  = mysql_query($query) or die('Error : ' . mysql_error()); 
 		$numSeries = mysql_num_rows($result);
 		
@@ -309,7 +309,7 @@ class AFTWVideos extends Config{
 		}
 		else {
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);				
-			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],$row['html5'],$row['hd'],$row['kanji'],$row['romaji']);
+			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],1,$row['hd'],$row['kanji'],$row['romaji']);
 		}
 		return $seriesArray;
 	}
@@ -337,7 +337,7 @@ class AFTWVideos extends Config{
 	
 	private function DisplayLinks($SeriesId,$type,$alevel)
 	{
-		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly, html5 FROM series WHERE id='$SeriesId'";
+		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
 		$fullSeriesName = $row['fullSeriesName']; 
@@ -347,7 +347,7 @@ class AFTWVideos extends Config{
 		$seriesList = $row['seriesList'];
 		$moviesOnly = $row['moviesOnly'];
 		$description = $row['description'];
-		$html5 = $row['html5'];
+		$html5 = 1;
 		$description = stripslashes($description);
 		if($seriesList == 0){
 			$seriesList = 'anime';
@@ -971,15 +971,7 @@ class AFTWVideos extends Config{
 					}
 					else
 					{
-						if($SeriesArray[18] == 1)
-						{
-							// html5 check
-							$html5tag = '<a href="/what-is-the-aftw-html5-player"><img src="' . $this->CDNHost . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:25px;" border="0" title="This is an AnimeFTW.tv v2.0 HTML5 Player Series!" /></a>';
-						}
-						else 
-						{
-							$html5tag = '';
-						}
+						$html5tag = '<a href="/what-is-the-aftw-html5-player"><img src="' . $this->CDNHost . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:25px;" border="0" title="This is an AnimeFTW.tv v2.0 HTML5 Player Series!" /></a>';
 						if($SeriesArray[19] == 1)
 						{
 							// 720p only series
@@ -1168,7 +1160,7 @@ class AFTWVideos extends Config{
 			$Movie = 0;
 			$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
-			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`html5`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
+			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
 			
 		}
 		else
@@ -1186,7 +1178,7 @@ class AFTWVideos extends Config{
 				$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
 			}
-			$query = "SELECT `id`, `epnumber`, `epname`, `epprefix`, `image`, `hd`, `html5`, `views`, `Movie` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` >= " . $EpisodeArray[0] . " AND `Movie` = $Movie ORDER BY `epnumber` ASC LIMIT 0, $AvailableRows";
+			$query = "SELECT `id`, `epnumber`, `epname`, `epprefix`, `image`, `hd`, `views`, `Movie` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` >= " . $EpisodeArray[0] . " AND `Movie` = $Movie ORDER BY `epnumber` ASC LIMIT 0, $AvailableRows";
 
 		}
 		
@@ -1830,7 +1822,7 @@ class AFTWVideos extends Config{
 	public function showEpisodeTooltip($id,$type = 0)
 	{
 		$id = mysql_real_escape_string($id);
-		$query = "SELECT `id`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `html5`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
+		$query = "SELECT `id`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
 		$result = mysql_query($query);
 		
 		$row = mysql_fetch_assoc($result);
