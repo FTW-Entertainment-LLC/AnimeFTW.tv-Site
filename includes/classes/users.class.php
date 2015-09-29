@@ -735,9 +735,9 @@ class AFTWUser extends Config{
 				<option value=""'; if($country == ''){echo' selected ';} echo '>Select Your Country</option>';
 				$query = "SELECT `name`, `value` FROM `site_variables` WHERE `type` = 1 ORDER BY `name` ASC";
 				$result = mysql_query($query);
-				while($row = mysql_fetch_assoc($result))
+				while($rowC = mysql_fetch_assoc($result))
 				{
-					if($row['name'] == $country)
+					if($rowC['name'] == $country)
 					{
 						$selected  = ' selected="selected"';
 					}
@@ -745,7 +745,7 @@ class AFTWUser extends Config{
 					{
 						$selected  = '';
 					}
-					echo '<option value="' . $row['name'] . '"' . $selected . '>' . $row['name'] . '</option>';
+					echo '<option value="' . $rowC['name'] . '"' . $selected . '>' . $rowC['name'] . '</option>';
 				}
 				echo '
 				</select></dd>
