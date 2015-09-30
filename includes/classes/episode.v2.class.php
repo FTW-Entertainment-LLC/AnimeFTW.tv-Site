@@ -116,7 +116,7 @@ class Episode extends Config {
 		$finalresults = array();
 		$where = "";
 		$orderBy = "`episode`.`epnumber`";
-		$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`";
+		$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesName`";
 		// limit the query by a certain amount
 		if(isset($this->Data['count']) && is_numeric($this->Data['count']))
 		{
@@ -169,7 +169,7 @@ class Episode extends Config {
 			}
 			else {
 			}
-			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`fullSeriesName`, `series`.`seoname`";
+			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`seriesName`";
 			$orderBy = "`episode`.`date` DESC";
 		}
 		else {
