@@ -1653,8 +1653,6 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						$forumBan = $row['forumBan'];
 						$messageBan = $row['messageBan'];
 						$viewNotifications = $row['viewNotifications'];
-						$html5 = $row['html5'];
-						$ssl = $row['ssl'];
 					}
 					else {
 						if(isset($_SESSION['user_id']))
@@ -1673,8 +1671,6 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 							$forumBan = $row['forumBan'];
 							$messageBan = $row['messageBan'];
 							$viewNotifications = $row['viewNotifications'];
-							$html5 = $row['html5'];
-							$ssl = $row['ssl'];
 						}
 						else {
 							$Logged = 0;
@@ -1689,8 +1685,6 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 							$forumBan = 0;
 							$messageBan = 0;
 							$viewNotifications = 0;
-							$html5 = 0;
-							$ssl = 0;
 						}
 					}
 				}
@@ -1707,10 +1701,8 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					$forumBan = 0;
 					$messageBan = 0;
 					$viewNotifications = 0;
-					$html5 = 0;
-					$ssl = 0;
 				}
-				$returnArray = array($Logged,$globalnonid,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$html5,$ssl);
+				$returnArray = array($Logged,$globalnonid,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications);
 				return $returnArray;
 			}
 			

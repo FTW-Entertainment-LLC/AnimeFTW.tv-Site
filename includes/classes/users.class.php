@@ -578,39 +578,6 @@ class AFTWUser extends Config{
 						<option value="1"'; if($row['theme'] == '1'){echo ' selected="selected"';} echo '>Christmas Theme</option>
 					</select></dd>
 			</dl><br />';
-			echo '<dl> 
-				<dt>Site Only SSL:<br /><i>Make the site only display <br /> through Secure Socket Layers (SSL).</i><div style="font-size:8px;">An <a href="/advanced-signup" target="_blank">Advanced Member</a> Feature</div></dt>
-				<dd><select name="ssl-support" id="ssl-support" class="loginForm"' . $AMFeature . '>
-						<option value="0">Full Site SSL?</option>
-						<option value="1"'; if($row['ssl'] == '1'){echo ' selected="selected"';} echo '>Yes</option>
-						<option value="0"'; if($row['ssl'] == '0'){echo ' selected="selected"';} echo '>No</option>
-					</select></dd>
-			</dl><br /><br />';
-			echo '<script>
-				$("#ssl-support").change(function() {
-					var html5 = $("#html5").val();
-					if(html5 == 0)
-					{
-						var r = confirm("To enable full site SSL Support, you MUST use the HTML5 player, click OK to set the HTML5 player option.");
-						if (r == true)
-						{
-							txt = "You pressed OK!";
-							$("select#html5").val("1");
-						}
-						else 
-						{
-							$("select#ssl-support").val("0");
-						}
-					}
-				});
-				</script>';
-			echo '<dl>
-				<dt>HTML5 Player:<br /><i>View HTML5 compatible <br />videos by default.</i><div style="font-size:8px;">An <a href="/advanced-signup" target="_blank">Advanced Member</a> Feature</div></dt>
-				<dd><select name="html5" id="html5" class="loginForm"' . $AMFeature . '>
-						<option value="0"'; if($row['html5'] == '0' || ($row['html5'] == '1' && $AMFeature != '')){echo ' selected="selected"';} echo '>DivX Player</option>
-						<option value="1"'; if($row['html5'] == '1' && $AMFeature == ''){echo ' selected="selected"';} echo '>HTML5 Player</option>
-					</select></dd>
-			</dl><br /><br />';
 			if($row['Level_access'] == 7 || $row['Level_access'] == 1)
 			{
 				echo '<dl>
