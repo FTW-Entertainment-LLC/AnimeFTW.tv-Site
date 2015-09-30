@@ -118,7 +118,6 @@ class Episodes extends Config {
 						<img src="' . $this->Host . '/management/settings-icon.png" height="11px" alt="" />
 					</a>
 					&nbsp; <a href="#" onClick="$(\'#Results\').load(\''.$link.'&page=image-add&epid='.$r['id'].'&point=after\'); return false;"><img src="' . $this->Host . '/management/redo-image-icon.png" title="Redo the episode Image" alt="IC" height="11px" /></a>
-					&nbsp; <a href="#" onClick="return false;" class="html5-function" id="html5-' . $r['id'] . '"><img src="' . $this->Host . '/management/redo-video-icon.png" title="Redo the episode MP4" alt="IC" height="11px" /></a> 
 					&nbsp; 
 					<a href="#" class="episode-delete" id="episode-' . $r['id'] . '">
 						<img src="' . $this->Host . '/management/delete-icon.png" alt="" title="Delete this episode" height="11px" />
@@ -130,10 +129,6 @@ class Episodes extends Config {
 			echo '
 			<script>
 			$(document).ready(function(){
-				$(".html5-function").on("click", function() {
-					var this_id = $(this).attr("id").substring(6);
-					alert("Function coming soon..");					
-				});
 				$(".episode-delete").on("click", function() {
 					var this_id = $(this).attr("id").substring(8);
 					var r=confirm("WARNING! WARNING! WARNING! This is an ACTIVE function, delete only if you NEED to.");
@@ -163,16 +158,16 @@ class Episodes extends Config {
 		{
 			if(!isset($_GET['eid']))
 			{
-				$id = ''; $sid = ''; $epnumber = ''; $seriesName = ''; $epname = ''; $vidheight = ''; $vidwidth = ''; $epprefix = ''; $subGroup = ''; $Movie = ''; $videotype = 'mp4'; $uesid = ''; $hd = 0; $html5 = '';
+				$id = ''; $sid = ''; $epnumber = ''; $seriesName = ''; $epname = ''; $vidheight = ''; $vidwidth = ''; $epprefix = ''; $subGroup = ''; $Movie = ''; $videotype = 'mp4'; $uesid = ''; $hd = 0;
 				$options = '';
 				$FormMethod = '<input type="hidden" value="AddEpisode" name="method" />'; // Since the ID isn't valid we need give the add form
 				$SubmitTXT = " Add Episode ";
 			}
 			else
 			{
-				$query  = "SELECT `id`, `sid`, `epnumber`, `seriesname`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `Movie`, `videotype`, `hd`, `html5` FROM `episode` WHERE id= '" . mysql_real_escape_string($_GET['eid']) . "'";
+				$query  = "SELECT `id`, `sid`, `epnumber`, `seriesname`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `Movie`, `videotype`, `hd` FROM `episode` WHERE id= '" . mysql_real_escape_string($_GET['eid']) . "'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
-				list($id, $sid, $epnumber, $seriesName, $epname, $vidheight, $vidwidth, $epprefix, $subGroup, $Movie, $videotype, $hd, $html5) = mysql_fetch_array($result, MYSQL_NUM);
+				list($id, $sid, $epnumber, $seriesName, $epname, $vidheight, $vidwidth, $epprefix, $subGroup, $Movie, $videotype, $hd) = mysql_fetch_array($result, MYSQL_NUM);
 				$FormMethod = '<input type="hidden" value="EditEpisode" name="method" />';
 				$options = '<input type="hidden" name="id" value="' . $id . '" />';
 				$SubmitTXT = " Edit Episode ";
@@ -186,7 +181,7 @@ class Episodes extends Config {
 			{
 				$query = mysql_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix`, `anidbsid` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']));
 				$row = mysql_fetch_assoc($query);
-				$query = mysql_query("SELECT `episode`.`sid`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`videotype`, `episode`.`vidwidth`, `episode`.`hd`, `episode`.`html5`, series.seriesname FROM episode, series WHERE episode.sid=series.id AND series.id = " . $row['sid'] . " ORDER BY epnumber DESC LIMIT 0, 1");
+				$query = mysql_query("SELECT `episode`.`sid`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`videotype`, `episode`.`vidwidth`, `episode`.`hd`, series.seriesname FROM episode, series WHERE episode.sid=series.id AND series.id = " . $row['sid'] . " ORDER BY epnumber DESC LIMIT 0, 1");
 				$row2 = mysql_fetch_assoc($query);
 				$id = ''; 
 				$epnumber = $row2['epnumber']+1; 
@@ -217,11 +212,10 @@ class Episodes extends Config {
 				$videotype = $row2['videotype'];
 				$uesid = $row['sid'];
 				$hd = $row2['hd'];
-				$html5 = $row2['html5'];
 			}
 			else
 			{
-				$id = ''; $sid = ''; $epnumber = ''; $seriesName = ''; $epname = ''; $vidheight = ''; $vidwidth = ''; $epprefix = ''; $subGroup = ''; $Movie = ''; $videotype = 'mp4'; $uesid = ''; $hd = 0; $html5 = '';
+				$id = ''; $sid = ''; $epnumber = ''; $seriesName = ''; $epname = ''; $vidheight = ''; $vidwidth = ''; $epprefix = ''; $subGroup = ''; $Movie = ''; $videotype = 'mp4'; $uesid = ''; $hd = 0;
 			}
 			// default to adding an episode
 			$FormMethod = '<input type="hidden" value="AddEpisode" name="method" />';
@@ -390,28 +384,7 @@ class Episodes extends Config {
 					<option value="0"'; if($addtime == '0'){echo ' selected="selected"';} echo'>Yes</option>
 				</select>
 			</div>
-		</div>';
-		if($Type == 'edit')
-		{
-			echo '
-			<div class="series-form-row">
-				<div class="series-form-left">
-					HTML5 Episode?
-				</div>
-				<div class="series-form-right">
-					<select name="html5" class="text-input2" id="html5-select">
-						<option value="0"'; if($html5 == '0'){echo ' selected="selected"';} echo'>No</option>
-						<option value="1"'; if($html5 == '1'){echo ' selected="selected"';} echo'>Yes</option>
-					</select>
-					<label for="html5" id="html5Error" class="form-labels FormError">You MUST set the HTML5 to enabled for 720p/1080p to work, please address.</label>
-				</div>
-			</div>';
-		}
-		else
-		{
-			echo '<input type="hidden" name="html5" value="0" />';
-		}
-		echo '
+		</div>
 		<div class="series-form-row">
 			<div class="series-form-left">
 				HD Episodes
@@ -550,20 +523,6 @@ class Episodes extends Config {
 						$("select#sid").focus();
 						return false;
 					}
-					';
-					if($Type == 'edit')
-					{
-						echo '
-						var hd = $("#hd-select").val();
-						var html5 = $("#html5-select").val();
-						if ((hd == "1" || hd == "2") && html5 == "0")
-						{
-							$("label#html5Error").show();
-							$("#html5-select").focus();
-							return false;
-						}';
-					}
-					echo '
 					$.ajax({
 						type: "POST",
 						url: "ajax.php",';
@@ -672,6 +631,7 @@ class Episodes extends Config {
 			{
 				$epid = mysql_real_escape_string($_GET['epid']);
 				mysql_query("UPDATE episode SET image = 0, updated = '" . time() . "' WHERE id = '{$epid}'");
+				// TODO: set spriteId to null, and delete old data / use same solution in verify-episode-images.cron.php file.
 				echo "<script>alert(\"Image has been queued for image creation. Please check back in ~15 minutes\");</script>";
 			}
 		}

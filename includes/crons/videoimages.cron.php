@@ -26,10 +26,17 @@
 	$row = mysql_fetch_array($results);
 	$reportback = '';
 	if($row['id'] > 0){
-		$sql = "SELECT episode.id, series.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.Movie, episode.videotype, series.id, series.videoServer, series.fullSeriesName FROM episode, series WHERE series.id=episode.sid AND episode.updated IS NOT NULL AND episode.updated >= '{$timepast}' AND episode.image = 0";
+		$sql = "SELECT episode.id, episode.spriteId, series.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.Movie, episode.videotype, episode.image, series.id, series.videoServer, series.fullSeriesName FROM episode, series WHERE series.id=episode.sid AND episode.updated IS NOT NULL AND episode.updated >= '{$timepast}' AND episode.image = 0 OR episode.spriteId IS NULL";
 		$query = mysql_query($sql);
-		while(list($epid,$seriesname,$epprefix,$epnumber,$vidwidth,$vidheight,$Movie,$videotype,$sid,$videoServer,$fullSeriesName) = mysql_fetch_array($query)){
+		while(list($epid,$spriteId,$seriesname,$epprefix,$epnumber,$vidwidth,$vidheight,$Movie,$videotype,$image,$sid,$videoServer,$fullSeriesName) = mysql_fetch_array($query)){
 			$newUrl = "http://{$videoServer}.animeftw.tv/scripts/fetch-pictures.php?seriesName={$seriesname}&seriesId={$sid}&epprefix={$epprefix}&epnumber={$epnumber}&epid={$epid}&duration=360&vidwidth={$vidwidth}&vidheight={$vidheight}&videotype={$videotype}&movie={$Movie}";
+
+			if ($image !== 0 && $spriteId !== null) {
+				if ($image === 0)
+					$newUrl .= "&mode=thumbnail";
+				if ($spriteId === null)
+					$newUrl .= "&mode=sprite";
+			}
 
 			$contents = file_get_contents($newUrl);
 
@@ -39,7 +46,7 @@
 			} else {
 				mysql_query("INSERT INTO sprites (width, height, totalWidth, rate, count, created) VALUES ({$response->width}, {$response->height}, {$response->totalWidthh}, {$response->rate}, {$response->count}, " . time() . ")");
 				$spriteId = mysql_insert_id();
-				mysql_query("UPDATE episode SET image = 1, html5 = 1, spriteId = '{$spriteId}', updated = '" . time() . "' WHERE id = {$epid}");
+				mysql_query("UPDATE episode SET image = 1, spriteId = '{$spriteId}', updated = '" . time() . "' WHERE id = {$epid}");
 			}
 		}
 	}

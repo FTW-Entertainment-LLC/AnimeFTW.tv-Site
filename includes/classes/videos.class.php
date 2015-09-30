@@ -277,7 +277,7 @@ class AFTWVideos extends Config{
 		else if($mov == 'movie'){$movvar = "AND Movie='1' AND ova='0'";}
 		else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 		else {$movvar = NULL;}
-		$query   = "SELECT `id`, `sid`, `spriteId`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `html5`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
+		$query   = "SELECT `id`, `sid`, `spriteId`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$numEpisodes = mysql_num_rows($result);
 		if($numEpisodes == 0){
@@ -285,7 +285,7 @@ class AFTWVideos extends Config{
 		}
 		else {
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
-			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],$row['html5'],$row['sid'],$row['id'],$row['views'],$row['Movie'],$row['spriteId']);
+			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],1,$row['sid'],$row['id'],$row['views'],$row['Movie'],$row['spriteId']);
 		}
 		return $episodeArray;
 	}
@@ -299,7 +299,7 @@ class AFTWVideos extends Config{
 	private function showSeriesInfo($seoname)
 	{
 		mysql_query("SET NAMES 'utf8'");
-		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, html5, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
+		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
 		$result  = mysql_query($query) or die('Error : ' . mysql_error()); 
 		$numSeries = mysql_num_rows($result);
 		
@@ -309,7 +309,7 @@ class AFTWVideos extends Config{
 		}
 		else {
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);				
-			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],$row['html5'],$row['hd'],$row['kanji'],$row['romaji']);
+			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],1,$row['hd'],$row['kanji'],$row['romaji']);
 		}
 		return $seriesArray;
 	}
@@ -357,7 +357,7 @@ class AFTWVideos extends Config{
 	
 	private function DisplayLinks($SeriesId,$type,$alevel)
 	{
-		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly, html5 FROM series WHERE id='$SeriesId'";
+		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
 		$fullSeriesName = $row['fullSeriesName']; 
@@ -367,7 +367,7 @@ class AFTWVideos extends Config{
 		$seriesList = $row['seriesList'];
 		$moviesOnly = $row['moviesOnly'];
 		$description = $row['description'];
-		$html5 = $row['html5'];
+		$html5 = 1;
 		$description = stripslashes($description);
 		if($seriesList == 0){
 			$seriesList = 'anime';
@@ -525,28 +525,28 @@ class AFTWVideos extends Config{
 			$randomValue = rand(0,3);
 			if($randomValue == 0 || $randomValue == 1 || $randomValue == 2){
 				$ad = '
-						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
-							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
-							Japanese study aids and more at J-List
-						</a>';
+						<!-- Begin BidVertiser code -->
+						<SCRIPT SRC="http://bdv.bidvertiser.com/BidVertiser.dbm?pid=341006&bid=842661" TYPE="text/javascript"></SCRIPT>
+						<!-- End BidVertiser code -->
+						<div>Issue with this ad? <a href="mailto:support@animeftw.tv?Subject=Issue%20with%20Bidvertizer%20Ad">Click here to send us an email!</a></div>';
 			}
 			else {
 				$ad = '
+						<!-- Start J-List Affiliate Code -->
 						<a href="https://anime.jlist.com/click/3638/129" target="_blank" onmouseover="window.status=\'Click for Japanese study aids and more\'; return true;" onmouseout="window.status=\'\'; return true;" title="Click for Japanese study aids and more">
 							<img src="https://affiliates.jlist.com/media/3638/129" width="300" height="250" alt="Click for Japanese study aids and more" border="0"><br />
 							Japanese study aids and more at J-List
-						</a>';
+						</a>
+						<!-- End J-List Affiliate Code -->';
 			}
 			echo '
 			<div id="am-container">
 				<div align="center" style="padding:5px;">Please note, AnimeFTW.tv only streams using a custom build HTML5 Video player, all other players are NOT Supported.</div>
 				<div align="center"><form name="counter"><span>Your video will start in:<input type="text" name="d2" style="background:#F7F7F7;border:none;width:16px;"> seconds</span></form></div>
 				<div align="center">
-					<!-- Start J-List Affiliate Code -->
 					<div style="text-align: center; font-size: 12px;" align="center">
 						' . $ad . '
 					</div>
-					<!-- End J-List Affiliate Code -->
 					<br />And now a Word from one of our Partners.
 					<br />
 					<a href="/advanced-signup">Sick of waiting for episodes to start? Signup for advanced membership <br />and help out the site with server costs while having no ads at all!</a>
@@ -804,29 +804,30 @@ class AFTWVideos extends Config{
 		if ($SpriteArray) {
 			// Sprite exists. Lets load the Sprite Data
 
+			// 5 Tab spaces to help w/ indenting source code in the output.
+			$tab5 = "					";
+
 			echo <<<HDOC
 
 			<script type="text/javascript">
 				video.thumbnails({\n
 HDOC;
 
-			// TODO: Change "\t" to "	" if that is the preferred way of indenting html output -Nikey
-
 			for($i = 0; $i < $SpriteArray['count']; $i++) {
-				echo "\t\t\t\t\t" . $i * $SpriteArray['rate'] . ": {\n";
+				echo $tab5 . $i * $SpriteArray['rate'] . ": {\n";
 				if ($i === 0)
-					echo "\t\t\t\t\t\tsrc: \"{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
-				echo "\t\t\t\t\t\tstyle: {\n";
+					echo $tab5 . "	src: \"{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
+				echo $tab5 . "	style: {\n";
 
-				echo "\t\t\t\t\t\t\tleft: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
-				if ($i == 0)
-					echo "\t\t\t\t\t\t\twidth: '{$SpriteArray['totalWidth']}px',\n";
-				echo "\t\t\t\t\t\t\theight: '{$SpriteArray['height']}px', \n";
-				echo "\t\t\t\t\t\t\tclip: 'rect(0, " . ($SpriteArray['width'] * ($i + 1)) . "px, {$SpriteArray['height']}px, " . ($SpriteArray['width'] * $i) . "px)'\n";
+				echo $tab5 . "		left: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
+				if ($i === 0)
+					echo $tab5 . "		width: '{$SpriteArray['totalWidth']}px',\n";
+				echo $tab5 . "		height: '{$SpriteArray['height']}px', \n";
+				echo $tab5 . "		clip: 'rect(0, " . ($SpriteArray['width'] * ($i + 1)) . "px, {$SpriteArray['height']}px, " . ($SpriteArray['width'] * $i) . "px)'\n";
 
-				echo "\t\t\t\t\t\t}\n";
+				echo $tab5 . "	}\n";
 
-				echo "\t\t\t\t\t},\n";
+				echo $tab5 . "},\n";
 			}
 
 			echo <<<HDOC
@@ -1030,15 +1031,7 @@ HDOC;
 					}
 					else
 					{
-						if($SeriesArray[18] == 1)
-						{
-							// html5 check
-							$html5tag = '<a href="/what-is-the-aftw-html5-player"><img src="' . $this->CDNHost . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:25px;" border="0" title="This is an AnimeFTW.tv v2.0 HTML5 Player Series!" /></a>';
-						}
-						else 
-						{
-							$html5tag = '';
-						}
+						$html5tag = '<a href="/what-is-the-aftw-html5-player"><img src="' . $this->CDNHost . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:25px;" border="0" title="This is an AnimeFTW.tv v2.0 HTML5 Player Series!" /></a>';
 						if($SeriesArray[19] == 1)
 						{
 							// 720p only series
@@ -1227,7 +1220,7 @@ HDOC;
 			$Movie = 0;
 			$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
-			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`html5`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
+			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
 			
 		}
 		else
@@ -1245,7 +1238,7 @@ HDOC;
 				$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
 			}
-			$query = "SELECT `id`, `epnumber`, `epname`, `epprefix`, `image`, `hd`, `html5`, `views`, `Movie` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` >= " . $EpisodeArray[0] . " AND `Movie` = $Movie ORDER BY `epnumber` ASC LIMIT 0, $AvailableRows";
+			$query = "SELECT `id`, `epnumber`, `epname`, `epprefix`, `image`, `hd`, `views`, `Movie` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` >= " . $EpisodeArray[0] . " AND `Movie` = $Movie ORDER BY `epnumber` ASC LIMIT 0, $AvailableRows";
 
 		}
 		
@@ -1889,7 +1882,7 @@ HDOC;
 	public function showEpisodeTooltip($id,$type = 0)
 	{
 		$id = mysql_real_escape_string($id);
-		$query = "SELECT `id`, `sid`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `html5`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
+		$query = "SELECT `id`, `sid`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
 		$result = mysql_query($query);
 		
 		$row = mysql_fetch_assoc($result);
