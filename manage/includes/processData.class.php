@@ -97,7 +97,6 @@ class processData extends Config {
 				$aonly = mysql_real_escape_string($_POST['aonly']);
 				$prequelto = mysql_real_escape_string($_POST['prequelto']);
 				$sequelto = mysql_real_escape_string($_POST['sequelto']);
-				$html5 = mysql_real_escape_string($_POST['html5']);
 				$hd = mysql_real_escape_string($_POST['hd']);
 				
 				// ADDED 10/11/2014 by robotman321
@@ -146,7 +145,6 @@ class processData extends Config {
 					category=\'' . $category . '\', 
 					seriesType=\'' . mysql_real_escape_string($seriesType) . '\', 
 					seriesList=\'' . mysql_real_escape_string($seriesList) . '\',
-					html5=\'' . mysql_real_escape_string($html5) . '\', 
 					hd=\'' . mysql_real_escape_string($hd) . '\',
 					ueid=\'' . $ueid . '\'
 					WHERE id=' . $sid . '';
@@ -185,7 +183,6 @@ class processData extends Config {
 				$aonly = mysql_real_escape_string($_POST['aonly']);
 				$prequelto = mysql_real_escape_string($_POST['prequelto']);
 				$sequelto = mysql_real_escape_string($_POST['sequelto']);
-				$html5 = mysql_real_escape_string($_POST['html5']);
 				$hd = mysql_real_escape_string($_POST['hd']);
 				
 				// ADDED 10/11/2014 by robotman321
@@ -207,7 +204,7 @@ class processData extends Config {
 				$ueid = mysql_real_escape_string($_POST['uploadsEntry']);
 							
 				mysql_query("SET NAMES 'utf8'");
-				$query = "INSERT INTO series (`seriesName`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `seoname`, `videoServer`, `active`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesOnly`, `OVA`, `noteReason`, `aonly`, `prequelto`, `sequelto`, `category`, `seriesType`, `seriesList`, `html5`, `ueid`, `hd`) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList', '$html5', '$ueid', '$hd')";
+				$query = "INSERT INTO series (`seriesName`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `seoname`, `videoServer`, `active`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesOnly`, `OVA`, `noteReason`, `aonly`, `prequelto`, `sequelto`, `category`, `seriesType`, `seriesList`, `ueid`, `hd`) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList', '$ueid', '$hd')";
 				mysql_query($query) or die('There was an error adding the series: ' . mysql_error() . ', here was the query: ' . $query);
 				
 				$sid = $this->SingleVarQuery("SELECT id FROM series WHERE seriesName = '" . $seriesName . "'",'id'); //Get the Series ID through seriesName
@@ -237,14 +234,12 @@ class processData extends Config {
 				$old_epprefix = mysql_real_escape_string($_POST['old_epprefix']);
 				$old_subGroup = mysql_real_escape_string($_POST['old_subGroup']);
 				$old_videotype = mysql_real_escape_string($_POST['old_videotype']);
-				$old_html5 = mysql_real_escape_string($_POST['old_html5']);
 				$old_hd = mysql_real_escape_string($_POST['old_hd']);
 				$vidwidth = mysql_real_escape_string($_POST['vidwidth']);
 				$vidheight = mysql_real_escape_string($_POST['vidheight']);
 				$epprefix = mysql_real_escape_string($_POST['epprefix']);
 				$subGroup = mysql_real_escape_string($_POST['subGroup']);
 				$videotype = mysql_real_escape_string($_POST['videotype']);
-				$html5 = mysql_real_escape_string($_POST['html5']);
 				$hd = mysql_real_escape_string($_POST['hd']);
 				$UpdateType = $_POST['UpdateType'];
 				
@@ -283,7 +278,6 @@ class processData extends Config {
 					epprefix=\'' . $epprefix . '\', 
 					subGroup=\'' . $subGroup . '\', 
 					videotype=\'' . $videotype . '\',
-					html5=\'' . $html5 . '\', 
 					hd=\'' . $hd . '\''.$QuerySet.'
 					WHERE sid=\'' . $sid . '\'' . $QueryAddon;
 				mysql_query($query) or die('Error : ' . mysql_error());
@@ -459,9 +453,7 @@ class processData extends Config {
 					$sigactive = urldecode(@$_POST['signatureActive']);
 					$Signature = urldecode(@$_POST['Signature']);
 					$showChat = urldecode(@$_POST['showChat']);
-					$sitepmnote = urldecode(@$_POST['sitepmnote']);
 					$theme = urldecode(@$_POST['theme']);
-					$notifications = urldecode(@$_POST['notifications']);
 					if($row['Level_access'] == 1 || $row['Level_access'] == 2){
 						$additional = ', avatarActivate=\'' . mysql_real_escape_string($avataractive) . '\', avatarExtension=\'' . mysql_real_escape_string($avatarextension) . '\', personalMsg=\'' . mysql_real_escape_string($personalmsg) . '\', memberTitle=\'' . mysql_real_escape_string($membertitle) . '\', aboutMe=\'' . mysql_real_escape_string($aboutme) . '\', interests=\'' . mysql_real_escape_string($interests) . '\', signatureActive=\'' . mysql_real_escape_string($sigactive) . '\', Signature=\'' . mysql_real_escape_string($Signature) . '\'';
 					}
@@ -495,8 +487,6 @@ class processData extends Config {
 					icqNumber=\'' . mysql_real_escape_string($icq) . '\', 
 					showEmail=\'' . mysql_real_escape_string($showemail) . '\', 
 					showChat=\'' . mysql_real_escape_string($showChat) . '\', 
-					sitepmnote=\'' . mysql_real_escape_string($sitepmnote) . '\', 
-					notifications=\'' . mysql_real_escape_string($notifications) . '\', 
 					theme=\'' . mysql_real_escape_string($theme) . '\'
 					'.$additional.'
 					WHERE ID=\'' . $rid . '\'';
@@ -630,11 +620,10 @@ class processData extends Config {
 				$Movie = $_POST['Movie'];
 				$videotype = $_POST['videotype'];
 				$hd = $_POST['hd'];
-				$html5 = $_POST['html5'];
 				$epname = stripslashes($epname);
 				$epprefix    = stripslashes($epprefix);				  
 				// update the item in the database
-				$query = 'UPDATE episode SET epnumber=\'' . mysql_real_escape_string($epnumber) . '\', sid=\'' . mysql_real_escape_string($sid) .'\', epname=\'' . mysql_real_escape_string($epname) . '\', vidheight=\'' . mysql_real_escape_string($vidheight) . '\', vidwidth=\'' . mysql_real_escape_string($vidwidth) . '\', epprefix=\'' . mysql_real_escape_string($epprefix) . '\', subGroup=\'' . mysql_real_escape_string($subGroup) . '\', Movie=\'' . mysql_real_escape_string($Movie) . '\', videotype=\'' . mysql_real_escape_string($videotype) . '\', `hd`=\'' . mysql_real_escape_string($hd) . '\', `html5`=\'' . mysql_real_escape_string($html5) . '\' WHERE id=' . $id . '';
+				$query = 'UPDATE episode SET epnumber=\'' . mysql_real_escape_string($epnumber) . '\', sid=\'' . mysql_real_escape_string($sid) .'\', epname=\'' . mysql_real_escape_string($epname) . '\', vidheight=\'' . mysql_real_escape_string($vidheight) . '\', vidwidth=\'' . mysql_real_escape_string($vidwidth) . '\', epprefix=\'' . mysql_real_escape_string($epprefix) . '\', subGroup=\'' . mysql_real_escape_string($subGroup) . '\', Movie=\'' . mysql_real_escape_string($Movie) . '\', videotype=\'' . mysql_real_escape_string($videotype) . '\', `hd`=\'' . mysql_real_escape_string($hd) . '\' WHERE id=' . $id . '';
 				mysql_query($query) or die('Error : ' . mysql_error());
 				$this->ModRecord('Edit Episode #' . $epnumber . ' of id ' . $id);
 				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;width:100%;">Episode Update Completed Successfully.</div>';
@@ -678,7 +667,6 @@ class processData extends Config {
 		$addtime = mysql_real_escape_string($_POST['date']);
 		$videotype =mysql_real_escape_string( $_POST['videotype']);
 		$hd = mysql_real_escape_string($_POST['hd']);
-		$html5 =mysql_real_escape_string( $_POST['html5']);
 		if($auto){
 			if(!is_numeric($anidbid)){
 				echo 'Error: Anidb value is not numeric.';
@@ -719,7 +707,7 @@ class processData extends Config {
 			$NextEp = $i+1;
 			// ADDED: 8/13/14 - robotman321
 			// Queries the database to make sure that 
-			$query = "INSERT INTO `episode` (`sid`, `epnumber`, `epname`, `seriesname`, `vidheight`, `vidwidth`, `subGroup`, `epprefix`, `Movie`, `date`, `videotype`, `uid`, `hd`, `html5`) VALUES ('$sid', '$epnumber', '$epname', 'unknown', '$vidheight', '$vidwidth', '$subGroup', '$epprefix', '$Movie', '$addtime', '$videotype', '" . $this->UserArray[1] . "', '" . $hd . "', '" . $html5 . "')";
+			$query = "INSERT INTO `episode` (`sid`, `epnumber`, `epname`, `seriesname`, `vidheight`, `vidwidth`, `subGroup`, `epprefix`, `Movie`, `date`, `videotype`, `uid`, `hd`) VALUES ('$sid', '$epnumber', '$epname', 'unknown', '$vidheight', '$vidwidth', '$subGroup', '$epprefix', '$Movie', '$addtime', '$videotype', '" . $this->UserArray[1] . "', '" . $hd . "')";
 			$query;
 			$results = mysql_query($query);
 			if(!$results)

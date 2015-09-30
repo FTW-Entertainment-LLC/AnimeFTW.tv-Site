@@ -1653,7 +1653,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						$forumBan = $row['forumBan'];
 						$messageBan = $row['messageBan'];
 						$viewNotifications = $row['viewNotifications'];
-						$html5 = $row['html5'];
+						$html5 = 0;
 						$ssl = $row['ssl'];
 					}
 					else {
@@ -1673,7 +1673,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 							$forumBan = $row['forumBan'];
 							$messageBan = $row['messageBan'];
 							$viewNotifications = $row['viewNotifications'];
-							$html5 = $row['html5'];
+							$html5 = 0;
 							$ssl = $row['ssl'];
 						}
 						else {

@@ -66,12 +66,11 @@
 				   "- The AnimeFTW.tv staff and Community!";
 			if(mail("$n <$e>","Your Registration with AnimeFTW.tv",$message,$headers)) {
 				$query = $db->query("INSERT INTO users (`Username`,`display_name`,`Password`,`registrationDate`,`Email`,`Random_key`,`firstName`,
-					`gender`,`ageDate`,`ageMonth`,`ageYear`,`staticip`,`timeZone`,`sitepmnote`,`notifications`,`active`) VALUES (
+					`gender`,`ageDate`,`ageMonth`,`ageYear`,`staticip`,`timeZone`,`active`) VALUES (
 					".$db->qstr(makeUrlFriendly("$u")).",".$db->qstr(makeUrlFriendly("$u")).",".$db->qstr(md5($p)).",'".time()."',
 					".$db->qstr($e).",'".$key."','".$f."',
 					'".$g."','". $bd."','".$bm."','".$by."',
-					'".$_SERVER['REMOTE_ADDR']."','".$t."','".$a."',
-					'".$n."',0)" );
+					'".$_SERVER['REMOTE_ADDR']."','".$t."',0)" );
 				sendMessage("ok");
 			} else {
 				sendMessage("Failed to send email");
