@@ -89,7 +89,7 @@ if(isset($_POST['q']) || isset($_GET['q']))
 			}
 			$ie = $s+1;
 			@$SeriesNameFull = reverseCheckSeries($SeriesNameFull);
-			$Searched = mysql_query("SELECT epnumber as V1, videotype as V2, epname as V3, epprefix as V4 FROM episode WHERE seriesname='".@$SeriesNameFull."' AND epnumber = '".$SearchExplode[$ie]."' ".$movvar);
+			$Searched = mysql_query("SELECT epnumber as V1, videotype as V2, epname as V3, epprefix as V4, id, sid FROM episode WHERE seriesname='".@$SeriesNameFull."' AND epnumber = '".$SearchExplode[$ie]."' ".$movvar);
 		}
 		
 		$total_queries = mysql_num_rows($Searched);
@@ -135,7 +135,7 @@ if(isset($_POST['q']) || isset($_GET['q']))
 					$V2 = '';
 					$V3 = '/anime/' . $Search->seoCheck($SeriesNameFull) . '/' . $movoep . '-' . $City['V1'];
 					$V4 = '';
-					$sphoto = '<img src="' . $Config->Host . '/video-images/'.$City['V4'].'_'.$City['V1'].'_screen.jpeg" class="sphoto" alt="" border="0" align="left" style="padding-right:5px;padding-top:3px;" height="50px" />';
+					$sphoto = "<img src=\"{$Config->Host}/video-images/{$City['sid']}/{$City['id']}_screen.jpeg\" class=\"sphoto\" alt=\"\" border=\"0\" align=\"left\" style=\"padding-right:5px;padding-top:3px;\" height=\"50px\" />";
 				}
 				else{	
 					$V1 = $Name;

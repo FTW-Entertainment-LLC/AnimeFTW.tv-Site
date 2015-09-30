@@ -12,6 +12,8 @@
 #* class for Dev functions
 #-----------------------------------------
 
+// WARNING: Not updated to new image structure. Restore at own risk --Nikey
+
 class AFTWDev{
 	var $did;
 	var $ssl;

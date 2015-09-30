@@ -19,10 +19,10 @@ include('/home/mainaftw/public_html/includes/siteroot.php');
 	$current = $row[0];
 
 	// build the query that will tell us how many there were.
-	$query = "SELECT episode.id, episode.epprefix, episode.epnumber FROM episode WHERE episode.image = 1 LIMIT ".$current.", ".$count."";
+	$query = "SELECT episode.id, episode.sid FROM episode WHERE episode.image = 1 LIMIT ".$current.", ".$count."";
 	$query = mysql_query($query);
-	while(list($epid,$epprefix,$epnumber) = mysql_fetch_array($query)){
-		$url = 'http://cdn.animeftw.tv/site-images/video-images/'.$epprefix.'_'.$epnumber.'_screen.jpeg';
+	while(list($epid,$sid) = mysql_fetch_array($query)){
+		$url = "http://cdn.animeftw.tv/site-images/video-images/{$sid}/{$epid}_screen.jpeg";
 		if(@getimagesize($url)){
 		}
 		else {

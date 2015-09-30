@@ -89,7 +89,7 @@ class Config {
 			$result = mysql_query($query);
 			unset($query);
 			unset($result);
-			$query = "SELECT `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `advanceActive`, `UploadsVisit` FROM users WHERE ID='" . mysql_real_escape_string($_COOKIE['au']) . "'";
+			$query = "SELECT `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `html5`, `ssl`, `advanceActive`, `UploadsVisit` FROM users WHERE ID='" . mysql_real_escape_string($_COOKIE['au']) . "'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
 			$Logged = 1;
@@ -117,6 +117,8 @@ class Config {
 			$viewNotifications = $row['viewNotifications'];
 			$AdvanceActive = $row['advanceActive'];
 			$UploadsVisit = $row['UploadsVisit'];
+			$html5 = $row['html5'];
+			$ssl = $row['ssl'];
 		}
 		else
 		{
@@ -132,8 +134,10 @@ class Config {
 			$forumBan = 0;
 			$messageBan = 0;
 			$viewNotifications = 0;
+			$html5 = 0;
+			$ssl = 0;
 		}
-		$array = array($Logged,$UserID,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$AdvanceActive,$UploadsVisit,0,0);
+		$array = array($Logged,$UserID,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$AdvanceActive,$UploadsVisit,$html5,$ssl);
 		$this->UserArray = $array;
 	}
 	

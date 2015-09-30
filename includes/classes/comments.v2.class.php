@@ -429,7 +429,6 @@ class Comment extends Config {
 			$result = $this->mysqli->query($query);
 			$count = mysqli_num_rows($result);
 			$returnarray = array();
-			$returnarray['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
 			if($count > 0)
 			{
 				while($row = $result->fetch_assoc())
@@ -445,7 +444,7 @@ class Comment extends Config {
 			}
 			else
 			{
-				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-402"]["Message"]);
+				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["04-402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-402"]["Message"]);
 			}
 		}
 		else
@@ -453,27 +452,27 @@ class Comment extends Config {
 			if($whereclause == 0)
 			{
 				// type was not set, we need that to format data..
-				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-400"]["Message"]);
+				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["04-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-400"]["Message"]);
 			}
 			else if($whereclause == 1)
 			{
 				// the type was invalid, not supported so far..
-				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-401"]["Message"]);
+				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["04-401"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-401"]["Message"]);
 			}
 			else if($whereclause == 2)
 			{
 				// the type was invalid, not supported so far..
-				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["403"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-403"]["Message"]);
+				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["04-403"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-403"]["Message"]);
 			}
 			else if($whereclause == 3)
 			{
 				// the type was invalid, not supported so far..
-				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-404"]["Message"]);
+				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["04-404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-404"]["Message"]);
 			}
 			else if($whereclause == 4)
 			{
 				// the type was invalid, not supported so far..
-				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-404"]["Message"]);
+				$returnarray = array('status' => $this->MessageCodes["Result Codes"]["04-404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["04-404"]["Message"]);
 			}
 			else
 			{

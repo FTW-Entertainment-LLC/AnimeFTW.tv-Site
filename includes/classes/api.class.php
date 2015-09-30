@@ -230,7 +230,7 @@ class AFTWDev{
 		while(list($id,$sid,$epnumber,$epname,$seriesname,$vidheight,$vidwidth,$epprefix,$subGroup,$Movie,$doubleEp,$date,$videotype,$image) = mysql_fetch_array($result))
 		{
 			if($image == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
-			else {$imvarb = $this->Host . '/video-images/'.$epprefix.'_'.$epnumber.'_screen.jpeg';}
+			else {$imvarb = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";}
 			$epname = stripslashes($epname);
 			$epname = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$epname); 
 			echo "		<episode href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=".$id."\">\n";
@@ -258,7 +258,7 @@ class AFTWDev{
 		$result = mysql_query($query);
 		$row = mysql_fetch_array($result);
 		if($row['image'] == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
-		else {$imvarb = $this->Host . '/video-images/'.$row['epprefix'].'_'.$row['epnumber'].'_screen.jpeg';}
+		else {$imvarb = "{$this->Host}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";}
 		echo "		<episode>\n";
 		echo "			<id>".$row['id']."</id>\n";
 		echo "			<name><![CDATA[".stripslashes($row['epname'])."]]></name>\n";
@@ -312,7 +312,7 @@ class AFTWDev{
 				$epname = stripslashes($epname);
 				$epname = preg_replace('/[^0-9a-z\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$epname); 
 				if($image == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
-				else {$imvarb = $this->Host . '/video-images/'.$epprefix.'_'.$epnumber.'_screen.jpeg';}
+				else {$imvarb = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";}
 				echo "		<movie href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=".$id."\">\n";
 				echo "			<id>".$id."</id>\n";
 				echo "			<epnumber>".$epnumber."</epnumber>\n";
@@ -363,7 +363,7 @@ class AFTWDev{
 			while(list($id,$sid,$epnumber,$epname,$seriesname,$vidheight,$vidwidth,$epprefix,$subGroup,$Movie,$doubleEp,$date,$videotype,$image) = mysql_fetch_array($result))
 			{
 				if($image == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
-				else {$imvarb = $this->Host . '/video-images/'.$epprefix.'_'.$epnumber.'_screen.jpeg';}
+				else {$imvarb = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";}
 				echo "		<episode>\n";
 				echo "			<id>".$id."</id>\n";
 				echo "			<name><![CDATA[".stripslashes($epname)."]]></name>\n";

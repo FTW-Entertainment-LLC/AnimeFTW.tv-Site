@@ -49,10 +49,7 @@ class Series extends Config {
 				$row = $result->fetch_assoc();
 				$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
 				// a result was found, build the array for return.
-				$results = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Request Successful.");
-				
-				// This option will be for database objects that use Yes, no, true or false to define a boolean.
-				$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
+				$results = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
 				
 				foreach($row AS $key => &$value)
 				{
@@ -63,12 +60,7 @@ class Series extends Config {
 					}
 					else
 					{
-						if(isset($booleanSwitch[$value])){
-							$results['results'][$key] = $booleanSwitch[$value];
-						}
-						else {
-							$results['results'][$key] = $value;
-						}
+						$results['results'][$key] = $value;
 					}
 				}
 				// add the seriesimage to the array
@@ -80,13 +72,13 @@ class Series extends Config {
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["02-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-400"]["Message"]);
 			}
 		}
 		else
 		{
 			// Nothing matched the information give, send back to them.
-			return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["02-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-400"]["Message"]);
 		}
 	}
 	
@@ -104,12 +96,7 @@ class Series extends Config {
 		}
 		if(isset($this->Data['start']))
 		{
-			if(!is_numeric($this->Data['start'])) {
-				$start = "0,";
-			}
-			else {
-				$start = $this->Data['start'] . ",";
-			}
+			$start = $this->Data['start'] . ",";
 		}
 		else
 		{
@@ -117,12 +104,7 @@ class Series extends Config {
 		}
 		if(isset($this->Data['count']))
 		{
-			if(!is_numeric($this->Data['count'])) {
-				$count = 10;
-			}
-			else {
-				$count = $this->Data['count'];
-			}
+			$count = $this->Data['count'];
 		}
 		else
 		{
@@ -185,7 +167,7 @@ class Series extends Config {
 		$result = $this->mysqli->query($query);
 		$this->mysqli->set_charset("utf8");
 		
-		$returneddata = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Request Successful.");
+		$returneddata = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
 		$returneddata['total-series'] = $this->bool_totalSeriesAvailable();
 		$returneddata['start'] = rtrim($start, ',');
 		$returneddata['count'] = $count;
@@ -193,7 +175,6 @@ class Series extends Config {
 		include_once("review.v2.class.php");
 		$Review = new Review();
 		$i = 0;
-		$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
 		while($row = $result->fetch_assoc())
 		{
 			$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
@@ -207,15 +188,9 @@ class Series extends Config {
 				}
 				else
 				{
-					if(isset($booleanSwitch[$value])){
-						$returneddata['results'][$i][$key] = $booleanSwitch[$value];
-					}
-					else {
-						$returneddata['results'][$i][$key] = $value;
-					}
+					$returneddata['results'][$i][$key] = $value;
 				}
-			}	
-			
+			}
 			$returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
 			$returneddata['results'][$i]['total-reviews'] = $Reviews['total-reviews'];
 			$returneddata['results'][$i]['user-reviewed'] = $Reviews['user-reviewed'];

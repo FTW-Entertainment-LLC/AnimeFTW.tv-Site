@@ -178,8 +178,14 @@ class Episode extends Config {
 		if(isset($this->Data['latest']) || isset($this->Data['id'])) {
 			// Either this is a single series or the latest episodes listing, having neither is impossible.	
 			// change to UTF-8 so we can use kanji and romaji
+
+			// Create the Join statement, and append the Sprite data onto the $columns variable
+			// These are always needed for Episode data?
+			$spritesJoin = "LEFT JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episode`.`spriteId`";
+			$columns .= ", `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount";
+
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`" . $spritesJoin . ", `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
 			//execute the query
 			$result = $this->mysqli->query($query);
 				
@@ -210,7 +216,7 @@ class Episode extends Config {
 					{
 						if($key == 'image')
 						{
-							$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';						
+							$finalresults['results'][$i]['image'] = "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 						}
 						else if($key == 'hd')
 						{
@@ -230,9 +236,22 @@ class Episode extends Config {
 								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 							}
 						}
-						else if($key == 'seriesname')
+						else if($key == 'seriesname' || $key == 'sid' || $key == 'spriteId')
 						{
 							// we don't need this..
+						}
+						else if(strpos($key, "sprite") !== false)
+						{
+							// Both if's are hack-esq....Any ideas to improve? -Nikey
+							if (!isset($finalresults['results'][$i]['sprite']) && $row['spriteId'] != null)
+								$finalresults['results'][$i]['sprite'] = [
+									"image"	=> "{$this->ImageHost}/video-images/{$row['sid']}/{$row['id']}_sprite.jpeg",
+									"width" => $row['spriteWidth'],
+									"height" => $row['spriteHeight'],
+									"total-width" => $row['spriteTotalWidth'],
+									"rate"	=> $row['spriteRate'],
+									"count"	=> $row['spriteCount'],
+								];
 						}
 						else
 						{

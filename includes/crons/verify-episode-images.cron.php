@@ -50,10 +50,6 @@ class ImageChecker extends Config {
 		return true;
 	}
 
-	public function createImage($url) {
-		return file_get_contents($url);
-	}
-
 }
 
 $lastIdQuery = mysql_query("SELECT `value` FROM settings WHERE `name`='verify_image_exists_last_id'");
@@ -66,7 +62,7 @@ if (!$lastId)
 
 //$lastId = intval($lastId); // Do we want to conform it to an Int?
 
-$seriesQuery = mysql_query("SELECT id, videoServer FROM series WHERE `active`='yes' ORDER BY id LIMIT {$lastId[0]},1");
+$seriesQuery = mysql_query("SELECT id FROM series WHERE `active`='yes' ORDER BY id LIMIT {$lastId[0]},1");
 if (!$seriesQuery)
 	die("Failed to get series");
 
@@ -95,35 +91,25 @@ if (!$series) {
 	die("Failed to get series value for #{$lastId[0]}");
 }
 
-$episodesQuery = mysql_query("SELECT epprefix, epnumber, id, seriesname, vidheight, vidwidth, movie, videotype, image FROM episode WHERE `sid`='{$series[0]}'");
+$episodesQuery = mysql_query("SELECT id FROM episode WHERE `sid`='{$series[0]}'");
 if (!$episodesQuery)
 	die("Failed to get episodes");
 
-$missingImages = 0;
-$lyingImages = 0;
 $imageChecker = new ImageChecker();
 
 while ($episode = mysql_fetch_row($episodesQuery)) {
 
-	$exists = $imageChecker->check("{$episode[0]}_{$episode[1]}_screen.jpeg");
+	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_screen.jpeg");
+	if (!$exists)
+		mysql_query("UPDATE episode SET image = 0, updated = '" . time() . "' WHERE id = '{$series[0]}'");
+
+	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_screen.jpeg");
 	if (!$exists) {
-
-		$url = "http://{$series[1]}.animeftw.tv/fetch-pictures-v2.php?node=add&remote=true&seriesName={$episode[3]}&epprefix={$episode[0]}&epnumber={$episode[1]}&durration=360&vidwidth={$episode[4]}&vidheight={$episode[5]}&videotype={$episode[7]}&movie={$episode[8]}";
-
-		$createResult = $imageChecker->createImage($url);
-
-		if ($createResult == "success") {
-			if ($episode[8] != 1) {
-				$imageQuery = mysql_query("UPDATE episode SET image = 1 WHERE `id`='{$episode[2]}'");
-				if (!$imageQuery) {
-					// Log failure to update episode?
-				}
-			}
-		} else {
-			// Log failure where?
-		}
-
+//		mysql_query("UPDATE episode SET spriteId = NULL, updated = '" . time() . "' WHERE id = '{$series[0]}'");
+		// TODO: Solve this problem...Maybe delete old data here and now, before the spriteId is set to null?
+		// Cannot set spriteId to null, because old data will remain. This creates a small problem when sprite needs to be recreated, so for now...well, it's never recreated. -nikey
 	}
+
 
 }
 

@@ -2455,9 +2455,13 @@ class AFTWManagement extends Config {
 					$sigactive = urldecode(@$_POST['signatureActive']);
 					$Signature = urldecode(@$_POST['Signature']);
 					$showChat = urldecode(@$_POST['showChat']);
+					$sitepmnote = urldecode(@$_POST['sitepmnote']);
 					$theme = urldecode(@$_POST['theme']);
 					$notes = urldecode(@$_POST['notes']);
+					$notifications = urldecode(@$_POST['notifications']);
+					$html5 = urldecode(@$_POST['html5']);
 					$preffix = urldecode(@$_POST['preffix']);
+					$ssl = urldecode(@$_POST['ssl-support']);
 					
 					if($Alias == '')
 					{
@@ -2471,18 +2475,18 @@ class AFTWManagement extends Config {
 					// if the users access level is an admin or manager, give them the ability to edit everything				
 					if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 					{
-						$additional = ',' . $EmailAlias . ' `canDownload`=\'' . mysql_real_escape_string($candownload) . '\', `Level_access`=\'' . mysql_real_escape_string($level_access) . '\', `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `avatarActivate`=\'' . mysql_real_escape_string($avataractive) . '\', `avatarExtension`=\'' . mysql_real_escape_string($avatarextension) . '\', `personalMsg`=\'' . mysql_real_escape_string($personalmsg) . '\', `memberTitle`=\'' . mysql_real_escape_string($membertitle) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `signatureActive`=\'' . mysql_real_escape_string($sigactive) . '\', `Signature`=\'' . mysql_real_escape_string($Signature) . '\', `notes`=\'' . mysql_real_escape_string($notes) . '\'';
+						$additional = ',' . $EmailAlias . ' `canDownload`=\'' . mysql_real_escape_string($candownload) . '\', `Level_access`=\'' . mysql_real_escape_string($level_access) . '\', `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `avatarActivate`=\'' . mysql_real_escape_string($avataractive) . '\', `avatarExtension`=\'' . mysql_real_escape_string($avatarextension) . '\', `personalMsg`=\'' . mysql_real_escape_string($personalmsg) . '\', `memberTitle`=\'' . mysql_real_escape_string($membertitle) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `signatureActive`=\'' . mysql_real_escape_string($sigactive) . '\', `Signature`=\'' . mysql_real_escape_string($Signature) . '\', `html5`=\'' . mysql_real_escape_string($html5) . '\', `notes`=\'' . mysql_real_escape_string($notes) . '\', `ssl`=\'' . mysql_real_escape_string($ssl) . '\'';
 					}
 					else if($this->UserArray[2] == 4 || $this->UserArray[2] == 5 || $this->UserArray[2] == 6 || $this->UserArray[2] == 7)
 					{
 						//AMs and staff can see these...
 						if($Signature != '')
 						{
-							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `Signature`=\'' . mysql_real_escape_string($Signature).'\', `signatureActive`=\'yes\'';
+							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `Signature`=\'' . mysql_real_escape_string($Signature).'\', `signatureActive`=\'yes\', `html5`=\'' . mysql_real_escape_string($html5) . '\', `ssl`=\'' . mysql_real_escape_string($ssl) . '\'';
 						}
 						else
 						{
-							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `Signature`=\'' . mysql_real_escape_string($Signature).'\'';
+							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `Signature`=\'' . mysql_real_escape_string($Signature).'\', `html5`=\'' . mysql_real_escape_string($html5) . '\', `ssl`=\'' . mysql_real_escape_string($ssl) . '\'';
 						}
 					}
 					else {
@@ -2503,6 +2507,8 @@ class AFTWManagement extends Config {
 					`skypeName`=\'' . mysql_real_escape_string($skype) . '\', 
 					`icqNumber`=\'' . mysql_real_escape_string($icq) . '\', 
 					`showEmail`=\'' . mysql_real_escape_string($showemail) . '\', 
+					`sitepmnote`=\'' . mysql_real_escape_string($sitepmnote) . '\', 
+					`notifications`=\'' . mysql_real_escape_string($notifications) . '\', 
 					`theme`=\'' . mysql_real_escape_string($theme) . '\'
 					'.$additional.'
 					WHERE `ID`=\'' . mysql_real_escape_string($rid) . '\'';

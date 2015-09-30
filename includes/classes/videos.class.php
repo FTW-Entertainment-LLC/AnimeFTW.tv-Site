@@ -277,15 +277,15 @@ class AFTWVideos extends Config{
 		else if($mov == 'movie'){$movvar = "AND Movie='1' AND ova='0'";}
 		else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 		else {$movvar = NULL;}
-		$query   = "SELECT `id`, `sid`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
+		$query   = "SELECT `id`, `sid`, `spriteId`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$numEpisodes = mysql_num_rows($result);
 		if($numEpisodes == 0){
-			$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+			$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null);
 		}
 		else {
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
-			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],1,$row['sid'],$row['id'],$row['views'],$row['Movie']);
+			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],1,$row['sid'],$row['id'],$row['views'],$row['Movie'],$row['spriteId']);
 		}
 		return $episodeArray;
 	}
@@ -312,6 +312,26 @@ class AFTWVideos extends Config{
 			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],1,$row['hd'],$row['kanji'],$row['romaji']);
 		}
 		return $seriesArray;
+	}
+
+	#-------------------------------------------------------------
+	# Function showSpriteInfo
+	# Give an Episode Id and it will return sprite info
+	# @Param: $EpisodeArray[18]
+	#-------------------------------------------------------------
+
+	private function showSpriteInfo($spriteId) {
+		if ($spriteId == null)
+			return false;
+
+		$sql	= "SELECT width, height, totalWidth, rate, count FROM sprites WHERE id='{$spriteId}'";
+		$query	= mysql_query($sql) or die('Error : ' . mysql_error());
+		$count	= mysql_num_rows($query);
+
+		if ($count == 0)
+			return false;
+
+		return mysql_fetch_array($query); // TODO: Switch to mysql_fetch_assoc and use Integer based indexing? -Nikey
 	}
 	
 	#-------------------------------------------------------------
@@ -449,7 +469,7 @@ class AFTWVideos extends Config{
 	# if the user's ip is not in the database already
 	#-------------------------------------------------------------
 	
-	private function Episode_Display($SeriesArray,$EpisodeArray,$moevar)
+	private function Episode_Display($SeriesArray,$EpisodeArray,$SpriteArray,$moevar)
 	{
 		function getUrl()
 		{
@@ -547,7 +567,7 @@ class AFTWVideos extends Config{
 		}
 		else
 		{
-			$epimage = $this->CDNHost . '/video-images/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_screen.jpeg';
+			$epimage = "{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_screen.jpeg";
 		}
 		// Autoplay functionality.
 		$autoplay = "";
@@ -562,7 +582,7 @@ class AFTWVideos extends Config{
 		// All of the code for the HTML5 player is here.
 		echo '
 			<div id="aftw-video-wrapper"' . $hiddenstyle . ' align="center">
-				<video id="aftw-player" class="video-js vjs-default-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . '>';
+				<video id="aftw-player" class="video-js vjs-sublime-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . '>';
 				
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.				
@@ -744,7 +764,7 @@ class AFTWVideos extends Config{
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
-				videojs(\'#aftw-player\', {
+				var video = videojs(\'#aftw-player\', {
 					plugins : {
 						resolutionSelector: {
 							// Pass any options here
@@ -767,7 +787,7 @@ class AFTWVideos extends Config{
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
-				videojs( \'#aftw-player\', {
+				var video = videojs( \'#aftw-player\', {
 					plugins : {
 						hotkeys: {
 							volumeStep: 0.1,
@@ -779,6 +799,44 @@ class AFTWVideos extends Config{
 				});
 			</script>';
 		}
+
+		// Added 9/22/15 by Nikey646, Output for sprite sheets if they exist.
+		if ($SpriteArray) {
+			// Sprite exists. Lets load the Sprite Data
+
+			// 5 Tab spaces to help w/ indenting source code in the output.
+			$tab5 = "					";
+
+			echo <<<HDOC
+
+			<script type="text/javascript">
+				video.thumbnails({\n
+HDOC;
+
+			for($i = 0; $i < $SpriteArray['count']; $i++) {
+				echo $tab5 . $i * $SpriteArray['rate'] . ": {\n";
+				if ($i === 0)
+					echo $tab5 . "	src: \"{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
+				echo $tab5 . "	style: {\n";
+
+				echo $tab5 . "		left: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
+				if ($i === 0)
+					echo $tab5 . "		width: '{$SpriteArray['totalWidth']}px',\n";
+				echo $tab5 . "		height: '{$SpriteArray['height']}px', \n";
+				echo $tab5 . "		clip: 'rect(0, " . ($SpriteArray['width'] * ($i + 1)) . "px, {$SpriteArray['height']}px, " . ($SpriteArray['width'] * $i) . "px)'\n";
+
+				echo $tab5 . "	}\n";
+
+				echo $tab5 . "},\n";
+			}
+
+			echo <<<HDOC
+				});
+			</script>
+HDOC;
+
+		}
+
 	}
 	
 	#------------------------------------------------------------
@@ -821,13 +879,15 @@ class AFTWVideos extends Config{
 						
 						if($EpisodeArray[11] == 1)
 						{ //Just to be SUPER sure, we need to check to make sure this episode is valid for this series.. 1 = awesomesauce
-							
+
 							if($this->UserArray[0] == 0 || $this->checkBanned() == FALSE)
 							{
 								echo '<br /><br /><br /><br /><br /><br /><div align="center" style="font-size:20px;">Error 404: There was no video found, please go back and try again.</div>';
 							}
 							else
 							{
+								$SpriteArray = $this->showSpriteInfo($EpisodeArray[18]);
+
 								echo "<div id='va'><br /><br /><br />";
 								echo "<span class='head'><a href='/anime/".$SeriesArray[2]."/' style='color:#000;'>".$SeriesArray[3]."</a></span><span class='headend'>, ".$type1." #".$EpisodeArray[0]."</span>";
 								echo "</div>";	
@@ -863,7 +923,7 @@ class AFTWVideos extends Config{
 								<div id="video-wrapper">
 									<div id="video-left-column">
 										<div class="video-player">';
-										 echo $this->Episode_Display($SeriesArray,$EpisodeArray,$moevar);
+										 echo $this->Episode_Display($SeriesArray,$EpisodeArray,$SpriteArray,$moevar);
 										 echo '
 										</div>
 										<div class="video-information">
@@ -1222,7 +1282,7 @@ class AFTWVideos extends Config{
 			}
 			else
 			{
-				$epimage = $this->CDNHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';
+				$epimage = "{$this->CDNHost}/video-images/{$SeriesArray[0]}/{$row['id']}_screen.jpeg";
 			}
 			if($row['epnumber'] == $EpisodeArray[0])
 			{
@@ -1498,7 +1558,7 @@ class AFTWVideos extends Config{
 				}
 				else 
 				{
-					$episodepreview = $this->CDNHost . '/video-images/'.$epPrefix.'_'.$epnumber.'_screen.jpeg';
+					$episodepreview = "{$this->CDNHost}/video-images/{$sid}/{$id}_screen.jpeg";
 				}
 				$epname    = stripslashes($epname);
 				
@@ -1822,7 +1882,7 @@ class AFTWVideos extends Config{
 	public function showEpisodeTooltip($id,$type = 0)
 	{
 		$id = mysql_real_escape_string($id);
-		$query = "SELECT `id`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
+		$query = "SELECT `id`, `sid`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
 		$result = mysql_query($query);
 		
 		$row = mysql_fetch_assoc($result);
@@ -1895,7 +1955,7 @@ class AFTWVideos extends Config{
 			}
 			else 
 			{
-				$episodepreview = $this->CDNHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';
+				$episodepreview = "{$this->CDNHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 			}
 			$DisplayImage = '
 			<div>

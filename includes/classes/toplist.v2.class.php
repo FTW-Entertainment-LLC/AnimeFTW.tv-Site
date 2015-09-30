@@ -65,8 +65,8 @@ class toplist extends Config {
 		
 		if($result)
 		{
-			$returnarray['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
-			$returnarray['message'] = 'Request Successful.';
+			$returnarray['status'] = $this->MessageCodes["Result Codes"]["201"]["Status"];
+			$returnarray['message'] = $this->MessageCodes["Result Codes"]["201"]["Message"];
 			$returnarray['count'] = $count;
 			$i=0;
 			include_once("rating.v2.class.php");
@@ -89,8 +89,8 @@ class toplist extends Config {
 		}
 		else
 		{
-			$returnarray['status'] = $this->MessageCodes["Result Codes"]["400"]["Status"];
-			$returnarray['message'] = $this->MessageCodes["Result Codes"]["400"]["Message"];
+			$returnarray['status'] = $this->MessageCodes["Result Codes"]["05-400"]["Status"];
+			$returnarray['message'] = $this->MessageCodes["Result Codes"]["05-400"]["Message"];
 		}
 		return $returnarray;
 	}

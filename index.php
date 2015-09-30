@@ -526,13 +526,6 @@ if (isset($_GET['rf'])){
 		echo "<!-- End Top 10 List -->";
 	}
 	$stats->UsageStats();
-	if($profileArray[1] == 0){
-	echo '<div align="center">
-	 <!-- Begin BidVertiser code -->
-<SCRIPT SRC="http://bdv.bidvertiser.com/BidVertiser.dbm?pid=341006&bid=842659" TYPE="text/javascript"></SCRIPT>
-<!-- End BidVertiser code --> 
-</div>';
-	}
 	echo "<div class='side-body-bg'>";
 	echo "<div class='scapmain'>Friends of AFTW</div>\n";
 	echo "<div class='side-body floatfix'>\n";
