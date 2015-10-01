@@ -1218,6 +1218,7 @@ HDOC;
 			$page = ($_GET['page']*$AvailableRows)+10;
 			$ajax = 1;
 			$Movie = 0;
+			$sid = $_GET['sid'];
 			$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
 			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
@@ -1238,6 +1239,7 @@ HDOC;
 				$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
 			}
+			$sid = $SeriesArray[0];
 			$query = "SELECT `id`, `epnumber`, `epname`, `epprefix`, `image`, `hd`, `views`, `Movie` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` >= " . $EpisodeArray[0] . " AND `Movie` = $Movie ORDER BY `epnumber` ASC LIMIT 0, $AvailableRows";
 
 		}
@@ -1282,7 +1284,7 @@ HDOC;
 			}
 			else
 			{
-				$epimage = "{$this->CDNHost}/video-images/{$SeriesArray[0]}/{$row['id']}_screen.jpeg";
+				$epimage = "{$this->CDNHost}/video-images/{$sid}/{$row['id']}_screen.jpeg";
 			}
 			if($row['epnumber'] == $EpisodeArray[0])
 			{
