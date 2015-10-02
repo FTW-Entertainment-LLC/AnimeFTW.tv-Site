@@ -176,16 +176,23 @@ class Episode extends Config {
 			$latest = "";
 		}
 		if(isset($this->Data['latest']) || isset($this->Data['id'])) {
-			// Either this is a single series or the latest episodes listing, having neither is impossible.	
+			// Either this is a single series or the latest episodes listing, having neither is impossible.
 			// change to UTF-8 so we can use kanji and romaji
+			
+			// Create the Join statement, and append the Sprite data onto the $columns variable
+			// These are always needed for Episode data?
+			$spritesJoin = "LEFT JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episode`.`spriteId`";
+			$columns .= ", `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount";
+			
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`" . $spritesJoin . ", `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+			
 			//execute the query
 			$result = $this->mysqli->query($query);
-				
+			
 			$finalresults = array();
+			
 			// add the series specific info to the output
-				
 			$count = $result->num_rows;
 			if($count > 0)
 			{

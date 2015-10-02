@@ -133,11 +133,7 @@ class Config {
 			$messageBan = 0;
 			$viewNotifications = 0;
 		}
-<<<<<<< HEAD
 		$array = array($Logged,$UserID,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$AdvanceActive,$UploadsVisit);
-=======
-		$array = array($Logged,$UserID,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$AdvanceActive,$UploadsVisit,0,0);
->>>>>>> iss79
 		$this->UserArray = $array;
 	}
 	
