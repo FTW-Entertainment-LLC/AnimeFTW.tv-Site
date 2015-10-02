@@ -8,7 +8,7 @@
 .vjs-thumbnail {
   position: absolute;
   left: 0;
-  bottom: 1.3em;
+  bottom: -10px;
   opacity: 0;
   transition: opacity .2s ease;
   -webkit-transition: opacity .2s ease;

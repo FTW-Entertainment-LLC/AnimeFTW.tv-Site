@@ -53,7 +53,7 @@ include('includes/siteroot.php');
 									$FailCheck = TRUE;
 								}
 								else {
-									$query = $db->query ( "INSERT INTO users (`Username` , `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`, `sitepmnote`, `notifications`) VALUES (" . $db->qstr ( makeUrlFriendly("$postUsername") ) . ", " . $db->qstr ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $db->qstr ( $_POST['email'] ) . ", '" . random_string ( 'alnum', 32 ) . "', '" . $_POST['firstname'] . "', '" . $_POST['gender'] . "', '" . $_POST['ageDate'] . "', '" . $_POST['ageMonth'] . "', '" . $_POST['ageYear'] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_POST['timeZone']."', '".$_POST['sitepmnote']."', '".$_POST['notifications']."')" );
+									$query = $db->query ( "INSERT INTO users (`Username` , `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $db->qstr ( makeUrlFriendly("$postUsername") ) . ", " . $db->qstr ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $db->qstr ( $_POST['email'] ) . ", '" . random_string ( 'alnum', 32 ) . "', '" . $_POST['firstname'] . "', '" . $_POST['gender'] . "', '" . $_POST['ageDate'] . "', '" . $_POST['ageMonth'] . "', '" . $_POST['ageYear'] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_POST['timeZone']."')" );
 									$getUser = "SELECT ID, Username, Email, Random_key FROM users WHERE Username = " . $db->qstr ( makeUrlFriendly("$postUsername") ) . "";
 									if ( $db->RecordCount ( $getUser ) == 1 ){			
 										$row = $db->getRow ( $getUser );
@@ -62,6 +62,10 @@ include('includes/siteroot.php');
 										if ( send_email ( $subject, $row->Email, $message ) ) {
 											$msg = 'Account registered as: '.$row->Username.'. Please check your email ('.$row->Email.') for details on how to activate it.';									
 											$noReg = 'yes';
+											
+											// Insert default notification values into the database.
+											$this->mysqli->query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
+											$this->mysqli->query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
 										}
 										else {
 											$error = 'I managed to register your membership but failed to send the validation email. Please contact the admin at ' . ADMIN_EMAIL;

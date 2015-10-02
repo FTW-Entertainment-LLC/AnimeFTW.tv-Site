@@ -556,22 +556,6 @@ class AFTWUser extends Config{
 				<dd><input name="displayName" type="text" class="loginForm" id="displayName" size="25" value="' . $Display_Name . '"' . $AMFeature . ' /></dd>
 			</dl>';
 			echo '<dl>
-				<dt>Site PM Notifications:<br /><i>This controls if you get<br /> notified for new personal messages.</i></dt>
-				<dd><select name="sitepmnote" class="loginForm">
-						<option value="0">Receive PMs?</option>
-						<option value="1"'; if($row['sitepmnote'] == '1'){echo ' selected="selected"';} echo '>Yes</option>
-						<option value="0"'; if($row['sitepmnote'] == '0'){echo ' selected="selected"';} echo '>No</option>
-					</select></dd>
-			</dl><br />';
-			echo '<dl>
-				<dt>Admin Notifications:<br /><i>Do you want to get emails<br /> from the Admins on important updates?.</i></dt>
-				<dd><select name="notifications" class="loginForm">
-						<option value="0">Receive Admin Emails?</option>
-						<option value="1"'; if($row['notifications'] == '1'){echo ' selected="selected"';} echo '>Yes</option>
-						<option value="0"'; if($row['notifications'] == '0'){echo ' selected="selected"';} echo '>No</option>
-					</select></dd>
-			</dl><br /><br />';
-			echo '<dl>
 				<dt>Site Theme:<br /><i>Choose the Theme <br /> you want to use on the site.</i></dt>
 				<dd><select name="theme" class="loginForm">
 						<option value="0">Default Theme</option>
@@ -751,9 +735,9 @@ class AFTWUser extends Config{
 				<option value=""'; if($country == ''){echo' selected ';} echo '>Select Your Country</option>';
 				$query = "SELECT `name`, `value` FROM `site_variables` WHERE `type` = 1 ORDER BY `name` ASC";
 				$result = mysql_query($query);
-				while($row = mysql_fetch_assoc($result))
+				while($rowC = mysql_fetch_assoc($result))
 				{
-					if($row['name'] == $country)
+					if($rowC['name'] == $country)
 					{
 						$selected  = ' selected="selected"';
 					}
@@ -761,7 +745,7 @@ class AFTWUser extends Config{
 					{
 						$selected  = '';
 					}
-					echo '<option value="' . $row['name'] . '"' . $selected . '>' . $row['name'] . '</option>';
+					echo '<option value="' . $rowC['name'] . '"' . $selected . '>' . $rowC['name'] . '</option>';
 				}
 				echo '
 				</select></dd>

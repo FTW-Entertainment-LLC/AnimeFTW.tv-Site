@@ -2455,10 +2455,8 @@ class AFTWManagement extends Config {
 					$sigactive = urldecode(@$_POST['signatureActive']);
 					$Signature = urldecode(@$_POST['Signature']);
 					$showChat = urldecode(@$_POST['showChat']);
-					$sitepmnote = urldecode(@$_POST['sitepmnote']);
 					$theme = urldecode(@$_POST['theme']);
 					$notes = urldecode(@$_POST['notes']);
-					$notifications = urldecode(@$_POST['notifications']);
 					$preffix = urldecode(@$_POST['preffix']);
 					
 					if($Alias == '')
@@ -2505,8 +2503,6 @@ class AFTWManagement extends Config {
 					`skypeName`=\'' . mysql_real_escape_string($skype) . '\', 
 					`icqNumber`=\'' . mysql_real_escape_string($icq) . '\', 
 					`showEmail`=\'' . mysql_real_escape_string($showemail) . '\', 
-					`sitepmnote`=\'' . mysql_real_escape_string($sitepmnote) . '\', 
-					`notifications`=\'' . mysql_real_escape_string($notifications) . '\', 
 					`theme`=\'' . mysql_real_escape_string($theme) . '\'
 					'.$additional.'
 					WHERE `ID`=\'' . mysql_real_escape_string($rid) . '\'';

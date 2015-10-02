@@ -782,8 +782,7 @@ class AFTWVideos extends Config{
 				});
 			</script>';
 		}
-		else
-		{
+		else {
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
@@ -798,6 +797,13 @@ class AFTWVideos extends Config{
 					}
 				});
 			</script>';
+
+			echo '
+			<style>
+				.vjs-sublime-skin .vjs-progress-control {
+					right: 90px !important;
+				}
+			</style>';
 		}
 
 		// Added 9/22/15 by Nikey646, Output for sprite sheets if they exist.
@@ -820,9 +826,10 @@ HDOC;
 				echo $tab5 . "	style: {\n";
 
 				echo $tab5 . "		left: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
-				if ($i === 0)
+				if ($i === 0) {
 					echo $tab5 . "		width: '{$SpriteArray['totalWidth']}px',\n";
-				echo $tab5 . "		height: '{$SpriteArray['height']}px', \n";
+					echo $tab5 . "		height: '{$SpriteArray['height']}px', \n";
+				}
 				echo $tab5 . "		clip: 'rect(0, " . ($SpriteArray['width'] * ($i + 1)) . "px, {$SpriteArray['height']}px, " . ($SpriteArray['width'] * $i) . "px)'\n";
 
 				echo $tab5 . "	}\n";

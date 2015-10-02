@@ -389,3 +389,49 @@ body.vjs-full-window {
 	font-weight: 700;
 	cursor: default;
 }
+
+
+
+
+
+
+.vjs-loading-spinner {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 4em;
+	line-height: 1;
+	width: 1em;
+	height: 1em;
+	margin-left: -.5em;
+	margin-top: -.5em;
+	opacity: .75;
+}
+
+.vjs-waiting .vjs-loading-spinner,.vjs-seeking .vjs-loading-spinner {
+	display: block;
+	-webkit-animation: spin 1.5s infinite linear;
+	-moz-animation: spin 1.5s infinite linear;
+	-o-animation: spin 1.5s infinite linear;
+	animation: spin 1.5s infinite linear;
+}
+
+.vjs-error .vjs-loading-spinner {
+	display: none;
+	-webkit-animation: none;
+	-moz-animation: none;
+	-o-animation: none;
+	animation: none;
+}
+
+.vjs-loading-spinner:before {
+	/*content:"\e01e";font-family:VideoJS;*/
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1em;
+	height: 1em;
+	text-align: center;
+	text-shadow: 0 0 .1em #000;
+}

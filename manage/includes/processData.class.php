@@ -453,9 +453,7 @@ class processData extends Config {
 					$sigactive = urldecode(@$_POST['signatureActive']);
 					$Signature = urldecode(@$_POST['Signature']);
 					$showChat = urldecode(@$_POST['showChat']);
-					$sitepmnote = urldecode(@$_POST['sitepmnote']);
 					$theme = urldecode(@$_POST['theme']);
-					$notifications = urldecode(@$_POST['notifications']);
 					if($row['Level_access'] == 1 || $row['Level_access'] == 2){
 						$additional = ', avatarActivate=\'' . mysql_real_escape_string($avataractive) . '\', avatarExtension=\'' . mysql_real_escape_string($avatarextension) . '\', personalMsg=\'' . mysql_real_escape_string($personalmsg) . '\', memberTitle=\'' . mysql_real_escape_string($membertitle) . '\', aboutMe=\'' . mysql_real_escape_string($aboutme) . '\', interests=\'' . mysql_real_escape_string($interests) . '\', signatureActive=\'' . mysql_real_escape_string($sigactive) . '\', Signature=\'' . mysql_real_escape_string($Signature) . '\'';
 					}
@@ -489,8 +487,6 @@ class processData extends Config {
 					icqNumber=\'' . mysql_real_escape_string($icq) . '\', 
 					showEmail=\'' . mysql_real_escape_string($showemail) . '\', 
 					showChat=\'' . mysql_real_escape_string($showChat) . '\', 
-					sitepmnote=\'' . mysql_real_escape_string($sitepmnote) . '\', 
-					notifications=\'' . mysql_real_escape_string($notifications) . '\', 
 					theme=\'' . mysql_real_escape_string($theme) . '\'
 					'.$additional.'
 					WHERE ID=\'' . $rid . '\'';
