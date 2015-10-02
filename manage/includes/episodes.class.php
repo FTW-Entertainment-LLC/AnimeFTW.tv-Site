@@ -630,8 +630,14 @@ class Episodes extends Config {
 			else
 			{
 				$epid = mysql_real_escape_string($_GET['epid']);
-				mysql_query("UPDATE episode SET image = 0, updated = '" . time() . "' WHERE id = '{$epid}'");
-				// TODO: set spriteId to null, and delete old data / use same solution in verify-episode-images.cron.php file.
+				mysql_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
+
+				$spriteQuery = mysql_query("DELETE FROM `sprites`, `episode` WHERE `episode`.`sid`='{$epid}' AND `sprites`.`id`=`episode`.`spriteId`");
+				if ($spriteQuery)
+				{
+					mysql_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
+				}
+
 				echo "<script>alert(\"Image has been queued for image creation. Please check back in ~15 minutes\");</script>";
 			}
 		}
