@@ -53,18 +53,21 @@ class ImageChecker extends Config {
 }
 
 $lastIdQuery = mysql_query("SELECT `value` FROM `settings` WHERE `name`='verify_image_exists_last_id'");
-if (!$lastIdQuery)
+if (!$lastIdQuery) {
 	die("Failed to get verify_image_exists_last_id");
+}
 
 $lastId = mysql_fetch_row($lastIdQuery);
-if (!$lastId)
+if (!$lastId) {
 	die("Failed to get value from verify_image_exists_last_id");
+}
 
 //$lastId = intval($lastId); // Do we want to conform it to an Int?
 
 $seriesQuery = mysql_query("SELECT `id` FROM `series` WHERE `active`='yes' ORDER BY `id` LIMIT {$lastId[0]},1");
-if (!$seriesQuery)
+if (!$seriesQuery) {
 	die("Failed to get series");
+}
 
 $series = mysql_fetch_row($seriesQuery);
 if (!$series) {
@@ -92,22 +95,23 @@ if (!$series) {
 }
 
 $episodesQuery = mysql_query("SELECT `id`, `spriteId` FROM `episode` WHERE `sid`='{$series[0]}'");
-if (!$episodesQuery)
+if (!$episodesQuery) {
 	die("Failed to get episodes");
+}
 
 $imageChecker = new ImageChecker();
 
 while ($episode = mysql_fetch_row($episodesQuery)) {
 
 	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_screen.jpeg");
-	if (!$exists)
+	if (!$exists) {
 		mysql_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
+	}
 
 	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_sprite.jpeg");
 	if (!$exists && $episode[1] === null) {
 		$spriteQuery = mysql_query("DELETE FROM `sprites` WHERE `id` = '{$episode[1]}'");
-		if ($spriteQuery)
-		{
+		if ($spriteQuery) {
 			mysql_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
 		}
 	}

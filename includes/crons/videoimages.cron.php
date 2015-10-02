@@ -32,10 +32,12 @@
 			$newUrl = "http://videos.animeftw.tv/scripts/fetch-pictures.php?seriesName={$seriesname}&seriesId={$sid}&epprefix={$epprefix}&epnumber={$epnumber}&epid={$epid}&duration=360&vidwidth={$vidwidth}&vidheight={$vidheight}&videotype={$videotype}&movie={$Movie}";
 
 			if ($image !== 0 && $spriteId !== null) {
-				if ($image === 0)
+				if ($image === 0) {
 					$newUrl .= "&mode=thumbnail";
-				if ($spriteId === null)
+				}
+				if ($spriteId === null) {
 					$newUrl .= "&mode=sprite";
+				}
 			}
 
 			$contents = file_get_contents($newUrl);
@@ -58,8 +60,9 @@
 					} // else { // assume failure to add sprite, do niothing. }
 				}
 
-				if ($image === 0)
+				if ($image === 0) {
 					$updateQuery .= ", image = 1";
+				}
 
 				mysql_query("{$updateQuery} WHERE id = {$epid}");
 			}

@@ -633,8 +633,7 @@ class Episodes extends Config {
 				mysql_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
 
 				$spriteQuery = mysql_query("DELETE FROM `sprites`, `episode` WHERE `episode`.`id`='{$epid}' AND `sprites`.`id`=`episode`.`spriteId`");
-				if ($spriteQuery)
-				{
+				if ($spriteQuery) {
 					mysql_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
 				}
 
