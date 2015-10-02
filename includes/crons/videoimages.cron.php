@@ -26,10 +26,10 @@
 	$row = mysql_fetch_array($results);
 	$reportback = '';
 	if($row['id'] > 0){
-		$sql = "SELECT episode.id, episode.spriteId, episode.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.Movie, episode.videotype, episode.image, episode.sid, series.videoServer, series.fullSeriesName FROM episode, series WHERE episode.sid=series.id AND episode.updated IS NOT NULL AND episode.updated >= '{$timepast}' AND (episode.image = 0 OR episode.spriteId IS NULL)";
+		$sql = "SELECT `episode`.`id` as `epid`, `episode`.`spriteId`, `series`.`seriesName`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidwidth`, `episode`.`vidheight`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`sid`, `series`.`fullSeriesName` FROM episode, series WHERE episode.sid=series.id AND episode.updated IS NOT NULL AND episode.updated >= '{$timepast}' AND (episode.image = 0 OR episode.spriteId IS NULL)";
 		$query = mysql_query($sql);
-		while(list($epid,$spriteId,$seriesname,$epprefix,$epnumber,$vidwidth,$vidheight,$Movie,$videotype,$image,$sid,$videoServer,$fullSeriesName) = mysql_fetch_array($query)){
-			$newUrl = "http://{$videoServer}.animeftw.tv/scripts/fetch-pictures.php?seriesName={$seriesname}&seriesId={$sid}&epprefix={$epprefix}&epnumber={$epnumber}&epid={$epid}&duration=360&vidwidth={$vidwidth}&vidheight={$vidheight}&videotype={$videotype}&movie={$Movie}";
+		while(list($epid,$spriteId,$seriesname,$epprefix,$epnumber,$vidwidth,$vidheight,$Movie,$videotype,$image,$sid,$fullSeriesName) = mysql_fetch_array($query)){
+			$newUrl = "http://videos.animeftw.tv/scripts/fetch-pictures.php?seriesName={$seriesname}&seriesId={$sid}&epprefix={$epprefix}&epnumber={$epnumber}&epid={$epid}&duration=360&vidwidth={$vidwidth}&vidheight={$vidheight}&videotype={$videotype}&movie={$Movie}";
 
 			if ($image !== 0 && $spriteId !== null) {
 				if ($image === 0)
@@ -41,10 +41,13 @@
 			$contents = file_get_contents($newUrl);
 
 			$response = json_decode($contents);
+			
 			if ($response->error) {
 				$reportback .= "Failed to generate images for \"{$fullSeriesName}\" ep {$epnumber}, with prefix \"{$epprefix}\". Reason: \"{$response->reason}\"";
 			} else {
-				mysql_query("INSERT INTO sprites (width, height, totalWidth, rate, count, created) VALUES ({$response->width}, {$response->height}, {$response->totalWidthh}, {$response->rate}, {$response->count}, " . time() . ")");
+				$spriteQuery = "INSERT INTO sprites (`width`, `height`, `totalWidth`, `rate`, `count`, `created`) VALUES ({$response->sprite->width}, {$response->sprite->height}, {$response->sprite->totalWidth}, {$response->sprite->rate}, {$response->sprite->count}, " . time() . ")";
+				
+				mysql_query($spriteQuery);
 				$spriteId = mysql_insert_id();
 				mysql_query("UPDATE episode SET image = 1, spriteId = '{$spriteId}', updated = '" . time() . "' WHERE id = {$epid}");
 			}
