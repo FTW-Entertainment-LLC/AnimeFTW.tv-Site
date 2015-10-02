@@ -199,6 +199,7 @@
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAcAQAAAAAyhWABAAAAAnRSTlMAAHaTzTgAAAAZSURBVHgBYwAB/g9EUv+JokCqiaT+U4MCAPKPS7WUUOc1AAAAAElFTkSuQmCC);
 	background-size: 22px 14px;
 	height: 100%;
+	position: absolute;
 }
 
 .vjs-sublime-skin .vjs-current-time,
