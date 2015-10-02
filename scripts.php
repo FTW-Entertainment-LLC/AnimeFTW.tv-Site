@@ -64,7 +64,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	}
 	if($_GET['show'] == 'eptips'){
 		$id = $_GET['id'];
-		$query  = "SELECT epnumber, epPrefix, image FROM episode WHERE id='".mysql_real_escape_string($id)."'";
+		$query  = "SELECT epnumber, epPrefix, image, sid FROM episode WHERE id='".mysql_real_escape_string($id)."'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$verifier = mysql_num_rows($result);
 		$row = mysql_fetch_array($result);
@@ -72,7 +72,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 			$imgUrl = $Host . '/video-images/noimage.png';
 		}
 		else {
-			$imgUrl = $Host . '/video-images/'.$row['epPrefix'].'_'.$row['epnumber'].'_screen.jpeg';
+			$imgUrl = "{$Host}/video-images/{$row['sid']}/{$id}_screen.jpeg";
 		}
 		echo '<table><tr><td valign="top"><img src="'.$imgUrl.'" alt="Episode: '.$row['epnumber'].'" width="395px" /></td></tr></table>';
 		//echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';

@@ -41,7 +41,7 @@ class Episode extends Config {
 		if(isset($this->Data['id']) && is_numeric($this->Data['id']))
 		{
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesname` FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `episode`.`id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `series`.`id`=`episode`.`sid`";
+			$query = "SELECT `episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesName` FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `episode`.`id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `series`.`id`=`episode`.`sid`";
 			$result = $this->mysqli->query($query);
 			
 			$count = $result->num_rows;
@@ -62,27 +62,27 @@ class Episode extends Config {
 				{
 					if($key == 'image')
 					{
-						$results['image'] = $this->ImageHost . 'video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';						
+						$results['image'] = $this->ImageHost . 'video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';						
 					}
 					else if($key == 'hd')
 					{
 						if($value == 2)
 						{
-							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
-							$results['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
-							$results['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+							$results['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+							$results['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
 						}
 						else if($value == 1)
 						{
-							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
-							$results['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+							$results['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
 						}
 						else
 						{
-							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
+							$results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 						}
 					}
-					else if($key == 'seriesname' || $key == 'sid')
+					else if($key == 'seriesName' || $key == 'sid')
 					{
 						// we don't need this..
 					}
@@ -116,7 +116,7 @@ class Episode extends Config {
 		$finalresults = array();
 		$where = "";
 		$orderBy = "`episode`.`epnumber`";
-		$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`";
+		$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesName`";
 		// limit the query by a certain amount
 		if(isset($this->Data['count']) && is_numeric($this->Data['count']))
 		{
@@ -169,23 +169,30 @@ class Episode extends Config {
 			}
 			else {
 			}
-			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`fullSeriesName`, `series`.`seoname`";
+			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesName`";
 			$orderBy = "`episode`.`date` DESC";
 		}
 		else {
 			$latest = "";
 		}
 		if(isset($this->Data['latest']) || isset($this->Data['id'])) {
-			// Either this is a single series or the latest episodes listing, having neither is impossible.	
+			// Either this is a single series or the latest episodes listing, having neither is impossible.
 			// change to UTF-8 so we can use kanji and romaji
+			
+			// Create the Join statement, and append the Sprite data onto the $columns variable
+			// These are always needed for Episode data?
+			$spritesJoin = "LEFT JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episode`.`spriteId`";
+			$columns .= ", `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount";
+			
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`, `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+			$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`" . $spritesJoin . ", `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+			
 			//execute the query
 			$result = $this->mysqli->query($query);
-				
+			
 			$finalresults = array();
+			
 			// add the series specific info to the output
-				
 			$count = $result->num_rows;
 			if($count > 0)
 			{
@@ -210,27 +217,27 @@ class Episode extends Config {
 					{
 						if($key == 'image')
 						{
-							$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['epprefix'] . '_' . $row['epnumber'] . '_screen.jpeg';						
+							$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';						
 						}
 						else if($key == 'hd')
 						{
 							if($value == 2)
 							{
-								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
-								$finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
-								$finalresults['results'][$i]['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+								$finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+								$finalresults['results'][$i]['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
 							}
 							else if($value == 1)
 							{
-								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
-								$finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+								$finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
 							}
 							else
 							{
-								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesname'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
+								$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
 							}
 						}
-						else if($key == 'seriesname')
+						else if($key == 'seriesName')
 						{
 							// we don't need this..
 						}
