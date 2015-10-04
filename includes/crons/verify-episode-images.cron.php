@@ -52,23 +52,26 @@ class ImageChecker extends Config {
 
 }
 
-$lastIdQuery = mysql_query("SELECT `value` FROM settings WHERE `name`='verify_image_exists_last_id'");
-if (!$lastIdQuery)
+$lastIdQuery = mysql_query("SELECT `value` FROM `settings` WHERE `name`='verify_image_exists_last_id'");
+if (!$lastIdQuery) {
 	die("Failed to get verify_image_exists_last_id");
+}
 
 $lastId = mysql_fetch_row($lastIdQuery);
-if (!$lastId)
+if (!$lastId) {
 	die("Failed to get value from verify_image_exists_last_id");
+}
 
 //$lastId = intval($lastId); // Do we want to conform it to an Int?
 
-$seriesQuery = mysql_query("SELECT id FROM series WHERE `active`='yes' ORDER BY id LIMIT {$lastId[0]},1");
-if (!$seriesQuery)
+$seriesQuery = mysql_query("SELECT `id` FROM `series` WHERE `active`='yes' ORDER BY `id` LIMIT {$lastId[0]},1");
+if (!$seriesQuery) {
 	die("Failed to get series");
+}
 
 $series = mysql_fetch_row($seriesQuery);
 if (!$series) {
-	$countCheckQuery = mysql_query("SELECT count(*) FROM `series` WHERE `active`='yes'");
+	$countCheckQuery = mysql_query("SELECT count(id) FROM `series` WHERE `active`='yes'");
 
 	if ($countCheckQuery) {
 
@@ -82,7 +85,7 @@ if (!$series) {
 			$nextId = 0;
 		}
 
-		$settingsQuery = mysql_query("UPDATE settings SET `value`='{$nextId}' WHERE `id` = '15'");
+		$settingsQuery = mysql_query("UPDATE `settings` SET `value`='{$nextId}' WHERE `id` = '15'");
 
 	} else {
 		die("Fatal: Failed to check to see if next ID is safe or end of list");
@@ -91,33 +94,36 @@ if (!$series) {
 	die("Failed to get series value for #{$lastId[0]}");
 }
 
-$episodesQuery = mysql_query("SELECT id FROM episode WHERE `sid`='{$series[0]}'");
-if (!$episodesQuery)
+$episodesQuery = mysql_query("SELECT `id`, `spriteId` FROM `episode` WHERE `sid`='{$series[0]}'");
+if (!$episodesQuery) {
 	die("Failed to get episodes");
+}
 
 $imageChecker = new ImageChecker();
 
 while ($episode = mysql_fetch_row($episodesQuery)) {
 
 	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_screen.jpeg");
-	if (!$exists)
-		mysql_query("UPDATE episode SET image = 0, updated = '" . time() . "' WHERE id = '{$series[0]}'");
-
-	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_screen.jpeg");
 	if (!$exists) {
-//		mysql_query("UPDATE episode SET spriteId = NULL, updated = '" . time() . "' WHERE id = '{$series[0]}'");
-		// TODO: Solve this problem...Maybe delete old data here and now, before the spriteId is set to null?
-		// Cannot set spriteId to null, because old data will remain. This creates a small problem when sprite needs to be recreated, so for now...well, it's never recreated. -nikey
+		mysql_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
+	}
+
+	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_sprite.jpeg");
+	if (!$exists && $episode[1] === null) {
+		$spriteQuery = mysql_query("DELETE FROM `sprites` WHERE `id` = '{$episode[1]}'");
+		if ($spriteQuery) {
+			mysql_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
+		}
 	}
 
 
 }
 
-$settingsQuery = mysql_query("UPDATE settings SET `value`='" . ++$lastId[0] . "' WHERE `id` = '15'");
+$settingsQuery = mysql_query("UPDATE `settings` SET `value`='" . ++$lastId[0] . "' WHERE `id` = '15'");
 if (!$settingsQuery) {
 	// What do...this is unrecoverable :L
 }
 
 $endTime = time();
-mysql_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '15', '{$startTime}', '{$endTime}');");
-mysql_query("UPDATE crons SET last_run = '{$endTime}', status = 0 WHERE id = 15"); // No idea why status = 0
+mysql_query("INSERT INTO `crons_log` (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '15', '{$startTime}', '{$endTime}');");
+mysql_query("UPDATE `crons` SET `last_run` = '{$endTime}', `status` = 0 WHERE `id` = 15"); // No idea why status = 0

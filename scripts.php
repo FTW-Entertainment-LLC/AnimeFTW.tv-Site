@@ -823,13 +823,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 	}
 	else
 	{
-		$Config = new Config();
-		$Config->buildUserInformation(TRUE);
 		// let's process the request because they at least gave us some decent information.
 		$Episode = new Episode($_GET);
-		$Episode->
 		$output = $Episode->array_recordEpisodeTime();
-		if($output['status'] == 201)
+		if($output['status'] == 200)
 		{
 			// the output indicated a success, return true.
 			echo 'Success';
@@ -837,7 +834,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 		else
 		{
 			// failure.. just failure..
-			echo 'Failure';
+			echo 'Failure ';
 		}
 	}
 }
