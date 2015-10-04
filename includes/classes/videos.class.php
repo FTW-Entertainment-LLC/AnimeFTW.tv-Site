@@ -33,6 +33,8 @@ class AFTWVideos extends Config{
 	{
 		$this->UserArray = $input;
 		$this->array_buildSiteSettings(); // ADDED 8/23/2015 by Robotman321, connects the settings so we can use them.
+		
+		$this->array_buildRecentlyWatchedEpisodes();
 	}
 	
 	//Lets get the ID number.. Whatever it is..
