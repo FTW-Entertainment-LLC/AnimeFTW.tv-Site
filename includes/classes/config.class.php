@@ -478,7 +478,7 @@ class Config {
 		return $returnArray;
 	}
 	
-	private function array_buildRecentlyWatchedEpisodes()
+	public function array_buildRecentlyWatchedEpisodes()
 	{
 		// let's only load this when it's a video page..
 		if($_SERVER['PHP_SELF'] == '/videos.php')
