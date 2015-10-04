@@ -26,7 +26,7 @@
 	$row = mysql_fetch_array($results);
 	$reportback = '';
 	if($row['id'] > 0){
-		$sql = "SELECT `episode`.`id` as `epid`, `episode`.`spriteId`, `series`.`seriesName`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidwidth`, `episode`.`vidheight`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`sid`, `series`.`fullSeriesName` FROM `episode`, `series` WHERE `episode`.`sid`=`series`.`id` AND `episode`.`updated` IS NOT NULL AND `episode`.`updated` >= '{$timepast}' AND (`episode`.`image` = 0 OR `episode`.`spriteId` IS NULL)";
+		$sql = "SELECT `episode`.`id` as `epid`, `episode`.`spriteId`, `series`.`seriesName`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidwidth`, `episode`.`vidheight`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`sid`, `series`.`fullSeriesName` FROM `episode`, `series` WHERE `episode`.`sid`=`series`.`id` AND ((`episode`.`date` != 0 AND `episode`.`date` >= '{$timepast}') OR (`episode`.`updated` IS NOT NULL AND `episode`.`updated` >= '{$timepast}')) AND (`episode`.`image` = 0 OR `episode`.`spriteId` IS NULL)";
 		$query = mysql_query($sql);
 		while(list($epid,$spriteId,$seriesname,$epprefix,$epnumber,$vidwidth,$vidheight,$Movie,$videotype,$image,$sid,$fullSeriesName) = mysql_fetch_array($query)){
 			$newUrl = "http://videos.animeftw.tv/scripts/fetch-pictures.php?seriesName={$seriesname}&seriesId={$sid}&epprefix={$epprefix}&epnumber={$epnumber}&epid={$epid}&duration=360&vidwidth={$vidwidth}&vidheight={$vidheight}&videotype={$videotype}&movie={$Movie}";
