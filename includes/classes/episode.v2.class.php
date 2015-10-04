@@ -8,11 +8,11 @@
 
 class Episode extends Config {
 
-	public $Data, $UserID, $DevArray, $MessageCodes;
+	public $Data, $UserID, $DevArray, $MessageCodes, $UserArray;
 	
 	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL,$DirectUserArray = NULL)
 	{
-		parent::__construct();
+		parent::__construct(TRUE);
 		$this->Data = $Data;
 		// check if the data is null, we will override settings that would normally be reserved for the API.
 		if($UserID == NULL)
