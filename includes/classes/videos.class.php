@@ -797,7 +797,10 @@ class AFTWVideos extends Config{
 					}
 				});
 			</script>';
+		}
 
+		// If user !AdvancedMember || episode.hd = 0...I hope
+		if ($this->UserArray[3] === 3 || $EpisodeArray[12] === 0) {
 			echo '
 			<style>
 				.vjs-sublime-skin .vjs-progress-control {
@@ -805,6 +808,15 @@ class AFTWVideos extends Config{
 				}
 			</style>';
 		}
+
+		echo '
+			<script type="">
+				var vjsAbsolute = false;
+				$(".vjs-volume-control").on("click", function() {
+					vjsAbsolute = true;
+					$(".vjs-volume-level").css("position", "absolute");
+				});
+			</script>';
 
 		// Added 9/22/15 by Nikey646, Output for sprite sheets if they exist.
 		if ($SpriteArray) {
