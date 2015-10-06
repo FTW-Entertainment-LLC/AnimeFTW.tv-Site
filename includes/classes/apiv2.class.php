@@ -150,6 +150,22 @@ Class api extends Config {
 			'disabled' => '0',
 			'description' => 'Rate an episode 1-5 stars.'
 		),
+		'display-profile' => array(
+			'action' => 'display-profile',
+			'location' => 'user.v2.class.php', // action location
+			'classname' => 'User', // class name
+			'method' => 'array_dispayUserProfile', // method name
+			'disabled' => '0',
+			'description' => 'View the full profile of a user.'
+		),
+		'edit-profile' => array(
+			'action' => 'edit-profile',
+			'location' => 'user.v2.class.php', // action location
+			'classname' => 'User', // class name
+			'method' => 'array_editUserProfile', // method name
+			'disabled' => '1',
+			'description' => 'Submit Edits to a Users profile.'
+		),
 	);
 
 	// class constructor method
