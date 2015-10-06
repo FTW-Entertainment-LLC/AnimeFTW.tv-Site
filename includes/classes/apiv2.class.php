@@ -62,22 +62,6 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Displays only Movies from the episode listing.'
 		),
-		'display-latest-episodes' => array(
-			'action' => 'display-latest-episodes',
-			'location' => 'episode.v2.class.php', // action location
-			'classname' => 'Episode', // class name
-			'method' => 'array_displayLatestEpisodes', // method name
-			'disabled' => '1',
-			'description' => 'Displays the X latest episodes, defaults to 30 latest episodes.'
-		),
-		'display-latest-series' => array(
-			'action' => 'display-latest-series',
-			'location' => 'series.v2.class.php', // action location
-			'classname' => 'Series', // class name
-			'method' => 'array_displayLatestSeries', // method name
-			'disabled' => '1',
-			'description' => 'Display the X latest series, defaults to last 10 added series.'
-		),
 		'display-tag-cloud' => array(
 			'action' => 'display-tag-cloud',
 			'location' => 'series.v2.class.php', // action location

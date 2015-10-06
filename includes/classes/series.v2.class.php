@@ -150,12 +150,44 @@ class Series extends Config {
 		
 		if($this->Data['action'] == 'random-series')
 		{
-			$orderby = " ORDER BY RAND() ";
+			$orderBy = " ORDER BY RAND() ";
 			$start = "";
 		}
 		else
 		{
-			$orderby = " ORDER BY fullSeriesName ";
+			$orderBy = " ORDER BY fullSeriesName ";
+		}
+		
+		// Add support for viewing the last X series added.
+		if(isset($this->Data['latest'])) {
+			// latest is set, we will limit them to the latest ## series by default.
+			// Unless they use the timeframe flag, which will allow them to specify a time frame from the current time
+			// that they wish to pull down series from.
+			if(isset($this->Data['timeframe'])) {
+				// They can use m, s  or h at the end, this way we can do &timeframe=15m or timeframe=60s
+				$timeType = substr($this->Data['timeframe'], -1);
+				$timeFrame = substr($this->Data['timeframe'], 0, -1);
+				if(strtolower($timeType) == 'm') {
+					// Minutes timeframe.
+					$finalTime = time()-($timeFrame*60);
+				}
+				elseif(strtolower($timeType) == 'h') {
+					// hours
+					$finalTime = time()-($timeFrame*60*60);
+				}
+				else {
+					// seconds is the default, we will not accept anything else.
+					$finalTime = time()-$timeFrame;
+				}
+				$where .= " AND `date` >= " . $this->mysqli->real_escape_string($finalTime);
+			}
+			else {
+			}
+			$columns = "`id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` ";
+			$orderBy = " ORDER BY `series`.`id` DESC";
+		}
+		else {
+			$latest = "";
 		}
 		
 		if($SortNum == 1)
@@ -167,17 +199,18 @@ class Series extends Config {
 			if(strlen($gsort) > 1)
 			{
 				$catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($gsort));
-				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
+				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
 			}
 			else 
 			{
-				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
+				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
 			}
 		}
 		else 
 		{
-			$query = "SELECT $columns FROM series WHERE active='yes' " . $this->AdvanceRestrictions . " $alphalimit " . $orderby . " ".$sort." LIMIT ".$start." ".$count;
+			$query = "SELECT $columns FROM `series` WHERE active='yes' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
 		}
+		
 		// make sure we are using UTF-8 chars
 		$this->mysqli->set_charset("utf8");
 		
