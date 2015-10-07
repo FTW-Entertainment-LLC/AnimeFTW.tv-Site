@@ -171,7 +171,6 @@ class Episode extends Config {
 			}
 			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesName`, `series`.`fullSeriesName`";
 			$orderBy = "`episode`.`date` DESC";
-			$addonEpisode = array();
 		}
 		else {
 			$latest = "";
@@ -181,9 +180,6 @@ class Episode extends Config {
 				$count = 2;
 				$addonEpisode = '{"id":"13268","sid":"700","epname":"Chii Seeks.","epnumber":"1","vidheight":"540","vidwidth":"720","epprefix":"chisnewadress","subGroup":"Eiga","Movie":"0","videotype":"mp4","image":"http://img02.animeftw.tv/video-images/700/13268_screen.jpeg","video":"http://videos.animeftw.tv/chisnewaddress/chisnewadress_1_ns.mp4","views":"0","spriteWidth":null,"spriteHeight":null,"spriteTotalWidth":null,"spriteRate":null,"spriteCount":null,"total-comments":"0","average-rating":0,"user-rated":-1}';
 				$addonEpisode = array('id' => '0','sid' => '0','epname' => 'You must be an Advanced Member to see more than 2 episodes.','epnumber' => '0','vidheight' => '0','vidwidth' => '0','epprefix' => '0','subGroup' => '0','Movie' => '0','videotype' => 'mp4','image' => '','video' => '','views' => '0','spriteWidth' => 'null','spriteHeight' => 'null','spriteTotalWidth' => 'null','spriteRate' => '0','spriteCount' => '0','total-comments' => '0','average-rating' => '0','user-rated' => '0');
-			}
-			else {
-				$addonEpisode = array();
 			}
 		}
 		if(isset($this->Data['latest']) || isset($this->Data['id'])) {
