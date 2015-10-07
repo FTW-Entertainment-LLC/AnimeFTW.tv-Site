@@ -175,7 +175,7 @@ class Episode extends Config {
 		}
 		else {
 			$latest = "";
-			if(isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0){
+			if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3){
 				// developer does not have ads enabled, so we will need to limit them.
 				$startpoint = 0;
 				$count = 2;
@@ -218,8 +218,9 @@ class Episode extends Config {
 				// include the rating class
 				include_once("rating.v2.class.php");
 				$Rating = new Rating();
-				$i = 1;
-				if(isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0){
+				$i = 0;
+				if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3){
+					$i = 1;
 					$finalresults['results'][0] = $addonEpisode;
 				}
 				while($row = $result->fetch_assoc())
