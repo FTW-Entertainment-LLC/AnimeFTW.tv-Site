@@ -166,6 +166,14 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Submit Edits to a Users profile.'
 		),
+		'display-categories' => array(
+			'action' => 'display-categories',
+			'location' => 'series.v2.class.php', // action location
+			'classname' => 'Series', // class name
+			'method' => 'array_displayCategories', // method name
+			'disabled' => '1',
+			'description' => 'Displays available Categories.'
+		),
 	);
 
 	// class constructor method
