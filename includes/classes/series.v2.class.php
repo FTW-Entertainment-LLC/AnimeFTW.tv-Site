@@ -265,4 +265,41 @@ class Series extends Config {
 		$row = $result->fetch_assoc();
 		return $row['count'];
 	}
+	
+	public function array_displayCategories(){
+		if(isset($this->Data['sort'])){
+			$sort = $this->Data['sort'];
+		}
+		else {
+			$sort = "ASC";
+		}
+		
+		if(isset($this->Data['start'])){
+			$start = $this->Data['start'];
+		}
+		else {
+			$start = 0;
+		}
+		
+		if(isset($this->Data['count'])){
+			$count = $this->Data['count'];
+		}
+		else {
+			$count = 50;
+		}
+		$query = "SELECT `id`, `name`, `description` FROM `categories` ORDER BY `name` {$sort} LIMIT {$start}, {$count}";
+		$this->mysqli->query("SET NAMES 'utf8'");
+		$result = $this->mysqli->query($query);
+		
+		$returneddata = array('status' => '200', 'message' => "Request Successful.", 'sort' => $sort);
+		$returneddata['sort'] = $sort;
+		$returneddata['count'] = $count;
+		$returneddata['start'] = $start;
+		$i = 0;
+		while($row = $result->fetch_assoc()){
+			$returneddata['result'][$i] = $row;
+			$i++;
+		}
+		return $returneddata;
+	}
 }
