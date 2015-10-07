@@ -171,9 +171,20 @@ class Episode extends Config {
 			}
 			$columns = "`episode`.`id`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`Movie`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`seriesName`, `series`.`fullSeriesName`";
 			$orderBy = "`episode`.`date` DESC";
+			$addonEpisode = array();
 		}
 		else {
 			$latest = "";
+			if(isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0){
+				// developer does not have ads enabled, so we will need to limit them.
+				$startpoint = 0;
+				$count = 2;
+				$addonEpisode = '{"id":"13268","sid":"700","epname":"Chii Seeks.","epnumber":"1","vidheight":"540","vidwidth":"720","epprefix":"chisnewadress","subGroup":"Eiga","Movie":"0","videotype":"mp4","image":"http://img02.animeftw.tv/video-images/700/13268_screen.jpeg","video":"http://videos.animeftw.tv/chisnewaddress/chisnewadress_1_ns.mp4","views":"0","spriteWidth":null,"spriteHeight":null,"spriteTotalWidth":null,"spriteRate":null,"spriteCount":null,"total-comments":"0","average-rating":0,"user-rated":-1}';
+				$addonEpisode = array('id' => '0','sid' => '0','epname' => 'You must be an Advanced Member to see more than 2 episodes.','epnumber' => '0','vidheight' => '0','vidwidth' => '0','epprefix' => '0','subGroup' => '0','Movie' => '0','videotype' => 'mp4','image' => '','video' => '','views' => '0','spriteWidth' => 'null','spriteHeight' => 'null','spriteTotalWidth' => 'null','spriteRate' => '0','spriteCount' => '0','total-comments' => '0','average-rating' => '0','user-rated' => '0');
+			}
+			else {
+				$addonEpisode = array();
+			}
 		}
 		if(isset($this->Data['latest']) || isset($this->Data['id'])) {
 			// Either this is a single series or the latest episodes listing, having neither is impossible.
@@ -207,7 +218,10 @@ class Episode extends Config {
 				// include the rating class
 				include_once("rating.v2.class.php");
 				$Rating = new Rating();
-				$i = 0;
+				$i = 1;
+				if(isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0){
+					$finalresults['results'][0] = $addonEpisode;
+				}
 				while($row = $result->fetch_assoc())
 				{
 					// a result was found, build the array for return.
