@@ -297,7 +297,7 @@ class Series extends Config {
 		$returneddata['start'] = $start;
 		$i = 0;
 		while($row = $result->fetch_assoc()){
-			$returneddata['result'][$i] = $row;
+			$returneddata['results'][$i] = $row;
 			$i++;
 		}
 		return $returneddata;
