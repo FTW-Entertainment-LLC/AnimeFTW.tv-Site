@@ -146,8 +146,14 @@ class Series extends Config {
 			}
 		}
 		
-		// we need to allow for randomization in a series view
+		if(isset($this->Data['filter'])){
+			$filter = " AND `category` LIKE '%" . $this->Data['filter'] . " ,%'";
+		}
+		else {
+			$filter = "";
+		}
 		
+		// we need to allow for randomization in a series view		
 		if($this->Data['action'] == 'random-series')
 		{
 			$orderBy = " ORDER BY RAND() ";
@@ -208,7 +214,7 @@ class Series extends Config {
 		}
 		else 
 		{
-			$query = "SELECT $columns FROM `series` WHERE active='yes' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
+			$query = "SELECT $columns FROM `series` WHERE active='yes'{$filter} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
 		}
 		
 		// make sure we are using UTF-8 chars
