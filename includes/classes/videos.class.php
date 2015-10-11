@@ -779,6 +779,8 @@ class AFTWVideos extends Config{
 						}
 					}
 					
+				}, function() {
+					this.progressTips();
 				});
 			</script>';
 		}
@@ -795,6 +797,8 @@ class AFTWVideos extends Config{
 							enableFullscreen: true
 						}
 					}
+				}, function() {
+					this.progressTips();
 				});
 			</script>';
 		}
@@ -811,9 +815,7 @@ class AFTWVideos extends Config{
 
 		echo '
 			<script type="">
-				var vjsAbsolute = false;
 				$(".vjs-volume-control").on("click", function() {
-					vjsAbsolute = true;
 					$(".vjs-volume-level").css("position", "absolute");
 				});
 			</script>';
