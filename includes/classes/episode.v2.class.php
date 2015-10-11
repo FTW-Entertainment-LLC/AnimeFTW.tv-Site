@@ -215,7 +215,7 @@ class Episode extends Config {
 				include_once("rating.v2.class.php");
 				$Rating = new Rating();
 				$i = 0;
-				if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3){
+				if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3 && !isset($this->Data['latest'])){
 					$i = 1;
 					$finalresults['results'][0] = $addonEpisode;
 				}
