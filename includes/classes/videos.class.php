@@ -779,8 +779,6 @@ class AFTWVideos extends Config{
 						}
 					}
 					
-				}, function() {
-					this.progressTips();
 				});
 			</script>';
 		}
@@ -803,27 +801,32 @@ class AFTWVideos extends Config{
 			</script>';
 		}
 
+		// Open a style tag for late style modifications
+		echo '
+			<style>';
+
 		// If user !AdvancedMember || episode.hd = 0...I hope
 		if ($this->UserArray[3] === 3 || $EpisodeArray[12] === 0) {
+			// Extend the progress bar so that the Resolution Selectors gap is filled
 			echo '
-			<style>
 				.vjs-sublime-skin .vjs-progress-control {
 					right: 90px !important;
-				}
-			</style>';
+				}' . "\n";
 		}
 
+		// Fix the JavaScript demon child.
 		echo '
-			<script type="">
-				$(".vjs-volume-control").on("click", function() {
-					$(".vjs-volume-level").css("position", "absolute");
-				});
-			</script>';
+				.vjs-volume-level {
+					width: 100%;
+					position: absolute;
+				}
+			</style>';
 
 		// Added 9/22/15 by Nikey646, Output for sprite sheets if they exist.
 		if ($SpriteArray) {
 			// Sprite exists. Lets load the Sprite Data
 
+			// This is soooo messy ;(
 			// 5 Tab spaces to help w/ indenting source code in the output.
 			$tab5 = "					";
 

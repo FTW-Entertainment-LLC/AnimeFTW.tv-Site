@@ -103,6 +103,9 @@
     img.className = 'vjs-thumbnail';
     extend(img.style, settings['0'].style);
 
+    // Add the tooltip
+    $(div).append($("      <div id='vjs-tip'>      <div id='vjs-tip-arrow'></div>      <div id='vjs-tip-inner'></div>      </div>    "));
+
     // center the thumbnail over the cursor if an offset wasn't provided
     if (!img.style.left && !img.style.right) {
       img.onload = function() {
@@ -173,7 +176,30 @@
         left = halfWidth;
       }
 
+      div.style.visibility = "visible";
       div.style.left = left + 'px';
+
+      var seekBar = player.controlBar.progressControl.seekBar;
+
+      var mousePosition = (event.pageX - $(seekBar.el()).offset().left) / seekBar.width();
+      var timeInSeconds = mousePosition * player.duration();
+
+      if (timeInSeconds === player.duration()) {
+        timeInSeconds = timeInSeconds - 0.1;
+      }
+
+      var minutes = Math.floor(timeInSeconds / 60);
+      var seconds = Math.floor(timeInSeconds - minutes * 60);
+
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+
+      $('#vjs-tip-inner').html("" + minutes + ":" + seconds);
+      $('#vjs-tip-inner')
+          .css("width", $('#vjs-tip-inner').width() + "px")
+          .css("right", (($('#vjs-tip-inner').width() / 2) + 8) + "px");
+      $('#vjs-tip').css('visibility', 'visible');
     };
 
     // update the thumbnail while hovering
@@ -182,6 +208,8 @@
 
     moveCancel = function(event) {
       div.style.left = '-100000px';
+      div.style.visibility = "hidden";
+      $('#vjs-tip').css("visibility", "hidden");
     };
 
     // move the placeholder out of the way when not hovering
@@ -189,5 +217,6 @@
     progressControl.on('touchcancel', moveCancel);
     progressControl.on('touchend', moveCancel);
     player.on('userinactive', moveCancel);
+
   });
 })();
