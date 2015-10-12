@@ -734,6 +734,15 @@ class AFTWVideos extends Config{
 			--> 
 			</script>';
 		}
+
+		$videoJsFunction = "";
+
+		if (!$SpriteArray) {
+			echo '
+			<link href="/css/videojs.progressTips.css" rel="stylesheet" />
+			<script src="/scripts/videojs.progressTips.js" type="text/javascript"></script>';
+			$videoJsFunction = ", function() {\nthis.progressTips();\n}";
+		}
 			
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.
@@ -779,7 +788,7 @@ class AFTWVideos extends Config{
 						}
 					}
 					
-				});
+				}' . $videoJsFunction . ');
 			</script>';
 		}
 		else {
@@ -795,9 +804,7 @@ class AFTWVideos extends Config{
 							enableFullscreen: true
 						}
 					}
-				}, function() {
-					this.progressTips();
-				});
+				}' . $videoJsFunction . ');
 			</script>';
 		}
 
@@ -858,7 +865,6 @@ HDOC;
 				});
 			</script>
 HDOC;
-
 		}
 
 	}

@@ -7,8 +7,7 @@
 	videojs.plugin('progressTips', function(options) {
 		var init;
 		init = function() {
-			var player;
-			player = this;
+			var player = this;
 			$(".vjs-progress-control").after($("      <div id='vjs-tip'>      <div id='vjs-tip-arrow'></div>      <div id='vjs-tip-inner'></div>      </div>    "));
 			$(".vjs-progress-control").on("mousemove", function(event) {
 				var barHeight, minutes, seconds, seekBar, timeInSeconds;
@@ -27,7 +26,7 @@
 				barHeight = $('.vjs-control-bar').height();
 				$("#vjs-tip")
 					.css("top", (event.pageY - $(this).offset().top - barHeight + 10) + "px")
-					.css("left", (event.pageX - $(this).offset().left + 30) + "px")
+					.css("left", (event.pageX - $(this).offset().left + 20) + "px")
 					.css("visibility", "visible");
 				return;
 			});
