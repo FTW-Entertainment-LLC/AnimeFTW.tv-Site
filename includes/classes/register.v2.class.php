@@ -195,8 +195,7 @@ class Register extends Config {
 	{
 		$Birthday = array('Month' => substr($this->Data['birthday'], 0, 2), 'Day' => substr($this->Data['birthday'], 2, 2), 'Year' => substr($this->Data['birthday'], 4, 4));
 		$RandomString = $this->stringRandomizer('alnum',32);
-		$query = "INSERT INTO `" . $this->MainDB . "`.`users` (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`, `sitepmnote`, `notifications`) VALUES ('" . $this->mysqli->real_escape_string($this->formatUsername()) . "', '" . $this->mysqli->real_escape_string($this->formatUsername()) . "', '" . $this->Build($this->Data['password'],$this->Data['username'],'md5') . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['email']) . "', '" . $RandomString . "', '" . $Birthday['Day'] . "', '" . $Birthday['Month'] . "', '" . $Birthday['Year'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '-6', '1', '1')";
-		
+		$query = "INSERT INTO `" . $this->MainDB . "`.`users` (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES ('" . $this->mysqli->real_escape_string($this->formatUsername()) . "', '" . $this->mysqli->real_escape_string($this->formatUsername()) . "', '" . $this->Build($this->Data['password'],$this->Data['username'],'md5') . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['email']) . "', '" . $RandomString . "', '" . $Birthday['Day'] . "', '" . $Birthday['Month'] . "', '" . $Birthday['Year'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '-6')";
 		// grab the results.
 		$result = $this->mysqli->query($query);
 		
@@ -207,6 +206,10 @@ class Register extends Config {
 		include("email.v2.class.php");
 		$Email = new Email($this->Data['email']);
 		$Email->Send(7,$body);
+		
+		// Insert default notification values into the database.
+		$this->mysqli->query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $this->mysqli->insert_id . "', " . time() . ", " . time() . ", '2', '4', '0');");
+		$this->mysqli->query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $this->mysqli->insert_id . "', " . time() . ", " . time() . ", '7', '14', '0');");
 		
 		// success, now let them know they need to check their email to validate
 		return array('status' => $this->MessageCodes["Result Codes"]["01-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-200"]["Message"]);	

@@ -49,7 +49,10 @@ class Series extends Config {
 				$row = $result->fetch_assoc();
 				$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
 				// a result was found, build the array for return.
-				$results = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
+				$results = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Request Successful.");
+				
+				// This option will be for database objects that use Yes, no, true or false to define a boolean.
+				$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
 				
 				foreach($row AS $key => &$value)
 				{
@@ -60,7 +63,12 @@ class Series extends Config {
 					}
 					else
 					{
-						$results['results'][$key] = $value;
+						if(isset($booleanSwitch[$value])){
+							$results['results'][$key] = $booleanSwitch[$value];
+						}
+						else {
+							$results['results'][$key] = $value;
+						}
 					}
 				}
 				// add the seriesimage to the array
@@ -72,13 +80,13 @@ class Series extends Config {
 			}
 			else
 			{
-				return array('status' => $this->MessageCodes["Result Codes"]["02-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-400"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
 			}
 		}
 		else
 		{
 			// Nothing matched the information give, send back to them.
-			return array('status' => $this->MessageCodes["Result Codes"]["02-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-400"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);
 		}
 	}
 	
@@ -96,7 +104,12 @@ class Series extends Config {
 		}
 		if(isset($this->Data['start']))
 		{
-			$start = $this->Data['start'] . ",";
+			if(!is_numeric($this->Data['start'])) {
+				$start = "0,";
+			}
+			else {
+				$start = $this->Data['start'] . ",";
+			}
 		}
 		else
 		{
@@ -104,7 +117,12 @@ class Series extends Config {
 		}
 		if(isset($this->Data['count']))
 		{
-			$count = $this->Data['count'];
+			if(!is_numeric($this->Data['count'])) {
+				$count = 10;
+			}
+			else {
+				$count = $this->Data['count'];
+			}
 		}
 		else
 		{
@@ -128,16 +146,54 @@ class Series extends Config {
 			}
 		}
 		
-		// we need to allow for randomization in a series view
+		if(isset($this->Data['filter'])){
+			$filter = " AND `category` LIKE '%" . $this->Data['filter'] . " ,%'";
+		}
+		else {
+			$filter = "";
+		}
 		
+		// we need to allow for randomization in a series view		
 		if($this->Data['action'] == 'random-series')
 		{
-			$orderby = " ORDER BY RAND() ";
+			$orderBy = " ORDER BY RAND() ";
 			$start = "";
 		}
 		else
 		{
-			$orderby = " ORDER BY fullSeriesName ";
+			$orderBy = " ORDER BY fullSeriesName ";
+		}
+		
+		// Add support for viewing the last X series added.
+		if(isset($this->Data['latest'])) {
+			// latest is set, we will limit them to the latest ## series by default.
+			// Unless they use the timeframe flag, which will allow them to specify a time frame from the current time
+			// that they wish to pull down series from.
+			if(isset($this->Data['timeframe'])) {
+				// They can use m, s  or h at the end, this way we can do &timeframe=15m or timeframe=60s
+				$timeType = substr($this->Data['timeframe'], -1);
+				$timeFrame = substr($this->Data['timeframe'], 0, -1);
+				if(strtolower($timeType) == 'm') {
+					// Minutes timeframe.
+					$finalTime = time()-($timeFrame*60);
+				}
+				elseif(strtolower($timeType) == 'h') {
+					// hours
+					$finalTime = time()-($timeFrame*60*60);
+				}
+				else {
+					// seconds is the default, we will not accept anything else.
+					$finalTime = time()-$timeFrame;
+				}
+				$where .= " AND `date` >= " . $this->mysqli->real_escape_string($finalTime);
+			}
+			else {
+			}
+			$columns = "`id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` ";
+			$orderBy = " ORDER BY `series`.`id` DESC";
+		}
+		else {
+			$latest = "";
 		}
 		
 		if($SortNum == 1)
@@ -149,17 +205,18 @@ class Series extends Config {
 			if(strlen($gsort) > 1)
 			{
 				$catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($gsort));
-				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
+				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
 			}
 			else 
 			{
-				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
+				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
 			}
 		}
 		else 
 		{
-			$query = "SELECT $columns FROM series WHERE active='yes' " . $this->AdvanceRestrictions . " $alphalimit " . $orderby . " ".$sort." LIMIT ".$start." ".$count;
+			$query = "SELECT $columns FROM `series` WHERE active='yes'{$filter} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
 		}
+		
 		// make sure we are using UTF-8 chars
 		$this->mysqli->set_charset("utf8");
 		
@@ -167,14 +224,15 @@ class Series extends Config {
 		$result = $this->mysqli->query($query);
 		$this->mysqli->set_charset("utf8");
 		
-		$returneddata = array('status' => $this->MessageCodes["Result Codes"]["02-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["02-200"]["Message"]);
+		$returneddata = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Request Successful.");
 		$returneddata['total-series'] = $this->bool_totalSeriesAvailable();
-		$returneddata['start'] = $start;
+		$returneddata['start'] = rtrim($start, ',');
 		$returneddata['count'] = $count;
 		// include review information
 		include_once("review.v2.class.php");
 		$Review = new Review();
 		$i = 0;
+		$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
 		while($row = $result->fetch_assoc())
 		{
 			$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
@@ -188,9 +246,15 @@ class Series extends Config {
 				}
 				else
 				{
-					$returneddata['results'][$i][$key] = $value;
+					if(isset($booleanSwitch[$value])){
+						$returneddata['results'][$i][$key] = $booleanSwitch[$value];
+					}
+					else {
+						$returneddata['results'][$i][$key] = $value;
+					}
 				}
-			}
+			}	
+			
 			$returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
 			$returneddata['results'][$i]['total-reviews'] = $Reviews['total-reviews'];
 			$returneddata['results'][$i]['user-reviewed'] = $Reviews['user-reviewed'];
@@ -206,5 +270,42 @@ class Series extends Config {
 		$result = $this->mysqli->query($query);
 		$row = $result->fetch_assoc();
 		return $row['count'];
+	}
+	
+	public function array_displayCategories(){
+		if(isset($this->Data['sort'])){
+			$sort = $this->Data['sort'];
+		}
+		else {
+			$sort = "ASC";
+		}
+		
+		if(isset($this->Data['start'])){
+			$start = $this->Data['start'];
+		}
+		else {
+			$start = 0;
+		}
+		
+		if(isset($this->Data['count'])){
+			$count = $this->Data['count'];
+		}
+		else {
+			$count = 50;
+		}
+		$query = "SELECT `id`, `name`, `description` FROM `categories` ORDER BY `name` {$sort} LIMIT {$start}, {$count}";
+		$this->mysqli->query("SET NAMES 'utf8'");
+		$result = $this->mysqli->query($query);
+		
+		$returneddata = array('status' => '200', 'message' => "Request Successful.", 'sort' => $sort);
+		$returneddata['sort'] = $sort;
+		$returneddata['count'] = $count;
+		$returneddata['start'] = $start;
+		$i = 0;
+		while($row = $result->fetch_assoc()){
+			$returneddata['results'][$i] = $row;
+			$i++;
+		}
+		return $returneddata;
 	}
 }

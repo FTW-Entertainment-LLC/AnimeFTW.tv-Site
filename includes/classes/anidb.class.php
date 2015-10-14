@@ -106,7 +106,7 @@ class AniDB extends Config{ //Needed for modrecord
 			echo 'Cant\'t get Anime information for the time being';
 			return;
 		}
-		
+		@unlink($filename);	
 		$ha = fopen($filename,"w");
 		$fputs = fputs($ha,$string);
 		if($fputs==false){
@@ -118,6 +118,7 @@ class AniDB extends Config{ //Needed for modrecord
 	
 	public function getName($lang,$aid){
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting Series name for '.$aid.', in language('.$lang.') from AniDB.');
 		$found = null;
 		$priority = 0;
 		if($xml){
@@ -148,6 +149,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getDescription($aid){ //Gets the description of the anime
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting description for AID: '.$aid.', from AniDB.');
 		if($xml){
 			foreach($xml->description as $i){
 				return $i;
@@ -158,6 +160,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getCategories($aid){ //Returns a string of the categories, seperated by a comma and a space bar.
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting categories for AID: '.$aid.', from AniDB.');
 		if($xml){
 			$categories = ""; //Create the variable to store the categories..
 			foreach($xml->categories->category as $i){  //Loop through them
@@ -171,6 +174,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getEpisodeTitle($aid, $epno){ //Returns the title of the episode.
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting episode '.$epno.' for AID: '.$aid.', from AniDB.');
 		$count = 0;
 		if($xml){
 			foreach($xml->episodes->episode as $i){ //Loop through the episodes, seeing as they're not in order..
@@ -186,6 +190,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getEpisodeTitles($aid, $epfrom, $epto){
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting episode titles between '.$epfrom.' and '.$epto.' for AID: '.$aid.', from AniDB.');
 		$episodes = array();
 		$count = 0;
 		if($xml){
@@ -202,6 +207,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getEpisodeCount($aid){
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting episode count for AID: '.$aid.', from AniDB.');
 		if($xml){
 			return $xml->episodecount;
 		}else{
@@ -211,6 +217,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	public function getSeriesType($aid){
 		$xml = $this->getxml($aid);
+		$this->ModRecord('Getting series type for AID: '.$aid.', from AniDB.');
 		if($xml){
 			return $xml->type;
 		}else{
@@ -220,6 +227,7 @@ class AniDB extends Config{ //Needed for modrecord
 	}
 	private function getxml($aid){
 		$this->cacheFile($aid); //Check to see if this file needs to update, and do so if it does.
+		$this->ModRecord('Getting XML for AID: '.$aid.', from AniDB.');
 		$filename = $this->rootdirectory.'/cache/anidbcache_xml/'.$aid.'.xml';
 		if ( file_exists($filename) ){ 
 			return simplexml_load_file($filename);

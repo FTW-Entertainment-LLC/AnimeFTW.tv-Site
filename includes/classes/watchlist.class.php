@@ -151,7 +151,6 @@ class AFTWWatchlist {
 							$(".watchlist-element-ub").hide(500);
 							$("#" + $(this).attr(\'id\') + "-ed").show(500);
 						});
-						window.onbeforeunload = function() { return "Warning! Make sure you have saved your WatchList Entries before changing the page."; };
 					</script>';
 				}
 			}

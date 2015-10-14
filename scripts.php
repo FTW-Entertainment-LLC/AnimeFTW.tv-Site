@@ -64,7 +64,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	}
 	if($_GET['show'] == 'eptips'){
 		$id = $_GET['id'];
-		$query  = "SELECT epnumber, epPrefix, image FROM episode WHERE id='".mysql_real_escape_string($id)."'";
+		$query  = "SELECT epnumber, epPrefix, image, sid FROM episode WHERE id='".mysql_real_escape_string($id)."'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$verifier = mysql_num_rows($result);
 		$row = mysql_fetch_array($result);
@@ -72,7 +72,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 			$imgUrl = $Host . '/video-images/noimage.png';
 		}
 		else {
-			$imgUrl = $Host . '/video-images/'.$row['epPrefix'].'_'.$row['epnumber'].'_screen.jpeg';
+			$imgUrl = "{$Host}/video-images/{$row['sid']}/{$id}_screen.jpeg";
 		}
 		echo '<table><tr><td valign="top"><img src="'.$imgUrl.'" alt="Episode: '.$row['epnumber'].'" width="395px" /></td></tr></table>';
 		//echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
@@ -324,11 +324,12 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
-	$Config->buildUserInformation(TRUE);
+	$Config->buildUserInformation(FALSE);
 	$profileArray = $Config->outputUserInformation();
 	
 	include_once('includes/classes/users.class.php');
 	$u = new AFTWUser();
+	$u->connectProfile($profileArray);
 	if(isset($_GET['go']) && $_GET['go'] == 'password'){
 		$u->PasswordSettings($profileArray[2],$_GET['id'],$profileArray[1],$profileArray[3]);
 	}
@@ -822,13 +823,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 	}
 	else
 	{
-		$Config = new Config();
-		$Config->buildUserInformation(TRUE);
 		// let's process the request because they at least gave us some decent information.
 		$Episode = new Episode($_GET);
-		$Episode->
 		$output = $Episode->array_recordEpisodeTime();
-		if($output['status'] == 201)
+		if($output['status'] == 200)
 		{
 			// the output indicated a success, return true.
 			echo 'Success';
@@ -836,7 +834,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 		else
 		{
 			// failure.. just failure..
-			echo 'Failure';
+			echo 'Failure ';
 		}
 	}
 }

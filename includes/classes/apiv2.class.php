@@ -62,22 +62,6 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Displays only Movies from the episode listing.'
 		),
-		'display-latest-episodes' => array(
-			'action' => 'display-latest-episodes',
-			'location' => 'episode.v2.class.php', // action location
-			'classname' => 'Episode', // class name
-			'method' => 'array_displayLatestEpisodes', // method name
-			'disabled' => '1',
-			'description' => 'Displays the X latest episodes, defaults to 30 latest episodes.'
-		),
-		'display-latest-series' => array(
-			'action' => 'display-latest-series',
-			'location' => 'series.v2.class.php', // action location
-			'classname' => 'Series', // class name
-			'method' => 'array_displayLatestSeries', // method name
-			'disabled' => '1',
-			'description' => 'Display the X latest series, defaults to last 10 added series.'
-		),
 		'display-tag-cloud' => array(
 			'action' => 'display-tag-cloud',
 			'location' => 'series.v2.class.php', // action location
@@ -110,7 +94,7 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Add a comment to a video'
 		),
-		'add-comment' => array(
+		'logout' => array(
 			'action' => 'logout',
 			'location' => 'user.v2.class.php', // action location
 			'classname' => 'User', // class name
@@ -166,6 +150,30 @@ Class api extends Config {
 			'disabled' => '0',
 			'description' => 'Rate an episode 1-5 stars.'
 		),
+		'display-profile' => array(
+			'action' => 'display-profile',
+			'location' => 'user.v2.class.php', // action location
+			'classname' => 'User', // class name
+			'method' => 'array_dispayUserProfile', // method name
+			'disabled' => '0',
+			'description' => 'View the full profile of a user.'
+		),
+		'edit-profile' => array(
+			'action' => 'edit-profile',
+			'location' => 'user.v2.class.php', // action location
+			'classname' => 'User', // class name
+			'method' => 'array_editUserProfile', // method name
+			'disabled' => '1',
+			'description' => 'Submit Edits to a Users profile.'
+		),
+		'display-categories' => array(
+			'action' => 'display-categories',
+			'location' => 'series.v2.class.php', // action location
+			'classname' => 'Series', // class name
+			'method' => 'array_displayCategories', // method name
+			'disabled' => '1',
+			'description' => 'Displays available Categories.'
+		),
 	);
 
 	// class constructor method
@@ -180,31 +188,29 @@ Class api extends Config {
 		
 		// Scripts..
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
-		$this->determineMethod(); // this will figure out if they are using POST or GET requests
+		$this->determineInput(); // this will figure out if they are using POST or GET requests
 		$this->determineStyle(); // This will figure out if it will be JSON or XML output
 		$this->launchAPI(); // This is the main method for the API, after we have done everything else we need to `initialize` the script.
 	}
 	
 	// function will determine what style it is, AND will also validate to make sure an application key is given
-	private function determineMethod()
+	private function determineInput()
 	{
-		if(isset($_POST['devkey']))
+		$input = Array();
+		// loop through the POST data, adding it to the input array.
+		foreach($_POST as $key => $value)
 		{
-			$this->Method = 'POST'; // This is a posted method, we need to indicate as such.
-			$this->parsePostData(); //we need to have the system parse through the post data.
+			$input[$key] = $value;
 		}
-		else
+		// Look through the GET data, adding it to the input array.
+		foreach($_GET as $key => $value)
 		{
-			if(isset($_GET['devkey']))
-			{
-				$this->Method = 'GET'; // this is a GET based method, we need to let the rest of the script know.
-				$this->parseGetData(); // since it is a GET function, we need to parse through the GET requests.
-			}
-			else
-			{
-				$this->reportResult(401);
-			}
+			$input[$key] = $value;
 		}
+		// This array will contain both POST and GET data.
+		// TODO: A way to handle duplicates, possibly responses back to client 
+		// Letting them know they can only submit one variable per request.
+		$this->Data = $input;
 	}
 	
 	// function will determine if the developer is requesting JSON or XML output. (We can expand later.)
@@ -225,18 +231,6 @@ Class api extends Config {
 		{
 			$this->Style = 'json';
 		}
-	}
-	
-	// function will parse through all POST data and subelegate appropriately.
-	private function parsePostData()
-	{
-		$this->Data = $_POST;
-	}
-	
-	// function will parse through all GET data and subelegate appropriately.
-	private function parseGetData()
-	{
-		$this->Data = $_GET;
 	}
 	
 	// Part of the API includes error reporting to the developers, this will need to output formats that 
@@ -295,9 +289,11 @@ Class api extends Config {
 		// we validate the developer key, if they pass go, they collect 200 bits
 		if($this->validateDevKey() == TRUE)
 		{
+			// we want to log everything that includes a valid dev key.. later on we may change this to log everything..
 			if(isset($this->Data['username']) && isset($this->Data['password']) && (!isset($this->Data['action']) || (isset($this->Data['action']) && $this->Data['action'] == 'login')))
 			{
 				$this->tokenAuthorization('create'); // we need to create a token for this user
+				$this->RecordDevLogs();
 			}
 			else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'register'))
 			{
@@ -305,6 +301,7 @@ Class api extends Config {
 				include_once("register.v2.class.php");
 				$Register = new Register($this->Data,$this->UserID,$this->DevArray);
 				$this->formatData($Register->registerUser()); // set the wheels in motion.
+				$this->RecordDevLogs();
 			}
 			else
 			{
@@ -313,11 +310,13 @@ Class api extends Config {
 				{
 					// the validation of the token has gone through, now the sub functions can be called.
 					$this->launchAPISubFunctions();
+					$this->RecordDevLogs();
 				}
 				else
 				{
 					// since validation failed, we need to let them know they need to login again.
 					$this->reportResult(405);
+					$this->RecordDevLogs();
 				}
 			}
 			// check if username (email) and password are given, if they are, authenticate against the database
@@ -327,6 +326,7 @@ Class api extends Config {
 		{
 			// wrong, good bye..
 			$this->reportResult(403);
+			$this->RecordDevLogs();
 		}
 	}
 	
@@ -508,7 +508,6 @@ Class api extends Config {
 	// that the dev could push through the app, this function jumps to all of those.
 	private function launchAPISubFunctions()
 	{
-		$this->RecordDevLogs();
 		if(isset($this->Data['action']) && $this->Data['action'] == 'result-codes')
 		{
 			$this->formatData($this->MessageCodes);
@@ -552,10 +551,31 @@ Class api extends Config {
 	// record the functions accessed as well as the details of the request
 	private function RecordDevLogs()
 	{
-		$query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
-VALUES ('".time()."', '" . $this->DevArray['id'] . "', '" . $this->UserID . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $_SERVER['REQUEST_URI'] . "')";
-		$this->mysqli->query($query);
-		$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $this->UserID . '\'';
+		$Data = array();
+		// we need to loop through the data, if there is a password string we replace it with stars.
+		foreach($this->Data as $key => $value) {
+			if($key == 'password') {
+				$len = strlen($value);
+				$value = substr($value, 0,1). str_repeat('*',$len - 2) . substr($value, $len - 1 ,1);
+			}
+			$Data[$key] = $value;
+		}
+		$Data = json_encode($Data);
+		
+		if(isset($this->UserID)){
+			// if the user id is set, then they are logged in with a valid token.
+			// update the last activity.
+			$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $this->UserID . '\'';
+			$this->mysqli->query($query);
+			// build the query to insert into the dev logs.
+			$query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
+VALUES ('".time()."', '" . $this->DevArray['id'] . "', '" . $this->UserID . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
+		}
+		else {
+			$query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
+VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $Data . "')";
+		}
+		// execute the query, adding the request to the dev logs.
 		$this->mysqli->query($query);
 	}
 }

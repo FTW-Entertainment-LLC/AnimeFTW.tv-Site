@@ -126,8 +126,8 @@ class Series extends Config {
 						<b>ID #:</b> ' . $id . '<br />
 						<b>Series Name:</b> ' . $fullSeriesName . '<br />
 						<b>Series Site Active?</b> '.$active.'<br />
-						<b>Kanji:</b> '.$romaji.'<br />
-						<b>Romaji:</b> '.$kanji.'<br />
+						<b>Kanji:</b> '.$kanji.'<br />
+						<b>Romaji:</b> '.$romaji.'<br />
 						<b>Video Server:</b> '.$videoServer.'<br />
 						<b>Still Airing?</b> '.$stillRelease.'<br />
 						<b>Movies only?</b> '.$moviesOnly.'<br />
@@ -348,7 +348,7 @@ class Series extends Config {
 						</script>';
 					if(isset($_GET['seriesname']))
 					{
-						$query = "SELECT `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`hd`, `episode`.`html5`, `series`.`fullSeriesName` FROM `episode`, `series` WHERE episode.sid = '" . mysql_real_escape_string($_GET['seriesname']) . "' AND series.id='" . mysql_real_escape_string($_GET['seriesname']) . "'LIMIT 0, 1";
+						$query = "SELECT `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`hd`, `series`.`fullSeriesName` FROM `episode`, `series` WHERE episode.sid = '" . mysql_real_escape_string($_GET['seriesname']) . "' AND series.id='" . mysql_real_escape_string($_GET['seriesname']) . "'LIMIT 0, 1";
 						$results = mysql_query($query);
 						$row = mysql_fetch_array($results);
 						echo '<div id="form_results" class="form_results">&nbsp;</div>';
@@ -365,7 +365,6 @@ class Series extends Config {
 						<input type="hidden" name="old_subGroup" value="' . $row['subGroup'] . '" />
 						<input type="hidden" name="old_videotype" value="' . $row['videotype'] . '" />
 						<input type="hidden" name="old_hd" value="' . $row['hd'] . '" />
-						<input type="hidden" name="old_html5" value="' . $row['html5'] . '" />
 						<input type="hidden" name="uid" value="' . $this->UserArray[1] . '" />
 						<table width="620px" border="0" cellpadding="2" cellspacing="1" align="center">
 						<tr> 
@@ -414,15 +413,6 @@ class Series extends Config {
 								<option value="0" selected="selected">Episodes Only</option>
 								<option value="1">Movies Only</option>
 								<option value="2">Episodes AND Movies</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td width="100px" style="font:13px Verdana,Arial,Helvetica,sans-serif;color:#5A5655;">HTML5 Video?</td>
-							<td>
-								<select name="html5" style="color: #000000;">
-								<option value="0"'; if($row['html5'] == '0'){echo ' selected="selected"';} echo'>No</option>
-								<option value="1"'; if($row['html5'] == '1'){echo ' selected="selected"';} echo'>Yes</option>
 								</select>
 							</td>
 						</tr>
@@ -482,13 +472,6 @@ class Series extends Config {
 									return false;
 								}
 								var hd = $("#hd-select").val();
-								var html5 = $("#html5-select").val();
-								if ((hd == "1" || hd == "2") && html5 == "0")
-								{
-									$("label#html5Error").show();
-									$("#html5-select").focus();
-									return false;
-								}
 								var c=confirm("All Checks were passed, please note, there is no going back, were all the settings correct?");
 								if(c==false)
 								{
@@ -536,10 +519,10 @@ class Series extends Config {
 						else {
 							$sid = mysql_real_escape_string($_GET['sid']);
 							$sid = htmlentities($sid);
-							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, html5, hd FROM series WHERE id='$sid'";
+							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, hd FROM series WHERE id='$sid'";
 							mysql_query("SET NAMES 'utf8'"); 
 							$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
-							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $html5, $hd) = mysql_fetch_array($result2, MYSQL_NUM);
+							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $hd) = mysql_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
 								
 							$description = stripslashes($description);
@@ -587,14 +570,14 @@ class Series extends Config {
 							$seoname = preg_replace('/[^a-z0-9 -]+/', '', $seoname);
 							$seoname = str_replace(' ', '-', $seoname);
 							$seoname = trim($seoname, '-');
-							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$html5 = 0; $hd = 0; $ueid = $_GET['ueid'];
+							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$hd = 0; $ueid = $_GET['ueid'];
 						}
 						else 
 						{
 							$Type = 'add';
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />';
 							$SubmitTXT = 'Add Series';
-							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = ''; $ueid = '';$html5 = 0; $hd = 0;
+							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = ''; $ueid = ''; $hd = 0;
 						}
 					}
 					else 
@@ -793,15 +776,6 @@ class Series extends Config {
 									echo '<option id="'.$id2.'" value="'.$id2.'"'; if($id2 == $sequelto){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
 								}
 								echo '</select>
-							</div>
-						</div>
-						<div class="series-form-row">
-							<div class="series-form-left"><b><i>HTML5 Enabled Series</i></b><br /><br /></div>
-							<div class="series-form-right">
-								<select name="html5" style="color: #000000;" class="text-input">
-									<option value="0" '; if($html5 == '0'){echo 'selected="selected"';} echo '>No</option>
-									<option value="1" '; if($html5 == '1'){echo 'selected="selected"';} echo '>Yes</option>
-								</select>
 							</div>
 						</div>
 						<div class="series-form-row">

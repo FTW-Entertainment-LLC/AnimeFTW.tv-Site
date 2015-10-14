@@ -1653,8 +1653,6 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						$forumBan = $row['forumBan'];
 						$messageBan = $row['messageBan'];
 						$viewNotifications = $row['viewNotifications'];
-						$html5 = $row['html5'];
-						$ssl = $row['ssl'];
 					}
 					else {
 						if(isset($_SESSION['user_id']))
@@ -1673,8 +1671,6 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 							$forumBan = $row['forumBan'];
 							$messageBan = $row['messageBan'];
 							$viewNotifications = $row['viewNotifications'];
-							$html5 = $row['html5'];
-							$ssl = $row['ssl'];
 						}
 						else {
 							$Logged = 0;
@@ -1689,8 +1685,6 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 							$forumBan = 0;
 							$messageBan = 0;
 							$viewNotifications = 0;
-							$html5 = 0;
-							$ssl = 0;
 						}
 					}
 				}
@@ -1707,10 +1701,8 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					$forumBan = 0;
 					$messageBan = 0;
 					$viewNotifications = 0;
-					$html5 = 0;
-					$ssl = 0;
 				}
-				$returnArray = array($Logged,$globalnonid,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications,$html5,$ssl);
+				$returnArray = array($Logged,$globalnonid,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications);
 				return $returnArray;
 			}
 			
@@ -2162,17 +2154,17 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			$total_episodes = mysql_num_rows($query);
 			if($total_episodes == 0){}
 			else {
-				$query   = "SELECT id, epnumber, epname, epprefix, videotype, image FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='0' ORDER BY epnumber";
+				$query   = "SELECT id, sid, epnumber, epname, epprefix, videotype, image FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='0' ORDER BY epnumber";
 				$result  = mysql_query($query) or die('Error : ' . mysql_error());
 				echo '<div><b>Episodes:</b></div>';
 				//echo '<div id="tooltipdiv">';
-				while(list($id,$epnumber,$epname,$epPrefix,$videotype,$image) = mysql_fetch_array($result))
+				while(list($id,$sid,$epnumber,$epname,$epPrefix,$videotype,$image) = mysql_fetch_array($result))
 				{
 					if($image == 0){
 						$imgUrl = '' . $CDNHost . '/video-images/noimage.png';
 					}
 					else {
-						$imgUrl = '' . $CDNHost . '/video-images/'.$epPrefix.'_'.$epnumber.'_screen.jpeg';
+						$imgUrl = "{$CDNHost}/video-images/{$sid}/{$id}_screen.jpeg";
 					}
 					$epname    = stripslashes($epname);
 					if ($accesslevel == 7 || $canDownload == 1){
@@ -2484,22 +2476,22 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				//image with no link for previous ep here
 			}
 			//Previous Ep Image code...
-			$query = "SELECT id, epnumber, epname, epprefix, image FROM episode WHERE seriesName='".$seriesname."' AND epnumber < $epnumber ".$moevar." ORDER BY epnumber DESC LIMIT 0, 1";
+			$query = "SELECT id, sid, epnumber, epname, epprefix, image FROM episode WHERE seriesName='".$seriesname."' AND epnumber < $epnumber ".$moevar." ORDER BY epnumber DESC LIMIT 0, 1";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$rowb = mysql_fetch_array($result, MYSQL_ASSOC);
 			$br = mysql_num_rows($result);
 			if($br != 0){
 				if($rowb['image'] == 0){$imvarb = '' . $CDNHost . '/video-images/noimage.png';}
-				else {$imvarb = '' . $CDNHost . '/video-images/'.$rowb['epprefix'].'_'.$rowb['epnumber'].'_screen.jpeg';}
+				else {$imvarb = "{$CDNHost}/video-images/{$rowb['sid']}/{$rowb['id']}_screen.jpeg";}
 					echo '<td valign="top"><div align="center"><a class="linkopacity" href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/'.$moe.'-'.$rowb['epnumber'].'" title="Episode #'.$rowb['epnumber'].'" >
 						<img src="'.$imvarb.'" border="0" style="border:1px solid black;"  width="175" alt="Episode '.$rowb['epnumber'].'"></a><br />Previous Episode, #'.$rowb['epnumber'].'</div></td>';
 			}
 			//Current Ep Image code
-			$query = "SELECT image FROM episode WHERE seriesName='".$seriesname."' AND epnumber = '".$epnumber."' ".$moevar;
+			$query = "SELECT image, id FROM episode WHERE seriesName='".$seriesname."' AND epnumber = '".$epnumber."' ".$moevar;
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$rowc = mysql_fetch_array($result, MYSQL_ASSOC);
 			if($rowc['image'] == 0){$imvarc = '' . $CDNHost . '/video-images/noimage.png';}
-			else {$imvarc = '' . $CDNHost . '/video-images/'.$epprefix.'_'.$epnumber.'_screen.jpeg';}
+			else {$imvarc = "{$CDNHost}/video-images/{$rowb['sid']}/{$rowc['id']}_screen.jpeg";}
 			echo '<td valign="top"><div align="center"><a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="Current Episode, #'.$epnumber.'" >
 					<img src="'.$imvarc.'" border="0" style="border:1px solid black;"  width="175" alt="Current Episode, '.$epnumber.'"></a><br />Current Episode, #'.$epnumber.'</div></td>';
 			//Next Ep Image code...
@@ -2509,7 +2501,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			$ar = mysql_num_rows($result);
 			if($ar != 0){
 				if($rowa['image'] == 0){$imvara = '' . $CDNHost . '/video-images/noimage.png';}
-				else {$imvara = '' . $CDNHost . '/video-images/'.$rowa['epprefix'].'_'.$rowa['epnumber'].'_screen.jpeg';}
+				else {$imvara = "{$CDNHost}/video-images/{$rowb['sid']}/{$rowa['id']}_screen.jpeg";}
 				echo '<td valign="top"><div align="center"><a class="linkopacity" href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/'.$moe.'-'.$rowa['epnumber'].'" title="Episode #'.$rowa['epnumber'].'" >
 					<img src="'.$imvara.'" border="0" style="border:1px solid black;"  width="175" alt="Episode '.$rowa['epnumber'].'"></a><br />Next Episode, #'.$rowa['epnumber'].'</div></td>';
 			}
@@ -2538,4 +2530,3 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 		#
 		
 		
-?>

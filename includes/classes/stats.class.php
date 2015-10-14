@@ -12,10 +12,17 @@ class AFTWstats extends Config {
 	var $format; //Formatting var
 	var $la; //Level Access Var
 	var $zone;
+	var $UserArray;
 	
 	public function __construct()
 	{
 		parent::__construct();
+	}
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
+		$this->array_buildSiteSettings();
 	}
 	
 	//gather all of the data...
@@ -117,7 +124,9 @@ class AFTWstats extends Config {
 				echo '<div align="center"><span style="font-weight:bold;"><a href="/anime/'.$seoname.'/ep-'.$epnumber.'">' . $epname . '</a></span><br />Posted in: <a href="/anime/'.$seoname.'/">' . $fullSeriesName . '</a><br />Added on: '.$date.'</div><br />';
 			}
 		}
-		echo "<div align=\"right\"><a href=\"#\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+		if($this->UserArray[0] == 1) {
+			echo "<div align=\"right\"><a href=\"/rss/episodes\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+		}
 	}
 	
 	public function LatestSeries(){
@@ -133,8 +142,9 @@ class AFTWstats extends Config {
 				$fullSeriesName = stripslashes($fullSeriesName);
 			echo '<div align="center" style="padding:3px;"><a href="/anime/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$id.'\',this);return false;" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a> was Added</div>';
 			}
-		
-		echo "<div align=\"right\"><a href=\"#\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+		if($this->UserArray[0] == 1) {
+			echo "<div align=\"right\"><a href=\"/rss/series\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+		}
 	}
 	
 	public function TopWatchList(){

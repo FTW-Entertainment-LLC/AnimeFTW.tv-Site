@@ -685,6 +685,11 @@ class Config {
 					'Message' => 'The Developer Key used was invalid or not active, please contact support for help.',
 					'Explanation' => 'The key used was either disabled or invalid, the developer will need to contact support for assistance.'
 				),
+				'404' => array(
+					'Status' => '404',
+					'Message' => 'Error, Not Found. Please revise the request and try again.',
+					'Explanation' => 'The query or results were not found based on the informatino given, revise the request and try again..'
+				),
 				'405' => array(
 					'Status' => '405',
 					'Message' => 'The Token has expired, or is not active, please login again.',
