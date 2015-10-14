@@ -11,39 +11,38 @@ class Register extends Config {
 	public $Data, $UserID, $DevArray;
 	private $AllowSpecialChars;
 	
-	private $MessageCodes = array (
+	$MessageCodes = array (
 		'About' => 'These are the available status codes for Registration feedback.',
 		'Result Codes' => array(
 			'01-200' => array(
-				'Status' => '01-200',
+				'Status' => '200',
 				'Message' => 'Account registration has been completed successfully, activation is required to continue.',
 				'Explanation' => 'The registration request has been submitted correctly and without issue.'
 			),
 			'01-400' => array(
-				'Status' => '01-400',
+				'Status' => '400',
 				'Message' => 'The Username is already taken, please try again.',
 				'Explanation' => 'The requested username is already in use, the user will need to try again.'
 			),
 			'01-401' => array(
-				'Status' => '01-401',
+				'Status' => '401',
 				'Message' => 'The Password does not meet the requirements of the system, please try again.',
 				'Explanation' => 'If a password does not meet the predefined password requirements, this error is thrown.'
 			),
 			'01-402' => array(
-				'Status' => '01-402',
+				'Status' => '402',
 				'Message' => 'The Email address is not valid or is already in use, please try again.',
 				'Explanation' => 'If the email address is invalid, or is considered a spam email, or is already in use, this error is given.'
 			),
 			'01-403' => array(
-				'Status' => '01-403',
+				'Status' => '403',
 				'Message' => 'The birthday given is invalid, please complete and try again.',
 				'Explanation' => 'The user MUST give a valid email address, if it is not valid, this error will be thrown.'
 			),
 			'01-404' => array(
-				'Status' => '01-404',
+				'Status' => '404',
 				'Message' => 'There was a missing registration piece, please try again.',
 				'Explanation' => 'A portion of the registration details were missing, so we have to make the user retry the steps.'
-			)
 		)
 	);
 
@@ -81,24 +80,24 @@ class Register extends Config {
 					else
 					{
 						// failed.. just failed..
-						return array('status' => $this->MessageCodes["Result Codes"]["01-403"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-403"]["Message"]);
+						return array('status' => $this->MessageCodes["Result Codes"]["403"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["403"]["Message"]);
 					}
 				}
 				else
 				{
 					// The username was in use on the system already, let's let them know.
-					return array('status' => $this->MessageCodes["Result Codes"]["01-400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-400"]["Message"]);					
+					return array('status' => $this->MessageCodes["Result Codes"]["400"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["400"]["Message"]);					
 				}
 			}
 			else
 			{
 				// the email was not valid, we will need to let them know
-				return array('status' => $this->MessageCodes["Result Codes"]["01-402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-402"]["Message"]);
+				return array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["402"]["Message"]);
 			}
 		}
 		else
 		{
-			return array('status' => $this->MessageCodes["Result Codes"]["01-404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-404"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["404"]["Message"]);
 		}
 	}
 	
@@ -212,6 +211,6 @@ class Register extends Config {
 		$this->mysqli->query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $this->mysqli->insert_id . "', " . time() . ", " . time() . ", '7', '14', '0');");
 		
 		// success, now let them know they need to check their email to validate
-		return array('status' => $this->MessageCodes["Result Codes"]["01-200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-200"]["Message"]);	
+		return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-200"]["Message"]);	
 	}
 }
