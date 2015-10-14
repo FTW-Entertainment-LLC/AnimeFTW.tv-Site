@@ -15,7 +15,7 @@ class Register extends Config {
 	{
 		parent::__construct();
 		
-		$MessageCodes = array (
+		$this->MessageCodes = array (
 			'About' => 'These are the available status codes for Registration feedback.',
 			'Result Codes' => array(
 				'01-200' => array(
