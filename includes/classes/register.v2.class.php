@@ -16,37 +16,38 @@ class Register extends Config {
 		parent::__construct();
 		
 		$this->MessageCodes = array (
-		'About' => 'These are the available status codes for Registration feedback.',
-		'Result Codes' => array(
-			'01-200' => array(
-				'Status' => '200',
-				'Message' => 'Account registration has been completed successfully, activation is required to continue.',
-				'Explanation' => 'The registration request has been submitted correctly and without issue.'
-			),
-			'01-400' => array(
-				'Status' => '400',
-				'Message' => 'The Username is already taken, please try again.',
-				'Explanation' => 'The requested username is already in use, the user will need to try again.'
-			),
-			'01-401' => array(
-				'Status' => '401',
-				'Message' => 'The Password does not meet the requirements of the system, please try again.',
-				'Explanation' => 'If a password does not meet the predefined password requirements, this error is thrown.'
-			),
-			'01-402' => array(
-				'Status' => '402',
-				'Message' => 'The Email address is not valid or is already in use, please try again.',
-				'Explanation' => 'If the email address is invalid, or is considered a spam email, or is already in use, this error is given.'
-			),
-			'01-403' => array(
-				'Status' => '403',
-				'Message' => 'The birthday given is invalid, please complete and try again.',
-				'Explanation' => 'The user MUST give a valid email address, if it is not valid, this error will be thrown.'
-			),
-			'01-404' => array(
-				'Status' => '404',
-				'Message' => 'There was a missing registration piece, please try again.',
-				'Explanation' => 'A portion of the registration details were missing, so we have to make the user retry the steps.'
+			'About' => 'These are the available status codes for Registration feedback.',
+			'Result Codes' => array(
+				'01-200' => array(
+					'Status' => '200',
+					'Message' => 'Account registration has been completed successfully, activation is required to continue.',
+					'Explanation' => 'The registration request has been submitted correctly and without issue.'
+				),
+				'01-400' => array(
+					'Status' => '400',
+					'Message' => 'The Username is already taken, please try again.',
+					'Explanation' => 'The requested username is already in use, the user will need to try again.'
+				),
+				'01-401' => array(
+					'Status' => '401',
+					'Message' => 'The Password does not meet the requirements of the system, please try again.',
+					'Explanation' => 'If a password does not meet the predefined password requirements, this error is thrown.'
+				),
+				'01-402' => array(
+					'Status' => '402',
+					'Message' => 'The Email address is not valid or is already in use, please try again.',
+					'Explanation' => 'If the email address is invalid, or is considered a spam email, or is already in use, this error is given.'
+				),
+				'01-403' => array(
+					'Status' => '403',
+					'Message' => 'The birthday given is invalid, please complete and try again.',
+					'Explanation' => 'The user MUST give a valid email address, if it is not valid, this error will be thrown.'
+				),
+				'01-404' => array(
+					'Status' => '404',
+					'Message' => 'There was a missing registration piece, please try again.',
+					'Explanation' => 'A portion of the registration details were missing, so we have to make the user retry the steps.'
+				)
 			)
 		);
 		
