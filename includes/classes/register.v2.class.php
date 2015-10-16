@@ -9,9 +9,13 @@
 class Register extends Config {
 
 	public $Data, $UserID, $DevArray;
-	private $AllowSpecialChars;
-	
-	$MessageCodes = array (
+	private $AllowSpecialChars, $MessageCodes;
+
+	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL)
+	{
+		parent::__construct();
+		
+		$MessageCodes = array (
 		'About' => 'These are the available status codes for Registration feedback.',
 		'Result Codes' => array(
 			'01-200' => array(
@@ -43,12 +47,9 @@ class Register extends Config {
 				'Status' => '404',
 				'Message' => 'There was a missing registration piece, please try again.',
 				'Explanation' => 'A portion of the registration details were missing, so we have to make the user retry the steps.'
-		)
-	);
-
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL)
-	{
-		parent::__construct();
+			)
+		);
+		
 		$this->Data = $Data;
 		$this->UserID = $UserID;
 		$this->DevArray = $DevArray;
