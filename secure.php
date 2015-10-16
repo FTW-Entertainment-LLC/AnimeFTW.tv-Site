@@ -342,17 +342,22 @@ else {
 		echo "<td valign='top' class='main-mid'>\n";
 		echo '<table align="center" border="0" cellpadding="0" cellspacing="0">
 	<tr><td>';
-		if ( isset ( $error ) && isset($noReg) && $noReg != 'yes' )	{
+		if ( isset ( $error ) && (isset($noReg) && $noReg != 'yes'))	{
 			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
 			echo "</tr>\n</table>\n";
 		}
-		if ( isset ( $msg ) ){ 
-			//echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-			echo "<td class='note-message' align='center'><b>Registration Message: </b>".$msg."</td>\n";
-			//echo "</tr>\n</table></td></tr></table>\n";
+		else if ( isset($error) && (isset($noReg) && $noReg == 'yes') ){ 
+			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+			echo "<td class='note-message' align='center'><b>Registration Message: </b>".$error."</td>\n";
+			echo "</tr>\n</table></td></tr></table>\n";
 		}
-		else {'Oooops it didnt work try again >.>';}
+		else {
+			// for everything else..
+			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
+			echo "</tr>\n</table></td></tr></table>\n";
+		}
 		if(isset($noReg) && $noReg == 'yes'){
 			echo "<br /><br /><br /><br /><br /><br />";
 		}
