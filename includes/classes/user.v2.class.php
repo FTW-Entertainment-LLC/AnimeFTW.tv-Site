@@ -113,5 +113,21 @@ class User extends Config {
 	}
 	
 	public function array_editUserProfile(){
+		# we must first check to ensure that all data is correctly inserted into the request.
+		# email, firstname, lastname, gender, birthday, country, personalmsg, timezone
+		if(!isset($this->Data['email']) || !isset($this->Data['firstname']) || !isset($this->Data['lastname']) || !isset($this->Data['gender']) || !isset($this->Data['birthday']) || !isset($this->Data['country']) || !isset($this->Data['personalmsg']) || !isset($this->Data['timezone'])) {
+			# if one of them are not set then we need to alert them to this injustice.
+			return array('status' => '404', 'message' => "Data was missing, please ensure all profile fields are submitted.");
+		}
+		else {
+			$query = "UPDATE `users` SET `Email` = '" . $this->mysqli->real_escape_string($this->Data['email']) . "', `firstName` = '" . $this->mysqli->real_escape_string($this->Data['firstname']) . "', `lastName` = '" . $this->mysqli->real_escape_string($this->Data['lastname']) . "', `gender` = '" . $this->mysqli->real_escape_string($this->Data['gender']) . "', `ageDate` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `ageYear` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `ageMonth` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `country` = '" . $this->mysqli->real_escape_string($this->Data['country']) . "', `personalMsg` = '" . $this->mysqli->real_escape_string($this->Data['personalmsg']) . "', `timeZone` = '" . $this->mysqli->real_escape_string($this->Data['timezone']) . "' WHERE `ID` = " . $this->UserID;
+			$result = $this->mysqli->query($query);
+			if(!$result){
+				return array('status' => '500', 'message' => "There was an unknown error recording the User details.");
+			}
+			else {
+				return array('status' => '200', 'message' => "Profile Update completed successfully.");
+			}
+		}
 	}
 }
