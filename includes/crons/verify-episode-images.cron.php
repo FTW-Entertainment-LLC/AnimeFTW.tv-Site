@@ -24,7 +24,7 @@ class ImageChecker extends Config {
 			return false;
 		}
 
-		$url = ($cdn) ? die("No CDN Url") : "http://img02.animeftw.tv/video-images/{$filename}";
+		$url = ($cdn) ? die("No CDN Url") : "http://images.animeftw.tv/video-images/{$filename}";
 
 		// Request is external, using cURL instead
 		$ch = curl_init();
