@@ -1,32 +1,9 @@
 <?php
-include('../includes/siteroot.php');
+header('Content-Type: text/html; charset=utf-8');
+include('../includes/classes/config.class.php');
 include('blast.functions.php');
 $daysago = time()-"2592000";
 error_reporting(E_ALL & ~(E_STRICT|E_NOTICE));
-
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{
-	if(!isset($_POST['level'])){$level = 0;}
-	else {$level = $_POST['level'];}
-	if($_POST['level'] == 10)
-	{
-		$query   = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND (lastActivity <= '$30daysago' AND lastActivity > '0') ORDER BY ID";
-	}
-	else if($_POST['level'] == 11)
-	{
-		$query   = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' ORDER BY ID";
-	}
-	else if($_POST['level'] == 12)
-	{
-		$query   = "SELECT Username, Email FROM users WHERE Level_access != 3 AND Level_access != 0 AND Level_access != 7 ORDER BY ID";
-	}
-	else 
-	{
-		$query   = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID";
-	}
-	$result  = mysql_query($query) or die('Error : ' . mysql_error());
-	$total_rows = mysql_num_rows($result);
-}
 
 //check to see what part we are on.
 if(!isset($_GET['start'])){$start = 0;}
@@ -38,11 +15,10 @@ else{$remember = FALSE;}
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	if(!isset($_POST['level'])){$level = 0;}
-	e	lse {$level = $_POST['level'];}
+	else {$level = $_POST['level'];}
 	//$to = $_POST['to'];
 	$fromUser = $_POST['from'];
 	$subject = $_POST['sub'];
-	$level = $_POST['level'];
 	$msgBody = $_POST['message'];
 	$Epupdate = $_POST['Epupdate'];
 	if($Epupdate == 'episode'){$typstring = 'episode';}
@@ -52,22 +28,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
 	$fromUsername = "Robotman321";
 					
-	if($_POST['level'] == 10)
+	if($_POST['update-type'] == 1)
 	{
-		$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND (lastActivity <= '$daysago' AND lastActivity > '0') ORDER BY ID";
+		$query2 = "SELECT `users`.`Username`, `users`.`Email` 
+FROM `users` WHERE `Active` = '1' AND NOT EXISTS
+(SELECT `id` FROM `user_setting` WHERE `user_setting`.`option_id` = 6 AND `user_setting`.`value` != 11 AND `users`.`ID`=`user_setting`.`uid`)
+LIMIT ".$_POST['start'].", 100";
 	}
-	else if($_POST['level'] == 11)
+	else if($_POST['update-type'] == 2)
 	{
-		$query2   = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' ORDER BY ID LIMIT ".$_POST['start'].", 100";
-	}
-	else if($_POST['level'] == 12)
-	{
-		$query2   = "SELECT Username, Email FROM users WHERE Level_access != 3 AND Level_access != 0 AND Level_access != 7 ORDER BY ID";
+		$query2 = "SELECT `users`.`Username`, `users`.`Email` 
+FROM `users` WHERE `Active` = '1' AND NOT EXISTS
+(SELECT `id` FROM `user_setting` WHERE `user_setting`.`option_id` = 7 AND `user_setting`.`value` != 14 AND `users`.`ID`=`user_setting`.`uid`)
+LIMIT ".$_POST['start'].", 100";
 	}
 	else {
-		$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
+		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
 	}
 	$result2  = mysql_query($query2) or die('Error : ' . mysql_error());
+	$count = mysql_num_rows($result2);
 	$i = 0;	
 	while(list($Username, $Email) = mysql_fetch_array($result2)) {
 		$toUsername = $Username;
@@ -85,7 +64,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		$headers .= "To: $toEmail\r\n";
 		$headers .= "From: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
 		$headers .= "Reply-To: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
-		if($_POST['Epupdate'] == 'update')
+		if($_POST['update-type'] == '1' || $_POST['update-type'] == '2')
 		{
 			# -=-=-=- TEXT EMAIL PART
 			$body .= "--$mime_boundary\r\n";
@@ -134,13 +113,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 			$body .= " 								<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"  style=\"color: #717171; font: normal 11px Helvetica, Arial, sans-serif; margin: 0; padding: 0;\" width=\"600\">\n";
 			$body .= " 								<tr>\n";
 			$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
-			$body .= " 									<td style=\"padding: 0;  font-family: Helvetica, Arial, sans-serif; background: url('http://eblasts.animeftw.tv/images/bg_date_wide.png') no-repeat left top; height:20px; line-height: 20px;\"  align=\"center\" width=\"558\" height=\"20\">\n";
-			$body .= " 										<h3 style=\"color:#666; font-weight: bold; text-transform: uppercase; margin: 0; padding: 0; line-height: 10px; font-size: 10px;\"></h3>\n";
-			$body .= " 									</td>\n";
-			$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
-			$body .= " 								</tr>\n";
-			$body .= " 								<tr>\n";
-			$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
 			$body .= " 									<td style=\"padding: 20px 0 0;\" align=\"left\">\n";			
 			$body .= " 										<h2 style=\"color:#646464; font-weight: bold; margin: 0; padding: 0; line-height: 26px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; \">Update: ".$subject."</h2>\n";
 			$body .= " 									</td>\n";
@@ -185,10 +157,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 			$body .= "--$mime_boundary--\n\n"; 
 			$body = wordwrap($body,70);
 		}
-		else if($_POST['Epupdate'] == 'episode')
-		{
-		}
-		else if($_POST['Epupdate'] == 'christmas')
+		else if($_POST['update-type'] == '3')
 		{
 			# -=-=-=- TEXT EMAIL PART
 			$body .= "--$mime_boundary\r\n";
@@ -393,38 +362,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 			$body .= "<div id=\"id_3\">\n";
 			$body .= "<p class=\"p6 ft25\">www.animeftw.tv | support@animeftw.tv | (312) <nobr>465-1161</nobr></p>\n";
 			$body .= "</div>\n";
-			if($_POST['update-type'] == '1')
-			{
-				// Anime Update
-				$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\">You're receiving this email blast because you did not opt out of Anime Updates.</p>\n";
-			}
-			else if($_POST['update-type'] == '2')
-			{
-				// Admin notification
-				$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\">You're receiving this email blast because you did not opt out of Admin Notifications.</p>\n";
-			}
-			else
-			{
-			}
-			$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\"> Not interested? <a href=\"https://www.animeftw.tv/user/" . $Username . "/\" style=\"color: #0eb6ce; text-decoration: none;\">Opt out</a> of Notifications.</p>\n";
-			$body .= "</div>\n";
-			$body .= "</html>\n";
-						
-						
-			$body .= "--$mime_boundary--\n\n"; 
-			//$body = wordwrap($body,70);
 		}
 		else
 		{
 		}
+		if($_POST['update-type'] == '1')
+		{
+			// Anime Update
+			$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\">You're receiving this email blast because you did not opt out of Anime Updates.</p>\n";
+		}
+		else if($_POST['update-type'] == '2')
+		{
+			// Admin notification
+			$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\">You're receiving this email blast because you did not opt out of Admin Notifications.</p>\n";
+		}
+		else
+		{
+		}
+		$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\"> Not interested? <a href=\"https://www.animeftw.tv/user/" . $Username . "/\" style=\"color: #0eb6ce; text-decoration: none;\">Opt out</a> of Notifications.</p>\n";
+		$body .= "</div>\n";
+		$body .= "</html>\n";
+						
+						
+		$body .= "--$mime_boundary--\n\n"; 
+		//$body = wordwrap($body,70);
 		//away we go!
 		//mail($to, $subject, $body, $headers);
 		$SMTPMail = new SMTPClient ($SmtpServer, $SmtpPort, $SmtpUser, $SmtpPass, $from, $to, $subject, $headers, $body);
 		$SMTPChat = $SMTPMail->SendMail();
 		$body = "";
-		//echo 'Sent to '.$toUsername.'&nbsp;'.$i.'<br />';
-		$i++;
-		if($i == 100){
+		if($count == 100){
 			$redirect = '<script>
 			setTimeout(function() {
 				document.myform.submit();
@@ -460,6 +427,14 @@ if(isset($redirect))
 <form id="myform" name="myform" method="post" action="?start=<?=($start+100);?>">
 <input type="hidden" name="start" value="<?=$start;?>" />
 <input type="hidden" name="auto" value="on" />
+<?php
+$now = date("r");
+echo "Script Start: {$now} <br />\n";
+if(isset($count)){
+	echo "Found: {$count} results.";
+}
+echo $count;
+?>
 <table width="500px">
 <tr><td>From :</td><td><input type="text" name="from"<? if($remember = TRUE){echo ' value="'.$fromUser.'"';}?> /></td></tr>
 <tr><td>Subject :</td><td><input type="text" name="sub"<? if($remember = TRUE){echo ' value="'.$subject.'"';}?> /></td></tr>
@@ -468,7 +443,7 @@ if(isset($redirect))
 	<option value="1"<? if($level == 1){echo ' selected="selected"';}?>>Anime Update</option>
 	<option value="2"<? if($level == 2){echo ' selected="selected"';}?>>Admin Notification</option>
 </select></td></tr>
-<tr><td>Message :</td><td><textarea name="message" rows="8" cols="50"><? if(isset($msgBody)){echo $msgBody;}?></textarea></td></tr>
+<tr><td>Message :</td><td><textarea name="message" rows="8" cols="50" id="message"><? if(isset($msgBody)){echo $msgBody;}?></textarea></td></tr>
 <tr><td></td><td><input type="submit" value=" Send " /></td></tr>
 </table>
 </form>
