@@ -9,48 +9,12 @@
 class Register extends Config {
 
 	public $Data, $UserID, $DevArray;
-	private $AllowSpecialChars, $MessageCodes;
+	private $AllowSpecialChars;
 
 	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL)
 	{
 		parent::__construct();
-		
-		$this->MessageCodes = array (
-			'About' => 'These are the available status codes for Registration feedback.',
-			'Result Codes' => array(
-				'01-200' => array(
-					'Status' => '200',
-					'Message' => 'Account registration has been completed successfully, activation is required to continue.',
-					'Explanation' => 'The registration request has been submitted correctly and without issue.'
-				),
-				'01-400' => array(
-					'Status' => '400',
-					'Message' => 'The Username is already taken, please try again.',
-					'Explanation' => 'The requested username is already in use, the user will need to try again.'
-				),
-				'01-401' => array(
-					'Status' => '401',
-					'Message' => 'The Password does not meet the requirements of the system, please try again.',
-					'Explanation' => 'If a password does not meet the predefined password requirements, this error is thrown.'
-				),
-				'01-402' => array(
-					'Status' => '402',
-					'Message' => 'The Email address is not valid or is already in use, please try again.',
-					'Explanation' => 'If the email address is invalid, or is considered a spam email, or is already in use, this error is given.'
-				),
-				'01-403' => array(
-					'Status' => '403',
-					'Message' => 'The birthday given is invalid, please complete and try again.',
-					'Explanation' => 'The user MUST give a valid email address, if it is not valid, this error will be thrown.'
-				),
-				'01-404' => array(
-					'Status' => '404',
-					'Message' => 'There was a missing registration piece, please try again.',
-					'Explanation' => 'A portion of the registration details were missing, so we have to make the user retry the steps.'
-				)
-			)
-		);
-		
+		parent::array_buildAPICodes();
 		$this->Data = $Data;
 		$this->UserID = $UserID;
 		$this->DevArray = $DevArray;
@@ -62,7 +26,7 @@ class Register extends Config {
 		return $this->MessageCodes;
 	}
 	
-	/*	** Q&D exception-based registerUser()	*		private $ERROR_NOUSERNAME 	= 0;	private $ERROR_NOPASSWORD 	= 1;	private $ERROR_NOEMAIL		= 2;	private $ERROR_NOBIRTHDAY	= 3;	private $ERROR_INVALIDEMAIL	= 4;	private $ERROR_EMAILINUSE	= 5;	private $ERROR_USERINUSE	= 6;	private $ERROR_INVALIDBDAY	= 7;		public function registerUser()	{		try		{			$this->register_verifyData();			$this->bool_validateEmailAddress();			$this->bool_checkEmailUsage();			$this->bool_validateUsername();			$this->bool_validateBirthday();			return $this->array_processAccountRegistration();		}		catch( Exception $e )		{			$message = array();			switch( $e )			{				case $ERROR_NOUSERNAME:					$message = array( DATAHERE );					break;				case $ERROR_NOPASSWORD:					$message = array( DATAHERE );					break;								(...)			}						return $message;		}	}		private function verifyData()	{		if( !isset( $this->Data['username'] )		{			throw new Exception( $ERROR_NOUSERNAME );		}		elseif( !isset( $this->Data['password'] )		{			throw new Exception( $ERROR_NOPASSWORD );		}		elseif( !isset( $this->Data['email'] )		{			throw new Exception( $ERROR_NOEMAIL );		}		elseif( !isset( $this->Data['birthday'] )		{			throw new Exception( $ERROR_NOBIRTHDAY );		}	}		*/						public function registerUser()
+	public function registerUser()
 	{
 		//return $this->Data;
 		if(isset($this->Data['username']) && isset($this->Data['password']) && isset($this->Data['email']) && isset($this->Data['birthday']))
@@ -213,6 +177,6 @@ class Register extends Config {
 		$this->mysqli->query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $this->mysqli->insert_id . "', " . time() . ", " . time() . ", '7', '14', '0');");
 		
 		// success, now let them know they need to check their email to validate
-		return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["01-200"]["Message"]);	
+		return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => 'Registration was successful, please check your email to validate your account.');	
 	}
 }

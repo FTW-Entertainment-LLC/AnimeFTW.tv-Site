@@ -398,11 +398,16 @@ Class api extends Config {
 		else
 		{
 			// Since there are only two functions we, we assume they must be wanting to create a session.
-			if($this->validateUser() == TRUE)
+			$validateLogin = $this->validateUser();
+			if($validateLogin[0] == TRUE && $validateLogin[1] == 200)
 			{
 				// the authentication was correct, which means the user can log in, we need to create the token,
 				// and hand it back to the developer.
 				$this->createToken();
+			}
+			else if($validateLogin[0] == FALSE && $validateLogin[1] == 403){
+				# User is there, but not active.
+				$this->reportResult(403,"The User account is not active, please activate before logging in.");
 			}
 			else
 			{
@@ -482,15 +487,20 @@ Class api extends Config {
 		$UserValidation = $this->array_validateAPIUser($this->Data['username'],$this->Data['password']);
 		
 		// validate the user logins given to us.
-		if($UserValidation[0] == TRUE)
-		{
+		if($UserValidation[0] == TRUE && $UserValidation[2] == 1){
 			$this->UserID = $UserValidation[1]; // we need to make the userid be a global for later usage..
-			return TRUE;
+			return array(TRUE,200,'Login successful.');
+		}
+		else if($UserValidation[0] == TRUE && $UserValidation[2] == 0) {
+			return array(FALSE,403,'The User Account is not Active, please activate the account to login.');
+		}
+		else if($UserValidation[0] == TRUE && $UserValidation[2] == 2) {
+			return array(FALSE,402,'The User account has been suspended.');
 		}
 		else
 		{
 			// no users turned up anywhere.
-			return FALSE;
+			return array(FALSE,404,'The user is unknown.');
 		}
 	}
 	
@@ -501,7 +511,7 @@ Class api extends Config {
 		$query = "DELETE FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `session_hash` = '" . $this->Data['token'] . "'";
 		$result = $this->mysqli->query($query);
 		// let them know it was a success!
-		$this->formatData(array('status' => $this->MessageCodes["Result Codes"]["302"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["302"]["Message"]));
+		$this->formatData(array('status' => '200', 'message' => 'User logged out Successfully.'));
 	}
 	
 	// after the user has been authenticated via the token. We need to parse through the available options
@@ -533,7 +543,7 @@ Class api extends Config {
 			// we will now destroy the token, causing the user to log out.
 			$this->destroyToken();
 		}
-		else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"])
+		else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"] && $this->Data['action'] != '')
 		{
 			include("includes/classes/" . $this->APIActions[$this->Data['action']]["location"]);
 			
@@ -544,7 +554,7 @@ Class api extends Config {
 		else
 		{
 			// The default action/no action will check the token and give a simple response back stating that it is still active.
-			$this->reportResult(300);
+			$this->reportResult(500,"The action was unknown.");
 		}
 	}
 	
