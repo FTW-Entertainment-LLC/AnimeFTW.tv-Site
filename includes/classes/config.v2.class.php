@@ -478,11 +478,11 @@ class Config {
 	{
 		if((filter_var($username, FILTER_VALIDATE_EMAIL) && preg_match('/@.+\./', $username)) == TRUE)
 		{
-			$query = "SELECT ID FROM `users` WHERE `Email` = '" . $this->mysqli->real_escape_string($username) . "' AND Password = '" . md5($password) . "'";
+			$query = "SELECT `ID`, `Active` FROM `users` WHERE `Email` = '" . $this->mysqli->real_escape_string($username) . "' AND Password = '" . md5($password) . "'";
 		}
 		else
 		{
-			$query = "SELECT ID FROM `users` WHERE `Username` = '" . $this->mysqli->real_escape_string($username) . "' AND Password = '" . md5($password) . "'";
+			$query = "SELECT `ID`, `Active` FROM `users` WHERE `Username` = '" . $this->mysqli->real_escape_string($username) . "' AND Password = '" . md5($password) . "'";
 		}
 		$result = $this->mysqli->query($query);
 		
@@ -492,11 +492,11 @@ class Config {
 		{
 			// we found a row
 			$row = $result->fetch_assoc();
-			$returnArray = array(TRUE,$row['ID']);
+			$returnArray = array(TRUE,$row['ID'],$row['Active']);
 		}
 		else
 		{
-			$returnArray = array(FALSE,"0");
+			$returnArray = array(FALSE,"0","0");
 		}		
 		return $returnArray;
 	}
