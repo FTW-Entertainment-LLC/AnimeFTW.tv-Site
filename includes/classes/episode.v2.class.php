@@ -290,6 +290,13 @@ class Episode extends Config {
 		return $row['count'];
 	}
 	
+	private function bool_totalMoviesAvailable(){
+		$query = "SELECT COUNT(id) as count FROM episode WHERE `Movie` = 1";
+		$result = $this->mysqli->query($query);
+		$row = $result->fetch_assoc();
+		return $row['count'];
+	}
+	
 	public function array_recordEpisodeTime()
 	{
 		// check to make sure the ID is set, this would be of the episode.
@@ -347,6 +354,160 @@ class Episode extends Config {
 		{
 			// missing some of the data.
 			return array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["402"]["Message"]);
+		}
+	}
+	
+	public function array_displayMovies(){
+		// vars
+		$finalresults = array();
+		$where = " AND `episode`.`Movie` = 1";
+		$orderBy = "`series`.`fullSeriesName` ASC, `episode`.`epnumber` DESC";
+		$columns = "`episode`.`id`, `series`.`fullSeriesName`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`";
+		// limit the query by a certain amount
+		if(isset($this->Data['count']) && is_numeric($this->Data['count']))
+		{
+			$count = $this->Data['count'];
+		}
+		else
+		{
+			$count = 30;
+		}
+		// The start point
+		if(isset($this->Data['start']) && is_numeric($this->Data['start']))
+		{
+			$startpoint = $this->Data['start'];
+		}
+		else
+		{
+			$startpoint = 0;
+		}
+		// we check if the ID is set, if it is we can assume this is for a specific series.
+		if(isset($this->Data['id']) && is_numeric($this->Data['id']))
+		{
+			$where .=" AND `episode`.`sid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+		}
+		else
+		{
+			// no reason to worry, we just need to give them the list with the alphabetical listing.
+		}
+		// Add support for viewing the last X movies added.
+		if(isset($this->Data['latest'])) {
+			// latest is set, we will limit them to the latest ## episodes by default.
+			// Unless they use the timeframe flag, which will allow them to specify a time frame from the current time
+			// that they wish to pull down episodes from.
+			if(isset($this->Data['timeframe'])) {
+				// They can use m, s  or h at the end, this way we can do &timeframe=15m or timeframe=60s
+				$timeType = substr($this->Data['timeframe'], -1);
+				$timeFrame = substr($this->Data['timeframe'], 0, -1);
+				if(strtolower($timeType) == 'm') {
+					// Minutes timeframe.
+					$finalTime = time()-($timeFrame*60);
+				}
+				elseif(strtolower($timeType) == 'h') {
+					// hours
+					$finalTime = time()-($timeFrame*60*60);
+				}
+				else {
+					// seconds is the default, we will not accept anything else.
+					$finalTime = time()-$timeFrame;
+				}
+				$where .= " AND `episode`.`date` >= " . $this->mysqli->real_escape_string($finalTime);
+			}
+			else {
+			}
+			$orderBy = "`episode`.`date` DESC";
+		}
+		else {
+			$latest = "";
+			if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3){
+				// developer does not have ads enabled, so they are not allowed to see 
+				$startpoint = 0;
+				$count = 0;
+				$addonEpisode = array('id' => '0','sid' => '0','epname' => 'Due to restrictions, you are unable to view movies individually.','epnumber' => '0','vidheight' => '0','vidwidth' => '0','epprefix' => '0','subGroup' => '0','Movie' => '0','videotype' => 'mp4','image' => '','video' => '','views' => '0','spriteWidth' => 'null','spriteHeight' => 'null','spriteTotalWidth' => 'null','spriteRate' => '0','spriteCount' => '0','total-comments' => '0','average-rating' => '0','user-rated' => '0');
+			}
+		}
+		// Either this is a single series or the latest episodes listing, having neither is impossible.
+		// change to UTF-8 so we can use kanji and romaji
+			
+		// Create the Join statement, and append the Sprite data onto the $columns variable
+		// These are always needed for Episode data?
+		$spritesJoin = "LEFT JOIN `{$this->MainDB}`.`sprites` ON `sprites`.`id` = `episode`.`spriteId`";
+		$columns .= ", `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount";
+			
+		$this->mysqli->query("SET NAMES 'utf8'");
+		$query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`" . $spritesJoin . ", `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+		//execute the query
+		$result = $this->mysqli->query($query);
+			
+		$finalresults = array();
+			
+		// add the series specific info to the output
+		$count = $result->num_rows;
+		if($count > 0)
+		{
+			$finalresults['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
+			$finalresults['total-movies'] = $this->bool_totalMoviesAvailable(); // total episodes in this series
+			$finalresults['count'] = $count; // supply the count
+			$finalresults['start'] = $startpoint; // supply the count
+			// include the comment clas
+			include_once("comments.v2.class.php");
+			$Comment = new Comment(0);
+			// include the rating class
+			include_once("rating.v2.class.php");
+			$Rating = new Rating();
+			$i = 0;
+			if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3 && !isset($this->Data['latest'])){
+				$i = 1;
+				$finalresults['results'][0] = $addonEpisode;
+			}
+			while($row = $result->fetch_assoc())
+			{
+				// a result was found, build the array for return.
+				$videotype = $row['videotype'];
+				$Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserID);
+				foreach($row AS $key => &$value)
+				{
+					if($key == 'image')
+					{
+						$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';						
+					}
+					else if($key == 'hd')
+					{
+						if($value == 2)
+						{
+							$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+							$finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+							$finalresults['results'][$i]['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+						}
+						else if($value == 1)
+						{
+							$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+							$finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+						}
+						else
+						{
+							$finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
+						}
+					}
+					else if($key == 'seriesName')
+					{
+						// we don't need this..
+					}
+					else
+					{
+						$finalresults['results'][$i][$key] = $value;
+					}
+				}
+				$finalresults['results'][$i]['total-comments'] = $Comment->bool_totalComments($row['id']);
+				$finalresults['results'][$i]['average-rating'] = $Ratings['average-rating']; // pass through the average rating.
+				$finalresults['results'][$i]['user-rated'] = $Ratings['user-rated']; // put through if the user rated or not, if they did it will be the value they submitted.
+				$i++;
+			}
+			return $finalresults;
+		}
+		else
+		{
+			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => "No Results Found.");
 		}
 	}
 }
