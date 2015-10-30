@@ -68,5 +68,59 @@ class Review extends Config {
 	
 	public function array_displayReviews()
 	{
+		//vars
+		$orderby = " `date` DESC";
+		$where = " `approved` = 1";
+		
+		// we set the count of how many comments to display, default is 20
+		if(isset($this->Data['count']))
+		{
+			$count = $this->Data['count'];
+		}
+		else
+		{
+			$count = 20;
+		}
+		// get the current page, we'll need to multiply it by the count.
+		if(isset($this->Data['page']))
+		{
+			$page = $this->Data['page']*$count;
+		}
+		else
+		{
+			$page = 0;
+		}
+		// if the series id is set, we will give them the reviews for that series.
+		if(isset($this->Data['id'])){
+			$where .= " AND `sid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+		}
+		else {
+			// no sid, means we just show them everything..
+		}
+		
+		$query = "SELECT `id`, `sid`, `uid`, `date`, `review`, `stars` FROM `reviews` WHERE $where ORDER BY $orderby LIMIT $page, $count";
+		$result = $this->mysqli->query($query);
+		$count = mysqli_num_rows($result);
+		$returnarray = array();
+		$returnarray['status'] = "200";
+		if($count > 0)
+		{
+			$i = 0;
+			while($row = $result->fetch_assoc())
+			{
+				$returnarray['results'][$i]['id'] = $row['id'];
+				$returnarray['results'][$i]['review'] = stripslashes($row['review']);
+				$returnarray['results'][$i]['sid'] = $row['sid'];
+				$returnarray['results'][$i]['date'] = $row['date'];
+				$returnarray['results'][$i]['user'] = $this->string_fancyUsername($row['uid'],NULL,NULL,NULL,NULL,NULL,1);
+				$returnarray['results'][$i]['stars'] = $row['stars'];
+				$i++;
+			}
+		}
+		else
+		{
+			$returnarray = array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => "No Reviews were found");
+		}
+		return $returnarray;
 	}
 }
