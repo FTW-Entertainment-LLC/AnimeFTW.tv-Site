@@ -107,6 +107,13 @@ class Register extends Config {
 										else {
 											$OutputArray['error'] = 'There was an issue registering your account, please try again. If the issue persists, please contact administration.';
 											$OutputArray['FailCheck'] = TRUE;
+											include_once("email.class.php");
+											$Email = new Email('brad@ftwentertainment.com');
+											$errorArray = array('username' => $postUsername, 'password' => $_POST['password'], 'registrationDate' => time(), 'email' => $_POST['email'], 'firstname' => @$_POST['firstname'], 'gender' => @$_POST['gender'], 'ageDate' => @$_POST['ageDate'], 'ageMonth' => @$_POST['ageMonth'], 'ageYear' => @$_POST['ageYear'], 'ip' => $_SERVER['REMOTE_ADDR'], 'timezone' => $_POST['timeZone']);
+											$errorArray = json_encode($errorArray);
+											$message = "There was a failed registration on the site.\n The details are as follow.\n\n" . $errorArray . "\n\n";
+											$message .= "Insert Query results:\n" . $result . "\n\n Insert Command:\n" . $query;
+											$Email->Send(12,$message);
 										}
 									}
 								}
