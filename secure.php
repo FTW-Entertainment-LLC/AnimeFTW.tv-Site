@@ -4,7 +4,7 @@ $Config = new Config();
 $Config->buildUserInformation();
 if($_SERVER['SERVER_PORT'] == '80')
 {
-	header("location: https://www.animeftw.tv".$_SERVER['REQUEST_URI']);
+	header("location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 }
 //Header area start. (This code loads before anything in the body tags..)
 if($_GET['node'] == 'login'){
@@ -342,7 +342,7 @@ else {
 		echo "<td valign='top' class='main-mid'>\n";
 		echo '<table align="center" border="0" cellpadding="0" cellspacing="0">
 	<tr><td>';
-		if ( isset ( $error ) && (isset($noReg) && $noReg != 'yes'))	{
+		if( isset ( $error ) && (isset($noReg) && $noReg != 'yes'))	{
 			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
 			echo "</tr>\n</table>\n";
@@ -354,9 +354,11 @@ else {
 		}
 		else {
 			// for everything else..
-			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
-			echo "</tr>\n</table></td></tr></table>\n";
+			if(isset($error)){
+				echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+				echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
+				echo "</tr>\n</table></td></tr></table>\n";
+			}
 		}
 		if(isset($noReg) && $noReg == 'yes'){
 			echo "<br /><br /><br /><br /><br /><br />";
