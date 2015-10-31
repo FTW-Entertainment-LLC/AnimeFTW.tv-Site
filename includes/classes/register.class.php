@@ -105,7 +105,7 @@ class Register extends Config {
 											}
 										}
 										else {
-											$OutputArray['error'] = 'There was an issue registering your account.<br />'  . $query;
+											$OutputArray['error'] = 'There was an issue registering your account, please try again. If the issue persists, please contact administration.';
 											$OutputArray['FailCheck'] = TRUE;
 										}
 									}
