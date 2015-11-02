@@ -176,7 +176,9 @@ class Register extends Config {
 	
 	private function checkUnique($field,$compared)
 	{
-		$query = mysql_query("SELECT COUNT(*) as total FROM `users` WHERE " . $field . " = " . $this->sanitizeInput($compared));
+		$query = "SELECT COUNT(*) as total FROM `users` WHERE `" . $field . "` = " . $this->sanitizeInput($compared);
+		
+		$query = mysql_query($query);
 		
 		$query = mysql_fetch_assoc($query);
 		
