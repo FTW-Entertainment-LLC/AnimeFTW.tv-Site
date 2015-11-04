@@ -482,4 +482,44 @@ class Comment extends Config {
 		}
 		return $returnarray;
 	}
+	
+	public function array_addComment(){
+		if(!isset($this->Data['id']) || !is_numeric($this->Data['id']) || !isset($this->Data['comment']) || !isset($this->Data['spoiler']) || !is_numeric($this->Data['spoiler'])){
+			// there was data missing.. let them know.
+			$returnarray = array('status' => '422', 'message' => 'There is data missing in the request, please try again.');
+		}
+		else {
+			if(!is_numeric($this->Data['type'])){
+				$commentType = 0;
+			}
+			else {
+				$commentType = $this->Data['type'];
+			}
+			
+			if($commentType == 0){
+				// episode comment
+				$pageId = 0;
+			}
+			elseif($commentType == 1) {
+				// profile comment
+				$pageId = "u" . $this->Data['id'];
+			}
+			else {
+				$pageId = 0;
+			}
+			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($this->Data['spoiler']) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserID . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "')";
+			
+			$result = $this->mysqli->query($query);
+			
+			if(!$result){
+				// failure
+				$returnarray = array('status' => '500', 'message' => 'Something went wrong executing the query, please try again.');
+			}
+			else {
+				// success
+				$returnarray = array('status' => '200', 'message' => 'Commented added successfully.');
+			}
+		}
+		return $returnarray;
+	}
 }
