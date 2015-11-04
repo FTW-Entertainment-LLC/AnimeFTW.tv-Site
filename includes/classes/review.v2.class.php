@@ -119,7 +119,7 @@ class Review extends Config {
 		}
 		else
 		{
-			$returnarray = array('status' => $this->MessageCodes["Result Codes"]["402"]["Status"], 'message' => "No Reviews were found");
+			$returnarray = array('status' => '404', 'message' => "No Reviews were found");
 		}
 		return $returnarray;
 	}
