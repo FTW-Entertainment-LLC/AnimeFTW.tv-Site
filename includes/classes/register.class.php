@@ -43,7 +43,7 @@ class Register extends Config {
 									$OutputArray['FailCheck'] = TRUE;
 								}
 								else {
-									if (!$this->checkUnique ( 'Email', $_POST['email'] ) )
+									if (!$this->checkUnique('Email', $_POST['email']))
 									{
 										$OutputArray['error'] = 'The email you used is associated with another user. Please try again or use the "forgot password" feature!';
 										$OutputArray['FailCheck'] = TRUE;
@@ -186,10 +186,10 @@ class Register extends Config {
 		
 		$query = mysql_fetch_assoc($query);
 		
-		if ( $query->total == 0 ) {
+		if($query['total'] == 0){
 			return TRUE;
 		}
-		else {
+		else{
 			return FALSE;
 		}
 	}
