@@ -390,12 +390,12 @@ class Comment extends Config {
 		// we check what type of comment this is..
 		if(isset($this->Data['type']) && isset($this->Data['id']))
 		{
-			if($this->Data['type'] == 'profile' || $this->Data['type'] == '1')
+			if(strtolower($this->Data['type']) == 'profile' || $this->Data['type'] == '1')
 			{
 				// profile based comments
 				$whereclause = "`page_id` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
 			}
-			else if($this->Data['type'] == 'video' || $this->Data['type'] == '0')
+			else if(strtolower($this->Data['type']) == 'video' || $this->Data['type'] == '0')
 			{
 				// comments on videos.
 				$whereclause = "`epid` = " . $this->mysqli->real_escape_string($this->Data['id']);
