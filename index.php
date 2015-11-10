@@ -25,40 +25,24 @@ include('header.php');
 include('header-nav.php');
 if (isset($_GET['rf'])){
 	$Referal = $_GET['rf'];
-	$ReferalLink = $_SERVER['HTTP_REFERER'];
+	$ReferalLink = @$_SERVER['HTTP_REFERER'];
 	$ReferalIp = $_SERVER['REMOTE_ADDR'];
 	if($Referal == 'zen'){
-		$query = sprintf("INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('%s', NULL, '%s', '%s', '%s')",
-				mysql_real_escape_string($ReferalLink, $conn),
-				mysql_real_escape_string($Referal, $conn),
-				mysql_real_escape_string(time(), $conn),
-				mysql_real_escape_string($ReferalIp, $conn));
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
+		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 	}
 	else if($Referal == 'af'){
-		$query = sprintf("INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('%s', NULL, '%s', '%s', '%s')",
-				mysql_real_escape_string($ReferalLink, $conn),
-				mysql_real_escape_string($Referal, $conn),
-				mysql_real_escape_string(time(), $conn),
-				mysql_real_escape_string($ReferalIp, $conn));
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
+		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 	}
 	else if($Referal == 'at'){
-		$query = sprintf("INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('%s', NULL, '%s', '%s', '%s')",
-				mysql_real_escape_string($ReferalLink, $conn),
-				mysql_real_escape_string($Referal, $conn),
-				mysql_real_escape_string(time(), $conn),
-				mysql_real_escape_string($ReferalIp, $conn));
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
+		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 	}
 	else if($Referal == 'logo'){}
 	else {
-		$query = sprintf("INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('%s', NULL, '%s', '%s', '%s')",
-				mysql_real_escape_string($ReferalLink, $conn),
-				mysql_real_escape_string($Referal, $conn),
-				mysql_real_escape_string(time(), $conn),
-				mysql_real_escape_string($ReferalIp, $conn));
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
+		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 	}
 }
 //$index_global_message = "";
