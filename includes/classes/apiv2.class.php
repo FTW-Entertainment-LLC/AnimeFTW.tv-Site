@@ -174,6 +174,30 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Displays available Categories.'
 		),
+		'display-watchlist' => array(
+			'action' => 'display-watchlist',
+			'location' => 'watchlist.v2.class.php', // action location
+			'classname' => 'Watchlist', // class name
+			'method' => 'array_displayWatchList', // method name
+			'disabled' => '1',
+			'description' => 'Displays available My WatchList Entries.'
+		),
+		'add-watchlist' => array(
+			'action' => 'add-watchlist',
+			'location' => 'watchlist.v2.class.php', // action location
+			'classname' => 'Watchlist', // class name
+			'method' => 'array_addWatchListEntry', // method name
+			'disabled' => '1',
+			'description' => 'Adds a watchlist entry to a users account.'
+		),
+		'delete-watchlist' => array(
+			'action' => 'add-watchlist-entry',
+			'location' => 'watchlist.v2.class.php', // action location
+			'classname' => 'Watchlist', // class name
+			'method' => 'array_deleteWatchListEntry', // method name
+			'disabled' => '1',
+			'description' => 'Delete a watchlist entry to a users account.'
+		),
 	);
 
 	// class constructor method
