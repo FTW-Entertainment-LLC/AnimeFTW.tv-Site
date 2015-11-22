@@ -68,7 +68,7 @@ LIMIT ".$_POST['start'].", 100";
 		$headers .= "To: $toEmail\r\n";
 		$headers .= "From: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
 		$headers .= "Reply-To: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
-		if($_POST['update-type'] == '1' || $_POST['update-type'] == '2')
+		if($_POST['update-type'] == '1' || $_POST['update-type'] == '2' || $_POST['update-type'] == '4')
 		{
 			# -=-=-=- TEXT EMAIL PART
 			$body .= "--$mime_boundary\r\n";
