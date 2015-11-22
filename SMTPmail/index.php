@@ -27,7 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	include('SMTPClass.php');
 
 	$fromUsername = "Robotman321";
-					
+	
 	if($_POST['update-type'] == 1)
 	{
 		$query2 = "SELECT `users`.`Username`, `users`.`Email` 
@@ -41,6 +41,10 @@ LIMIT ".$_POST['start'].", 100";
 FROM `users` WHERE `Active` = '1' AND NOT EXISTS
 (SELECT `id` FROM `user_setting` WHERE `user_setting`.`option_id` = 7 AND `user_setting`.`value` != 14 AND `users`.`ID`=`user_setting`.`uid`)
 LIMIT ".$_POST['start'].", 100";
+	}
+	else if($_POST['update-type'] == 4)
+	{
+		$query2 = "SELECT `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100";
 	}
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
@@ -442,7 +446,9 @@ echo $count;
 <select name="update-type" id="update-type">
 	<option value="1"<? if($level == 1){echo ' selected="selected"';}?>>Anime Update</option>
 	<option value="2"<? if($level == 2){echo ' selected="selected"';}?>>Admin Notification</option>
-</select></td></tr>
+	<option value="3"<? if($level == 3){echo ' selected="selected"';}?>>Christmas Update</option>
+	<option value="4"<? if($level == 4){echo ' selected="selected"';}?>>Kodi Addon Update</option>
+</select></td></tr>`
 <tr><td>Message :</td><td><textarea name="message" rows="8" cols="50" id="message"><? if(isset($msgBody)){echo $msgBody;}?></textarea></td></tr>
 <tr><td></td><td><input type="submit" value=" Send " /></td></tr>
 </table>
