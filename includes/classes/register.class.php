@@ -17,105 +17,108 @@ class Register extends Config {
 	public function registerAccount()
 	{
 		$OutputArray['noReg'] = 'no';
-		if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
-			if($_POST['agreement'] == 'yes'){
-				$postUsername = $_POST['username'];
-				$postUsername = substr($postUsername, 0, 20);
-				if(($_POST['issubmit'] && $_POST['_submit_check']) == 1){
-					if ( $_POST['username'] != '' && $_POST['password'] != '' && ($_POST['password'] == $_POST['cpassword']) && ($_POST['email'] == $_POST['cemail']) && $this->valid_email($_POST['email']) == TRUE )
-					{
-						if(!isset($_POST['agreement']))
+		$response=json_decode(file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6Lej28MSAAAAAOdTYlj0I2BimGMwU8R-X69k9aUH&response=".urlencode($_POST['g-recaptcha-response'])."&remoteip=".$_SERVER['REMOTE_ADDR']), true);
+		if(isset($response['success']) && $response['success'] !== false) {
+			if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
+				if($_POST['agreement'] == 'yes'){
+					$postUsername = $_POST['username'];
+					$postUsername = substr($postUsername, 0, 20);
+					if(($_POST['issubmit'] && $_POST['_submit_check']) == 1){
+						if ( $_POST['username'] != '' && $_POST['password'] != '' && ($_POST['password'] == $_POST['cpassword']) && ($_POST['email'] == $_POST['cemail']) && $this->valid_email($_POST['email']) == TRUE )
 						{
-							$OutputArray['error'] = 'You did not agree with our ToS and our Rules. Please try again.';
-							$OutputArray['Failcheck'] = TRUE;
-						}
-						else
-						{
-							if(!$this->checkUnique('Username', $_POST['username']))
+							if(!isset($_POST['agreement']))
 							{
-								$OutputArray['error'] = 'Username already taken. Please try again!';
-								$OutputArray['FailCheck'] = TRUE;
+								$OutputArray['error'] = 'You did not agree with our ToS and our Rules. Please try again.';
+								$OutputArray['Failcheck'] = TRUE;
 							}
-							else {
-								if(!$this->checkUnique('display_name', $_POST['username']))
+							else
+							{
+								if(!$this->checkUnique('Username', $_POST['username']))
 								{
 									$OutputArray['error'] = 'Username already taken. Please try again!';
 									$OutputArray['FailCheck'] = TRUE;
 								}
 								else {
-									if (!$this->checkUnique('Email', $_POST['email']))
+									if(!$this->checkUnique('display_name', $_POST['username']))
 									{
-										$OutputArray['error'] = 'The email you used is associated with another user. Please try again or use the "forgot password" feature!';
+										$OutputArray['error'] = 'Username already taken. Please try again!';
 										$OutputArray['FailCheck'] = TRUE;
 									}
 									else {
-										if($_POST['google'] != '9'){
-											$OutputArray['error'] = 'You have failed the bot check, please try again.';
+										if (!$this->checkUnique('Email', $_POST['email']))
+										{
+											$OutputArray['error'] = 'The email you used is associated with another user. Please try again or use the "forgot password" feature!';
 											$OutputArray['FailCheck'] = TRUE;
 										}
 										else {
-											$splitEmail = explode("@",$_POST['email']);
-											$finalEmailCheck = $this->checkFakeEmail($splitEmail[1]);
-											if($finalEmailCheck >0){
-												$OutputArray['error'] = 'The email you have provided has been marked as spam, please try a different email!';
+											if($_POST['google'] != '9'){
+												$OutputArray['error'] = 'You have failed the bot check, please try again.';
 												$OutputArray['FailCheck'] = TRUE;
 											}
-											else
-											{
-												$query = "INSERT INTO users (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $this->sanitizeInput($_POST['email'] ) . ", '" . $this->generateRandomString(32) . "', " . $this->sanitizeInput(@$_POST['firstname']) . ", " . $this->sanitizeInput(@$_POST['gender']) . ", " . $this->sanitizeInput(@$_POST['ageDate']) . ", " . $this->sanitizeInput(@$_POST['ageMonth']) . ", " . $this->sanitizeInput(@$_POST['ageYear']) . ", '".$_SERVER['REMOTE_ADDR']."', ".$this->sanitizeInput($_POST['timeZone']).")";
-												$result = mysql_query($query);
-												$getUser = "SELECT `ID`, `Username`, `Email`, `Random_key` FROM `users` WHERE `Username` = " . $this->sanitizeInput($this->makeUrlFriendly("$postUsername") ) . "";
-												$results = mysql_query($getUser);
-												if(mysql_num_rows($results) == 1)
-												{
-													$row = mysql_fetch_assoc($results);
-													$message = "Dear ".$row['Username'].", this is your activation link to join our website at animeftw.tv. \n\nIn order to confirm your membership please click on the following link: https://www.animeftw.tv/confirm?ID=" . $row['ID'] . "&key=" . $row['Random_key'] . "\n\nAfter you confirm your status with us, please go visit https://www.animeftw.tv/rules - our Rules and https://www.animeftw.tv/faq - our FAQ and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place. \n\nThank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! https://www.animeftw.tv/rules - Found here \n\nRegards, \n\nFTW Entertainment LLC & AnimeFTW Staff.";
-													
-													// First check to see if they want to recieve notifications from site pms
-													if(isset($_POST['sitepmnote']) && $_POST['sitepmnote'] == 1)
-													{
-														// they opted for the default, nothing needed
-													}
-													else
-													{
-														// they don't want to receive our emails :(
-														$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
-													}
-													// check to see if they want to receive admin emails
-													if(isset($_POST['notifications']) && $_POST['notifications'] == 1)
-													{
-														// nope, they want us to email them!
-													}
-													else
-													{
-														// sandpanda..
-														$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
-													}
-													include_once("email.class.php");
-													$Email = new Email($row['Email']);
-													//6,$vars);
-													if($Email->Send(11,$message))
-													{
-														$OutputArray['error'] = 'Account registered as: '.$row['Username'].'. Please check your email ('.$row['Email'].') for details on how to activate it.';
-														$OutputArray['noReg'] = 'yes';
-														$OutputArray['FailCheck'] = FALSE;
-													}
-													else
-													{
-														$OutputArray['error'] = 'I managed to register your membership but failed to send the validation email. Please contact the admin at support@animeftw.tv';
-														$OutputArray['FailCheck'] = FALSE;
-													}
-												}
-												else {
-													$OutputArray['error'] = 'There was an issue registering your account, please try again. If the issue persists, please contact administration.';
+											else {
+												$splitEmail = explode("@",$_POST['email']);
+												$finalEmailCheck = $this->checkFakeEmail($splitEmail[1]);
+												if($finalEmailCheck >0){
+													$OutputArray['error'] = 'The email you have provided has been marked as spam, please try a different email!';
 													$OutputArray['FailCheck'] = TRUE;
-													include_once("email.class.php");
-													$Email = new Email('brad@ftwentertainment.com');
-													$errorArray = array('username' => $postUsername, 'password' => $_POST['password'], 'registrationDate' => time(), 'email' => $_POST['email'], 'firstname' => @$_POST['firstname'], 'gender' => @$_POST['gender'], 'ageDate' => @$_POST['ageDate'], 'ageMonth' => @$_POST['ageMonth'], 'ageYear' => @$_POST['ageYear'], 'ip' => $_SERVER['REMOTE_ADDR'], 'timezone' => $_POST['timeZone']);
-													$errorArray = json_encode($errorArray);
-													$message = "There was a failed registration on the site.\n The details are as follow.\n\n" . $errorArray . "\n\n";
-													$message .= "Insert Query results:\n" . $result . "\n\n Insert Command:\n" . $query;
-													$Email->Send(12,$message);
+												}
+												else
+												{
+													$query = "INSERT INTO users (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $this->sanitizeInput($_POST['email'] ) . ", '" . $this->generateRandomString(32) . "', " . $this->sanitizeInput(@$_POST['firstname']) . ", " . $this->sanitizeInput(@$_POST['gender']) . ", " . $this->sanitizeInput(@$_POST['ageDate']) . ", " . $this->sanitizeInput(@$_POST['ageMonth']) . ", " . $this->sanitizeInput(@$_POST['ageYear']) . ", '".$_SERVER['REMOTE_ADDR']."', ".$this->sanitizeInput($_POST['timeZone']).")";
+													$result = mysql_query($query);
+													$getUser = "SELECT `ID`, `Username`, `Email`, `Random_key` FROM `users` WHERE `Username` = " . $this->sanitizeInput($this->makeUrlFriendly("$postUsername") ) . "";
+													$results = mysql_query($getUser);
+													if(mysql_num_rows($results) == 1)
+													{
+														$row = mysql_fetch_assoc($results);
+														$message = "Dear ".$row['Username'].", this is your activation link to join our website at animeftw.tv. \n\nIn order to confirm your membership please click on the following link: https://www.animeftw.tv/confirm?ID=" . $row['ID'] . "&key=" . $row['Random_key'] . "\n\nAfter you confirm your status with us, please go visit https://www.animeftw.tv/rules - our Rules and https://www.animeftw.tv/faq - our FAQ and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place. \n\nThank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! https://www.animeftw.tv/rules - Found here \n\nRegards, \n\nFTW Entertainment LLC & AnimeFTW Staff.";
+														
+														// First check to see if they want to recieve notifications from site pms
+														if(isset($_POST['sitepmnote']) && $_POST['sitepmnote'] == 1)
+														{
+															// they opted for the default, nothing needed
+														}
+														else
+														{
+															// they don't want to receive our emails :(
+															$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
+														}
+														// check to see if they want to receive admin emails
+														if(isset($_POST['notifications']) && $_POST['notifications'] == 1)
+														{
+															// nope, they want us to email them!
+														}
+														else
+														{
+															// sandpanda..
+															$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
+														}
+														include_once("email.class.php");
+														$Email = new Email($row['Email']);
+														//6,$vars);
+														if($Email->Send(11,$message))
+														{
+															$OutputArray['error'] = 'Account registered as: '.$row['Username'].'. Please check your email ('.$row['Email'].') for details on how to activate it.';
+															$OutputArray['noReg'] = 'yes';
+															$OutputArray['FailCheck'] = FALSE;
+														}
+														else
+														{
+															$OutputArray['error'] = 'I managed to register your membership but failed to send the validation email. Please contact the admin at support@animeftw.tv';
+															$OutputArray['FailCheck'] = FALSE;
+														}
+													}
+													else {
+														$OutputArray['error'] = 'There was an issue registering your account, please try again. If the issue persists, please contact administration.';
+														$OutputArray['FailCheck'] = TRUE;
+														include_once("email.class.php");
+														$Email = new Email('brad@ftwentertainment.com');
+														$errorArray = array('username' => $postUsername, 'password' => $_POST['password'], 'registrationDate' => time(), 'email' => $_POST['email'], 'firstname' => @$_POST['firstname'], 'gender' => @$_POST['gender'], 'ageDate' => @$_POST['ageDate'], 'ageMonth' => @$_POST['ageMonth'], 'ageYear' => @$_POST['ageYear'], 'ip' => $_SERVER['REMOTE_ADDR'], 'timezone' => $_POST['timeZone']);
+														$errorArray = json_encode($errorArray);
+														$message = "There was a failed registration on the site.\n The details are as follow.\n\n" . $errorArray . "\n\n";
+														$message .= "Insert Query results:\n" . $result . "\n\n Insert Command:\n" . $query;
+														$Email->Send(12,$message);
+													}
 												}
 											}
 										}
@@ -123,25 +126,29 @@ class Register extends Config {
 								}
 							}
 						}
+						else {		
+							$OutputArray['error'] = 'There was an error in your data. Please make sure you filled in all the required data, you provided a valid email address and that the password fields match one another.';
+							$OutputArray['FailCheck'] = TRUE;	
+						}
 					}
-					else {		
-						$OutputArray['error'] = 'There was an error in your data. Please make sure you filled in all the required data, you provided a valid email address and that the password fields match one another.';
+					else {
+						$OutputArray['error'] = 'error: You did not submit from AnimeFTW.tv!';
 						$OutputArray['FailCheck'] = TRUE;	
+						// $msg = TRUE;
+						# in a real application, you should send an email, create an account, etc
 					}
 				}
 				else {
-					$OutputArray['error'] = 'error: You did not submit from AnimeFTW.tv!';
+					$OutputArray['error'] = 'You failed to agree to our Terms of Service and our Rules, please evaluate your registration.';
 					$OutputArray['FailCheck'] = TRUE;	
-					// $msg = TRUE;
-					# in a real application, you should send an email, create an account, etc
 				}
-			}
+			}	
 			else {
-				$OutputArray['error'] = 'You failed to agree to our Terms of Service and our Rules, please evaluate your registration.';
-				$OutputArray['FailCheck'] = TRUE;	
-			}
-			return $OutputArray;
+				$OutputArray['error'] = 'You\'ve failed the Captcha, please try again.';
+				$OutputArray['FailCheck'] = TRUE;
+			}		
 		}
+		return $OutputArray;	
 	}
 	
 	public function confirmAccount()

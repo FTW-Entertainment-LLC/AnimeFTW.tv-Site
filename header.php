@@ -272,6 +272,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	if($_SERVER['PHP_SELF'] == '/secure.php' && $_GET['node'] == 'register'){
 		echo "\n	<script type=\"text/javascript\" src=\"/scripts/jquery.smartWizard-2.0.min.js\"></script>\n";
 		echo "	<script type=\"text/javascript\" src=\"/scripts/aftw-register.js\"></script>\n";
+		echo "	<script src='https://www.google.com/recaptcha/api.js'></script>\n";
 	}
 	?>
     <title><?=$PageTitle;?></title>

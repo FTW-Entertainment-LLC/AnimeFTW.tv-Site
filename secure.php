@@ -548,10 +548,9 @@ else {
 							</tr>   
 							<tr>
 								<td align="right" valign="top">Are you Human?* :</td>
-								<td align="left"><div align="center">';
-									require_once('recaptcha.php');
-									echo recaptcha_get_html($publickey);
-							  echo '<span style="color: red;" id="captchaStatus">&nbsp;</span></div></td>
+								<td align="left"><div align="center">
+								<div class="g-recaptcha" data-sitekey="6Lej28MSAAAAAHbSX338LhM9FdQD-RalGgrKSM3Z"></div>
+								<span style="color: red;" id="captchaStatus">&nbsp;</span></div></td>
 								<td align="left"><span id="msg_recaptcha"></span>&nbsp;</td>
 							</tr>   
 							<tr>
