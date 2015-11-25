@@ -162,8 +162,6 @@ RewriteRule ^/?reviews/series-(.+)$ secure.php?node=reviews&subnode=review&sid=$
 RewriteRule ^/?reviews/submitted/$ secure.php?node=reviews&subnode=submit [L]
 RewriteRule ^/?reviews/submitted$ secure.php?node=reviews&subnode=submit [L]
 RewriteRule ^/?rules$ index.php?node=rules [L]
-RewriteRule ^/?uploads$ projects.php [L]
-RewriteRule ^/?uploads/$ projects.php [L]
 RewriteRule ^/?user/(.+)/notifications$ users.php?username=$1&show=notifications [L]
 RewriteRule ^/?user/(.+)/notifications/$ users.php?username=$1&show=notifications [L]
 RewriteRule ^/?user/(.+)$ users.php?username=$1 [L]

@@ -30,7 +30,7 @@ else {
 	echo "	<td class='header-nav'>\n";
 	echo "		<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n	<tr>\n";
 	echo "			<td class='header-nav-left'>\n";
-	echo "<a id=\"tab-1\" class=\"aftw-main-nav"; if(($_SERVER['PHP_SELF'] == '/index.php' || $_SERVER['PHP_SELF'] == '/projects.php' || $_SERVER['PHP_SELF'] == '/register.php' || $_SERVER['PHP_SELF'] == '/secure.php') && (!strstr($_SERVER['REQUEST_URI'],'/staff/applications') && !strstr($_SERVER['REQUEST_URI'],'store'))){echo ' current';} echo "\" href='/'>Home</a>
+	echo "<a id=\"tab-1\" class=\"aftw-main-nav"; if(($_SERVER['PHP_SELF'] == '/index.php' || $_SERVER['PHP_SELF'] == '/register.php' || $_SERVER['PHP_SELF'] == '/secure.php') && (!strstr($_SERVER['REQUEST_URI'],'/staff/applications') && !strstr($_SERVER['REQUEST_URI'],'store'))){echo ' current';} echo "\" href='/'>Home</a>
 <a id=\"tab-2\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php' || $_SERVER['PHP_SELF'] == '/search.php'){echo ' current';} echo "\" href=\"/anime\">Anime</a>
 <a id=\"tab-3\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/messages.php'){echo ' current';} echo "\" href=\"/user\">Profile</a>
 <a id=\"tab-4\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'store')){echo ' current';} echo "\" href=\"/store\">Store</a>
@@ -144,17 +144,6 @@ else {
 						<div id=\"hover-tab-8\" class=\"pane-subnav\" align=\"center\">Want to help AnimeFTW.tv Spread Anime Love? Apply Within!</div> 
 						<div></div>
 					</div>";
-	if($profileArray[2] == 1 || $profileArray[2] == 2 || $profileArray[2] == 4 || $profileArray[2] == 5 || $profileArray[2] == 6){
-		
-		echo '<div class="apple_overlay" id="manage">';
-		echo '<h2 style="margin:0px">Site Management</h2>';
-		echo '<div class="comments" id="manageedit">Loading. Please Wait...</div>';
-		echo '</div>';
-		echo '<div class="apple_overlay" id="uploads">';
-		echo '<h2 style="margin:0px">AnimeFTW.tv Uploads Tracker</h2>';
-		echo '<div class="comments" id="uploadstracker">Loading. Please Wait...</div>';
-		echo '</div>';
-	}
 
 	//if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php'){}
 	//else {
