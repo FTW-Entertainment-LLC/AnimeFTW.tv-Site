@@ -98,6 +98,7 @@ class processData extends Config {
 				$prequelto = mysql_real_escape_string($_POST['prequelto']);
 				$sequelto = mysql_real_escape_string($_POST['sequelto']);
 				$hd = mysql_real_escape_string($_POST['hd']);
+				$license = mysql_real_escape_string($_POST['license']);
 				
 				// ADDED 10/11/2014 by robotman321
 				// will count the amount of categories to make sure everything is added right.
@@ -146,7 +147,8 @@ class processData extends Config {
 					seriesType=\'' . mysql_real_escape_string($seriesType) . '\', 
 					seriesList=\'' . mysql_real_escape_string($seriesList) . '\',
 					hd=\'' . mysql_real_escape_string($hd) . '\',
-					ueid=\'' . $ueid . '\'
+					ueid=\'' . $ueid . '\',
+					`license`=\'' . $license . '\'
 					WHERE id=' . $sid . '';
 				mysql_query($query) or die('Error : ' . mysql_error());	
 				$euidd = mysql_query("UPDATE uestatus SET sid = $sid WHERE ID = $ueid");
@@ -184,6 +186,7 @@ class processData extends Config {
 				$prequelto = mysql_real_escape_string($_POST['prequelto']);
 				$sequelto = mysql_real_escape_string($_POST['sequelto']);
 				$hd = mysql_real_escape_string($_POST['hd']);
+				$license = mysql_real_escape_string($_POST['license']);
 				
 				// ADDED 10/11/2014 by robotman321
 				// will count the amount of categories to make sure everything is added right.
@@ -204,7 +207,7 @@ class processData extends Config {
 				$ueid = mysql_real_escape_string($_POST['uploadsEntry']);
 							
 				mysql_query("SET NAMES 'utf8'");
-				$query = "INSERT INTO series (`seriesName`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `seoname`, `videoServer`, `active`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesOnly`, `OVA`, `noteReason`, `aonly`, `prequelto`, `sequelto`, `category`, `seriesType`, `seriesList`, `ueid`, `hd`) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList', '$ueid', '$hd')";
+				$query = "INSERT INTO series (`seriesName`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `seoname`, `videoServer`, `active`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesOnly`, `OVA`, `noteReason`, `aonly`, `prequelto`, `sequelto`, `category`, `seriesType`, `seriesList`, `ueid`, `hd`, `license`) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList', '$ueid', '$hd', '$license')";
 				mysql_query($query) or die('There was an error adding the series: ' . mysql_error() . ', here was the query: ' . $query);
 				
 				$sid = $this->SingleVarQuery("SELECT id FROM series WHERE seriesName = '" . $seriesName . "'",'id'); //Get the Series ID through seriesName
