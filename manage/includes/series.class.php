@@ -519,10 +519,10 @@ class Series extends Config {
 						else {
 							$sid = mysql_real_escape_string($_GET['sid']);
 							$sid = htmlentities($sid);
-							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, hd FROM series WHERE id='$sid'";
+							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, hd, `license` FROM series WHERE id='$sid'";
 							mysql_query("SET NAMES 'utf8'"); 
 							$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
-							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $hd) = mysql_fetch_array($result2, MYSQL_NUM);
+							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $hd, $license) = mysql_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
 								
 							$description = stripslashes($description);
@@ -570,14 +570,14 @@ class Series extends Config {
 							$seoname = preg_replace('/[^a-z0-9 -]+/', '', $seoname);
 							$seoname = str_replace(' ', '-', $seoname);
 							$seoname = trim($seoname, '-');
-							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$hd = 0; $ueid = $_GET['ueid'];
+							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$hd = 0; $ueid = $_GET['ueid']; $license = 0;
 						}
 						else 
 						{
 							$Type = 'add';
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />';
 							$SubmitTXT = 'Add Series';
-							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = ''; $ueid = ''; $hd = 0;
+							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = ''; $ueid = ''; $hd = 0; $license = 0;
 						}
 					}
 					else 
@@ -802,6 +802,15 @@ class Series extends Config {
 							<div class="series-form-left"><b><i>Uploads Board Entry</i></b><br /> <i>Does this series have an entry on the uploads board?</i></div>
 							<div class="series-form-right">
 								' . $this->uploadsEntrySelect($ueid, null) . '
+							</div>
+						</div>
+						<div class="series-form-row">
+							<div class="series-form-left"><b><i>Licensed?</i></b><br /> <i>Is this anime licensed?</i></div>
+							<div class="series-form-right">
+								<select name="license" style="color: #000000;" class="text-input">
+									<option value="0" '; if($license == '0' || $license == 'NULL'){echo 'selected="selected"';} echo '>No</option>
+									<option value="1" '; if($license == '1'){echo 'selected="selected"';} echo '>Yes</option>
+								</select>
 							</div>
 						</div>
 						<div class="series-form-row">

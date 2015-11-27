@@ -366,7 +366,7 @@ Class api extends Config {
 	private function validateDevKey()
 	{
 		$DevKey = $this->Data['devkey']; // declare the developer key from the dataset
-		$query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
+		$query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
 
 		$result = $this->mysqli->query($query);
 		
@@ -387,7 +387,8 @@ Class api extends Config {
 				'info' => $row['info'], 
 				'frequency' => $row['frequency'], 
 				'uid' => $row['uid'], 
-				'ads' => $row['ads']
+				'ads' => $row['ads'], 
+				'license' => $row['license']
 			);
 			return TRUE; // Return TRUE to let it continue on.
 		}
