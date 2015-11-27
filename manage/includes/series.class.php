@@ -808,7 +808,7 @@ class Series extends Config {
 							<div class="series-form-left"><b><i>Licensed?</i></b><br /> <i>Is this anime licensed?</i></div>
 							<div class="series-form-right">
 								<select name="license" style="color: #000000;" class="text-input">
-									<option value="0" '; if($license == '0' || $license == 'NULL'){echo 'selected="selected"';} echo '>No</option>
+									<option value="0" '; if($license == '0'){echo 'selected="selected"';} echo '>No</option>
 									<option value="1" '; if($license == '1'){echo 'selected="selected"';} echo '>Yes</option>
 								</select>
 							</div>
