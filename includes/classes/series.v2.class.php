@@ -35,9 +35,14 @@ class Series extends Config {
 		// restrict output to a specific ID, if it's not available then we need to let them know.
 		if(isset($this->Data['id']) && is_numeric($this->Data['id']))
 		{
+			$addonQuery = '';
+			if($this->DevArray['license'] == 0) {
+				// it means the content we can show is only unlicensed.
+				$addonQuery = " AND `license` = 0";
+			}
 			// We consider this a valid single series, an ID needs to be supplied, and nothing else to ensure system level continuity.
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions;
+			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions . $addonQuery;
 			$result = $this->mysqli->query($query);
 			
 			$count = $result->num_rows;
@@ -196,25 +201,31 @@ class Series extends Config {
 			$latest = "";
 		}
 		
+		$addonQuery = '';
+		if($this->DevArray['license'] == 0) {
+			// it means the content we can show is only unlicensed.
+			$addonQuery = " AND `license` = 0";
+		}
+		
 		if($SortNum == 1)
 		{
-			$query = "SELECT $columns FROM `series` WHERE `active` = 'yes' $aonly ORDER BY `id` ASC LIMIT 25";
+			$query = "SELECT $columns FROM `series` WHERE `active` = 'yes'$addonQuery $aonly ORDER BY `id` ASC LIMIT 25";
 		}
 		else if($gsort != NULL)
 		{
 			if(strlen($gsort) > 1)
 			{
 				$catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($gsort));
-				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
+				$query = "SELECT $columns FROM series WHERE active='yes'${addonQuery} AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
 			}
 			else 
 			{
-				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
+				$query = "SELECT $columns FROM series WHERE active='yes'${addonQuery} AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
 			}
 		}
 		else 
 		{
-			$query = "SELECT $columns FROM `series` WHERE active='yes'{$filter} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
+			$query = "SELECT $columns FROM `series` WHERE active='yes'{$filter}${addonQuery} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
 		}
 		
 		// make sure we are using UTF-8 chars
@@ -307,5 +318,8 @@ class Series extends Config {
 			$i++;
 		}
 		return $returneddata;
+	}
+	
+	public function array_displayTagCloud(){
 	}
 }
