@@ -223,6 +223,7 @@ Class api extends Config {
 		$this->determineInput(); // this will figure out if they are using POST or GET requests
 		$this->determineStyle(); // This will figure out if it will be JSON or XML output
 		$this->launchAPI(); // This is the main method for the API, after we have done everything else we need to `initialize` the script.
+		$this->recordGoogleAnalytics(); // sends a post request to google analytics for the requested page.
 	}
 	
 	// function will determine what style it is, AND will also validate to make sure an application key is given
@@ -453,10 +454,18 @@ Class api extends Config {
 	// creates the token, and prints it back to the screen.
 	private function createToken()
 	{
+		function guidv4($data){
+			assert(strlen($data) == 16);
+
+			$data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+			$data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+
+			return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+		}
 		// the hash is a mix of the developer id, the username, the login server and the date, it will give
 		// a unique value that can be input into the database for later use.
-		$hash = md5($this->DevArray['id'] . $this->Data['username'] . "this is my secret" . time());		
-				
+		$hash = guidv4(openssl_random_pseudo_bytes(16));
+						
 		// If the developer gives us the remember option and it is yes, then we need to add a sticky session for this token. 
 		// TODO: Either make the developer in charge of the duration of the hash or assign it to the developer account within the database.
 		if(isset($this->Data['remember']))
@@ -620,5 +629,24 @@ VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_
 		}
 		// execute the query, adding the request to the dev logs.
 		$this->mysqli->query($query);
+	}
+	
+	private function recordGoogleAnalytics(){
+		// This function was designed just to throw a post notification over to google's analytics servers. 
+		// It allows us to keep track of traffic hitting the api.
+		
+		$url = 'https://www.google-analytics.com/collect';
+		$myvars = 'v=1&tid=UA-6243691-1&cid=' . urlencode($this->Data['token']) . '&t=pageview&dh=www.animeftw.tv&dp=' . urlencode('/api/v2') . '&an=' . urlencode($this->DevArray['name']) . '&uip=' . $_SERVER['REMOTE_ADDR'] . '&ua=' . urlencode($_SERVER['HTTP_USER_AGENT']);
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-type: application/x-www-form-urlencoded'));
+		curl_setopt($ch, CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_1);
+		curl_setopt($ch, CURLOPT_POST,TRUE);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$myvars);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		$response = curl_exec($ch);
+		curl_close($ch);
 	}
 }
