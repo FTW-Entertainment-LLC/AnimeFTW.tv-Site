@@ -36,7 +36,7 @@ class Series extends Config {
 		if(isset($this->Data['id']) && is_numeric($this->Data['id']))
 		{
 			$addonQuery = '';
-			if($this->DevArray['license'] == 0) {
+			if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
 				// it means the content we can show is only unlicensed.
 				$addonQuery = " AND `license` = 0";
 			}
@@ -202,7 +202,7 @@ class Series extends Config {
 		}
 		
 		$addonQuery = '';
-		if($this->DevArray['license'] == 0) {
+		if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
 			// it means the content we can show is only unlicensed.
 			$addonQuery = " AND `license` = 0";
 		}
