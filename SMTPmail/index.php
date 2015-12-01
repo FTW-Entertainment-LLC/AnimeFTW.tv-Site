@@ -14,8 +14,8 @@ else{$remember = FALSE;}
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-	if(!isset($_POST['level'])){$level = 0;}
-	else {$level = $_POST['level'];}
+	if(!isset($_POST['update-type'])){$level = 0;}
+	else {$level = $_POST['update-type'];}
 	//$to = $_POST['to'];
 	$fromUser = $_POST['from'];
 	$subject = $_POST['sub'];
@@ -44,7 +44,7 @@ LIMIT ".$_POST['start'].", 100";
 	}
 	else if($_POST['update-type'] == 4)
 	{
-		$query2 = "SELECT `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100";
+		$query2 = "SELECT `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100 GROUP BY `developers_api_sessions`.`uid`";
 	}
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
@@ -393,7 +393,7 @@ LIMIT ".$_POST['start'].", 100";
 		//away we go!
 		//mail($to, $subject, $body, $headers);
 		$SMTPMail = new SMTPClient ($SmtpServer, $SmtpPort, $SmtpUser, $SmtpPass, $from, $to, $subject, $headers, $body);
-		$SMTPChat = $SMTPMail->SendMail();
+		//$SMTPChat = $SMTPMail->SendMail();
 		$body = "";
 		if($count == 100){
 			$redirect = '<script>
