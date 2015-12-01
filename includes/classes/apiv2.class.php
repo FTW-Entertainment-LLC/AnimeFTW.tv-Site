@@ -636,14 +636,24 @@ VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_
 		// It allows us to keep track of traffic hitting the api.
 		
 		$url = 'https://www.google-analytics.com/collect?payload_data';
-		$myvars = 'v=1&tid=UA-6243691-1&cid=' . urlencode($this->Data['token']) . '&t=pageview&dh=www.animeftw.tv&dp=' . urlencode('/api/v2') . '&an=' . urlencode($this->DevArray['name']) . '&uip=' . $_SERVER['REMOTE_ADDR'] . '&ua=' . urlencode($_SERVER['HTTP_USER_AGENT']);
+		$myvars = array(
+			'v' => 1,
+			'tid' => 'UA-6243691-1',
+			'cid' => $this->Data['token'],
+			't' => 'pageview',
+			'dh' => 'www.animeftw.tv',
+			'dp' => '/api/v2',
+			'an' => $this->DevArray['name'],
+			'uip' => $_SERVER['REMOTE_ADDR'],
+			'ua' => $_SERVER['HTTP_USER_AGENT'],
+		);
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-type: application/x-www-form-urlencoded'));
 		curl_setopt($ch, CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_1);
 		curl_setopt($ch, CURLOPT_POST,TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,$myvars);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($myvars));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 		$response = curl_exec($ch);
