@@ -635,7 +635,7 @@ VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_
 		// This function was designed just to throw a post notification over to google's analytics servers. 
 		// It allows us to keep track of traffic hitting the api.
 		
-		$url = 'http://www.google-analytics.com/collect?payload_data';
+		$url = 'https://www.google-analytics.com/collect';
 		$myvars = array(
 			'v' => 1,
 			'tid' => 'UA-6243691-1',
@@ -657,6 +657,7 @@ VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 		$response = curl_exec($ch);
+		
 		curl_close($ch);
 	}
 }
