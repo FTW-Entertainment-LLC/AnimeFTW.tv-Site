@@ -635,7 +635,7 @@ VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_
 		// This function was designed just to throw a post notification over to google's analytics servers. 
 		// It allows us to keep track of traffic hitting the api.
 		
-		$url = 'https://www.google-analytics.com/collect';
+		$url = 'https://www.google-analytics.com/collect?payload_data';
 		$myvars = 'v=1&tid=UA-6243691-1&cid=' . urlencode($this->Data['token']) . '&t=pageview&dh=www.animeftw.tv&dp=' . urlencode('/api/v2') . '&an=' . urlencode($this->DevArray['name']) . '&uip=' . $_SERVER['REMOTE_ADDR'] . '&ua=' . urlencode($_SERVER['HTTP_USER_AGENT']);
 		
 		$ch = curl_init();
