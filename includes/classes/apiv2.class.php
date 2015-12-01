@@ -647,7 +647,7 @@ VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_
 			'uip' => $_SERVER['REMOTE_ADDR'],
 			'ua' => $_SERVER['HTTP_USER_AGENT'],
 		);
-		echo http_build_query($myvars);
+		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-type: application/x-www-form-urlencoded'));
