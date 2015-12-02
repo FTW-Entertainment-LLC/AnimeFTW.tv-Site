@@ -12,20 +12,17 @@ if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && !isset($_GET['page']))
 	$q = mysql_real_escape_string($_GET['q']);
 	$query = "SELECT fullSeriesName FROM series WHERE  active='yes' AND aonly = 0 AND ( fullSeriesName LIKE '%".$q."%' OR romaji LIKE '%".$q."%' OR kanji LIKE '%".$q."%' ) ORDER BY fullSeriesName LIMIT 0, 8";
 	$query = mysql_query($query);
-	$Ct = mysql_num_rows($query);
-	$result = '["'.$q.'",[';
-	$i = 1;
-	while(list($fullSeriesName) = mysql_fetch_array($query, MYSQL_NUM)){
-		if($i < $Ct){
-			$result .= '"'.$fullSeriesName.'",';
-		}
-		else {
-			$result .= '"'.$fullSeriesName.'"';
-		}
-		$i++;
+	
+	$results = [];
+	$counts	= [];
+	$seoLinks = [];
+	while ($row = mysql_fetch_array($query, MYSQL_ASSOC)) {
+		$seoLinks[] = "http://www.animeftw.tv/anime/{$row['seoname']}";
+		$results[] = $row['fullSeriesName'];
+		$counts[] = "1 Result";
 	}
-	$result .= ']';
-	echo $result;
+
+	echo json_encode([$q,$results, $counts, $seoLinks]);
 }
 else if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && isset($_GET['page']))
 {
