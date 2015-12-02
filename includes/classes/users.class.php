@@ -387,12 +387,21 @@ class AFTWUser extends Config{
 			<input type="hidden" name="id" value="' . $ID . '" />
 			<input type="hidden" name="Username" value="'.$Username.'" />
 			<input type="hidden" name="Email" value="'.$Email.'" />';
+			if($la != 3) {
+				if($la == 1 || $la == 2) {
+					$buttons = "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'file', 'link', '|', 'fontcolor', 'backcolor', '|', 'alignment', '|', 'horizontalrule']";
+				}
+				else {
+					$buttons = "['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'file', 'table', 'link', '|', 'fontcolor', 'backcolor', '|', 'alignment', '|', 'horizontalrule']";
+				}
+				echo "
+				<script>
+					var buttons = ${buttons};
+					loadRedactor(buttons);
+				</script>";
+			}
 			if($la == 1 || $la == 2)
 			{
-				echo '
-				<script>
-					loadRedactor();
-				</script>';
 				echo '<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />';
 			}
 			else
