@@ -1,6 +1,6 @@
 <?php
 include_once('includes/classes/config.class.php');
-$Config = new Config();
+$Config = new Config(TRUE);
 $Config->buildUserInformation();
 include_once('includes/classes/videos.class.php');
 $v = new AFTWVideos(); //Build our videos
