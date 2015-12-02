@@ -327,7 +327,7 @@ body {
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-<script type="text/javascript" src="/scripts/aftw-functions.js?v=004"></script>
+<script type="text/javascript" src="/scripts/aftw-functions.js?v=4.0.1"></script>
 </head>
 <body>
 <div id="loaderImage"></div>
