@@ -106,18 +106,22 @@ else {
 		 <div align='center' class='borderwrap'>
 		 <table cellpadding='0' cellspacing='0' width='100%' class='darkrow3' style='padding:5px;'>
 		  <tr>
-		   <td align='center' valign='top' width='100%'>";
+		   <td align='center' valign='top' width='100%'>
+			<div align='left'>";
 		   if (is_numeric($tstart))
 		   {
 			   $CODE = 1;
-		   echo "Thread Title:<br />
-		   <input id='submittitle' name='submittitle' type='text' style='background-color:#0C90BB;color:#CCCCCC;' size='50' />";
+		   echo "
+		   <div align='center' style='padding-bottom:20px;'>
+		   Thread Title:<br />
+		   <input id='submittitle' name='submittitle' type='text' style='background-color:#0C90BB;color:#CCCCCC;' size='50' />
+		   </div>";
 		   }
 		   else {
 		   }
 		   if ($CODE == 3) { 
 		   		if($puid == $this->profileArray[1] || $this->profileArray[2] == 1 || $this->profileArray[2] == 2){
-		  			echo "<textarea id='submitbox' name='submitbox'  cols='100' rows='15' class=\"ckeditor\">" . $pbody . "</textarea>";
+		  			echo "<textarea id='submitbox' name='submitbox'  cols='100' rows='15'>" . $pbody . "</textarea>";
 				}
 				else {
 				echo "<div class='errorwrap'>
@@ -127,12 +131,12 @@ else {
 				}
 			}
 			else if ($CODE == 4){ 
-				echo "<textarea id='submitbox' name='submitbox' class=\"ckeditor\" cols='100' rows='15'>" . $tbody . "</textarea>";
+				echo "<textarea id='submitbox' name='submitbox'>" . $tbody . "</textarea>";
 			}
 			else {
-				echo "<textarea id='submitbox' name='submitbox' class=\"ckeditor\" cols='100' rows='15'></textarea>";
+				echo "<textarea id='submitbox' name='submitbox'></textarea>";
 			}
-		   echo "</td>
+		   echo "</div></td>
 		  </tr>
 		 </table>
 		 </div>
@@ -236,34 +240,18 @@ else {
 			}
 		echo "</div>";
 		echo "</div>";
-		echo "<noscript>
-			<p>
-				<strong>CKEditor requires JavaScript to run</strong>. In a browser with no JavaScript
-				support, like yours, you should still see the contents (HTML data) aznd you should
-				be able to edit it normally, without a rich editor interface.
-			</p>
-		</noscript>
-		<script type=\"text/javascript\">";
-		if($this->profileArray[2] != 1 && $this->profileArray[2] != 2){
-			echo "CKEDITOR.replace( 'submitbox', {toolbar : [ ['Link','Font','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike','-','RemoveFormat','-','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','Image','Smiley'] ] });";
-		}
-		else {
-			echo "CKEDITOR.replace( 'submitbox', {toolbar : 
-			{ name: 'document',		items : [ 'Source','-','Save','NewPage','DocProps','Preview','Print','-','Templates' ] },
-			{ name: 'clipboard',	items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-			{ name: 'editing',		items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
-			{ name: 'forms',		items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
-			'/',
-			{ name: 'basicstyles',	items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
-			{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
-			{ name: 'links',		items : [ 'Link','Unlink','Anchor' ] },
-			{ name: 'insert',		items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] },
-			'/',
-			{ name: 'styles',		items : [ 'Styles','Format','Font','FontSize' ] },
-			{ name: 'colors',		items : [ 'TextColor','BGColor' ] },
-			{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','-','About' ] }
-		}";
-		}
-		echo "</script>";
+		echo "
+		<script type=\"text/javascript\">
+			$(document).ready(function() {";
+			if($this->profileArray[2] != 1 && $this->profileArray[2] != 2){
+				echo "var buttons = ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'video', 'file', 'table', 'link', '|', 'fontcolor', 'backcolor', '|', 'alignment', '|', 'horizontalrule'];";
+				echo "$(\"#submitbox\").redactor({buttons: buttons,minHeight: 300});";
+			}
+			else {
+				echo '$("#submitbox").redactor({minHeight: 300});';
+			}
+		echo "
+			});
+		</script>";
 		}
 	

@@ -172,98 +172,99 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 		});
 		 </script>';
 	}
-	if($_SERVER['PHP_SELF'] == '/users.php'||$_SERVER['PHP_SELF'] == '/request.php'){
-	echo '
-	<link rel="stylesheet" href="/css/redactor.css?v=1" />
-	<link rel="stylesheet" href="/css/jquery-ui.min.css" />
-	<script src="/scripts/redactor.min.js"></script>
-	<script type="text/javascript" src="/scripts/popups.jquery.js"></script>
-	<script language="javascript" type="text/javascript">
-		$(document).ready(function(){
-			$(\'.popbox\').popbox();
-		});
-	</script>
-	<script type="text/javascript" src="/scripts/jquery.form.min.js"></script>';
-	echo "
-	<script type=\"text/javascript\">
-		$(document).ready(function() { 
-			var options = { 
-					target:   '#avatar-div-wrapper',   // target element(s) to be updated with server response 
-					beforeSubmit:  beforeSubmit,  // pre-submit callback 
-					success:       afterSuccess,  // post-submit callback 
-					resetForm: true        // reset the form after successful submit 
-				}; 
-				
-			 $('#MyUploadForm').submit(function() { 
-					$(this).ajaxSubmit(options);  			
-					// always return false to prevent standard browser submit and page navigation 
-					return false; 
-				}); 
-		}); 
-
-		function afterSuccess()
-		{
-			$('#submit-btn').show(); //hide submit button
-			$('#loading-img').hide(); //hide submit button
+	if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/request.php' || $_SERVER['PHP_SELF'] == '/forums.php'){
+		echo '
+		<link rel="stylesheet" href="/css/redactor.css?v=1" />
+		<script src="/scripts/redactor.min.js"></script>';
+		if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/request.php') {
+			echo '
+			<link rel="stylesheet" href="/css/jquery-ui.min.css" />
+			<script type="text/javascript" src="/scripts/popups.jquery.js"></script>
+			<script language="javascript" type="text/javascript">
+				$(document).ready(function(){
+					$(\'.popbox\').popbox();
+				});
+			</script>
+			<script type="text/javascript" src="/scripts/jquery.form.min.js"></script>';
 		}
-
-		//function to check file size before uploading.
-		function beforeSubmit(){
-			//check whether browser fully supports all File API
-		   if (window.File && window.FileReader && window.FileList && window.Blob)
-			{
-				
-				if( !$('#imageInput').val()) //check empty input filed
-				{
-					alert('Are you kidding me?');
-					return false
-				}
-				
-				var fsize = $('#imageInput')[0].files[0].size; //get file size
-				var ftype = $('#imageInput')[0].files[0].type; // get file type
-				
-
-				//allow only valid image file types 
-				switch(ftype)
-				{
-					case 'image/png': case 'image/gif': case 'image/jpeg': case 'image/pjpeg':
-						break;
-					default:
-						alert('<b>'+ftype+'</b> Unsupported file type!');
-						return false
-				}
-				
-				//Allowed file size is less than 1 MB (1048576)
-				if(fsize>1048576) 
-				{
-					alert('<b>' + bytesToSize(fsize) + '</b> Too big Image file! <br />Please try smaller filer or reduce the size of your photo using an image editor.');
-					return false
-				}
+		if($_SERVER['PHP_SELF'] == '/users.php') {
+			echo "
+			<script type=\"text/javascript\">
+				$(document).ready(function() { 
+					var options = { 
+							target:   '#avatar-div-wrapper',   // target element(s) to be updated with server response 
+							beforeSubmit:  beforeSubmit,  // pre-submit callback 
+							success:       afterSuccess,  // post-submit callback 
+							resetForm: true        // reset the form after successful submit 
+						}; 
 						
-				$('#submit-btn').hide(); //hide submit button
-				$('#loading-img').show(); //hide submit button
-				$('#output').html(\"\");  
-			}
-			else
-			{
-				//Output error to older unsupported browsers that doesn't support HTML5 File API
-				alert('Please upgrade your browser, because your current browser lacks some new features we need!');
-				return false;
-			}
-		}
+					 $('#MyUploadForm').submit(function() { 
+							$(this).ajaxSubmit(options);  			
+							// always return false to prevent standard browser submit and page navigation 
+							return false; 
+						}); 
+				}); 
 
-		function bytesToSize(bytes) {
-		   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-		   if (bytes == 0) return '0 Bytes';
-		   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-		   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-		}
+				function afterSuccess()
+				{
+					$('#submit-btn').show(); //hide submit button
+					$('#loading-img').hide(); //hide submit button
+				}
 
-		</script>";
-		
-	}
-	if($_SERVER['PHP_SELF'] == '/forums.php'){
-		echo "<script type=\"text/javascript\" src=\"/scripts/editor/ckeditor.js\"></script>";
+				//function to check file size before uploading.
+				function beforeSubmit(){
+					//check whether browser fully supports all File API
+				   if (window.File && window.FileReader && window.FileList && window.Blob)
+					{
+						
+						if( !$('#imageInput').val()) //check empty input filed
+						{
+							alert('Are you kidding me?');
+							return false
+						}
+						
+						var fsize = $('#imageInput')[0].files[0].size; //get file size
+						var ftype = $('#imageInput')[0].files[0].type; // get file type
+						
+
+						//allow only valid image file types 
+						switch(ftype)
+						{
+							case 'image/png': case 'image/gif': case 'image/jpeg': case 'image/pjpeg':
+								break;
+							default:
+								alert('<b>'+ftype+'</b> Unsupported file type!');
+								return false
+						}
+						
+						//Allowed file size is less than 1 MB (1048576)
+						if(fsize>1048576) 
+						{
+							alert('<b>' + bytesToSize(fsize) + '</b> Too big Image file! <br />Please try smaller filer or reduce the size of your photo using an image editor.');
+							return false
+						}
+								
+						$('#submit-btn').hide(); //hide submit button
+						$('#loading-img').show(); //hide submit button
+						$('#output').html(\"\");  
+					}
+					else
+					{
+						//Output error to older unsupported browsers that doesn't support HTML5 File API
+						alert('Please upgrade your browser, because your current browser lacks some new features we need!');
+						return false;
+					}
+				}
+
+				function bytesToSize(bytes) {
+				   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+				   if (bytes == 0) return '0 Bytes';
+				   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+				   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+				}
+
+				</script>";
+		}
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php'){
 		echo '
