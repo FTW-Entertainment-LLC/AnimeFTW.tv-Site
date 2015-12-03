@@ -10,7 +10,7 @@ if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && !isset($_GET['page']))
 {
 	header('Content-type: application/json; charset=UTF-8');
 	$q = mysql_real_escape_string($_GET['q']);
-	$query = "SELECT fullSeriesName FROM series WHERE  active='yes' AND aonly = 0 AND ( fullSeriesName LIKE '%".$q."%' OR romaji LIKE '%".$q."%' OR kanji LIKE '%".$q."%' ) ORDER BY fullSeriesName LIMIT 0, 8";
+	$query = "SELECT fullSeriesName, seoname FROM series WHERE  active='yes' AND aonly = 0 AND ( fullSeriesName LIKE '%".$q."%' OR romaji LIKE '%".$q."%' OR kanji LIKE '%".$q."%' ) ORDER BY fullSeriesName LIMIT 0, 8";
 	$query = mysql_query($query);
 	
 	$results = [];
