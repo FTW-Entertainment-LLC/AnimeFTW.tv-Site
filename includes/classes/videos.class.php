@@ -2039,18 +2039,10 @@ HDOC;
 	{
 		if($CanDownload == TRUE)
 		{
-			$query = "SELECT `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`videotype`, `episode`.`Movie` FROM `episode`,`series` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
+			$query = "SELECT `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`videotype` FROM `episode`,`series` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
 			$result = mysql_query($query);
 			
 			$row = mysql_fetch_assoc($result);
-			if($row['Movie'] == 1)
-			{
-				$EpType = 'movies';
-			}
-			else
-			{
-				$EpType = $row['seriesName'];
-			}
 			if($disk == TRUE)
 			{
 				$DLIcon = 'disk.png';
@@ -2059,7 +2051,7 @@ HDOC;
 			{
 				$DLIcon = 'download-icon.png';
 			}
-			return '<a href="//videos2.animeftw.tv/' . $EpType . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
+			return '<a href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
 		}
 	}
 }
