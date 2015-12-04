@@ -419,7 +419,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 				include_once('includes/classes/users.class.php');
 				$Users = new AFTWUser();
 				$Users->connectProfile($profileArray);
-				$Users->showFriendProfileButton();
+				$Users->showFriendProfileButton($uid, $profileArray);
 			}
 			else if($_GET['subview'] == 'friend-notification')
 			{
