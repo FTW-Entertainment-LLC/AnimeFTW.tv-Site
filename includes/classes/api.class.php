@@ -606,25 +606,13 @@ private function VideoLink($sid,$epprefix,$ep,$videotype,$Movie){
 	else {
 		if($row['videoServer'] == 'videos'){$videos = 'videos1';}
 		else {$videos = $row['videoServer'];}
-		if($Movie == 1){
-			if($sr == 3 || $CDNDown == 1)
-			{
-				$final = 'http://videos.animeftw.tv/movies/' . $epprefix . "_" . $ep . '_ns.'.$videotype;
-			}
-			else
-			{
-				$final = 'http://static.ftw-cdn.com/'.$videos.'/movies/' . $epprefix . "_" . $ep . '_ns.'.$videotype;
-			}
+		if($sr == 3 || $CDNDown == 1)
+		{
+			$final = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $epprefix . "_" . $ep . '_ns.'.$videotype;
 		}
-		else {
-			if($sr == 3 || $CDNDown == 1)
-			{
-				$final = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $epprefix . "_" . $ep . '_ns.'.$videotype;
-			}
-			else
-			{
-				$final = 'http://static.ftw-cdn.com/'.$videos.'/' . $row['seriesName'] . '/' . $epprefix . "_" . $ep . '_ns.'.$videotype;
-			}
+		else
+		{
+			$final = 'http://static.ftw-cdn.com/'.$videos.'/' . $row['seriesName'] . '/' . $epprefix . "_" . $ep . '_ns.'.$videotype;
 		}
 	}
 	return $final;
