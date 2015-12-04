@@ -1753,7 +1753,7 @@ class AFTWUser extends Config{
 						$result = mysql_query($query) or die('Error : ' . mysql_error());
 						$numberoffriends = mysql_num_rows($result);
 						if($numberoffriends < $allowedFriends){
-							echo "<a href=\"#\" onclick=\"$(this).children('span').load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
+							echo "<a href=\"#\" onclick=\"$(this).load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
 						}
 						else {
 							echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Friends Maxed out.</span></a>";
