@@ -1753,7 +1753,7 @@ class AFTWUser extends Config{
 						$result = mysql_query($query) or die('Error : ' . mysql_error());
 						$numberoffriends = mysql_num_rows($result);
 						if($numberoffriends < $allowedFriends){
-							echo "<a href=\"#\" onclick=\"$(this).children('span:first-child').load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
+							echo "<a href=\"#\" onclick=\"$(this).children('span').load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
 						}
 						else {
 							echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Friends Maxed out.</span></a>";
@@ -1766,11 +1766,12 @@ class AFTWUser extends Config{
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$onlyFriendships = mysql_num_rows($result);
 				if($onlyFriendships == 0 && $profileArray[1] != $uid){
-					$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate) VALUES ('%s', '%s', '%s', '%s')",
+					$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate, ip) VALUES ('%s', '%s', '%s', '%s', '%s')",
 						mysql_real_escape_string($uid),
 						mysql_real_escape_string($profileArray[1]),
 						mysql_real_escape_string('no'),
-						mysql_real_escape_string(time()));
+						mysql_real_escape_string(time()),
+						mysql_real_escape_string($_SERVER['REMOTE_ADDR']));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 					//phase one done, next we find out what we just inserted was..
 					$result1 = mysql_query("SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysql_error());
