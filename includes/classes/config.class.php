@@ -124,7 +124,7 @@ class Config {
 			$PermissionLevelAdvanced = 0;
 			$timeZone = '-6';
 			$canDownload = 0;
-			$siteTheme = 0;
+			$siteTheme = (date('m') == 12) ? 1 : 0;
 			$postBan = 0;
 			$name = '';
 			$bannedornot = 0;

@@ -158,7 +158,7 @@ echo '
 	<item>
 		<pubDate>' . date("r") . '</pubDate>
 		<title>' . stripslashes($row['fullSeriesName']) . '</title>
-		<description><![CDATA[' . stripslashes($row['description']) . ']]></description>
+		<description><![CDATA[' . utf8_encode(htmlentities($row['description'],ENT_COMPAT,'utf-8')) . ']]></description>
 		<guid isPermaLink="true">http://www.animeftw.tv/anime/' . $row['seoname'] . '/</guid>
 		<link>http://www.animeftw.tv/anime/' . $row['seoname'] . '/</link>
 		<author>support@animeftw.tv (AnimeFTW.tv Staff)</author>
