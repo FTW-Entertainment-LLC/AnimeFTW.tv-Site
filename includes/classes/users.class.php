@@ -1767,20 +1767,20 @@ class AFTWUser extends Config{
 				$onlyFriendships = mysql_num_rows($result);
 				if($onlyFriendships == 0 && $profileArray[1] != $uid){
 					$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate) VALUES ('%s', '%s', '%s', '%s')",
-						mysql_real_escape_string($uid, $conn),
-						mysql_real_escape_string($profileArray[1], $conn),
-						mysql_real_escape_string('no', $conn),
-						mysql_real_escape_string(time(), $conn));
+						mysql_real_escape_string($uid),
+						mysql_real_escape_string($profileArray[1]),
+						mysql_real_escape_string('no'),
+						mysql_real_escape_string(time()));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 					//phase one done, next we find out what we just inserted was..
 					$result1 = mysql_query("SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysql_error());
 					$row1 = mysql_fetch_array($result1);
 					//we have our target. Proceed.
 					$query = sprintf("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES ('%s', '%s', '%s', '%s', NULL, NULL)",
-						mysql_real_escape_string($uid, $conn),
-						mysql_real_escape_string(time(), $conn),
-						mysql_real_escape_string('1', $conn),
-						mysql_real_escape_string($row1['id'], $conn));
+						mysql_real_escape_string($uid),
+						mysql_real_escape_string(time()),
+						mysql_real_escape_string('1'),
+						mysql_real_escape_string($row1['id']));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 					echo "<a href=\"#\" onclick=\"return false;\"><img src='/images/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
 				}
