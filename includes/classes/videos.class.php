@@ -481,14 +481,8 @@ class AFTWVideos extends Config{
 			return $url;
 		}
 		
-		if($moevar == 'movie')
-		{
-			$FinalSerisName = 'movies';
-		}
-		else
-		{
-			$FinalSerisName = $SeriesArray[1];
-		}
+		$FinalSerisName = $SeriesArray[1];
+
 		// ADDED 08/31/14 - Robotman321
 		// The following will enable us to directly allow for selective links to a video.
 		// This will allow members to link directly to good parts of a video.
