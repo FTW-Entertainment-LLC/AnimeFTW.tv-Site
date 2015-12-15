@@ -244,11 +244,11 @@ else {
 		<script type=\"text/javascript\">
 			$(document).ready(function() {";
 			if($this->profileArray[2] != 1 && $this->profileArray[2] != 2){
-				echo "var buttons = ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'video', 'file', 'table', 'link', '|', 'fontcolor', 'backcolor', '|', 'alignment', '|', 'horizontalrule'];";
-				echo "$(\"#submitbox\").redactor({buttons: buttons,minHeight: 300});";
+				echo "var buttons = ['formatting', '|', 'bold', 'italic', 'deleted', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'video', 'file', 'link', '|', 'fontcolor', 'backcolor', '|', 'alignment', '|', 'horizontalrule'];";
+				echo "$(\"#submitbox\").redactor({buttons: buttons,minHeight: 300,plugins:['table','video','inlinestyle','insertimage']});";
 			}
 			else {
-				echo '$("#submitbox").redactor({minHeight: 300});';
+				echo "$(\"#submitbox\").redactor({minHeight: 300,plugins:['table','source','video','inlinestyle','insertimage']});";
 			}
 		echo "
 			});
