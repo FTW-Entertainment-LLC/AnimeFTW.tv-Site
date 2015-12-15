@@ -124,7 +124,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
     <link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png"/>
 	<!--[if IE]>  <link rel="stylesheet" type="text/css" href="/iestyle.css?v=4002" />  <![endif]-->
-	<script type="text/javascript" src="/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="/scripts/jquery.min.js?v=2.1.1"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery.qtip.js"></script>
 	<script type="text/javascript" src="/scripts/search-bar.js"></script>
@@ -174,8 +174,13 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	}
 	if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/request.php' || $_SERVER['PHP_SELF'] == '/forums.php'){
 		echo '
-		<link rel="stylesheet" href="/css/redactor.css?v=1" />
-		<script src="/scripts/redactor.min.js"></script>';
+		<link rel="stylesheet" href="/css/redactor.css?v=2-1.1.0" />
+		<script src="/scripts/redactor.min.js?v=2-1.1.0"></script>
+		<script src="/scripts/redactor.table.js?v=2-1.1.0"></script>
+		<script src="/scripts/redactor.inlinestyle.js?v=2-1.1.0"></script>
+		<script src="/scripts/redactor.source.js?v=2-1.1.0"></script>
+		<script src="/scripts/redactor.video.js?v=2-1.1.0"></script>
+		<script src="/scripts/redactor.image.js?v=2-1.1.0"></script>';
 		if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/request.php') {
 			echo '
 			<link rel="stylesheet" href="/css/jquery-ui.min.css" />
@@ -328,7 +333,7 @@ body {
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-<script type="text/javascript" src="/scripts/aftw-functions.js?v=4.0.1"></script>
+<script type="text/javascript" src="/scripts/aftw-functions.js?v=4.0.2"></script>
 </head>
 <body>
 <div id="loaderImage"></div>
