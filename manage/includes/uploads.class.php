@@ -49,18 +49,6 @@ class Uploads extends Config {
 				{
 				}
 			}
-			else if(isset($_GET['action']) && $_GET['action'] == 'remove-notification')
-			{
-				if(!isset($_GET['id']) || (isset($_GET['id']) && !is_numeric($_GET['id'])))
-				{
-					// id is not set, dont do anything
-				}
-				else
-				{
-					mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_GET['id']));
-					$this->Mod("Removed Notifications for Entry " . $_GET['id'] . ' in the Uploads Board');
-				}
-			}
 			else
 			{
 			}
@@ -110,10 +98,6 @@ class Uploads extends Config {
 		$Statuses = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'upload_tracker_statuses'","value");
 		$StatusArray = preg_split("/\|+/", $Statuses);
 		echo '<div id="uploads-global-wrapper">';
-		if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
-		{
-			echo '<div style="float:right;"><input type="button" name="ManualUpdate" onClick="ManualUpdate(); return false" value="Clear Notifications" /></div>';
-		}
 		echo '<div align="center"><b>Notices</b>:<br />- Encoders may ONLY have five(5) series at any one time under Claimed, Encoding or Uploading. To much claiming and not enough doing has resulted in this restriction.<br />- If you are working on an airing series, it is YOUR job to make sure it is up to date, if you cannot get the encode done a certain week, let management know, so we can cover it.</div>';
 		if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 		{
@@ -181,6 +165,18 @@ class Uploads extends Config {
 			else if(action == "add-series-pre")
 			{
 				$("#UploadsTrackerMain").load("ajax.php?node=uploads&subpage=add-series&section=" + status);
+				return false;
+			}
+			else if(action == "update-encoder-filter")
+			{
+				if(status == "home")
+				{
+					$("#right-column").load("ajax.php?node=uploads&subpage=home");
+				}
+				else
+				{
+					$("#right-column").load("ajax.php?node=uploads&subpage=home&showme=" + status);
+				}
 				return false;
 			}
 			return false;
@@ -290,15 +286,18 @@ class Uploads extends Config {
 		{
 			$sort = "";
 		}
+		$navOptions = '';
 		if(isset($_GET['showme']))
 		{
 			if(is_numeric($_GET['showme']))
 			{
 				$option = ' AND user = ' . mysql_real_escape_string($_GET['showme']);
+				$navOptions = '&showme=' . $_GET['showme'];
 			}
 			else
 			{
 				$option = ' AND user = ' . $this->UserArray[1];
+				$navOptions = '&showme=' . $_GET['showme'];
 			}
 		}
 		else
@@ -462,7 +461,7 @@ class Uploads extends Config {
 		
 		$count = mysql_num_rows($result);
 		echo '<div style="padding:5px;">';
-		$this->pagingV1(strtolower($Status) . '-wrapper',$count,$limit,$page,'/manage/ajax.php?node=uploads&subpage=load-more-entries&status=' . strtolower($Status));
+		$this->pagingV1(strtolower($Status) . '-wrapper',$count,$limit,$page,'/manage/ajax.php?node=uploads' . $navOptions . '&subpage=load-more-entries&status=' . strtolower($Status));
 		echo '</div>';
 		echo '</div>';
 	}
@@ -831,19 +830,81 @@ class Uploads extends Config {
 		}
 		$count = mysql_num_rows($results);
 		
-		echo '<div align="left">Encoders:<br /><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=uploads&subpage=home\'); return false;">All Encodes</a> | 
-		<a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=uploads&subpage=home&showme=yes\'); return false;">My Encodes</a> | ';
-		$i = 1;
+		echo '
+		<div style="display:inline-block;width:120px;vertical-align:top;">
+		<div align="left">
+			<span style="font-size:9px;">Filter by Encoder:</span><br />
+			<select id="filter-by-encoder" style="color: #000000;">
+				<option value="home">All Encodes</option>
+				<option value="' . $this->UserArray[1] . '"'; if(isset($_GET['showme']) && $_GET['showme'] == $this->UserArray[1]){echo'selected="selected"';} echo '>My Encodes</option>';
 		while($row = mysql_fetch_assoc($results))
 		{
-			echo '<a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=uploads&subpage=home&showme=' . $row['ID'] . '\'); return false;">' . $row['Username'] . '</a> ';
-			if($i < $count)
-			{
-				echo '| ';
+			if(isset($_GET['showme']) && $_GET['showme'] == $row['ID']){
+				echo '<option value="' . $row['ID'] . '" selected="selected">' . $row['Username'] . '</option>';
 			}
-			$i++;
+			else {
+				echo '<option value="' . $row['ID'] . '">' . $row['Username'] . '</option>';
+			}
 		}
-		echo '</div>';
+		echo '
+				</select>
+			</div>
+		</div>
+		<div style="display:inline-block;width:200px;vertical-align:top;">
+			<div align="left">
+				<span style="font-size:9px;">Search by Series Name:</span>
+				<form id="series-search-form">
+					<input type="text" id="series-search" name="series-search" value="" style="width:100px;" class="text-input" />
+					<input type="submit" value="Submit" id="series-form-submit" />
+				</form>
+			</div>
+		</div>
+		<div style="display:inline-block;width:200px;vertical-align:top;">
+			<div align="left">
+				<span style="font-size:9px;">Search by Encoder:</span>
+				<form id="encoder-search-form">
+					<input type="text" id="encoder-search" name="encoder-search" value="" style="width:100px;" class="text-input" />
+					<input type="submit" value="Submit" id="encoder-form-submit"  />
+				</form>
+			</div>
+		</div>
+		<script>
+		$(document).ready(function() {
+			$(\'.text-input\')
+				.css({border:"1px solid #CCC"})
+				.css({color:"#5A5655"})
+				.css({font:"13px Verdana,Arial,Helvetica,sans-serif"})
+				.css({padding:"2px"})
+			;
+			$("#filter-by-encoder").change(function() {
+				var user_id = $(this).val();
+				UploadsFunction(\'update-encoder-filter\',user_id);
+				return false;
+			});
+			$("#encoder-search-form").on("submit",function(){
+				$("#encoder-search").css("border-color","");
+				var encoder_val = $("#series-search").val();
+				if(encoder_val == ""){
+					$("#encoder-search").css("border-color","red").focus();
+				}
+				else {
+					$("#right-column").load("ajax.php?node=uploads&subpage=home&search=encode&for=" + encoder_val);
+				}
+				return false;
+			});
+			$("#series-search-form").submit(function(){
+				$("#series-search").css("border-color","");
+				var series_val = $("#series-search").val();
+				if(series_val == ""){
+					$("#series-search").css("border-color","red").focus();
+				}
+				else {
+					$("#right-column").load("ajax.php?node=uploads&subpage=home&search=series&for=" + series_val);
+				}
+				return false;
+			});
+		});
+		</script>';
 	}
 	
 	private function availableSeries($sid = 0)
