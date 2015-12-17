@@ -246,7 +246,7 @@ class Uploads extends Config {
 	private function BuildRow($Status,$Limited)
 	{
 		// $limit, hardcoded amount of entries per section
-		$limit = 60;
+		$limit = 30;
 		
 		if($Limited == FALSE){
 			// not limited...
@@ -302,7 +302,33 @@ class Uploads extends Config {
 		}
 		else
 		{
-			$option = '';
+			if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
+				if(isset($_GET['for']) && is_numeric($_GET['for'])){
+					$option = ' AND `user` = ' . mysql_real_escape_string($_GET['for']);
+					$navOptions = '&search=encoder&for=' . $_GET['for'];
+				}
+				else {
+					# it was not numeric, we will need to do a search of the system for the user.
+					$query = "SELECT `ID` FROM `users` WHERE `Username` LIKE '" . mysql_real_escape_string($_GET['for']) . "'";
+					$result = mysql_query($query);
+					if(!$result){
+					}
+					else {
+						$count = mysql_num_rows($result);
+						if($count > 0){
+							$row = mysql_fetch_assoc($result);
+							$option = ' AND `user` = ' . $row['ID'];
+							$navOptions = '&search=encoder&for=' . $row['ID'];
+						}
+					}
+				}
+			}
+			else if(isset($_GET['search']) && $_GET['search'] == 'series') {
+				if(isset($_GET['for'])){
+					$option = ' AND (`series` LIKE \'%' . mysql_real_escape_string($_GET['for']) . '%\' OR `prefix` LIKE \'%' . mysql_real_escape_string($_GET['for']) . '%\')';
+					$navOptions = '&search=series&for=' . $_GET['for'];
+				}
+			}
 		}
 		
 		// ADDED: 8/21/14 by Robotman321
@@ -846,6 +872,17 @@ class Uploads extends Config {
 				echo '<option value="' . $row['ID'] . '">' . $row['Username'] . '</option>';
 			}
 		}
+		$seriesSearch = '';
+		$clearMessage = FALSE;
+		if(isset($_GET['search']) && $_GET['search'] == 'series'){
+			$seriesSearch = $_GET['for'];
+			$clearMessage = TRUE;
+		}
+		$encoderSearch = '';
+		if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
+			$encoderSearch = $_GET['for'];
+			$clearMessage = TRUE;
+		}		
 		echo '
 				</select>
 			</div>
@@ -854,7 +891,7 @@ class Uploads extends Config {
 			<div align="left">
 				<span style="font-size:9px;">Search by Series Name:</span>
 				<form id="series-search-form">
-					<input type="text" id="series-search" name="series-search" value="" style="width:100px;" class="text-input" />
+					<input type="text" id="series-search" name="series-search" value="' . $seriesSearch . '" style="width:100px;" class="text-input" />
 					<input type="submit" value="Submit" id="series-form-submit" />
 				</form>
 			</div>
@@ -863,11 +900,20 @@ class Uploads extends Config {
 			<div align="left">
 				<span style="font-size:9px;">Search by Encoder:</span>
 				<form id="encoder-search-form">
-					<input type="text" id="encoder-search" name="encoder-search" value="" style="width:100px;" class="text-input" />
+					<input type="text" id="encoder-search" name="encoder-search" value="' . $encoderSearch . '" style="width:100px;" class="text-input" />
 					<input type="submit" value="Submit" id="encoder-form-submit"  />
 				</form>
 			</div>
-		</div>
+		</div>';
+		if($clearMessage == TRUE){
+		echo '
+		<div style="display:inline-block;width:100;vertical-align:top;"><br/>
+			<span>
+			<a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=uploads&subpage=home\'); return false;">Clear Search</a>
+			</span>
+		</div>';
+		}
+		echo '
 		<script>
 		$(document).ready(function() {
 			$(\'.text-input\')
@@ -883,12 +929,12 @@ class Uploads extends Config {
 			});
 			$("#encoder-search-form").on("submit",function(){
 				$("#encoder-search").css("border-color","");
-				var encoder_val = $("#series-search").val();
+				var encoder_val = $("#encoder-search").val();
 				if(encoder_val == ""){
 					$("#encoder-search").css("border-color","red").focus();
 				}
 				else {
-					$("#right-column").load("ajax.php?node=uploads&subpage=home&search=encode&for=" + encoder_val);
+					$("#right-column").load("ajax.php?node=uploads&subpage=home&search=encoder&for=" + encoder_val);
 				}
 				return false;
 			});
