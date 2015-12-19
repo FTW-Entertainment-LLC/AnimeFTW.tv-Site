@@ -432,14 +432,17 @@ class Comment extends Config {
 			$returnarray['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
 			if($count > 0)
 			{
+				$i = 0;
 				while($row = $result->fetch_assoc())
 				{
-					$returnarray['results'][$row['id']]['comment'] = nl2br($row['comments']);
-					$returnarray['results'][$row['id']]['spoiler'] = $row['isSpoiler'];
-					$returnarray['results'][$row['id']]['dated'] = $row['dated'];
-					$returnarray['results'][$row['id']]['user'] = $this->string_fancyUsername($row['uid'],NULL,NULL,NULL,NULL,NULL,1);
-					$returnarray['results'][$row['id']]['votes-negative'] = $row['negative'];
-					$returnarray['results'][$row['id']]['votes-positive'] = $row['positive'];
+					$returnarray['results'][$i]['id'] = $row['id'];
+					$returnarray['results'][$i]['comment'] = nl2br($row['comments']);
+					$returnarray['results'][$i]['spoiler'] = $row['isSpoiler'];
+					$returnarray['results'][$i]['dated'] = $row['dated'];
+					$returnarray['results'][$i]['user'] = $this->string_fancyUsername($row['uid'],NULL,NULL,NULL,NULL,NULL,1);
+					$returnarray['results'][$i]['votes-negative'] = $row['negative'];
+					$returnarray['results'][$i]['votes-positive'] = $row['positive'];
+					$i++;
 				}
 				//$returnarray['total-comments'] = $this->bool_totalComments($epid);
 			}
