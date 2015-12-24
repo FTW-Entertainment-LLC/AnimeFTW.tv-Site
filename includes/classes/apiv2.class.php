@@ -318,6 +318,7 @@ Class api extends Config {
 		// 1) check devkey, verify that its valid.
 		// 2) validate the token for the user
 		// 3) launch into the sub routines of the API.
+		$this->RecordDevLogs();
 		
 		// we validate the developer key, if they pass go, they collect 200 bits
 		if($this->validateDevKey() == TRUE)
@@ -326,7 +327,6 @@ Class api extends Config {
 			if(isset($this->Data['username']) && isset($this->Data['password']) && (!isset($this->Data['action']) || (isset($this->Data['action']) && $this->Data['action'] == 'login')))
 			{
 				$this->tokenAuthorization('create'); // we need to create a token for this user
-				$this->RecordDevLogs();
 			}
 			else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'register'))
 			{
@@ -334,7 +334,6 @@ Class api extends Config {
 				include_once("register.v2.class.php");
 				$Register = new Register($this->Data,$this->UserID,$this->DevArray);
 				$this->formatData($Register->registerUser()); // set the wheels in motion.
-				$this->RecordDevLogs();
 			}
 			else
 			{
@@ -343,13 +342,11 @@ Class api extends Config {
 				{
 					// the validation of the token has gone through, now the sub functions can be called.
 					$this->launchAPISubFunctions();
-					$this->RecordDevLogs();
 				}
 				else
 				{
 					// since validation failed, we need to let them know they need to login again.
 					$this->reportResult(405);
-					$this->RecordDevLogs();
 				}
 			}
 			// check if username (email) and password are given, if they are, authenticate against the database
@@ -359,7 +356,6 @@ Class api extends Config {
 		{
 			// wrong, good bye..
 			$this->reportResult(403);
-			$this->RecordDevLogs();
 		}
 	}
 	
