@@ -318,11 +318,11 @@ Class api extends Config {
 		// 1) check devkey, verify that its valid.
 		// 2) validate the token for the user
 		// 3) launch into the sub routines of the API.
-		$this->RecordDevLogs();
 		
 		// we validate the developer key, if they pass go, they collect 200 bits
 		if($this->validateDevKey() == TRUE)
 		{
+			$this->RecordDevLogs();
 			// we want to log everything that includes a valid dev key.. later on we may change this to log everything..
 			if(isset($this->Data['username']) && isset($this->Data['password']) && (!isset($this->Data['action']) || (isset($this->Data['action']) && $this->Data['action'] == 'login')))
 			{
@@ -356,6 +356,7 @@ Class api extends Config {
 		{
 			// wrong, good bye..
 			$this->reportResult(403);
+			$this->RecordDevLogs();
 		}
 	}
 	
@@ -364,7 +365,7 @@ Class api extends Config {
 	{
 		$DevKey = $this->Data['devkey']; // declare the developer key from the dataset
 		$query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
-
+		
 		$result = $this->mysqli->query($query);
 		
 		$count = mysqli_num_rows($result);
@@ -610,6 +611,13 @@ Class api extends Config {
 		}
 		$Data = json_encode($Data);
 		
+		if(array_key_exists("id",$this->DevArray)){
+			$devid = $this->DevArray['id'];
+		}
+		else {
+			$devid = 0;
+		}
+		
 		if(isset($this->UserID)){
 			// if the user id is set, then they are logged in with a valid token.
 			// update the last activity.
@@ -617,11 +625,11 @@ Class api extends Config {
 			$this->mysqli->query($query);
 			// build the query to insert into the dev logs.
 			$query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
-VALUES ('".time()."', '" . $this->DevArray['id'] . "', '" . $this->UserID . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
+VALUES ('".time()."', '" . $devid . "', '" . $this->UserID . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
 		}
 		else {
 			$query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
-VALUES ('".time()."', '" . $this->DevArray['id'] . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $Data . "')";
+VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $Data . "')";
 		}
 		// execute the query, adding the request to the dev logs.
 		$this->mysqli->query($query);
