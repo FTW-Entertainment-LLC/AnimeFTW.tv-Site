@@ -322,7 +322,6 @@ Class api extends Config {
 		// we validate the developer key, if they pass go, they collect 200 bits
 		if($this->validateDevKey() == TRUE)
 		{
-			$this->RecordDevLogs();
 			// we want to log everything that includes a valid dev key.. later on we may change this to log everything..
 			if(isset($this->Data['username']) && isset($this->Data['password']) && (!isset($this->Data['action']) || (isset($this->Data['action']) && $this->Data['action'] == 'login')))
 			{
@@ -349,6 +348,7 @@ Class api extends Config {
 					$this->reportResult(405);
 				}
 			}
+			$this->RecordDevLogs();
 			// check if username (email) and password are given, if they are, authenticate against the database
 			// and get a token created for the user.
 		}
