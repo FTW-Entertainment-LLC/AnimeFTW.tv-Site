@@ -42,7 +42,7 @@ class Series extends Config {
 			}
 			// We consider this a valid single series, an ID needs to be supplied, and nothing else to ensure system level continuity.
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions . $addonQuery;
+			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd`, (SELECT COUNT(id) FROM `" . $this->MainDB . "`.`watchlist` WHERE `sid`=`series`.`id` AND `uid`= " . $this->UserID . ") AS `watchlist` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions . $addonQuery;
 			$result = $this->mysqli->query($query);
 			
 			$count = $result->num_rows;
@@ -51,6 +51,10 @@ class Series extends Config {
 				// include review information
 				include_once("review.v2.class.php");
 				$Review = new Review();
+				// include watchlist class
+				include_once("watchlist.v2.class.php");
+				$Watchlist = new Watchlist($this->Data,$this->UserID,$this->DevArray,$this->AccessLevel);
+				$watchlistEntries = $Watchlist->array_displayWatchList(TRUE);
 				$row = $result->fetch_assoc();
 				$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
 				// a result was found, build the array for return.
@@ -75,6 +79,10 @@ class Series extends Config {
 							$results['results'][$key] = $value;
 						}
 					}
+				}
+				$returneddata['results']['watchlist'] = "0";
+				if(array_key_exists($row['id'],$watchlistEntries)){
+					$returneddata['results']['watchlist'] = "1";
 				}
 				// add the seriesimage to the array
 				$results['results']['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
@@ -242,6 +250,10 @@ class Series extends Config {
 		// include review information
 		include_once("review.v2.class.php");
 		$Review = new Review();
+		// include watchlist class
+		include_once("watchlist.v2.class.php");
+		$Watchlist = new Watchlist($this->Data,$this->UserID,$this->DevArray,$this->AccessLevel);
+		$watchlistEntries = $Watchlist->array_displayWatchList(TRUE);
 		$i = 0;
 		$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
 		while($row = $result->fetch_assoc())
@@ -264,8 +276,11 @@ class Series extends Config {
 						$returneddata['results'][$i][$key] = $value;
 					}
 				}
-			}	
-			
+			}
+			$returneddata['results'][$i]['watchlist'] = "0";
+			if(array_key_exists($row['id'],$watchlistEntries)){
+				$returneddata['results'][$i]['watchlist'] = "1";
+			}
 			$returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
 			$returneddata['results'][$i]['total-reviews'] = $Reviews['total-reviews'];
 			$returneddata['results'][$i]['user-reviewed'] = $Reviews['user-reviewed'];
