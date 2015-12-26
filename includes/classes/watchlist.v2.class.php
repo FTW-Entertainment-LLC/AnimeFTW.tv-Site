@@ -25,76 +25,82 @@ class watchlist extends Config {
 		$this->UserArray = $input;
 	}
 	
-	public function array_displayWatchList(){
+	public function array_displayWatchList($allEntries = FALSE){
 		// variables
 		$columns = "`id`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`";
 		$where = "`uid` = " . $this->UserID;
 		$orderby = "";
 		
-		// options that could potentially be set.
-		if(isset($this->Data['id'])) {
-			// If the ID is set, we are narrowing down on a specific entry.
-			$where .= " AND `id` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
+		// we want all of the user's entries.. 
+		if($allEntries == TRUE){
+			$columns = "`id`, `sid`";
 		}
-		
-		if(isset($this->Data['sid'])) {
-			// If the ID is set, we are narrowing down on a specific entry.
-			$where .= " AND `sid` = '" . $this->mysqli->real_escape_string($this->Data['sid']) . "'";
-		}
-		
-		if(isset($this->Data['sort'])) {
-			// we will give them the ability to sort on a variety of factors and fields.
-			// for example the sort string can be: &sort=date|desc,sid|asc
-			// This will cause the sort to look like: ORDER BY `date` DESC, `sid` ASC
-			// we must break up the value as it will be in CSV then pipe delimited.
-			$sort = explode(',',$this->Data['sort']);
-			$arraycount = count($sort);
-			if($arraycount > 0){
-				$orderby = "ORDER BY ";
-				$i=1;
-				foreach($sort as $key => $value){
-					// we need to break this up by pipe now to get the full command.
-					$sortby = explode("|",$value);
-					
-					if(!isset($sortby[1]) || (strtolower($sortby[1]) != 'asc' && strtolower($sortby[1]) != 'desc')){
-						// we do nothing.. they didn't fill it our right.
-					}
-					else {
-						$orderby .= " `${sortby[0]}` ${sortby[1]}";
-						if($i < $arraycount){
-							$orderby .= ",";
+		else {
+			// options that could potentially be set.
+			if(isset($this->Data['id'])) {
+				// If the ID is set, we are narrowing down on a specific entry.
+				$where .= " AND `id` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
+			}
+			
+			if(isset($this->Data['sid'])) {
+				// If the ID is set, we are narrowing down on a specific entry.
+				$where .= " AND `sid` = '" . $this->mysqli->real_escape_string($this->Data['sid']) . "'";
+			}
+			
+			if(isset($this->Data['sort'])) {
+				// we will give them the ability to sort on a variety of factors and fields.
+				// for example the sort string can be: &sort=date|desc,sid|asc
+				// This will cause the sort to look like: ORDER BY `date` DESC, `sid` ASC
+				// we must break up the value as it will be in CSV then pipe delimited.
+				$sort = explode(',',$this->Data['sort']);
+				$arraycount = count($sort);
+				if($arraycount > 0){
+					$orderby = "ORDER BY ";
+					$i=1;
+					foreach($sort as $key => $value){
+						// we need to break this up by pipe now to get the full command.
+						$sortby = explode("|",$value);
+						
+						if(!isset($sortby[1]) || (strtolower($sortby[1]) != 'asc' && strtolower($sortby[1]) != 'desc')){
+							// we do nothing.. they didn't fill it our right.
 						}
-						$i++;
+						else {
+							$orderby .= " `${sortby[0]}` ${sortby[1]}";
+							if($i < $arraycount){
+								$orderby .= ",";
+							}
+							$i++;
+						}
 					}
 				}
 			}
-		}
-		else{
-		}
-		if(isset($this->Data['start'])) {
-			if(!is_numeric($this->Data['start'])) {
+			else{
+			}
+			if(isset($this->Data['start'])) {
+				if(!is_numeric($this->Data['start'])) {
+					$start = "0,";
+				}
+				else {
+					$start = $this->Data['start'] . ",";
+				}
+			}
+			else
+			{
 				$start = "0,";
 			}
-			else {
-				$start = $this->Data['start'] . ",";
+			if(isset($this->Data['count']))
+			{
+				if(!is_numeric($this->Data['count'])) {
+					$count = 10;
+				}
+				else {
+					$count = $this->Data['count'];
+				}
 			}
-		}
-		else
-		{
-			$start = "0,";
-		}
-		if(isset($this->Data['count']))
-		{
-			if(!is_numeric($this->Data['count'])) {
+			else
+			{
 				$count = 10;
 			}
-			else {
-				$count = $this->Data['count'];
-			}
-		}
-		else
-		{
-			$count = 10;
 		}
 		// Form the query.
 		$query = "SELECT ${columns} FROM `watchlist` WHERE ${where} ${orderby}";
@@ -105,35 +111,49 @@ class watchlist extends Config {
 		//execute the query
 		$result = $this->mysqli->query($query);
 		
-		$returneddata = array('status' => '200', 'message' => "Request Successful.");
-		$returneddata['total'] = $this->bool_totalWatchListEntries();
-		$returneddata['start'] = rtrim($start, ',');
-		$returneddata['count'] = $count;
-		if(isset($this->Data['sort'])) {
-			$returneddata['sort'] = $this->Data['sort'];
-		}
-		$i = 0;
-		while($row = $result->fetch_assoc()) {
-			// a result was found, build the array for return.
-			foreach($row AS $key => &$value) {
-				if(isset($this->Data['id']) && $row['tracker'] == 1 && $key == 'current_episode') {
-					// we ommit the current_episode option since the tracker is in play.
+		// Add options in to make the data easier to read for less detail orianted functions.
+		if($allEntries == TRUE){
+			
+			$returneddata = array();
+			if($result->num_rows > 0) {
+				while($row = $result->fetch_assoc()) {
+					// We only need to show that the id for the series exists.
+					$returneddata[$row['sid']] = $row['id'];
 				}
-				else {
-					if($key == 'currentep') {
-						$returneddata['results'][$i]['current_episode'] = $value;
+			}
+		}
+		else {
+		
+			$returneddata = array('status' => '200', 'message' => "Request Successful.");
+			$returneddata['total'] = $this->bool_totalWatchListEntries();
+			$returneddata['start'] = rtrim($start, ',');
+			$returneddata['count'] = $count;
+			if(isset($this->Data['sort'])) {
+				$returneddata['sort'] = $this->Data['sort'];
+			}
+			$i = 0;
+			while($row = $result->fetch_assoc()) {
+				// a result was found, build the array for return.
+				foreach($row AS $key => &$value) {
+					if(isset($this->Data['id']) && $row['tracker'] == 1 && $key == 'current_episode') {
+						// we ommit the current_episode option since the tracker is in play.
 					}
 					else {
-						$returneddata['results'][$i][$key] = $value;
+						if($key == 'currentep') {
+							$returneddata['results'][$i]['current_episode'] = $value;
+						}
+						else {
+							$returneddata['results'][$i][$key] = $value;
+						}
 					}
 				}
+				// If the request is for a specific My WatchList entry, we will pull down the proper layout for the various types.
+				if((isset($this->Data['id']) || isset($this->Data['sid'])) && $row['tracker'] == 1) {
+					// tracker was set, we send them
+					$returneddata['results'][$i]['tracker_information'] = $this->array_returnTrackerInformation($row['sid'],$row['tracker_latest']);
+				}
+				$i++;
 			}
-			// If the request is for a specific My WatchList entry, we will pull down the proper layout for the various types.
-			if((isset($this->Data['id']) || isset($this->Data['sid'])) && $row['tracker'] == 1) {
-				// tracker was set, we send them
-				$returneddata['results'][$i]['tracker_information'] = $this->array_returnTrackerInformation($row['sid'],$row['tracker_latest']);
-			}
-			$i++;
 		}
 		return $returneddata;
 	}
@@ -141,7 +161,7 @@ class watchlist extends Config {
 	public function array_addWatchListEntry(){
 		if(isset($this->Data['id']) && is_numeric($this->Data['id'])){
 			// the ID was supplied, moving forward.
-			$query = "INSERT INTO `watchlist` (`id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`) VALUES (NULL, '" . $this->UserID . "', '" . time() . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '0', '1', '0', '0', '0', '')";
+			$query = "INSERT INTO `watchlist` (`id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`) VALUES (NULL, '" . $this->UserID . "', '" . time() . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '1', '1', '0', '0', '0', '')";
 			$result = $this->mysqli->query($query);
 			if($result){
 				$results = array(
@@ -243,6 +263,27 @@ class watchlist extends Config {
 		}
 		else {
 			return array('status' => "501", 'message' => "There was a configuration issue with the request, ensure all requirements are met.");
+		}
+	}
+	
+	public function array_deleteWatchListEntry(){
+		if(!isset($this->Data['id'])){
+			// The ID was not set, so there is no way for them to pass.
+			return array('status' => "501", 'message' => "There was a configuration issue with the request, ensure all requirements are met.");
+		}
+		else {
+			$query = "DELETE FROM `watchlist` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
+			// we want to get affected rows back, so that we can safely let them know if it was deleted or not.
+			if($stmt = $this->mysqli->prepare($query)) {
+				$stmt->execute();
+				$count = $stmt->affected_rows; // This tells us how many rows were impacted.. ideally only one would be removed.
+				if($count > 0) {
+					return array('status' => "200", 'message' => "Request successful.");
+				}
+				else {
+					return array('status' => "404", 'message' => "No Entry was available to delete at that id.");
+				}
+			}
 		}
 	}
 	
