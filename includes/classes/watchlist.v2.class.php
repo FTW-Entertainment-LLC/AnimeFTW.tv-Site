@@ -266,6 +266,27 @@ class watchlist extends Config {
 		}
 	}
 	
+	public function array_deleteWatchListEntry(){
+		if(!isset($this->Data['id'])){
+			// The ID was not set, so there is no way for them to pass.
+			return array('status' => "501", 'message' => "There was a configuration issue with the request, ensure all requirements are met.");
+		}
+		else {
+			$query = "DELETE FROM `watchlist` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
+			// we want to get affected rows back, so that we can safely let them know if it was deleted or not.
+			if($stmt = $this->mysqli->prepare($query)) {
+				$stmt->execute();
+				$count = $stmt->affected_rows; // This tells us how many rows were impacted.. ideally only one would be removed.
+				if($count > 0) {
+					return array('status' => "200", 'message' => "Request successful.");
+				}
+				else {
+					return array('status' => "404", 'message' => "No Entry was available to delete at that id.");
+				}
+			}
+		}
+	}
+	
 	private function bool_totalWatchListEntries(){
 		$query = "SELECT COUNT(id) as count FROM `watchlist` WHERE `uid` = " . $this->UserID . "";
 		$result = $this->mysqli->query($query);
