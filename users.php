@@ -42,7 +42,7 @@ echo psa($profileArray,1);
     echo "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	echo "<td width='".THEME_WIDTH."' class='main-bg'>\n";
 	echo '
-	<div id="ad-wrapper" style="height:100%;width:100%;position:absolute;z-index:0;">
+	<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 		<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
 	echo "<div class='side-body-bg'>";
 	echo "<div class='scapmain'>Game</div>\n";
@@ -197,7 +197,7 @@ echo psa($profileArray,1);
 	echo "<td style='padding-left:10px; width:250px;  vertical-align:top;' class='main-right'>\n";	
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
 		echo '
-		<div id="ad-wrapper" style="height:100%;width:200px;position:absolute;z-index:0;">
+		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 			<div id="ad-sidebar" style="width:220px;float:right;margin:0 0 0 270px;position:absolute;z-index:0;">';
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Advertisement</div>\n";
