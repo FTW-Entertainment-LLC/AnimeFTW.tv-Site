@@ -510,7 +510,7 @@ if (isset($_GET['rf'])){
 		echo "<!-- End Top 10 List -->";
 	}
 	$stats->UsageStats();
-	if($profileArray[1] == 0 || $profileArray[1] == 3){
+	if($profileArray[2] == 0 || $profileArray[2] == 3){
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Advertisement</div>\n";
 		echo "<div class='side-body floatfix'>\n";
