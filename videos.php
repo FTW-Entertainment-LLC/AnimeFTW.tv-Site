@@ -40,7 +40,7 @@ function bodyTopInfo($message,$bdybr){
    	$bodyTop .= "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	$bodyTop .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";
 	$bodyTop .= '
-	<div id="ad-wrapper" style="height:100%;width:100%;position:absolute;z-index:0;">
+	<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 		<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
 		$bodyTop .= "<div class='side-body-bg'>";
