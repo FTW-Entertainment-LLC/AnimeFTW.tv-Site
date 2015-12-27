@@ -39,6 +39,58 @@ function bodyTopInfo($message,$bdybr){
 	// Start Main BG
    	$bodyTop .= "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	$bodyTop .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";
+	$bodyTop .= '
+	<div id="ad-wrapper" style="height:100%;width:100%;position:absolute;z-index:0;">
+		<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
+	if($profileArray[2] == 0 || $profileArray[2] == 3){
+		$bodyTop .= "<div class='side-body-bg'>";
+		$bodyTop .= "<div class='scapmain'>Advertisement</div>\n";
+		$bodyTop .= "<div class='side-body floatfix'>\n";
+		if($profileArray[2] == 3){
+			$bodyTop .= '<div align="center"><a href="/advanced-signup" target="blank">Get rid of Ads by becoming an Advanced Member today!</a></div>';
+		}
+		$bodyTop .= '<!-- Insticator API Embed Code -->
+				<div id="insticator-container-0">
+				<link rel="stylesheet" href="https://embed.insticator.com/embedstylesettings/getembedstyle?embedUUID=693d677f-f905-4a76-8223-3ed59a38842d">
+					<div id="div-insticator-ad-1"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-1");</script></div>
+				</div>
+				<!-- End Insticator API Embed Code -->';
+		$bodyTop .= "</div>\n";
+		$bodyTop .= "</div>\n";
+	}
+	$bodyTop .= "<div class='side-body-bg'>";
+	$bodyTop .= "<div class='scapmain'>Game</div>\n";
+	$bodyTop .= "<div class='side-body floatfix'>\n";
+	$bodyTop .= '<!-- Insticator API Embed Code -->
+			<div id="insticator-container-1">
+			<div id="insticator-embed">';
+			$bodyTop .= "
+			<div id='insticator-api-iframe-div'><script>(function (d) {var id='693d677f-f905-4a76-8223-3ed59a38842d',cof = 1000 * 60 * 10,cbt = new Date(Math.floor(new Date().getTime() / cof) * cof).getTime(),js = 'https://embed.insticator.com/assets/javascripts/embed/insticator-api.js?cbt='+cbt, f = d.getElementById(\"insticator-api-iframe-div\").appendChild(d.createElement('iframe')),doc = f.contentWindow.document;f.setAttribute(\"id\",\"insticatorIframe\"); f.setAttribute(\"frameborder\",\"0\"); doc.open().write('<script>var insticator_embedUUID = \''+id+'\'; var insticatorAsync = true;<\/script><body onload=\"var d = document;d.getElementsByTagName(\'head\')[0].appendChild(d.createElement(\'script\')).src=\'' + js + '\'\" >');doc.close(); })(document);</script><noscript><a href=\"https://embed.insticator.com\">Please enable JavaScript.</a></noscript></div>";
+			$bodyTop .= '
+			</div>';
+		$bodyTop .= '
+		</div>
+		<!-- End Insticator API Embed Code -->';
+	$bodyTop .= "</div>\n";
+	$bodyTop .= "</div>\n";
+	if($profileArray[2] == 0 || $profileArray[2] == 3){
+		$bodyTop .= "<div class='side-body-bg'>";
+		$bodyTop .= "<div class='scapmain'>Advertisement</div>\n";
+		$bodyTop .= "<div class='side-body floatfix'>\n";
+		if($profileArray[2] == 3){
+			$bodyTop .= '<div align="center"><a href="/advanced-signup" target="blank">Get rid of Ads by becoming an Advanced Member today!</a></div>';
+		}
+		$bodyTop .= '<!-- Insticator API Embed Code -->
+				<div id="insticator-container-2">
+					<div id="div-insticator-ad-2"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-2");</script></div>
+				</div>
+				<!-- End Insticator API Embed Code -->';
+		$bodyTop .= "</div>\n";
+		$bodyTop .= "</div>\n";
+	}
+	$bodyTop .= '
+	</div>
+	</div>';
 	// End Main BG
 	if($message == NULL){}
 	else {

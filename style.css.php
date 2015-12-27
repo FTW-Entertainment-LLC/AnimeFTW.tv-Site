@@ -250,7 +250,7 @@ a.linkopacity:hover img{ filter:alpha(opacity=100); -moz-opacity:1.0; opacity:1.
 .speech_bubble.say .tail.rt{ background-position:-19px -31px; left:auto; right:-17px}
 .speech_bubble IMG{ max-width:750px}
 .speech_bubble IMG:active{ max-width:none}
-.footer-panels{background-color:#202020;background-image:url(' . $C->Host . $stylelocation . 'footer-bg.png);background-position:inherit;background-repeat:repeat-x}
+.footer-panels{background-color:#202020;background-image:url(' . $C->Host . $stylelocation . 'footer-bg.png);background-position:inherit;background-repeat:repeat-x;}
 .footer-mascot{width:279px;height:300px;background-color:#202020;background-image:url(' . $C->Host . $stylelocation . 'footer-mascot.jpg);background-repeat:no-repeat}
 .panels{font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#fff;padding-left:20px;padding-right:20px;padding-top:60px}
 .panel-line{background-image:url(' . $C->Host . $stylelocation . 'dott.gif);background-repeat:repeat-x;padding-top:5px}
