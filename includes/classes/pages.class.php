@@ -56,7 +56,6 @@ class AFTWpage{
 		if($ul == 0 || $ul == 3){
 			echo "<div class='side-body-bg'>\n<div class='scapmain'>Advertisement</div>\n<div class='side-body floatfix'>\n";
 			?>
-				<p><b>Advertisement/Games</b><br />
 				<!-- Insticator API Embed Code -->
 				<div id="insticator-container">
 				<link rel="stylesheet" href="https://embed.insticator.com/embedstylesettings/getembedstyle?embedUUID=693d677f-f905-4a76-8223-3ed59a38842d">
