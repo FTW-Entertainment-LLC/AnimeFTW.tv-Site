@@ -127,6 +127,9 @@ class AFTWstats extends Config {
 		if($this->UserArray[0] == 1) {
 			echo "<div align=\"right\"><a href=\"/rss/episodes\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
 		}
+		else {
+			echo "</div></div>";
+		}
 	}
 	
 	public function LatestSeries(){
@@ -144,6 +147,9 @@ class AFTWstats extends Config {
 			}
 		if($this->UserArray[0] == 1) {
 			echo "<div align=\"right\"><a href=\"/rss/series\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+		}
+		else {
+			echo "</div></div>";
 		}
 	}
 	
