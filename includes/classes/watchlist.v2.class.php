@@ -272,7 +272,7 @@ class watchlist extends Config {
 			return array('status' => "501", 'message' => "There was a configuration issue with the request, ensure all requirements are met.");
 		}
 		else {
-			$query = "DELETE FROM `watchlist` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
+			$query = "DELETE FROM `watchlist` WHERE `sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
 			// we want to get affected rows back, so that we can safely let them know if it was deleted or not.
 			if($stmt = $this->mysqli->prepare($query)) {
 				$stmt->execute();
