@@ -29,23 +29,6 @@ include('header.php');
 		echo "</div>\n";
 	}
 	else {}
-	/*echo "<div class='tbl'></div>\n";
-	echo "<br />\n";
-	echo "</td>\n";
-	echo "<td style='padding-left:10px; width:250px;  vertical-align:top;' class='main-right'>\n";
-	if($profileArray[0] == 0){
-	echo "<div class='side-body-bg'>";
-	echo "<div class='scapmain'>Advertisement</div>\n";
-	echo "<div class='side-body floatfix'>\n";
-	echo "<!-- Begin BidVertiser code --><SCRIPT LANGUAGE=\"JavaScript1.1\" SRC=\"http://bdv.bidvertiser.com/BidVertiser.dbm?pid=341006&bid=842663\" type=\"text/javascript\"></SCRIPT><noscript><a href=\"http://www.bidvertiser.com\">internet marketing</a></noscript><!-- End BidVertiser code --> ";
-	echo "</div></div>\n";
-	}	
-	echo "</td>\n";
-	echo "</tr>\n</table>\n";
-
-	// Start Main BG
-    echo "</td>\n";
-	echo "</tr>\n</table>\n";
 	// End Main BG
 					
 					*/

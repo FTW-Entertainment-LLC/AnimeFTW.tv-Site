@@ -70,12 +70,22 @@
 				?>
 			<div class="boxtop"></div>
 			<div class="box">
-				<p><b>Advertisements</b><br /><div align="center"><script type="text/javascript" src="http://www.hostmonster.com/src/js/robotman321/CODE53/120x240/hm_120x240_01.gif"></script> <!-- Begin BidVertiser code -->
-<SCRIPT LANGUAGE="JavaScript1.1" SRC="http://bdv.bidvertiser.com/BidVertiser.dbm?pid=341006&bid=878960" type="text/javascript"></SCRIPT>
-<noscript><a href="http://www.bidvertiser.com">internet marketing</a></noscript>
-<!-- End BidVertiser code --> </div></p>
+				<p><b>Advertisement/Games</b><br />
+				<!-- Insticator API Embed Code -->
+				<div id="insticator-container">
+				<link rel="stylesheet" href="https://embed.insticator.com/embedstylesettings/getembedstyle?embedUUID=693d677f-f905-4a76-8223-3ed59a38842d">
+				<div id="div-insticator-ad-1"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-1");</script></div>
+				<div id="insticator-embed">
+				<div id='insticator-api-iframe-div'><script>(function (d) {var id='693d677f-f905-4a76-8223-3ed59a38842d',cof = 1000 * 60 * 10,cbt = new Date(Math.floor(new Date().getTime() / cof) * cof).getTime(),js = 'https://embed.insticator.com/assets/javascripts/embed/insticator-api.js?cbt='+cbt, f = d.getElementById("insticator-api-iframe-div").appendChild(d.createElement('iframe')),doc = f.contentWindow.document;f.setAttribute("id","insticatorIframe"); f.setAttribute("frameborder","0"); doc.open().write('<script>var insticator_embedUUID = \''+id+'\'; var insticatorAsync = true;<\/script><body onload="var d = document;d.getElementsByTagName(\'head\')[0].appendChild(d.createElement(\'script\')).src=\'' + js + '\'" >');doc.close(); })(document);</script><noscript><a href="https://embed.insticator.com">Please enable JavaScript.</a></noscript></div>
+				</div>
+				<div id="div-insticator-ad-2"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-2");</script></div>
+				</div>
+				<!-- End Insticator API Embed Code -->
              </div>
              <?
+			}
+			else {
+				echo "Dont know what happened here..";
 			}
              ?>
            <div class="boxtop"></div>

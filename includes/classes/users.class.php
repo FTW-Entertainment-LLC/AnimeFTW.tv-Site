@@ -190,8 +190,15 @@ class AFTWUser extends Config{
 		$query = "SELECT ID, Level_access AS la, personalMsg AS pm, gender, country, stateRegion, registrationDate AS rd, ageDate AS ad, ageYear AS ay, ageMonth AS am FROM users WHERE ID='".$this->UserArray['ID']."'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$r = mysql_fetch_array($result);
-		if(($r['country'] != '') && ($r['stateRegion'] != '')){$loc = $r['stateRegion'].','.$r['country'];}
-		else{$loc = $r['country']|$r['stateRegion'];}
+		$countries = $this->array_buildCountries();			
+		if(is_numeric($r['country'])){
+			$country = $countries[$r['country']];
+		}
+		else {
+			$country = $r['country'];
+		}
+		if(($country != '') && ($r['stateRegion'] != '')){$loc = $r['stateRegion'].', ' . $country;}
+		else{$loc = $country|$r['stateRegion'];}
 		if($r['rd'] == 'unknown'){$rd = 'June, 2008';}
 		else {$rd = date('F, Y',$r['rd']);}
 			$query = "SELECT groupName AS gn FROM site_groups WHERE groupID='".$r['la']."'";
@@ -742,19 +749,22 @@ class AFTWUser extends Config{
 				<dt>Country:</dt>
 				<dd><select name="country" class="loginForm">
 				<option value=""'; if($country == ''){echo' selected ';} echo '>Select Your Country</option>';
-				$query = "SELECT `name`, `value` FROM `site_variables` WHERE `type` = 1 ORDER BY `name` ASC";
-				$result = mysql_query($query);
-				while($rowC = mysql_fetch_assoc($result))
-				{
-					if($rowC['name'] == $country)
-					{
-						$selected  = ' selected="selected"';
+				$countries = $this->array_buildCountries();
+				foreach($countries as $key => $singleCountry){
+					$selected  = '';
+					if(is_numeric($country)){
+						//means it is the new format, numeric based ids
+						if($country == $key){
+							$selected  = ' selected="selected"';
+						}
 					}
-					else
-					{
-						$selected  = '';
+					else {
+						// it's in the old format, so we will make it look as such.
+						if($singleCountry == $country){
+							$selected  = ' selected="selected"';
+						}
 					}
-					echo '<option value="' . $rowC['name'] . '"' . $selected . '>' . $rowC['name'] . '</option>';
+					echo '<option value="' . $key . '"' . $selected . '>' . $singleCountry . '</option>';
 				}
 				echo '
 				</select></dd>
@@ -1793,5 +1803,17 @@ class AFTWUser extends Config{
 				echo 'Error.';
 			}
 		}
+	}
+	
+	private function array_buildCountries(){
+		$query = "SELECT `id`, `name`, `value` FROM `site_variables` WHERE `type` = 1 ORDER BY `name` ASC";
+		$result = mysql_query($query);
+		$returnArray = array();
+		$i = 0;
+		while($row = mysql_fetch_assoc($result)){
+			$returnArray[$row['id']] = $row['name'];
+			$i++;
+		}
+		return $returnArray;
 	}
 }
