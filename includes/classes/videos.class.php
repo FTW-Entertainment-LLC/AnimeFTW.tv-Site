@@ -921,7 +921,7 @@ HDOC;
 								echo "</div>";	
 								include_once('includes/classes/pages.class.php');
 								$p = new AFTWpage();
-								echo $p->bodyTopInfo($index_global_message,NULL);
+								echo $p->bodyTopInfo($index_global_message,NULL,$this->UserArray);
 								
 								if($this->UserArray[2] == 3)
 								{
@@ -1079,7 +1079,7 @@ HDOC;
 						//echo $SeriesArray[3];
 						include_once('includes/classes/pages.class.php');
 						$p = new AFTWpage();
-						echo $p->bodyTopInfo($index_global_message,NULL);
+						echo $p->bodyTopInfo($index_global_message,NULL,$this->UserArray);
 						echo '<div style="width:100%;">';
 												
 						echo '
