@@ -226,11 +226,41 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 	// Start Main BG
     echo "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	echo "<td width='".THEME_WIDTH."' class='main-bg'>\n";
+	if($profileArray[2] == 0 || $profileArray[2] == 3){
+		echo '
+		<div id="ad-wrapper" style="height:100%;width:100%;position:absolute;z-index:-1;">
+			<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
+		echo "<div class='side-body-bg'>";
+		echo "<div class='scapmain'>Advertisements/Game</div>\n";
+		echo "<div class='side-body floatfix'>\n";
+		echo '<!-- Insticator API Embed Code -->
+				<div id="insticator-container">
+				<link rel="stylesheet" href="https://embed.insticator.com/embedstylesettings/getembedstyle?embedUUID=693d677f-f905-4a76-8223-3ed59a38842d">
+				<div id="div-insticator-ad-1"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-1");</script></div>
+				<div id="insticator-embed">';
+				echo "
+				<div id='insticator-api-iframe-div'><script>(function (d) {var id='693d677f-f905-4a76-8223-3ed59a38842d',cof = 1000 * 60 * 10,cbt = new Date(Math.floor(new Date().getTime() / cof) * cof).getTime(),js = 'https://embed.insticator.com/assets/javascripts/embed/insticator-api.js?cbt='+cbt, f = d.getElementById(\"insticator-api-iframe-div\").appendChild(d.createElement('iframe')),doc = f.contentWindow.document;f.setAttribute(\"id\",\"insticatorIframe\"); f.setAttribute(\"frameborder\",\"0\"); doc.open().write('<script>var insticator_embedUUID = \''+id+'\'; var insticatorAsync = true;<\/script><body onload=\"var d = document;d.getElementsByTagName(\'head\')[0].appendChild(d.createElement(\'script\')).src=\'' + js + '\'\" >');doc.close(); })(document);</script><noscript><a href=\"https://embed.insticator.com\">Please enable JavaScript.</a></noscript></div>";
+				echo '
+				</div>';
+				if($profileArray[0] == 1){
+				echo '
+				<div id="div-insticator-ad-2"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-2");</script></div>';
+				}
+			echo '
+			</div>
+			<!-- End Insticator API Embed Code -->';
+		echo "</div>\n";
+		echo "</div>\n";
+		echo '
+		</div>
+		</div>';
+	}
     echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 	echo "<td class='note-message' align='center'>".$forum_global_message."</td>\n";
 	echo "</tr>\n</table>\n";
 	
 	echo "<br />\n<br />\n";
+	
 			include_once('includes/classes/forumpaging.class.php');	
 			include_once('includes/classes/forum.class.php');
 			$f = new Forum();
