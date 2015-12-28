@@ -436,7 +436,7 @@ class Comment extends Config {
 				while($row = $result->fetch_assoc())
 				{
 					$returnarray['results'][$i]['id'] = $row['id'];
-					$returnarray['results'][$i]['comment'] = nl2br($row['comments']);
+					$returnarray['results'][$i]['comment'] = stripslashes(nl2br($row['comments']));
 					$returnarray['results'][$i]['spoiler'] = $row['isSpoiler'];
 					$returnarray['results'][$i]['dated'] = $row['dated'];
 					$returnarray['results'][$i]['user'] = $this->string_fancyUsername($row['uid'],NULL,NULL,NULL,NULL,NULL,1);
