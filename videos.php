@@ -34,7 +34,7 @@ if(isset($_GET['ref']))
 
 echo psa($profileArray,1);
 $index_global_message = NULL;
-function bodyTopInfo($message,$bdybr){
+function bodyTopInfo($message,$bdybr,$profileArray){
 	$bodyTop = "";
 	// Start Main BG
    	$bodyTop .= "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
@@ -107,7 +107,7 @@ function bodyTopInfo($message,$bdybr){
 		if($_GET['node'] == 'sort'){			
 			if($_GET['type'] == 'anime'){
 				if(isset($_GET['param'])){
-					echo bodyTopInfo($index_global_message,'yes');
+					echo bodyTopInfo($index_global_message,'yes',$profileArray);
 					echo "<div class='side-body-bg'>\n";
 					echo "<span class='scapmain'>AnimeFTW.tv's Anime Selection</span>\n";
 					echo "<br />\n";
@@ -121,7 +121,7 @@ function bodyTopInfo($message,$bdybr){
 				}
 				else {
 					if(isset($_GET['vtype'])){
-						echo bodyTopInfo($index_global_message,'yes');
+						echo bodyTopInfo($index_global_message,'yes',$profileArray);
 						echo "<div class='side-body-bg'>\n";
 						echo "<span class='scapmain'>AnimeFTW.tv's Anime Selection</span>\n";
 						echo "<br />\n";
@@ -144,7 +144,7 @@ function bodyTopInfo($message,$bdybr){
 		if($_GET['node'] == 'age'){	
 			if($_GET['type'] == 'anime'){
 				if(isset($_GET['param'])){
-					echo bodyTopInfo($index_global_message,'yes');
+					echo bodyTopInfo($index_global_message,'yes',$profileArray);
 					echo "<div class='side-body-bg'>\n";
 					echo "<span class='scapmain'>AnimeFTW.tv's Anime Selection</span>\n";
 					echo "<br />\n";
@@ -163,7 +163,7 @@ function bodyTopInfo($message,$bdybr){
 		{
 			if($_GET['type'] == 'anime')
 			{
-				echo bodyTopInfo($index_global_message,'yes');
+				echo bodyTopInfo($index_global_message,'yes',$profileArray);
 				echo "<div class='side-body-bg'>\n";
 				echo "<span class='scapmain'>AnimeFTW.tv's Anime Selection</span>\n";
 				echo "<br />\n";
@@ -179,7 +179,7 @@ function bodyTopInfo($message,$bdybr){
 			}
 			if($_GET['type'] == 'drama')
 			{
-				echo bodyTopInfo($index_global_message,'yes');
+				echo bodyTopInfo($index_global_message,'yes',$profileArray);
 				echo '<div class="left_articles_mod">
 				<h2>AnimeFTW.tv\'s Drama Selection</h2>
 				<p class="description">Drama Selection for AnimeFTW.tv</p>
@@ -190,7 +190,7 @@ function bodyTopInfo($message,$bdybr){
 			}
 			if($_GET['type'] == 'amv')
 			{
-				echo bodyTopInfo($index_global_message,'yes');
+				echo bodyTopInfo($index_global_message,'yes',$profileArray);
 				echo '<div class="left_articles_mod">
 				<h2>AMV\'s Uploaded to AnimeFTW.tv\'s Servers</h2>
 				<p class="description">AMVs listed Below</p>
