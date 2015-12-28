@@ -206,6 +206,14 @@ Class api extends Config {
 			'disabled' => '1',
 			'description' => 'Edit a watchlist entry to a users account.'
 		),
+		'app-settings' => array(
+			'action' => 'app-settings',
+			'location' => 'settings.v2.class.php', // action location
+			'classname' => 'Settings', // class name
+			'method' => 'array_displayAppSettings', // method name
+			'disabled' => '1',
+			'description' => 'Shows Application level settings.'
+		),
 	);
 
 	// class constructor method
