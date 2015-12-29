@@ -21,7 +21,7 @@ class Settings extends Config {
 
 	public function array_displayAppSettings() {
 		$results = array('status' => 200, 'message' => "Request Successful.");
-		if($this->DevArray['ads'] == 1) {
+		if($this->DevArray['ads'] == 1 && $this->AccessLevel == 3) {
 			// The developer has ads, so we allow them to see ads in the request.
 			$results['enabled'] = '1';
 			$results['total'] = '1';			
@@ -32,7 +32,8 @@ class Settings extends Config {
 			$results['ads'][0]['enabled'] = '1';
 		}
 		else {
-			$results['ads-enabled'] = '0';
+			$results['enabled'] = '0';
+			$results['total'] = '0';
 		}
 		return $results;
 	}
