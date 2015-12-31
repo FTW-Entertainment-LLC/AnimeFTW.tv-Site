@@ -29,7 +29,7 @@ class Register extends Config {
 	public function registerUser()
 	{
 		//return $this->Data;
-		if(isset($this->Data['username']) && isset($this->Data['password']) && isset($this->Data['email']) && isset($this->Data['birthday']))
+		if(isset($this->Data['username']) && isset($this->Data['password']) && isset($this->Data['email']) && (isset($this->Data['birthday']) || isset($this->Data['birthDay'])))
 		{
 			// Check to make sure the email address is indeed valid as well as not used in the system
 			if($this->bool_validateEmailAddress() == TRUE && $this->bool_checkEmailUsage() == TRUE)
@@ -123,7 +123,7 @@ class Register extends Config {
 	// as such we have to validate that the birthday string given to us can be pushed to the database without issue.
 	private function bool_validateBirthday()
 	{
-		if(strlen($this->Data['birthday']) == 8)
+		if(strlen($this->Data['birthday']) == 8 || strlen($this->Data['birthDay']) == 8)
 		{
 			// our defacto standard length is 8 characters MMDDYYYY, they need to supply that at all times
 			return TRUE;
@@ -158,7 +158,12 @@ class Register extends Config {
 	
 	private function array_processAccountRegistration()
 	{
-		$Birthday = array('Month' => substr($this->Data['birthday'], 0, 2), 'Day' => substr($this->Data['birthday'], 2, 2), 'Year' => substr($this->Data['birthday'], 4, 4));
+		if(isset($this->Data['birthDay'])){
+			$Birthday = array('Month' => substr($this->Data['birthDay'], 0, 2), 'Day' => substr($this->Data['birthDay'], 2, 2), 'Year' => substr($this->Data['birthDay'], 4, 4));
+		}
+		else {
+			$Birthday = array('Month' => substr($this->Data['birthday'], 0, 2), 'Day' => substr($this->Data['birthday'], 2, 2), 'Year' => substr($this->Data['birthday'], 4, 4));
+		}
 		$RandomString = $this->stringRandomizer('alnum',32);
 		$query = "INSERT INTO `" . $this->MainDB . "`.`users` (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES ('" . $this->mysqli->real_escape_string($this->formatUsername()) . "', '" . $this->mysqli->real_escape_string($this->formatUsername()) . "', '" . $this->Build($this->Data['password'],$this->Data['username'],'md5') . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['email']) . "', '" . $RandomString . "', '" . $Birthday['Day'] . "', '" . $Birthday['Month'] . "', '" . $Birthday['Year'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '-6')";
 		// grab the results.
