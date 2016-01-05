@@ -36,10 +36,18 @@ class DailySignups extends Config {
 			$startofday = $today-$xdaysago;
 			$endofday = $startofday+86399;
 			
-			$query = "SELECT COUNT(ID) AS NumSignups FROM `" . $this->MainDatabase . "`.`users` WHERE `registrationDate` >= " . $startofday . " AND `registrationDate` <= " . $endofday . " ";
+			$query = "SELECT COUNT(ID) AS NumSignups FROM `" . $this->MainDatabase . "`.`users` WHERE `registrationDate` >= " . $startofday . " AND `registrationDate` <= " . $endofday;
 			$result = mysql_query($query);
 			$row = mysql_fetch_assoc($result);
 			mysql_query("INSERT INTO `" . $this->StatsDatabase . "`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '1', '" . $startofday . "', '" . $row['NumSignups'] . "')");
+			unset($row);
+			unset($query);
+			unset($result);
+			// number of activated signups for the day.
+			$query = "SELECT COUNT(ID) AS NumSignups FROM `" . $this->MainDatabase . "`.`users` WHERE `registrationDate` >= " . $startofday . " AND `registrationDate` <= " . $endofday . " AND `Active` = 1";
+			$result = mysql_query($query);
+			$row = mysql_fetch_assoc($result);
+			mysql_query("INSERT INTO `" . $this->StatsDatabase . "`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '2', '" . $startofday . "', '" . $row['NumSignups'] . "')");
 		}
 	}
 	

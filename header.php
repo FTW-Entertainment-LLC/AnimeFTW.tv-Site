@@ -105,8 +105,8 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 			$psa .= "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			$psa .= "<td valign='top' class='main-mid'>\n";
 			$psa .= "<div class='side-body-bg' style='min-height:50px;'>\n";	
-			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Major Security Update Completed!</div>';
-			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Hey Guys and Gals. For the last 4 months we have been working on a new Security update to the site.<br />This update centers around keeping your account secure.<br /> Please <a href="https://www.animeftw.tv/forums/global-announcements/topic-4686/s-0">read this topic</a> for more details on this update.<br />Thank you!</div>';
+			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Calling all Windows Phone users!</div>';
+			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Do you have a Windows 8/8.1/10 Phone? Well, you\'re in luck because today we have released the official AnimeFTW.tv Windows Phone App! Even if you don\'t have a windows phone, stop on by <a href="http://www.animeftw.tv/forums/windows-phone-app-support/topic-4807/s-0">this topic</a>. See the future design of AnimeFTW.tv for our mobile apps!</div>';
 			//$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Keep Track of all the Series you watch.</div>';
 			//$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">The AnimeFTW.tv My WatchList feature extends the Episode Tracker but letting you know just how many episodes of a series you\'ve watched.<br />Write notes about a series and get email updates for that special airing series!</div>';
 			$psa .= "</div>\n";
