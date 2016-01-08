@@ -236,6 +236,8 @@ class Review extends Config {
 				// nothing here, let's submit the review!
 				mysql_query("INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`, `approved`, `approvedby`, `approvaldate`) VALUES (NULL, '" . mysql_real_escape_string($_POST['id']) . "', '" . $this->UserArray[1] . "', " . time() . ", '" . mysql_real_escape_string($_POST['review-textarea']) . "', '" . mysql_real_escape_string($_POST['rating-rated-select']) . "', 0, 0, 0)");
 				$reviewid = mysql_insert_id();
+				$slackData = "*New Review Posted*: \n ```" . $_POST['review-textarea'] . "``` <https://www.animeftw.tv/manage/#reviews| Manage this review.>";
+				$slack = $this->postToSlack($slackData);
 				echo '<!-- Success -->';
 				echo '
 					<div class="single-comment-wrapper" style="margin:10px 0 10px 10px;background-color:#FF9757;border:1px solid #FF5E5E;">

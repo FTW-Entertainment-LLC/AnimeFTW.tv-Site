@@ -671,4 +671,43 @@ class Config {
 	private function setFailedLoginCookie(){
 		setcookie ( "__flc", time() + 900, time() + 900, '/' );
 	}
+	
+	# Function designed to limit what a user can do if their PM abilities have been revoked.
+	public function checkPMAbilities(){
+		if($this->UserArray[10] == 2){
+			# it means they are banned from pming other non staff
+			$returnArray = array('canpmstaff' => 1, 'message' => 'Your message sending abilities have been limited to communications with Site Admin and Managers.');
+		}
+		else if($this->UserArray[10] == 1) {
+			# it means that they are not allowed to use the pm system, period.
+			$returnArray = array('canpmstaff' => 2, 'message' => 'Your access to the messaging system has been removed fully.');
+		}
+		else {
+			# They are not banned, no worries.
+			$returnArray = array('canpmstaff' => 0, 'message' => '');
+		}
+		return $returnArray;
+	}
+	
+	# Function to post alerts to Slack.
+	public function postToSlack($sendingText){
+		$url = 'https://hooks.slack.com/services/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';
+		
+		$data = array(
+			"text" => $sendingText,
+		);
+		
+		$data_string = json_encode($data);
+		echo $data_string;
+		$ch = curl_init($url);                                                                      
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+																															 
+		$result = curl_exec($ch);
+	}
 }
