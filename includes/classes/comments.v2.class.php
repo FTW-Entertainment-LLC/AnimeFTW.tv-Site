@@ -67,10 +67,6 @@ class Comment extends Config {
 			$result = $this->mysqli->query($query);
 			$insertId = $this->mysqli->insert_id;
 			//select the id for everything else
-			//$query = "SELECT `page_comments`.`id`, `users`.`Username`, `users`.`avatarActivate`, `users`.`avatarExtension` FROM `page_comments`, `users` WHERE `users`.`ID`=`page_comments`.`uid` AND `page_comments`.`dated`='".$dated."' AND `page_comments`.`uid`='".$uid."' AND `page_comments`.`page_id`='u".$pid."'";
-			//$result = $this->mysqli->query($query);
-			//$row = $result->fetch_assoc(); //put it in an array
-			//insert a notification row.. cause were bad ass like that.
 			$this->mysqli->query("INSERT INTO notifications (`id`, `uid`, `date`, `type`, `d1`, `d2`, `d3`) VALUES (NULL, '".$pid."', '".time()."', '2', '" . $insertId . "', NULL, NULL)");
 			
 			if($this->UserArray['avatarActivate'] == 'no')
@@ -89,6 +85,9 @@ class Comment extends Config {
 			echo '<div id="dropmsg0" class="dropcontent">
 			<div style="float:right;">'.$avatar.'</div>
 			<div style="padding-bottom:2px;">' . $this->UserArray['FancyUsername'] . ' - <span title="Posted '.date('l, F jS, o \a\t g:i a',time()).'">'.date('M jS',time()).'</span></div>'.$comment.'</div></div>';
+			
+			$slackData = "*New Profile Comment by " . $this->UserArray['Username'] . " on " . $this->string_fancyUsername($pid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "'s profile*: \n ```" . $comment . "```";
+			$slack = $this->postToSlack($slackData);
 		}
 		else
 		{
@@ -356,6 +355,8 @@ class Comment extends Config {
 		//insert the comment
 		$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, page_id, dated, is_approved, uid, epid, type) VALUES (NULL, '$comment', '$spoiler', '$ip', '0', '$dated', '$is_approved', '$uid', '$epid', '0') ";
 		$this->mysqli->query($query);
+		$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($uid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \n ```" . $comment . "``` <https://www.animeftw.tv/manage/#comments| Manage this comment.>";
+		$slack = $this->postToSlack($slackData);
 		echo 'Success';
 	}
 	
@@ -487,7 +488,7 @@ class Comment extends Config {
 	}
 	
 	public function array_addComment(){
-		if(!isset($this->Data['id']) || !is_numeric($this->Data['id']) || !isset($this->Data['comment']) || !isset($this->Data['spoiler']) || !is_numeric($this->Data['spoiler'])){
+		if(!isset($this->Data['id']) || !is_numeric($this->Data['id']) || !isset($this->Data['comment']) || (isset($this->Data['spoiler']) && !is_numeric($this->Data['spoiler']))){
 			// there was data missing.. let them know.
 			$returnarray = array('status' => '422', 'message' => 'There is data missing in the request, please try again.');
 		}
@@ -510,7 +511,13 @@ class Comment extends Config {
 			else {
 				$pageId = 0;
 			}
-			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($this->Data['spoiler']) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserID . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "')";
+			if(isset($this->Data['spoiler'])){
+				$spoiler = $this->Data['spoiler'];
+			}
+			else {
+				$spoiler = 0;
+			}
+			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($spoiler) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserID . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "')";
 			
 			$result = $this->mysqli->query($query);
 			
@@ -519,6 +526,8 @@ class Comment extends Config {
 				$returnarray = array('status' => '500', 'message' => 'Something went wrong executing the query, please try again.');
 			}
 			else {
+				$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($this->UserID,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \n ```" . $this->Data['comment'] . "``` <https://www.animeftw.tv/manage/#comments| Manage this comment.>";
+				$slack = $this->postToSlack($slackData);
 				// success
 				$returnarray = array('status' => '200', 'message' => 'Commented added successfully.');
 			}
