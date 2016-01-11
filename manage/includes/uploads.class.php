@@ -49,6 +49,18 @@ class Uploads extends Config {
 				{
 				}
 			}
+			else if(isset($_GET['action']) && $_GET['action'] == 'remove-notification')
+			{
+				if(!isset($_GET['id']) || (isset($_GET['id']) && !is_numeric($_GET['id'])))
+				{
+					// id is not set, dont do anything
+				}
+				else
+				{
+					mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_GET['id']));
+					$this->Mod("Removed Notifications for Entry " . $_GET['id'] . ' in the Uploads Board');
+				}
+			}
 			else
 			{
 			}
