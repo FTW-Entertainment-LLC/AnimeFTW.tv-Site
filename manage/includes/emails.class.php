@@ -195,8 +195,8 @@ class Emails extends Config {
 			$contents = ''; $title = '';
 			echo '
 			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-5 column-right" style="display:inline-block;width:8.999999%;text-align:right;vertical-align:top;">Schedule<br /></div>
-				<div class="table-column-5 column-left" style="display:inline-block;width:89.999999%;text-align:left;vertical-align:top;">
+				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Schedule<br /></div>
+				<div class="table-column-5 column-left" style="display:inline-block;width:49.999985%;text-align:left;vertical-align:top;">
 					<input type="text" name="starts" value="" /> (use: MM/DD/YYYY HH:MM formatting)
 				</div>
 			<div>';
@@ -205,19 +205,121 @@ class Emails extends Config {
 		}
 		echo '
 			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-1 column-right" style="display:inline-block;width:8.999999%;text-align:right;vertical-align:top;">Title</div>
-				<div class="table-column-9 column-left" style="display:inline-block;width:89.999999%;text-align:left;vertical-align:top;">
+				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Title</div>
+				<div class="table-column-9 column-left" style="display:inline-block;width:79.999976%;text-align:left;vertical-align:top;">
 					<input type="text" name="title" value="' . $title . '" style="width:300px;" />
 				</div>
 			</div>
 			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-1 column-right" style="display:inline-block;width:8.999999%;text-align:right;vertical-align:top;">Contents</div>
-				<div class="table-column-9 column-left" style="display:inline-block;width:89.999999%;text-align:left;vertical-align:top;">
-					<textarea name="contents" style="width:500px;height:150px;">' . $contents . '</textarea>
+				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Contents</div>
+				<div class="table-column-9 column-left" style="display:inline-block;width:79.999976%;text-align:left;vertical-align:top;">
+					<textarea name="contents" style="width:500px;height:150px;" id="contents-textarea">' . $contents . '</textarea>
 				</div>
-			</div>
+			</div>';
+			if($formType == 'editCampaign'){
+				 echo '
+			<div class="table-row" style="padding:5px 0 5px 0;">
+				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Preview:</div>
+				<div class="table-column-9 column-left" style="display:inline-block;width:79.999976%;text-align:left;vertical-align:top;height:500px;overflow:scroll;;">
+					' . $this->emailPreview($contents) . '
+				</div>
+			</div>';
+			}
+			echo '
 			<input type="submit" name="submit" value="Submit" />
 		</form>
-		</div>';
+		</div>
+		<script type="text/javascript">
+			$(function()
+			{
+				$(\'#contents-textarea\').redactor({
+					focus: true,
+					minHeight: 300
+				});
+			});
+		</script>';
+	}
+	
+	private function emailPreview($msgBody){
+		
+		$mime_boundary = "----FTW_ENTERTAINMENT_LLC----".md5(time());
+		# -=-=-=- HTML EMAIL PART
+		$body = '';
+		$body .= " <html lang=\"en\">\n";
+		$body .= " <head>\n";
+		$body .= " <meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\">\n";
+		$body .= " <title>AnimeFTW Announcements</title>\n";
+		$body .= " 			<style type=\"text/css\">\n";
+		$body .= " 			a:hover { text-decoration: none !important; }\n";
+		$body .= " 			.header h1 {color: #47c8db; font: bold 32px Helvetica, Arial, sans-serif; margin: 0; padding: 0; line-height: 40px;}\n";
+		$body .= " 			.header p {color: #c6c6c6; font: normal 12px Helvetica, Arial, sans-serif; margin: 0; padding: 0; line-height: 18px;}\n";
+		$body .= " 			.content h2 {color:#646464; font-weight: bold; margin: 0; padding: 0; line-height: 26px; font-size: 18px; font-family: Helvetica, Arial, sans-serif;  }\n";
+		$body .= " 			.content p {color:#767676; font-weight: normal; margin: 0; padding: 0; line-height: 20px; font-size: 12px;font-family: Helvetica, Arial, sans-serif;}\n";
+		$body .= " 			.content a {color: #0eb6ce; text-decoration: none;}\n";
+		$body .= " 			.footer p {font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;}\n";
+		$body .= " 			.footer a {color: #0eb6ce; text-decoration: none;}\n";
+		$body .= " 			</style>\n";
+		$body .= " 		  </head>\n";
+		$body .= " 		  <body style=\"margin: 0; padding: 0; background: #4b4b4b url('http://eblasts.animeftw.tv/images/bg_email.png');\" bgcolor=\"#4b4b4b\">\n";
+		$body .= " 				<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\" width=\"100%\" style=\"padding: 35px 0; background: #4b4b4b url('http://eblasts.animeftw.tv/images/bg_email.png');\">\n";
+		$body .= " 				  <tr>\n";
+		$body .= " 					<td align=\"center\" style=\"margin: 0; padding: 0; background: url('http://eblasts.animeftw.tv/images/bg_email.png') ;\" >\n";
+		$body .= " 						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\" width=\"600\" style=\"font-family: Helvetica, Arial, sans-serif; background:#2a2a2a;\" class=\"header\">\n";
+		$body .= " 							<tr>\n";
+		$body .= " 								<td width=\"600\" align=\"left\" style=\"padding: font-size: 0; line-height: 0; height: 7px;\" height=\"7\" colspan=\"2\"><img src=\"http://eblasts.animeftw.tv/images/bg_header.png\" alt=\"header bg\"></td>\n";
+		$body .= " 							  </tr>\n";
+		$body .= " 							<tr>\n";
+		$body .= " 							<td width=\"20\"style=\"font-size: 0px;\">&nbsp;</td>\n";
+		$body .= " 							<td width=\"580\" align=\"left\" style=\"padding: 18px 0 10px;\">\n";
+		$body .= " 								<h1 style=\"color: #47c8db; font: bold 32px Helvetica, Arial, sans-serif; margin: 0; padding: 0; line-height: 40px;\"><a href=\"http://eblasts.animeftw.tv/link/VQ9VkVPPpXT5jgmpkS7EhNIFsGgM1861AuBVP7Aq4oFJFgxKzWM19X8ScCzxIAOkJ7GeNTWbgvWcXSc2y8Ef8ur2uMv4sCub8fO08FAMgUpoScWhyBrtVPrJ8LxPJF3HBdgNj16ATFjtPUgoQvAbVa\" style=\"color: #0eb6ce; text-decoration: none;\">AnimeFTW.tv</a></h1>\n";
+		$body .= " 								<p style=\"color: #c6c6c6; font: normal 12px Helvetica, Arial, sans-serif; margin: 0; padding: 0; line-height: 18px;\">Only the best for the best Members..</p>\n";
+		$body .= " 							</td>\n";
+		$body .= " 						  </tr>\n";
+		$body .= " 						</table><!-- header-->\n";
+		$body .= " 						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\" width=\"600\" style=\"font-family: Helvetica, Arial, sans-serif; background: #fff;\" bgcolor=\"#fff\">\n";
+		$body .= " 							<tr>\n";
+		$body .= " 							<td width=\"600\" valign=\"top\" align=\"left\" style=\"font-family: Helvetica, Arial, sans-serif; padding: 20px 0 0;\" class=\"content\">\n";
+		$body .= " 								<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"  style=\"color: #717171; font: normal 11px Helvetica, Arial, sans-serif; margin: 0; padding: 0;\" width=\"600\">\n";
+		$body .= " 								<tr>\n";
+		$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
+		$body .= " 									<td style=\"padding: 20px 0 0;\" align=\"left\">\n";			
+		$body .= " 										<h2 style=\"color:#646464; font-weight: bold; margin: 0; padding: 0; line-height: 26px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; \">Update: ".$subject."</h2>\n";
+		$body .= " 									</td>\n";
+		$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
+		$body .= " 								</tr>\n";
+		$body .= " 								<tr>\n";
+		$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
+		$body .= " 									<td style=\"padding: 15px 0 15px;\"  valign=\"top\">\n";						
+		
+		// Begin main body
+		$body .= stripslashes($msgBody);
+		//end body
+						
+		$body .= " 									</td><td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
+		$body .= " 								</tr>\n";
+		$body .= " 						</table>	\n";
+		$body .= " 							</td>\n";											
+		$body .= " 						  </tr>\n";
+		$body .= " 							<tr>\n";
+		$body .= " 								<td width=\"600\" align=\"left\" style=\"padding: font-size: 0; line-height: 0; height: 3px;\" height=\"3\" colspan=\"2\"><img src=\"http://eblasts.animeftw.tv/images/bg_bottom.png\" alt=\"header bg\"></td>\n";
+		$body .= " 							  </tr>	\n";
+		$body .= " 						</table><!-- body -->\n";
+		$body .= " 						<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\" width=\"600\" style=\"font-family: Helvetica, Arial, sans-serif; line-height: 10px;\" class=\"footer\"> \n";
+		$body .= " 						<tr>\n";
+		$body .= " 							<td align=\"center\" style=\"padding: 5px 0 10px; font-size: 11px; color:#7d7a7a; margin: 0; line-height: 1.2;font-family: Helvetica, Arial, sans-serif;\" valign=\"top\">\n";
+		$body .= " 								<br>\n";
+		$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\">You're receiving this email blast because you did not opt out of Admin Emails.</p>\n";
+		$body .= " 								<p style=\"font-size: 11px; color:#7d7a7a; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;\"> Not interested? <a href=\"http://eblasts.animeftw.tv/link/CwAoXD1xfaBlJkzBEodr0pw7nkVAkDnEGgLjg6DjunuVV91eJXTVIMNrsJWUMmAbMwXFSErHGiaxEdHnViw5o330VngkXrDHkrblg6Qg8KV2iJ5EevdUN3l49QCQrtee2JQxaHjq6ckDDlFyp3DUjD\" style=\"color: #0eb6ce; text-decoration: none;\">Opt out</a> of Future Messages.</p>\n";
+		$body .= " 							</td>\n";
+		$body .= " 						  </tr>\n";
+		$body .= " 						</table><!-- footer-->\n";
+		$body .= " 					</td>\n";
+		$body .= " 					</td>\n";
+		$body .= " 				</tr>\n";
+		$body .= " 			</table>\n";
+		$body .= " 		  </body>\n";
+		$body .= " 		</html>\n";
+		$body = wordwrap($body,70);
+		return $body;
 	}
 }
