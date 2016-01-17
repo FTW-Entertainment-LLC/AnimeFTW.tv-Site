@@ -346,3 +346,12 @@ body.loading .modal {
 	margin:10px;
 	padding:2px;
 }
+.table-header {
+	border-bottom:1px solid #dcd9d9;
+}
+.row-odd {
+	background-color:#E5E5E5;
+}
+.row-even {
+	background-color:#B8EAFA;
+}
