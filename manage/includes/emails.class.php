@@ -198,15 +198,15 @@ class Emails extends Config {
 			<input type="hidden" name="id" value="' . $id . '" />
 			<div class="table-row">
 				<div class="table-column-10 column-right">Added</div>
-				<div class="table-column-90 column-left">' . $added . '</div>
+				<div class="table-column-80 column-left">' . $added . '</div>
 			<div>
 			<div class="table-row">
 				<div class="table-column-10 column-right">Updated</div>
-				<div class="table-column-90 column-left">' . $updated . '</div>
+				<div class="table-column-80 column-left">' . $updated . '</div>
 			<div>
 			<div class="table-row">
 				<div class="table-column-10 column-right">Starts</div>
-				<div class="table-column-90 column-left">' . $starts . '</div>
+				<div class="table-column-80 column-left">' . $starts . '</div>
 			<div>';
 		}
 		else if($formType == 'addCampaign'){
