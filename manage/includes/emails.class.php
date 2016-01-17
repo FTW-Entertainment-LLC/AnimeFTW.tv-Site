@@ -66,6 +66,7 @@ class Emails extends Config {
 		}
 		else if(isset($_GET['stage']) && $_GET['stage'] == 'campaign-types') {
 			echo '<div id="stage-container">';
+			$this->manageCampaignTypes();
 			echo '</div>';
 		}
 		else if(isset($_GET['stage']) && $_GET['stage'] == 'subscriber-management') {
@@ -89,6 +90,7 @@ class Emails extends Config {
 	}
 	
 	private function resultsOutput($columns,$whereClause = NULL){
+		$resultStatus = array(0 => "Queued", 1 => "Active", 2 => "Finished");
 		// Set an order by clause up.
 		$orderBy = " ORDER BY `updated` DESC";
 		if(isset($_GET['order'])){
@@ -110,8 +112,10 @@ class Emails extends Config {
 		
 		// Where clause manipulation
 		$where = "";
+		$firstColumn = "table-column-25";
 		if($whereClause != NULL){
 			$where = " WHERE " . $whereClause;
+			$firstColumn = "table-column-35";
 		}
 		// `added`, `updated`, `starts`, `status`, `title`, `contents`, `type`, `count`
 		$query = "SELECT ${columns} FROM `eblast_campaigns`" . $where . $orderBy . " LIMIT " . $start . "," . $count;
@@ -122,12 +126,16 @@ class Emails extends Config {
 			<div class="table-wrapper">';
 		echo '
 				<div class="table-row table-header" style="width:100%;">
-					<div class="table-column-2 column-header" style="display:inline-block;width:15.66666666666667%;font-size:14px;">Title</div>
-					<div class="table-column-2 column-header" style="display:inline-block;width:15.66666666666667%;font-size:14px;">Status</div>
-					<div class="table-column-2 column-header" style="display:inline-block;width:15.66666666666667%;font-size:14px;">Added</div>
-					<div class="table-column-2 column-header" style="display:inline-block;width:15.66666666666667%;font-size:14px;">Updated</div>
-					<div class="table-column-2 column-header" style="display:inline-block;width:15.66666666666667%;font-size:14px;">Count</div>
-					<div class="table-column-2 column-header" style="display:inline-block;width:15.66666666666667%;font-size:14px;">edit</div>
+					<div class="' . $firstColumn .' column-header" style="font-size:14px;">Title</div>';
+		if($whereClause == NULL){
+		echo '
+					<div class="table-column-10 column-header">Status</div>';
+		}
+		echo '
+					<div class="table-column-20 column-header">Added</div>
+					<div class="table-column-20 column-header">Updated</div>
+					<div class="table-column-10 column-header">Count</div>
+					<div class="table-column-5 column-header">edit</div>
 				</div>';
 		if($count < 1){
 			echo '<div align="center">No rows were available for this request.</div>';
@@ -135,13 +143,17 @@ class Emails extends Config {
 		else {
 			while($row = mysql_fetch_assoc($result)){
 				echo '
-				<div class="table-row" style="padding:5px 0 5px 0;">
-					<div class="table-column-2" style="display:inline-block;width:15.66666666666666%">' . $row['title'] . '</div>
-					<div class="table-column-2" style="display:inline-block;width:15.66666666666666%">' . $row['status'] . '</div>
-					<div class="table-column-2" style="display:inline-block;width:15.66666666666666%">' . $row['added'] . '</div>
-					<div class="table-column-2" style="display:inline-block;width:15.66666666666666%">' . $row['updated'] . '</div>
-					<div class="table-column-2" style="display:inline-block;width:15.66666666666666%">' . $row['count'] . '</div>
-					<div class="table-column-2" style="display:inline-block;width:15.66666666666666%"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
+				<div class="table-row">
+					<div class="' . $firstColumn .'">' . $row['title'] . '</div>';
+		if($whereClause == NULL){
+		echo '
+					<div class="table-column-10">' . $resultStatus[$row['status']] . '</div>';
+		}
+		echo '
+					<div class="table-column-20">' . date("F j, Y, g:i a",$row['added']) . '</div>
+					<div class="table-column-20">' . date("F j, Y, g:i a",$row['updated']) . '</div>
+					<div class="table-column-10">' . $row['count'] . '</div>
+					<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
 				</div>';
 			}
 		}
@@ -176,27 +188,33 @@ class Emails extends Config {
 			$starts = date("F j, Y, g:i a",$row['starts']);
 			$title = $row['title'];
 			$contents = $row['contents'];
+			$status = $row['status'];
+			$type = $row['type'];
+			if($status == 1 || $status == 2){
+				echo '
+					<div class="body-message">NOTICE: This eblast has progressed past the "Queued" state, editting is no longer available.</div>';
+			}
 			echo '
 			<input type="hidden" name="id" value="' . $id . '" />
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-5 column-right" style="display:inline-block;width:8.999999%;text-align:right;vertical-align:top;">Added</div>
-				<div class="table-column-5 column-left" style="display:inline-block;width:89.999999%;text-align:left;vertical-align:top;">' . $added . '</div>
+			<div class="table-row">
+				<div class="table-column-10 column-right">Added</div>
+				<div class="table-column-90 column-left">' . $added . '</div>
 			<div>
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-5 column-right" style="display:inline-block;width:8.999999%;text-align:right;vertical-align:top;">Updated</div>
-				<div class="table-column-5 column-left" style="display:inline-block;width:89.999999%;text-align:left;vertical-align:top;">' . $updated . '</div>
+			<div class="table-row">
+				<div class="table-column-10 column-right">Updated</div>
+				<div class="table-column-90 column-left">' . $updated . '</div>
 			<div>
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-5 column-right" style="display:inline-block;width:8.999999%;text-align:right;vertical-align:top;">Starts</div>
-				<div class="table-column-5 column-left" style="display:inline-block;width:89.999999%;text-align:left;vertical-align:top;">' . $starts . '</div>
+			<div class="table-row">
+				<div class="table-column-10 column-right">Starts</div>
+				<div class="table-column-90 column-left">' . $starts . '</div>
 			<div>';
 		}
 		else if($formType == 'addCampaign'){
-			$contents = ''; $title = '';
+			$contents = ''; $title = '';$status = 0;$type = '';
 			echo '
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Schedule<br /></div>
-				<div class="table-column-5 column-left" style="display:inline-block;width:49.999985%;text-align:left;vertical-align:top;">
+			<div class="table-row">
+				<div class="table-column-10 column-right">Schedule<br /></div>
+				<div class="table-column-50 column-left">
 					<input type="text" name="starts" value="" /> (use: MM/DD/YYYY HH:MM formatting)
 				</div>
 			<div>';
@@ -204,29 +222,130 @@ class Emails extends Config {
 		else {
 		}
 		echo '
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Title</div>
-				<div class="table-column-9 column-left" style="display:inline-block;width:79.999976%;text-align:left;vertical-align:top;">
-					<input type="text" name="title" value="' . $title . '" style="width:300px;" />
+			<div class="table-row">
+				<div class="table-column-10 column-right">Type</div>
+				<div class="table-column-80 column-left">
+					<select id="email-type" name="type">';
+						foreach($this->array_eblastTypes() as $campaignTypes){
+							$selected = '';
+							if($type == $campaignTypes['id']){
+								$selected = ' selected="selected"';
+							}
+							echo '<option value="' . $campaignTypes['id'] . '"' . $selected .'>' . $campaignTypes['name'] . '</option>';
+						}
+			echo '	
+					</select>
 				</div>
 			</div>
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Contents</div>
-				<div class="table-column-9 column-left" style="display:inline-block;width:79.999976%;text-align:left;vertical-align:top;">
+			<div class="table-row">
+				<div class="table-column-10 column-right">Title</div>
+				<div class="table-column-80 column-left">
+					<input type="text" name="title" value="' . $title . '" style="width:300px;" id="email-title" />
+				</div>
+			</div>
+			<div class="table-row">
+				<div class="table-column-10 column-right">Contents</div>
+				<div class="table-column-80 column-left">
 					<textarea name="contents" style="width:500px;height:150px;" id="contents-textarea">' . $contents . '</textarea>
 				</div>
 			</div>';
-			if($formType == 'editCampaign'){
+			if($formType == 'editCampaign' || $formType == 'addCampaign'){
 				 echo '
-			<div class="table-row" style="padding:5px 0 5px 0;">
-				<div class="table-column-1 column-right" style="display:inline-block;width:9.999997%;text-align:right;vertical-align:top;">Preview:</div>
-				<div class="table-column-9 column-left" style="display:inline-block;width:79.999976%;text-align:left;vertical-align:top;height:500px;overflow:scroll;;">
-					' . $this->emailPreview($contents) . '
+			<div class="table-row">
+				<div class="table-column-10 column-right">
+					Preview:<br />';
+				if($status == 0) {
+					echo '
+				<input type="button" name="update-preview" value="Update" id="preview-button-update" />';
+				}
+				echo '
+				</div>
+				<div class="table-column-80 column-left" style="height:400px;overflow:scroll;">';
+				if($formType == 'editCampaign'){
+					echo $this->emailPreview($contents);
+				}
+				else {
+					echo ' <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+ <title>AnimeFTW Announcements</title>
+ 			<style type="text/css">
+ 			a:hover { text-decoration: none !important; }
+ 			.header h1 {color: #47c8db; font: bold 32px Helvetica, Arial,
+sans-serif; margin: 0; padding: 0; line-height: 40px;}
+ 			.header p {color: #c6c6c6; font: normal 12px Helvetica, Arial,
+sans-serif; margin: 0; padding: 0; line-height: 18px;}
+ 			.content h2 {color:#646464; font-weight: bold; margin: 0; padding:
+0; line-height: 26px; font-size: 18px; font-family: Helvetica, Arial,
+sans-serif;  }
+ 			.content p {color:#767676; font-weight: normal; margin: 0;
+padding: 0; line-height: 20px; font-size: 12px;font-family: Helvetica,
+Arial, sans-serif;}
+ 			.content a {color: #0eb6ce; text-decoration: none;}
+ 			.footer p {font-size: 11px; color:#7d7a7a; margin: 0; padding: 0;
+font-family: Helvetica, Arial, sans-serif;}
+ 			.footer a {color: #0eb6ce; text-decoration: none;}
+ 			</style>
+ 				<table style="padding: 35px 0; background: #4b4b4b url(\'http://eblasts.animeftw.tv/images/bg_email.png\');" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+ 				  <tbody><tr>
+ 					<td style="margin: 0; padding: 0; background:url(\'http://eblasts.animeftw.tv/images/bg_email.png\') ;" align="center">
+ 						<table style="font-family: Helvetica, Arial,sans-serif; background:#2a2a2a;" class="header" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+ 							<tbody><tr>
+ 								<td style="padding: font-size: 0;
+line-height: 0; height: 7px;" colspan="2" align="left" height="7" width="600"><img src="http://eblasts.animeftw.tv/images/bg_header.png" alt="headerbg"></td>
+ 							  </tr>
+ 							<tr>
+ 							<td style="font-size: 0px;" width="20">&nbsp;</td>
+ 							<td style="padding: 18px 0 10px;" align="left" width="580">
+ 								<h1 style="color: #47c8db; font: bold 32px Helvetica, Arial,sans-serif; margin: 0; padding: 0; line-height: 40px;"><a href="http://eblasts.animeftw.tv/link/VQ9VkVPPpXT5jgmpkS7EhNIFsGgM1861AuBVP7Aq4oFJFgxKzWM19X8ScCzxIAOkJ7GeNTWbgvWcXSc2y8Ef8ur2uMv4sCub8fO08FAMgUpoScWhyBrtVPrJ8LxPJF3HBdgNj16ATFjtPUgoQvAbVa" style="color: #0eb6ce; text-decoration: none;">AnimeFTW.tv</a></h1>
+ 								<p style="color: #c6c6c6; font: normal 12px Helvetica, Arial,sans-serif; margin: 0; padding: 0; line-height: 18px;">Only the best for the best Members..</p>
+ 							</td>
+ 						  </tr>
+ 						</tbody></table><!-- header-->
+ 						<table style="font-family: Helvetica, Arial,
+sans-serif; background: #fff;" align="center" bgcolor="#fff" border="0" cellpadding="0" cellspacing="0" width="600">
+ 							<tbody><tr>
+ 							<td style="font-family:
+Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" valign="top" width="600">
+ 								<table style="color: #717171; font: normal 11px Helvetica, Arial, sans-serif;margin: 0; padding: 0;" border="0" cellpadding="0" cellspacing="0" width="600">
+ 								<tbody><tr>
+ 									<td style="font-size: 1px; line-height:1px;" width="21"><img src="http://eblasts.animeftw.tv/images/spacer.gif" alt="space" width="20"></td>
+ 									<td style="padding: 20px 0 0;" align="left">
+ 										<h2 style="color:#646464; font-weight: bold; margin: 0;padding: 0; line-height: 26px; font-size: 18px; font-family:Helvetica, Arial, sans-serif;" id="title-row-holder"></h2>
+ 									</td>
+ 									<td style="font-size: 1px; line-height:1px;" width="21"><img src="http://eblasts.animeftw.tv/images/spacer.gif" alt="space" width="20"></td>
+ 								</tr>
+ 								<tr>
+ 									<td style="font-size: 1px; line-height:1px;" width="21"><img src="http://eblasts.animeftw.tv/images/spacer.gif" alt="space" width="20"></td>
+ 									<td style="padding: 15px 0 15px;" valign="top" id="email-template-insert-point">
+									
+									</td><td style="font-size: 1px; line-height:1px;" width="21"><img src="http://eblasts.animeftw.tv/images/spacer.gif" alt="space" width="20"></td>
+ 								</tr>
+ 						</tbody></table>	
+ 							</td>
+ 						  </tr>
+ 							<tr>
+ 								<td style="padding: font-size: 0;line-height: 0; height: 3px;" colspan="2" align="left" height="3" width="600"><img src="http://eblasts.animeftw.tv/images/bg_bottom.png" alt="headerbg"></td>
+ 							  </tr>	
+ 						</tbody></table><!-- body -->
+ 						<table style="font-family: Helvetica, Arial,sans-serif; line-height: 10px;" class="footer" align="center" border="0" cellpadding="0" cellspacing="0" width="600"> 
+ 						<tbody><tr>
+ 							<td style="padding: 5px 0 10px; font-size:11px; color:#7d7a7a; margin: 0; line-height: 1.2;font-family:Helvetica, Arial, sans-serif;" align="center" valign="top">
+ 								<br>
+ 								<p style="font-size: 11px; color:#7d7a7a; margin: 0; padding:0; font-family: Helvetica, Arial, sans-serif;">You\'re receiving this email blast because you did not opt out of Admin Emails.</p>
+ 								<p style="font-size: 11px; color:#7d7a7a; margin: 0; padding:0; font-family: Helvetica, Arial, sans-serif;"> Not interested? <a href="http://eblasts.animeftw.tv/link/CwAoXD1xfaBlJkzBEodr0pw7nkVAkDnEGgLjg6DjunuVV91eJXTVIMNrsJWUMmAbMwXFSErHGiaxEdHnViw5o330VngkXrDHkrblg6Qg8KV2iJ5EevdUN3l49QCQrtee2JQxaHjq6ckDDlFyp3DUjD" style="color: #0eb6ce; text-decoration: none;">Opt out</a> of Future Messages.</p>
+ 							</td>
+ 						  </tr>
+ 						</tbody></table><!-- footer-->
+ 					</td>
+ 					
+ 				</tr>
+ 			</tbody></table>';
+				}
+				echo '
 				</div>
 			</div>';
 			}
 			echo '
-			<input type="submit" name="submit" value="Submit" />
+			<input type="submit" name="submit" value="Submit"'; if($status == 2 || $status == 1){echo ' disabled="disabled"';} echo ' />
 		</form>
 		</div>
 		<script type="text/javascript">
@@ -235,6 +354,10 @@ class Emails extends Config {
 				$(\'#contents-textarea\').redactor({
 					focus: true,
 					minHeight: 300
+				});
+				$("#preview-button-update").on("click", function(){
+					$("#email-template-insert-point").html($("#contents-textarea").val());
+					$("#title-row-holder").text($("#email-title").val());
 				});
 			});
 		</script>';
@@ -283,13 +406,13 @@ class Emails extends Config {
 		$body .= " 								<tr>\n";
 		$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
 		$body .= " 									<td style=\"padding: 20px 0 0;\" align=\"left\">\n";			
-		$body .= " 										<h2 style=\"color:#646464; font-weight: bold; margin: 0; padding: 0; line-height: 26px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; \">Update: ".$subject."</h2>\n";
+		$body .= " 										<h2 style=\"color:#646464; font-weight: bold; margin: 0; padding: 0; line-height: 26px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; \" id=\"title-row-holder\">Update: ".$subject."</h2>\n";
 		$body .= " 									</td>\n";
 		$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
 		$body .= " 								</tr>\n";
 		$body .= " 								<tr>\n";
 		$body .= " 									<td width=\"21\" style=\"font-size: 1px; line-height: 1px;\"><img src=\"http://eblasts.animeftw.tv/images/spacer.gif\" alt=\"space\" width=\"20\"></td>\n";
-		$body .= " 									<td style=\"padding: 15px 0 15px;\"  valign=\"top\">\n";						
+		$body .= " 									<td style=\"padding: 15px 0 15px;\"  valign=\"top\" id=\"email-template-insert-point\">\n";						
 		
 		// Begin main body
 		$body .= stripslashes($msgBody);
@@ -321,5 +444,31 @@ class Emails extends Config {
 		$body .= " 		</html>\n";
 		$body = wordwrap($body,70);
 		return $body;
+	}
+	
+	private function array_eblastTypes(){
+		$query = "SELECT * FROM `eblast_type` ORDER BY `name`";
+		$result = mysql_query($query);
+		
+		$returnArray = array();
+		$i = 0;
+		while($row = mysql_fetch_Assoc($result)){
+			$returnArray[$i]['id'] = $row['id'];
+			$returnArray[$i]['user_setting_id'] = $row['user_setting_id'];
+			$returnArray[$i]['name'] = $row['name'];
+			$returnArray[$i]['description'] = $row['description'];
+			$i++;
+		}
+		return $returnArray;
+	}
+	
+	# function manageCampaignTypes
+	# used to manage the types of campaigns that can be sent out.
+	private function manageCampaignTypes(){
+		echo '
+		<div class="body-message">NOTE: Only Manage these settings if you know what you are doing, these types link to permissions settings to properly link all pieces, if you have questions please contact Brad.</div>';
+		foreach($this->array_eblastTypes() as $types){
+			echo '<div></div>';
+		}
 	}
 }
