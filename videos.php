@@ -58,21 +58,23 @@ function bodyTopInfo($message,$bdybr,$profileArray){
 		$bodyTop .= "</div>\n";
 		$bodyTop .= "</div>\n";
 	}
-	$bodyTop .= "<div class='side-body-bg'>";
-	$bodyTop .= "<div class='scapmain'>Game</div>\n";
-	$bodyTop .= "<div class='side-body floatfix'>\n";
-	$bodyTop .= '<!-- Insticator API Embed Code -->
-			<div id="insticator-container-1">
-			<div id="insticator-embed">';
-			$bodyTop .= "
-			<div id='insticator-api-iframe-div'><script>(function (d) {var id='693d677f-f905-4a76-8223-3ed59a38842d',cof = 1000 * 60 * 10,cbt = new Date(Math.floor(new Date().getTime() / cof) * cof).getTime(),js = 'https://embed.insticator.com/assets/javascripts/embed/insticator-api.js?cbt='+cbt, f = d.getElementById(\"insticator-api-iframe-div\").appendChild(d.createElement('iframe')),doc = f.contentWindow.document;f.setAttribute(\"id\",\"insticatorIframe\"); f.setAttribute(\"frameborder\",\"0\"); doc.open().write('<script>var insticator_embedUUID = \''+id+'\'; var insticatorAsync = true;<\/script><body onload=\"var d = document;d.getElementsByTagName(\'head\')[0].appendChild(d.createElement(\'script\')).src=\'' + js + '\'\" >');doc.close(); })(document);</script><noscript><a href=\"https://embed.insticator.com\">Please enable JavaScript.</a></noscript></div>";
+	if(!isset($Config->SettingsArray[17])){
+		$bodyTop .= "<div class='side-body-bg'>";
+		$bodyTop .= "<div class='scapmain'>Game</div>\n";
+		$bodyTop .= "<div class='side-body floatfix'>\n";
+		$bodyTop .= '<!-- Insticator API Embed Code -->
+				<div id="insticator-container-1">
+				<div id="insticator-embed">';
+				$bodyTop .= "
+				<div id='insticator-api-iframe-div'><script>(function (d) {var id='693d677f-f905-4a76-8223-3ed59a38842d',cof = 1000 * 60 * 10,cbt = new Date(Math.floor(new Date().getTime() / cof) * cof).getTime(),js = 'https://embed.insticator.com/assets/javascripts/embed/insticator-api.js?cbt='+cbt, f = d.getElementById(\"insticator-api-iframe-div\").appendChild(d.createElement('iframe')),doc = f.contentWindow.document;f.setAttribute(\"id\",\"insticatorIframe\"); f.setAttribute(\"frameborder\",\"0\"); doc.open().write('<script>var insticator_embedUUID = \''+id+'\'; var insticatorAsync = true;<\/script><body onload=\"var d = document;d.getElementsByTagName(\'head\')[0].appendChild(d.createElement(\'script\')).src=\'' + js + '\'\" >');doc.close(); })(document);</script><noscript><a href=\"https://embed.insticator.com\">Please enable JavaScript.</a></noscript></div>";
+				$bodyTop .= '
+				</div>';
 			$bodyTop .= '
-			</div>';
-		$bodyTop .= '
-		</div>
-		<!-- End Insticator API Embed Code -->';
-	$bodyTop .= "</div>\n";
-	$bodyTop .= "</div>\n";
+			</div>
+			<!-- End Insticator API Embed Code -->';
+		$bodyTop .= "</div>\n";
+		$bodyTop .= "</div>\n";
+	}
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
 		$bodyTop .= "<div class='side-body-bg'>";
 		$bodyTop .= "<div class='scapmain'>Advertisement</div>\n";
