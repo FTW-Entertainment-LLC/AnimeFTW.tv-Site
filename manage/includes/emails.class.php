@@ -141,9 +141,17 @@ class Emails extends Config {
 			echo '<div align="center">No rows were available for this request.</div>';
 		}
 		else {
+			$i=0;
 			while($row = mysql_fetch_assoc($result)){
 				echo '
-				<div class="table-row">
+				<div class="table-row'; 
+				if($i % 2){
+					echo ' row-even';
+				}
+				else {
+					echo ' row-odd';
+				}
+				echo '">
 					<div class="' . $firstColumn .'">' . $row['title'] . '</div>';
 		if($whereClause == NULL){
 		echo '
@@ -155,6 +163,7 @@ class Emails extends Config {
 					<div class="table-column-10">' . $row['count'] . '</div>
 					<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
 				</div>';
+				$i++;
 			}
 		}
 		echo '
@@ -446,8 +455,12 @@ Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" v
 		return $body;
 	}
 	
-	private function array_eblastTypes(){
-		$query = "SELECT * FROM `eblast_type` ORDER BY `name`";
+	private function array_eblastTypes($id = NULL){
+		$query = "SELECT * FROM `eblast_type`";
+		if($id != NULL && is_numeric($id)){
+			$query .= " WHERE `id` = ${id}";
+		}
+		$query .= " ORDER BY `name`";
 		$result = mysql_query($query);
 		
 		$returnArray = array();
@@ -465,10 +478,101 @@ Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" v
 	# function manageCampaignTypes
 	# used to manage the types of campaigns that can be sent out.
 	private function manageCampaignTypes(){
-		echo '
-		<div class="body-message">NOTE: Only Manage these settings if you know what you are doing, these types link to permissions settings to properly link all pieces, if you have questions please contact Brad.</div>';
-		foreach($this->array_eblastTypes() as $types){
-			echo '<div></div>';
+		echo '<div class="body-message">NOTE: Only Manage these settings if you know what you are doing, these types link to permissions settings to properly link all pieces, if you have questions please contact Brad.</div>';
+		if(!isset($_GET['edit']) && !isset($_GET['add'])){
+			echo '
+			<div class="table-wrapper">
+				<div class="table-row table-header">
+					<div class="table-column-5 column-header">ID</div>
+					<div class="table-column-15 column-header">Name</div>
+					<div class="table-column-70 column-header">Description</div>
+					<div class="table-column-5 column-header">Actions</div>
+				</div>';
+			$i=0;
+			foreach($this->array_eblastTypes() as $types){
+				echo '
+				<div class="table-row'; 
+				if($i % 2){
+					echo ' row-even';
+				}
+				else {
+					echo ' row-odd';
+				}
+				echo '">
+					<div class="table-column-5">' . $types['id'] . '</div>
+					<div class="table-column-15">' . $types['name'] . '</div>
+					<div class="table-column-70">' . $types['description'] . '</div>
+					<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=campaign-types&edit=' . $types['id'] . '\'); return false;">Edit</a></div>
+				</div>';
+				$i++;
+			}
+			echo '
+			</div>';
 		}
+		else {
+			// The edit or add actions are set.
+			if(isset($_GET['add']) && !isset($_GET['edit'])){
+				// adding a new type
+				echo $this->campaignTypesForm(0);
+			}
+			else if (!isset($_GET['add']) && isset($_GET['edit'])){
+				// editting an existing entry.
+				echo $this->campaignTypesForm(1);
+			}
+			else {
+				// Something somewhere went very wrong, thus they get nothing.
+			}
+		}
+	}
+	
+	private function campaignTypesForm($type = 0){
+		// 0 is the add form, 1 is the edit form.
+		echo '<div class="table-wrapper">
+			<form id="campaign-form">';
+		if($type == 0){
+			// add a new type.
+			echo '
+			<div class="table-row table-header">
+				<div class="table-column-100 column-header">Add a new Campaign Type</div>
+			</div>
+			<input type="hidden" name="action" value="AddCampaignType" />';
+		}
+		else if($type == 1){
+			// edit data..
+			echo '
+			<div class="table-row table-header">
+				<div class="table-column-100 column-header">Edit a Campaign Type</div>
+			</div>
+			<input type="hidden" name="action" value="EditCampaignType" />
+			<input type="hidden" name="id" value="' . $_GET['edit'] . '" />';
+			$typeInformation = $this->array_eblastTypes($_GET['edit']);
+			$name = $typeInformation[0]['name'];
+			$description = $typeInformation[0]['description'];
+			$user_setting_id = $typeInformation[0]['user_setting_id'];
+		}
+		else {
+			// no idea.. just the catcher.
+		}
+		echo '
+		<div class="table-row">
+			<div class="table-column-10 column-right">Name</div>
+			<div class="table-column-80 column-left">
+				<input type="text" name="name" value="' . $name . '" />
+			</div>
+		<div>
+		<div class="table-row">
+			<div class="table-column-10 column-right">Description</div>
+			<div class="table-column-80 column-left">
+				<input type="text" name="description" value="' . $description . '" style="width:100%;" />
+			</div>
+		<div>
+		<div class="table-row">
+			<div class="table-column-10 column-right">User Setting Link</div>
+			<div class="table-column-80 column-left">
+			<span style="font-size:8px;">(This is used to map Capaign Types to User setting options, making a more autonomous collection system)</span><br />';
+		echo '
+			</div>
+		<div>';
+		echo '</form></div>'; // closes the table.
 	}
 }
