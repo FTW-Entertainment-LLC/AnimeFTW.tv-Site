@@ -1,0 +1,58 @@
+.table-row {
+	padding:5px 0 5px 0;
+}
+.table-column-5, .table-column-10, .table-column-15, .table-column-20, .table-column-25, .table-column-30, .table-column-35, .table-column-40, .table-column-50, .table-column-60, .table-column-70, .table-column-80, .table-column-90, .table-column-100 {
+	vertical-align:top;
+	display:inline-block;
+}
+.table-column-5 {
+	width:4.999997%;
+}
+.table-column-10 {
+	width:9.999997%;
+}
+.table-column-15 {
+	width:14.999997%;
+}
+.table-column-20 {
+	width:19.999997%;
+}
+.table-column-25 {
+	width:24.999997%;
+}
+.table-column-30 {
+	width:29.999997%;
+}
+.table-column-35 {
+	width:34.999997%;
+}
+.table-column-40 {
+	width:39.999997%;
+}
+.table-column-50 {
+	width:49.999997%;
+}
+.table-column-60 {
+	width:59.999997%;
+}
+.table-column-70 {
+	width:69.999997%;
+}
+.table-column-80 {
+	width:79.999997%;
+}
+.table-column-90 {
+	width:89.999997%;
+}
+.table-column-100 {
+	width:99.999997%;
+}
+.column-left {
+	text-align:left;
+}
+.column-right {
+	text-align:right;
+}
+.column-header {
+	font-size:14px;
+}

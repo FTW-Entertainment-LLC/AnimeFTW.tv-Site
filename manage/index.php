@@ -67,6 +67,7 @@ echo '<!doctype html>
 		<link rel="stylesheet" type="text/css" href="assets/style.css?v=4" />
 		<link rel="stylesheet" type="text/css" href="assets/jquery.jqplot.min.css" />
 		<link rel="stylesheet" type="text/css" href="assets/select2.css?v=1" />
+		<link rel="stylesheet" type="text/css" href="assets/tables.css?v=1" />
 		
 		<!-- JavaScript -->
 		<!--[if IE]><![endif]-->

@@ -11,13 +11,13 @@ body{
 a {
 	text-decoration:none;
 }
-input, textarea {
+input[type="text"], textarea {
 	border:1px solid #CCC;
 	color:#5A5655;
 	font:13px Verdana,Arial,Helvetica,sans-serif;
 	padding:2px;
 }
-input:focus, textarea:focus {
+input[type="text"]:focus, textarea:focus {
 	border:1px solid #0C90BB;
 }
 #hov-msg {
