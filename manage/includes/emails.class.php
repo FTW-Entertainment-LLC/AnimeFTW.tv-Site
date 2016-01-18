@@ -142,28 +142,34 @@ class Emails extends Config {
 		}
 		else {
 			$i=0;
-			while($row = mysql_fetch_assoc($result)){
-				echo '
-				<div class="table-row'; 
-				if($i % 2){
-					echo ' row-even';
+			$count = mysql_num_rows($result);
+			if($count > 0){
+				while($row = mysql_fetch_assoc($result)){
+					echo '
+					<div class="table-row'; 
+					if($i % 2){
+						echo ' row-even';
+					}
+					else {
+						echo ' row-odd';
+					}
+					echo '">
+						<div class="' . $firstColumn .'">' . $row['title'] . '</div>';
+					if($whereClause == NULL){
+						echo '
+						<div class="table-column-10">' . $resultStatus[$row['status']] . '</div>';
+					}
+					echo '
+						<div class="table-column-20">' . date("F j, Y, g:i a",$row['added']) . '</div>
+						<div class="table-column-20">' . date("F j, Y, g:i a",$row['updated']) . '</div>
+						<div class="table-column-10">' . $row['count'] . '</div>
+						<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
+					</div>';
+					$i++;
 				}
-				else {
-					echo ' row-odd';
-				}
-				echo '">
-					<div class="' . $firstColumn .'">' . $row['title'] . '</div>';
-		if($whereClause == NULL){
-		echo '
-					<div class="table-column-10">' . $resultStatus[$row['status']] . '</div>';
-		}
-		echo '
-					<div class="table-column-20">' . date("F j, Y, g:i a",$row['added']) . '</div>
-					<div class="table-column-20">' . date("F j, Y, g:i a",$row['updated']) . '</div>
-					<div class="table-column-10">' . $row['count'] . '</div>
-					<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
-				</div>';
-				$i++;
+			}
+			else {
+				echo '<div align="center">There are no entries for this request.</div>';
 			}
 		}
 		echo '
@@ -507,6 +513,9 @@ Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" v
 				$i++;
 			}
 			echo '
+				<div class="table-row">
+					<div class="table-column-100"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=campaign-types&add\'); return false;">Add New Type</a></div>
+				</div>
 			</div>';
 		}
 		else {
@@ -536,6 +545,7 @@ Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" v
 				<div class="table-column-100 column-header">Add a new Campaign Type</div>
 			</div>
 			<input type="hidden" name="action" value="AddCampaignType" />';
+			$name = ''; $description =''; $user_setting_id = 0;
 		}
 		else if($type == 1){
 			// edit data..
@@ -569,10 +579,24 @@ Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" v
 		<div class="table-row">
 			<div class="table-column-10 column-right">User Setting Link</div>
 			<div class="table-column-80 column-left">
-			<span style="font-size:8px;">(This is used to map Capaign Types to User setting options, making a more autonomous collection system)</span><br />';
+				<select id="user-settings">
+					<option value="0">Select ID</option>';
+		foreach($this->DefaultSettingsArray as $settingArray){
+			echo '<option value="' . $settingArray['id'] . '"'; if($settingArray['id'] == $user_setting_id){echo ' selected="selected"';} echo '>' . stripslashes($settingArray['name']) . '</option>';
+		}
+			
 		echo '
+				</select>
+				<br />
+				<span style="font-size:8px;">(This is used to map Capaign Types to User setting options, making a more autonomous collection system)</span>
 			</div>
-		<div>';
+		<div>
+		<div class="table-row">
+			<div class="table-column-10 column-right">&nbsp;</div>
+			<div class="table-column-80 column-left">
+				<input type="submit" value="Submit" name="submit" />
+			</div>
+		</div>';
 		echo '</form></div>'; // closes the table.
 	}
 }
