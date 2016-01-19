@@ -34,8 +34,8 @@ class Emails extends Config {
 					</div>
 					<div style="padding:5px;display:inline-block;vertical-align:top;">
 						<div style="margin-left:15px;font-size:16px;border-bottom:1px solid gray;width:200px;margin-bottom:5px;">Logs</div>
-						<div style="padding:2px;'; if(isset($_GET['stage']) && $_GET['stage'] == 'email-logs'){echo 'font-weight:bold;';} echo '"><a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=email-logs\'); return false;">Email Logs</a></div>
-						<div style="padding:2px;'; if(isset($_GET['stage']) && $_GET['stage'] == 'error-logs'){echo 'font-weight:bold;';} echo '"><a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=error-logs\'); return false;">Error Logs</a></div>
+						<div style="padding:2px;'; if(isset($_GET['stage']) && $_GET['stage'] == 'email-logs'){echo 'font-weight:bold;';} echo '"><a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=email-logs\'); return false;">Email Send Logs</a></div>
+						<div style="padding:2px;'; if(isset($_GET['stage']) && $_GET['stage'] == 'error-logs'){echo 'font-weight:bold;';} echo '"><a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=error-logs\'); return false;">Email Bounce Logs</a></div>
 					</div>
 				</div>
 			</div>';
@@ -75,6 +75,7 @@ class Emails extends Config {
 		}
 		else if(isset($_GET['stage']) && $_GET['stage'] == 'email-logs') {
 			echo '<div id="stage-container">';
+			$this->displayEmailLogs();
 			echo '</div>';
 		}
 		else if(isset($_GET['stage']) && $_GET['stage'] == 'error-logs') {
@@ -118,7 +119,7 @@ class Emails extends Config {
 			$firstColumn = "table-column-35";
 		}
 		// `added`, `updated`, `starts`, `status`, `title`, `contents`, `type`, `count`
-		$query = "SELECT ${columns} FROM `eblast_campaigns`" . $where . $orderBy . " LIMIT " . $start . "," . $count;
+		$query = "SELECT ${columns} FROM `eblast_campaigns`" . $where . $orderBy;
 		$result = mysql_query($query);
 		
 		$count = mysql_num_rows($result);
@@ -142,37 +143,39 @@ class Emails extends Config {
 		}
 		else {
 			$i=0;
-			$count = mysql_num_rows($result);
-			if($count > 0){
-				while($row = mysql_fetch_assoc($result)){
-					echo '
-					<div class="table-row'; 
-					if($i % 2){
-						echo ' row-even';
-					}
-					else {
-						echo ' row-odd';
-					}
-					echo '">
-						<div class="' . $firstColumn .'">' . $row['title'] . '</div>';
-					if($whereClause == NULL){
-						echo '
-						<div class="table-column-10">' . $resultStatus[$row['status']] . '</div>';
-					}
-					echo '
-						<div class="table-column-20">' . date("F j, Y, g:i a",$row['added']) . '</div>
-						<div class="table-column-20">' . date("F j, Y, g:i a",$row['updated']) . '</div>
-						<div class="table-column-10">' . $row['count'] . '</div>
-						<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
-					</div>';
-					$i++;
+			$query = "SELECT ${columns} FROM `eblast_campaigns`" . $where . $orderBy . " LIMIT " . $start . "," . $count;
+			$result = mysql_query($query);
+			while($row = mysql_fetch_assoc($result)){
+				echo '
+				<div class="table-row'; 
+				if($i % 2){
+					echo ' row-even';
 				}
-			}
-			else {
-				echo '<div align="center">There are no entries for this request.</div>';
+				else {
+					echo ' row-odd';
+				}
+				echo '">
+					<div class="' . $firstColumn .'">' . $row['title'] . '</div>';
+				if($whereClause == NULL){
+					echo '
+					<div class="table-column-10">' . $resultStatus[$row['status']] . '</div>';
+				}
+				echo '
+					<div class="table-column-20">' . date("F j, Y, g:i a",$row['added']) . '</div>
+					<div class="table-column-20">' . date("F j, Y, g:i a",$row['updated']) . '</div>
+					<div class="table-column-10">' . $row['count'] . '</div>
+					<div class="table-column-5"><a href="#" onClick="$(\'#right-column\').load(\'ajax.php?node=emails&stage=edit-campaign&id=' . $row['id'] . '\'); return false;">edit</a></div>
+				</div>';
+				$i++;
 			}
 		}
 		echo '
+				<div class="table-row">
+					<div class="table-column-100">';
+		echo $this->pagingV1("right-column",$count,'30',$start,'ajax.php?node=emails&stage=' . $_GET['stage']);
+		echo '
+					</div>
+				</div>
 			</div>';
 	}
 	
