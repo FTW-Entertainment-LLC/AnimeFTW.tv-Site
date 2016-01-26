@@ -290,13 +290,9 @@ class Uploads extends Config {
 		{
 			$sort = " ORDER BY series ASC";
 		}
-		else if(strtolower($Status) == 'ongoing')
-		{
-			$sort = " ORDER BY `uestatus`.`updated` DESC";
-		}
 		else
 		{
-			$sort = "";
+			$sort = " ORDER BY `uestatus`.`updated` DESC";
 		}
 		$navOptions = '';
 		if(isset($_GET['showme']))
