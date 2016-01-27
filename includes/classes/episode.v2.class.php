@@ -91,6 +91,9 @@ class Episode extends Config {
 						$results[$key] = $value;
 					}
 				}
+				$currentPositionArray = $this->findCurrentVideoLocation();
+				$results['video-position'] = $currentPositionArray['position'];
+				$results['last-watched'] = $currentPositionArray['last-watched'];
 				$results['total-comments'] = $Comment->bool_totalComments($this->Data['id']);
 				$results['average-rating'] = $Ratings['average-rating']; // pass through the average rating.
 				$results['user-rated'] = $Ratings['user-rated']; // put through if the user rated or not, if they did it will be the value they submitted.
@@ -257,6 +260,9 @@ class Episode extends Config {
 							$finalresults['results'][$i][$key] = $value;
 						}
 					}
+					$currentPositionArray = $this->findCurrentVideoLocation();
+					$finalresults['results'][$i]['video-position'] = $currentPositionArray['position'];
+					$finalresults['results'][$i]['last-watched'] = $currentPositionArray['last-watched'];
 					$finalresults['results'][$i]['total-comments'] = $Comment->bool_totalComments($row['id']);
 					$finalresults['results'][$i]['average-rating'] = $Ratings['average-rating']; // pass through the average rating.
 					$finalresults['results'][$i]['user-rated'] = $Ratings['user-rated']; // put through if the user rated or not, if they did it will be the value they submitted.
@@ -508,6 +514,35 @@ class Episode extends Config {
 		else
 		{
 			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => "No Results Found.");
+		}
+	}
+	
+	private function findCurrentVideoLocation() {
+		$query = "SELECT `time`, `updated`, `max` FROM `" . $this->MainDB . "`.`episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
+		$result = $this->mysqli->query($query);
+		
+		// add the series specific info to the output
+		$count = $result->num_rows;
+		
+		if($count > 0) {
+			$row = $result->fetch_assoc();
+			
+			// we need to make sure that the current entry is more than 90% watched, if it is not, then we give them the current time.
+			if($row['max'] == NULL) {
+				return array('position' => $row['time'], 'last-watched' => $row['updated']);
+			}
+			else {
+				$percentage = round(($row['time']/$row['max'])*100);
+				if($percentage >= 90) {
+					return array('position' => '0', 'last-watched' => $row['updated']);
+				}
+				else {
+					return array('position' => $row['time'], 'last-watched' => $row['updated']);
+				}
+			}
+		}
+		else {
+			return array('position' => '0', 'last-watched' => '0');
 		}
 	}
 }
