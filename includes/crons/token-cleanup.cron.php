@@ -21,8 +21,8 @@ class api_cleanup extends Config {
 		parent::__construct();
 		
 		// variable declaration
-		$this->Tokens 			= 1200; 		// Basic tokens, older than X seconds ago, should be removed from the system
-		$this->StickyTokens 	= 604800; 		// Sticky tokens, should last a week before they are removed, this has the potential to be infinite as each request does an update.
+		$this->Tokens 			= 3600; 		// Basic tokens, older than X seconds ago, should be removed from the system
+		$this->StickyTokens 	= 2592000; 		// Sticky tokens, should last a week before they are removed, this has the potential to be infinite as each request does an update.
 		$this->TokenTable 		= 'developers_api_sessions'; 	// API tokens Table
 		$this->CronID 			= 8;
 		
