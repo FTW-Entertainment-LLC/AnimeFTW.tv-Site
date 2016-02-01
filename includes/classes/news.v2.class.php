@@ -49,6 +49,7 @@ class News extends Config {
 				$returndata['results'][$i]['forum-id'] = $row['tfid'];
 				$returndata['results'][$i]['date'] = $row['tdate'];
 				$returndata['results'][$i]['body'] = $row['pbody'];
+				$returndata['results'][$i]['topic-link'] = 'https://www.animeftw.tv/forums/' . $row['fseo'] . '/topic-' . $row['tid'] . '/s-0';
 				$i++;
 			}
 		}
