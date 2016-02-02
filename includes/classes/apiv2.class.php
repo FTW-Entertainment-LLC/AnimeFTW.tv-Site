@@ -661,6 +661,10 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
 			// there is no action but they are logging in.
 			$dp .= '/login';
 		}
+		// if we defined an ID, let's allow it to be passed through.
+		if(isset($this->Data['id'])){
+			$dp .= '/' . $this->Data['id'];
+		}
 		// More will be added later, but for now this gives us even more incite.
 		/*foreach($this->Data as $key => &$value){
 			if(strtolower($key) == 'password'){
