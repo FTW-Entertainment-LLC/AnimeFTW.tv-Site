@@ -86,8 +86,10 @@ class Comment extends Config {
 			<div style="float:right;">'.$avatar.'</div>
 			<div style="padding-bottom:2px;">' . $this->UserArray['FancyUsername'] . ' - <span title="Posted '.date('l, F jS, o \a\t g:i a',time()).'">'.date('M jS',time()).'</span></div>'.$comment.'</div></div>';
 			
-			$slackData = "*New Profile Comment by " . $this->UserArray['Username'] . " on " . $this->string_fancyUsername($pid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "'s profile*: \n ```" . $comment . "```";
-			$slack = $this->postToSlack($slackData);
+			if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv'){
+				$slackData = "*New Profile Comment by " . $this->UserArray['Username'] . " on " . $this->string_fancyUsername($pid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "'s profile from the Website*: \n ```" . $comment . "```";
+				$slack = $this->postToSlack($slackData);
+			}
 		}
 		else
 		{
@@ -355,8 +357,10 @@ class Comment extends Config {
 		//insert the comment
 		$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, page_id, dated, is_approved, uid, epid, type) VALUES (NULL, '$comment', '$spoiler', '$ip', '0', '$dated', '$is_approved', '$uid', '$epid', '0') ";
 		$this->mysqli->query($query);
-		$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($uid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \n ```" . $comment . "``` <https://www.animeftw.tv/manage/#comments| Manage this comment.>";
-		$slack = $this->postToSlack($slackData);
+		if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv'){
+			$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($uid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . " from the Website*: \n ```" . $comment . "``` <https://www.animeftw.tv/manage/#comments| Manage this comment.>";
+			$slack = $this->postToSlack($slackData);
+		}
 		echo 'Success';
 	}
 	
@@ -517,7 +521,7 @@ class Comment extends Config {
 			else {
 				$spoiler = 0;
 			}
-			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($spoiler) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserID . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "')";
+			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`, `source`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($spoiler) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserID . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->DevArray['id'] . "')";
 			
 			$result = $this->mysqli->query($query);
 			
@@ -526,8 +530,10 @@ class Comment extends Config {
 				$returnarray = array('status' => '500', 'message' => 'Something went wrong executing the query, please try again.');
 			}
 			else {
-				$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($this->UserID,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \n ```" . $this->Data['comment'] . "``` <https://www.animeftw.tv/manage/#comments| Manage this comment.>";
-				$slack = $this->postToSlack($slackData);
+				if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv'){
+					$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($this->UserID,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . " from the " . $this->DevArray['name'] . "*: \n ```" . $this->Data['comment'] . "``` <https://www.animeftw.tv/manage/#comments| Manage this comment.>";
+					$slack = $this->postToSlack($slackData);
+				}
 				// success
 				$returnarray = array('status' => '200', 'message' => 'Commented added successfully.');
 			}
