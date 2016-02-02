@@ -647,6 +647,28 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
 		// This function was designed just to throw a post notification over to google's analytics servers. 
 		// It allows us to keep track of traffic hitting the api.
 		
+		// first we parse through the data, we don't want to send username or passwords to google.
+		$dp = '/api/v2';
+		// first we add the developer key..
+		if(isset($this->Data['devkey'])){
+			$dp .= '/' . $this->Data['devkey'];
+		}
+		// then add the action
+		if(isset($this->Data['action'])){
+			$dp .= '/' . $this->Data['action'];
+		}
+		else if(!isset($this->Data['action']) && (isset($this->Data['username']) && isset($this->Data['password']) && !isset($this->Data['email'])))){
+			// there is no action but they are logging in.
+			$dp .= '/login';
+		}
+		// More will be added later, but for now this gives us even more incite.
+		/*foreach($this->Data as $key => &$value){
+			if(strtolower($key) == 'password'){
+			}
+			else {
+				$dp .= '/' . $key;
+			}
+		}*/
 		$url = 'https://www.google-analytics.com/collect';
 		$myvars = array(
 			'v' => 1,
@@ -654,7 +676,7 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
 			'cid' => $this->Data['token'],
 			't' => 'pageview',
 			'dh' => 'www.animeftw.tv',
-			'dp' => '/api/v2',
+			'dp' => $dp,
 			'an' => $this->DevArray['name'],
 			'uip' => $_SERVER['REMOTE_ADDR'],
 			'ua' => $_SERVER['HTTP_USER_AGENT'],
