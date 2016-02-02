@@ -657,10 +657,11 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
 		if(isset($this->Data['action'])){
 			$dp .= '/' . $this->Data['action'];
 		}
-		else if(!isset($this->Data['action']) && (isset($this->Data['username']) && isset($this->Data['password']) && !isset($this->Data['email'])))){
+		else if(!isset($this->Data['action']) && (isset($this->Data['username']) && isset($this->Data['password']) && !isset($this->Data['email']))){
 			// there is no action but they are logging in.
 			$dp .= '/login';
 		}
+		echo $dp;
 		// More will be added later, but for now this gives us even more incite.
 		/*foreach($this->Data as $key => &$value){
 			if(strtolower($key) == 'password'){
