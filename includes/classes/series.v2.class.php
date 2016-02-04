@@ -86,6 +86,7 @@ class Series extends Config {
 				}
 				// add the seriesimage to the array
 				$results['results']['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
+				$results['results']['image-320x280'] = $this->ImageHost . '/seriesimages/320x280/' . $row['id'] . '.jpg';
 				$results['results']['total-reviews'] = $Reviews['total-reviews'];
 				$results['results']['user-reviewed'] = $Reviews['user-reviewed'];
 				$results['results']['reviews-average-stars'] = $Reviews['average-stars'];
@@ -282,6 +283,7 @@ class Series extends Config {
 				$returneddata['results'][$i]['watchlist'] = "1";
 			}
 			$returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';
+			$returneddata['results'][$i]['image-320x280'] = $this->ImageHost . '/seriesimages/320x280/' . $row['id'] . '.jpg';
 			$returneddata['results'][$i]['total-reviews'] = $Reviews['total-reviews'];
 			$returneddata['results'][$i]['user-reviewed'] = $Reviews['user-reviewed'];
 			$returneddata['results'][$i]['reviews-average-stars'] = $Reviews['average-stars'];

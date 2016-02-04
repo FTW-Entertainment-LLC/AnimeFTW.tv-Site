@@ -62,7 +62,10 @@ class Episode extends Config {
 				{
 					if($key == 'image')
 					{
-						$results['image'] = $this->ImageHost . 'video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';						
+						$results['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+						$results['image-160x140'] = $this->ImageHost . '/video-images/160x140/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';	
+						$results['image-320x280'] = $this->ImageHost . '/video-images/320x280/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';	
+						$results['image-640x560'] = $this->ImageHost . '/video-images/640x560/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';					
 					}
 					else if($key == 'hd')
 					{
@@ -231,7 +234,10 @@ class Episode extends Config {
 					{
 						if($key == 'image')
 						{
-							$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';						
+							$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+							$finalresults['results'][$i]['image-160x140'] = $this->ImageHost . '/video-images/160x140/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+							$finalresults['results'][$i]['image-320x280'] = $this->ImageHost . '/video-images/320x280/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+							$finalresults['results'][$i]['image-640x560'] = $this->ImageHost . '/video-images/640x560/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
 						}
 						else if($key == 'hd')
 						{
@@ -475,7 +481,10 @@ class Episode extends Config {
 				{
 					if($key == 'image')
 					{
-						$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';						
+						$finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+						$finalresults['results'][$i]['image-160x140'] = $this->ImageHost . '/video-images/160x140/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+						$finalresults['results'][$i]['image-320x280'] = $this->ImageHost . '/video-images/320x280/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
+						$finalresults['results'][$i]['image-640x560'] = $this->ImageHost . '/video-images/640x560/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
 					}
 					else if($key == 'hd')
 					{
