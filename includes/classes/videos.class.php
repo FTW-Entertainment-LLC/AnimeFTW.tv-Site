@@ -1899,13 +1899,35 @@ HDOC;
 	
 	private function checkSeriesSid($sid)
 	{
-		$query = "SELECT `seoname`, `fullSeriesName` FROM `series` WHERE `id` = '$sid'";
+		$query = "SELECT `seoname`, `fullSeriesName`, `active`, `aonly` FROM `series` WHERE `id` = '$sid'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
 		$seoname = $row['seoname'];
 		$fullSeriesName = $row['fullSeriesName']; 
-		$fullSeriesName = stripslashes($fullSeriesName);		
-		$FinalLink = '<a href="/anime/'.$seoname.'/">'.$fullSeriesName.'</a>';
+		$fullSeriesName = stripslashes($fullSeriesName);
+		
+		// First we check to make sure the series is active and if its not we allow staff to see the series.
+		if($row['active'] == 'yes' || ($this->UserArray[2] != 0 && $this->UserArray[2] != 3 && $this->UserArray[2] != 7)){
+			if($row['aonly'] == 0) {
+				// everyone can see it.
+				$FinalLink = '<a href="/anime/'.$seoname.'/">'.$fullSeriesName.'</a>';
+			}
+			else if($row['aonly'] == 1 && $this->UserArray[2] != 0) {
+				// basic members can see it.
+				$FinalLink = '<a href="/anime/'.$seoname.'/">'.$fullSeriesName.'</a>';
+			}
+			else if($row['aonly'] == 2 && ($this->UserArray[2] != 0 && $this->UserArray[2] != 3)) {
+				// advanced + can see it.
+				$FinalLink = '<a href="/anime/'.$seoname.'/">'.$fullSeriesName.'</a>';
+			}
+			else {
+				// otherwise they see nothing.
+				$FinalLink = $fullSeriesName;
+			}
+		}
+		else {
+			$FinalLink = $fullSeriesName;
+		}		
 		return $FinalLink;
 	}
 	
