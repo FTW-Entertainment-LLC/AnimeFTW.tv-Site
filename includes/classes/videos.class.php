@@ -1122,7 +1122,7 @@ HDOC;
 											echo '
 											<div style="padding-top:10px;">
 												<div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Prequel Series:</div>
-												<div style="font-size:12px;color:#242424;">' . $this->checkSeriesSid($SeriesArray[12],TRUE) . '</div>
+												<div style="font-size:12px;color:#242424;">' . $this->checkSeriesSid($SeriesArray[12]) . '</div>
 											</div>';
 										}
 										if($SeriesArray[13] != 0)
@@ -1130,7 +1130,7 @@ HDOC;
 											echo '
 											<div style="padding-top:10px;">
 												<div style="font-size:10px;color:#c0c0c0;vertical-align:top;">Sequel Series:</div>
-												<div style="font-size:12px;color:#242424;">' . $this->checkSeriesSid($SeriesArray[13],TRUE) . '</div>
+												<div style="font-size:12px;color:#242424;">' . $this->checkSeriesSid($SeriesArray[13]) . '</div>
 											</div>';
 										}
 									}
@@ -1897,7 +1897,7 @@ HDOC;
 		return $singleRank;
 	}
 	
-	private function checkSeriesSid($sid,$isRestricted)
+	private function checkSeriesSid($sid)
 	{
 		$query = "SELECT `seoname`, `fullSeriesName`, `active`, `aonly` FROM `series` WHERE `id` = '$sid'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
