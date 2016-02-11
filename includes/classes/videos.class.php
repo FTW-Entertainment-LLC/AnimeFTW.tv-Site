@@ -1733,6 +1733,14 @@ HDOC;
 					);
 				</script>';
 			}
+			echo '
+				<script>
+					(function($){
+						$(document).ready(function() {
+							$(\'.download-menu\').dropit();
+						});
+					})(window.jQuery);
+				</script>';
 		}
 		else 
 		{
@@ -2048,14 +2056,21 @@ HDOC;
 				</div>
 			</div>
 			' . $DisplayImage . '
-		</div>';
+		</div>
+				<script>
+					(function($){
+						$(document).ready(function() {
+							$(\'.download-menu\').dropit();
+						});
+					})(window.jQuery);
+				</script>';
 	}
 	
 	private function showDownloadOption($epid,$CanDownload,$disk = FALSE)
 	{
 		if($CanDownload == TRUE)
 		{
-			$query = "SELECT `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`videotype` FROM `episode`,`series` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
+			$query = "SELECT `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`id`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`videotype`, `episode`.`hd` FROM `episode`,`series` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
 			$result = mysql_query($query);
 			
 			$row = mysql_fetch_assoc($result);
@@ -2067,7 +2082,37 @@ HDOC;
 			{
 				$DLIcon = 'download-icon.png';
 			}
-			return '<a href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
+			if($disk == TRUE) {
+				$data = '
+				<ul class="download-menu" id="dropdown-' . $row['id'] . '">
+					<li>
+						<a href="#" onClick="return false;"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>
+						<ul>';
+				$i = 0;
+				while($i <= $row['hd']){
+					if($i == 0){
+						$data .= '<li><a href="#" onClick="window.open(\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'); return false;">480p</a></li>';
+					}
+					else if($i == 1){
+						$data .= '<li><a href="#" onClick="window.open(\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=720\'); return false;">720p</a></li>';
+					}
+					else if($i == 2){
+						$data .= '<li><a href="#" onClick="window.open(\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=1080\'); return false;">1080p</a></li>';
+					}
+					else {
+					}
+					$i++;					
+				}
+				$data .= '
+						</ul>
+					</li>
+				</ul>';
+			}
+			else {
+				$data .= '<a download href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
+			}
+			return $data;
+			//return '<a href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
 		}
 	}
 }
