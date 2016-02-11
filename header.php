@@ -72,10 +72,10 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	<?php
 	if($profileArray[8] == 1)
 	{
-		echo '<link rel="stylesheet" href="/christmas.css?v=4000" type="text/css" />';
+		echo '<link rel="stylesheet" href="/christmas.css?v=4001" type="text/css" />';
 	}
 	else {
-		echo '<link rel="stylesheet" href="/aftw.css?v=4004" type="text/css" />';
+		echo '<link rel="stylesheet" href="/aftw.css?v=4005" type="text/css" />';
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 0))
 	{
@@ -127,6 +127,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	<script type="text/javascript" src="/scripts/jquery.min.js?v=2.1.1"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery.qtip.js"></script>
+	<script type="text/javascript" src="/scripts/jquery.dropit.js"></script>
 	<script type="text/javascript" src="/scripts/search-bar.js"></script>
 	<script type='text/javascript'>(function(a,c){"Insticator"in a||(a.Insticator={ad:{},helper:{},client:{sid:"b4f2c3a2-2368-4c6a-8f96-6e1d8e1f5765"},version:"1.0"},a.Insticator.ad.loadAd=function(b){a.Insticator.ad.q.push(b)},a.Insticator.ad.q=[]);var b=c.createElement("script"),cof=1000*60*10,cbt=new Date(Math.floor(new Date().getTime()/cof)*cof).getTime();b.src="//embed.insticator.com/advertisements/getheadertagforsite?id="+a.Insticator.client.sid+"&cbt="+cbt;b.async=!0;var d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d)})(window,document);</script>
 	<?php

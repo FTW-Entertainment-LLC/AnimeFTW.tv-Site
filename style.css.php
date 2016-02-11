@@ -545,5 +545,34 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 #upload-wrapper #submit-btn {border: none;padding: 10px;background: #61BAE4;border-radius: 5px;color: #FFF;}
 #output{padding: 5px;font-size: 12px;}
 #output img {border: 1px solid #DDD;padding: 5px;}
+.dropit {list-style: none;padding: 0;margin: 0;}
+.dropit .dropit-trigger{position: relative;}
+.dropit .dropit-submenu{position:absolute;top:100%;left:0;z-index:1000;display:none;min-width:80px;list-style:none;padding: 0;margin: 0;}
+.dropit .dropit-open .dropit-submenu{display: block;}
+.download-menu ul { display: none; } /* Hide before plugin loads */
+.download-menu ul.dropit-submenu {
+    background-color: #fff;
+    border: 1px solid #b2b2b2;
+    padding: 3px 0;
+    margin: 3px 0 0 1px;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+       -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+            box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+}          
+.download-menu ul.dropit-submenu a {
+    display: block;
+    font-size: 14px;
+    line-height: 25px;
+    color: #7a868e;
+    padding: 0 18px;
+}
+.download-menu ul.dropit-submenu a:hover {
+    background: #248fc1;
+    color: #fff;
+    text-decoration: none;
+}
 ';
 ?>
