@@ -2091,13 +2091,13 @@ HDOC;
 				$i = 0;
 				while($i <= $row['hd']){
 					if($i == 0){
-						$data .= '<li><a href="#" onClick="window.open(\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'); return false;">480p</a></li>';
+						$data .= '<li><a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;">480p</a></li>';
 					}
 					else if($i == 1){
-						$data .= '<li><a href="#" onClick="window.open(\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=720\'); return false;">720p</a></li>';
+						$data .= '<li><a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=720\'; return false;">720p</a></li>';
 					}
 					else if($i == 2){
-						$data .= '<li><a href="#" onClick="window.open(\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=1080\'); return false;">1080p</a></li>';
+						$data .= '<li><a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=1080\'; return false;">1080p</a></li>';
 					}
 					else {
 					}
