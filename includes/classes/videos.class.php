@@ -2109,7 +2109,7 @@ HDOC;
 				</ul>';
 			}
 			else {
-				$data .= '<a download href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
+				$data .= '<a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
 			}
 			return $data;
 			//return '<a href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
