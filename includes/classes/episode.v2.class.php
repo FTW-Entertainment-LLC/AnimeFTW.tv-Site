@@ -326,8 +326,21 @@ class Episode extends Config {
 				$count = mysqli_num_rows($result);
 				if($count > 0)
 				{
+					// for those times we want to get the full length of the video to store in seconds.
+					$maxlength = "";
+					if((isset($this->Data['max']) && is_numeric($this->Data['max'])) || (isset($this->Data['length']) && is_numeric($this->Data['length'])))
+					{
+						if(isset($this->Data['max']))
+						{
+							$maxlength = ", `max` = '" . $this->mysqli->real_escape_string($this->Data['max']) . "'";
+						}
+						else
+						{
+							$maxlength = ", `max` = '" . $this->mysqli->real_escape_string($this->Data['length']) . "'";
+						}
+					}
 					// there are rows... lets update.
-					$query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . ", `updated` = " . time() . " WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+					$query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . ", `updated` = " . time() . $maxlength . " WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
 					$result = $this->mysqli->query($query);
 					if(!$result)
 					{
@@ -335,7 +348,7 @@ class Episode extends Config {
 					}
 					else
 					{
-						return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["200"]["Message"]);
+						return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Action Successful.");
 					}
 				}
 				else
@@ -343,10 +356,17 @@ class Episode extends Config {
 					// for those times we want to get the full length of the video to store in seconds.
 					$maxdurration = "";
 					$maxvalue = "";
-					if(isset($this->Data['max']) && is_numeric($this->Data['max']))
+					if((isset($this->Data['max']) && is_numeric($this->Data['max'])) || (isset($this->Data['length']) && is_numeric($this->Data['length'])))
 					{
 						$maxdurration = ", `max`";
-						$maxvalue = ", " . $this->Data['max'];
+						if(isset($this->Data['max']))
+						{
+							$maxvalue = ", " . $this->Data['max'];
+						}
+						else
+						{
+							$maxvalue = ", " . $this->Data['length'];
+						}
 					}
 					// all data is present, we need to record in the episode table.
 					$query = "INSERT INTO `episode_timer` (`id`, `uid`, `eid`, `time`, `updated`" . $maxdurration . ") VALUES (NULL, " . $this->UserID . ", " . $this->mysqli->real_escape_string($this->Data['id']) . ", " . $this->mysqli->real_escape_string($this->Data['time']) . ", " . time() . $maxvalue .")";
@@ -357,7 +377,7 @@ class Episode extends Config {
 					}
 					else
 					{
-						return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["200"]["Message"]);
+						return array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Action Successful.");
 					}
 				}
 			}
