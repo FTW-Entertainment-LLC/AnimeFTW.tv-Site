@@ -732,9 +732,7 @@ class AFTWVideos extends Config{
 			--> 
 			</script>';
 		}
-
 		$videoJsFunction = "";
-
 		if (!$SpriteArray) {
 			echo '
 			<link href="/css/videojs.progressTips.css" rel="stylesheet" />
@@ -830,7 +828,6 @@ class AFTWVideos extends Config{
 		// Added 9/22/15 by Nikey646, Output for sprite sheets if they exist.
 		if ($SpriteArray) {
 			// Sprite exists. Lets load the Sprite Data
-
 			// This is soooo messy ;(
 			// 5 Tab spaces to help w/ indenting source code in the output.
 			$tab5 = "					";
@@ -845,9 +842,8 @@ HDOC;
 				echo $tab5 . $i * $SpriteArray['rate'] . ": {\n";
 				if ($i === 0)
 					echo $tab5 . "	src: \"{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
-				echo $tab5 . "	style: {\n";
-
-				echo $tab5 . "		left: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
+					echo $tab5 . "	style: {\n";
+					echo $tab5 . "		left: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
 				if ($i === 0) {
 					echo $tab5 . "		width: '{$SpriteArray['totalWidth']}px',\n";
 					echo $tab5 . "		height: '{$SpriteArray['height']}px', \n";
@@ -864,8 +860,8 @@ HDOC;
 			</script>
 HDOC;
 		}
-
 	}
+
 	
 	#------------------------------------------------------------
 	# Function DisplaySeries
@@ -908,7 +904,7 @@ HDOC;
 						if($EpisodeArray[11] == 1)
 						{ //Just to be SUPER sure, we need to check to make sure this episode is valid for this series.. 1 = awesomesauce
 
-							if($this->UserArray[0] == 0 || $this->checkBanned() == FALSE)
+							if($this->UserArray[0] == 0 || $this->checkBanned() == FALSE || ($this->UserArray[2] == 0 && $SeriesArray[11] > 0) || ($this->UserArray[2] == 3 && $SeriesArray[11] > 1))
 							{
 								echo '<br /><br /><br /><br /><br /><br /><div align="center" style="font-size:20px;">Error 404: There was no video found, please go back and try again.</div>';
 							}
