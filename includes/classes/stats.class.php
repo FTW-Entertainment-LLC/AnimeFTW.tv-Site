@@ -105,11 +105,25 @@ class AFTWstats extends Config {
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Latest Episodes(Airing)</div>\n";
 		echo "<div class='side-body floatfix'>\n";
-		if($this->la == 0){
+		if($this->la == 0)
+		{
 			echo '<div align="center">Please <a href="/login">Login</a> or <a href="/register">Register</a> to see the latest episodes.</div>';
 		}
-		else {
-			$query = "SELECT episode.epnumber, episode.epname, episode.date, series.fullSeriesName, series.seoname FROM episode, series WHERE episode.sid=series.id AND series.stillRelease = 'yes' ORDER BY episode.id DESC LIMIT 0, 10";
+		else
+		{
+			if($this->UserArray[2] == 0)
+			{
+				$aonly = " AND `series`.`aonly` = 0";
+			}
+			else if($this->UserArray[2] == 3)
+			{
+				$aonly = " AND `series`.`aonly` <= 1";
+			}
+			else
+			{
+				$aonly = "";
+			}
+			$query = "SELECT `epnumber`, `epname`, `date`, `fullSeriesName`, `seoname` FROM `episode` INNER JOIN `series` ON `episode`.`sid`=`series`.`id` AND `series`.`stillRelease` = 'yes'" . $aonly . " ORDER BY `episode`.`id` DESC LIMIT 0, 10";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			while(list($epnumber,$epname,$date,$fullSeriesName,$seoname) = mysql_fetch_array($result, MYSQL_NUM)){
 				$fullSeriesName = stripslashes($fullSeriesName);
