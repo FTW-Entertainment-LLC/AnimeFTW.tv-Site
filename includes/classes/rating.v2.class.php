@@ -101,12 +101,11 @@ class Rating extends Config {
 		if($count > 0)
 		{
 			$a = 0;
-			$row = $result->fetch_assoc();
-			foreach($row as $value)
-			{
-				$a = $a+$value;
-			}
-			$average = $a/$count; // this is the average ratings.
+			//$row = $result->fetch_assoc();
+            while($row = $result->fetch_assoc()) {
+                $a = $a + $row['stars'];
+            }
+			$average = round($a/$count,1); // this is the average ratings.
 			return $average;
 		}
 		else
