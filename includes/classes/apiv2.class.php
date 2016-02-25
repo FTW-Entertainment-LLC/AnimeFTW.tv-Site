@@ -342,6 +342,18 @@ Class api extends Config {
 				$Register = new Register($this->Data,$this->UserID,$this->DevArray);
 				$this->formatData($Register->registerUser()); // set the wheels in motion.
 			}
+			else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'validate-device'))
+			{
+				include_once("device.v2.class.php");
+				$Device = new Device($this->Data,$this->UserID,$this->DevArray);
+				$this->formatData($Device->validateDevice());
+			}
+			else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'generate-device-key'))
+			{
+				include_once("device.v2.class.php");
+				$Device = new Device($this->Data,$this->UserID,$this->DevArray);
+				$this->formatData($Device->generateDeviceKey());
+			}
 			else
 			{
 				//Username and password were not given, we need to see if the token that should be given is propr
@@ -372,7 +384,7 @@ Class api extends Config {
 	private function validateDevKey()
 	{
 		$DevKey = $this->Data['devkey']; // declare the developer key from the dataset
-		$query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
+		$query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license`, `deviceauth` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
 		
 		$result = $this->mysqli->query($query);
 		
@@ -394,7 +406,8 @@ Class api extends Config {
 				'frequency' => $row['frequency'], 
 				'uid' => $row['uid'], 
 				'ads' => $row['ads'], 
-				'license' => $row['license']
+				'license' => $row['license'],
+                'deviceauth' => $row['deviceauth']
 			);
 			return TRUE; // Return TRUE to let it continue on.
 		}
