@@ -571,20 +571,26 @@ if (isset($_GET['rf'])){
 		echo "<!-- End Top 10 List -->";
 	}
 	$stats->UsageStats();
-	echo "<div class='side-body-bg'>";
+	/*echo "<div class='side-body-bg'>";
 	echo "<div class='scapmain'>Friends of AFTW</div>\n";
 	echo "<div class='side-body floatfix'>\n";
 	echo '<div align="center">';
 	echo '<a href="http://www.cybernations.net"><img src="/images/cn-gif.gif" alt="Cybernations - A Nation Simulation Game" border="0" /></a>&nbsp;<a href="http://animetoplist.org/">' . ($_SERVER['SERVER_PORT'] == '80' ? '<img src="http://animetoplist.org/button.php?id=317" alt="Read Manga online" />' : "AnimeTopList") . '</a><br />';
-	echo "</div></div></div>\n";
+	echo "</div></div></div>\n";*/
 	$stats->TopWatchList();
 	$stats->BirthdayBox();
 	echo "<div class='side-body-bg'>";
 	echo "<div class='scapmain'>View us on..</div>\n";
 	echo "<div class='side-body floatfix'>\n";
 	echo '<div align="center"><a href="http://www.twitter.com/animeftwtv" target="_blank"><img src="' . ($_SERVER['SERVER_PORT'] == '80' ? "http" : "https") . '://twitter-badges.s3.amazonaws.com/twitter-a.png" alt="Follow animeftwdottv on Twitter" border="0"/></a>&nbsp;&nbsp;<iframe src="' . ($_SERVER['SERVER_PORT'] == '80' ? "http" : "https") . '://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2FAnimeFTW.tv&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe></div>';
-	echo "<a href='http://kodi.tv/' target='_blank'><img src='/images/xbmc-logo.png' alt='XBMC Logo' border='0' /></a><br />";
-	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"/images/android_logo.jpg\" alt=\"\" width=\"225px\" /></a>";
+    if($profileArray[8] == 1) {
+        echo "<br /><a href=\"https://www.microsoft.com/en-us/store/apps/animeftwtv/9nblggh5k288\" target='_blank'><img src=\"" . $Config->Host . "/themes/christmas/windows-phone-logo.png\" alt=\"\" width=\"225px\" /></a><br />";
+        echo "<br /><a href='http://kodi.tv/' target='_blank'><img src='" . $Config->Host . "/themes/christmas/kodi-image.png' alt='Kodi Logo' border='0' width=\"225px\" /></a><br />";
+    } else {
+        echo "<br /><a href=\"https://www.microsoft.com/en-us/store/apps/animeftwtv/9nblggh5k288\" target='_blank'><img src=\"" . $Config->Host . "/themes/default/windows-phone-logo.png\" alt=\"\" width=\"225px\" /></a><br />";
+        echo "<br /><a href='http://kodi.tv/' target='_blank'><img src='" . $Config->Host . "/themes/default/kodi-image.png' alt='Kodi Logo' border='0' width=\"225px\" /></a><br />";
+    }
+	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"/images/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
 	echo "</div></div>\n";
 	$stats->get_zone($profileArray[3]);
 	$stats->LatestSeries();
