@@ -1,5 +1,5 @@
 <?php
-$AppsOpen = 0;
+$AppsOpen = 1;
 define("THEME_WIDTH", "990");
 if(!isset($PageTitle)){$PageTitle = '';}
 
