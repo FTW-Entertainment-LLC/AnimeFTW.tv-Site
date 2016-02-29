@@ -571,12 +571,12 @@ if (isset($_GET['rf'])){
 		echo "<!-- End Top 10 List -->";
 	}
 	$stats->UsageStats();
-	echo "<div class='side-body-bg'>";
+	/*echo "<div class='side-body-bg'>";
 	echo "<div class='scapmain'>Friends of AFTW</div>\n";
 	echo "<div class='side-body floatfix'>\n";
 	echo '<div align="center">';
 	echo '<a href="http://www.cybernations.net"><img src="/images/cn-gif.gif" alt="Cybernations - A Nation Simulation Game" border="0" /></a>&nbsp;<a href="http://animetoplist.org/">' . ($_SERVER['SERVER_PORT'] == '80' ? '<img src="http://animetoplist.org/button.php?id=317" alt="Read Manga online" />' : "AnimeTopList") . '</a><br />';
-	echo "</div></div></div>\n";
+	echo "</div></div></div>\n";*/
 	$stats->TopWatchList();
 	$stats->BirthdayBox();
 	echo "<div class='side-body-bg'>";
