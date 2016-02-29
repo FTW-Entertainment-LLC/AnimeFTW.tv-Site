@@ -53,7 +53,7 @@ class Review extends Config {
 				$i++;
 			}
 			// we give back a rounded number so they can see an average rating to the tenth
-			$returnarray['average-stars'] = round($ratingstotal/$i,1);
+			$returnarray['average-stars'] = round($ratingstotal/$count,1);
 			$returnarray['total-reviews'] = $count;
 		}
 		else
