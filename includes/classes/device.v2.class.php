@@ -32,8 +32,29 @@ class Device extends Config {
             // If the key is set and they are device capable let them through.
             
             // Query the database for information on the key.
-            $query = "SELECT * FROM `developers_devices` WHERE `key` = '" . $this->mysqli->real_escape_string($this->Data['key']) . "'";
+            $query = "SELECT * FROM `developers_devices` WHERE `key` = '" . $this->mysqli->real_escape_string($this->Data['key']) . "' AND `status` = 1";
+            
+            $result = $this->mysqli->query($query);
+            
+            $count = mysqli_num_rows($result);
+            
+            if($count > 0) {
+                // there is an entry that is pending, so we generate a token.
+                $row = $result->fetch_assoc();
+                
+                // change the device status to 2, which means they will no longer be allowed to activate the device.
+                $query = "UPDATE`developers_devices` SET `status` = 2 WHERE `id` = " . $row['id'];
+                
+                $result = $this->mysqli->query($query);
+                
+                return $this->createToken(array('remember' => 'true'),array('id' => $row['did']),$row['uid'],TRUE);
+            } else {
+                // no keys turned up valid, we let them know
+                return array('status' => '404', 'message' => 'No Device keys active.');
+            }
         } else {
+            // missing data
+            return array('status' => '422', 'message' => 'Unable to process the request, data is missing.');
         }
     }
     
