@@ -1132,3 +1132,20 @@ if(isset($_GET['view']) && $_GET['view'] == 'anime-requests')
 		Hani I moved all of your functions to the request.class.php script, similar to the cart-admin function where everything happens there instead of here (less clutter, more organized)
 	*/
 }
+if(isset($_GET['view']) && $_GET['view'] == 'api'){
+    if(isset($_GET['subview']) && $_GET['subview'] == 'validate-key') {
+        if(isset($_POST['key'])) {
+            include_once('includes/classes/config.v2.class.php');
+            include_once('includes/classes/device.v2.class.php');
+            $Config = new Config();
+            $Config->buildUserInformation(TRUE);
+            $Device = new Device();
+            $Device->connectProfile($Config->outputUserInformation());
+            $Device->processKeyInput();
+        } else {
+            echo 'No key was given, please resubmit with a valid key.';
+        }
+    }
+    else {
+    }
+}
