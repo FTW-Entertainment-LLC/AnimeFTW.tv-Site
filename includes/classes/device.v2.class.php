@@ -8,7 +8,7 @@
 
 class Device extends Config {
 
-    public $Data, $UserID, $DevArray;
+    public $Data, $UserID, $DevArray, $UserArray;
 
     public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL)
     {
@@ -17,6 +17,11 @@ class Device extends Config {
         $this->UserID = $UserID;
         $this->DevArray = $DevArray;
     }
+	
+	public function connectProfile($input)
+	{
+		$this->UserArray = $input;
+	}
     
     public function validateDevice()
     {
@@ -106,5 +111,31 @@ class Device extends Config {
         }
     
         return $result;
+    }
+    
+    public function processKeyInput() {
+        if(isset($this->UserArray['logged-in']) && $this->UserArray['logged-in'] == 1){
+            // We will grab the key information, first.
+            $query = "SELECT `id` FROM `developers_devices` WHERE `key` = '" . $this->mysqli->real_escape_string($_POST['key']) . "' AND `status` = 0";
+            
+            $result = $this->mysqli->query($query);
+            
+            $count = mysqli_num_rows($result);
+            
+            if($count > 0 && $count < 2) {
+                // a key exists, we will change the status and bind it to the user id.
+                $row = $result->fetch_assoc();
+                
+                $query = "UPDATE `developers_devices` SET `status` = 1, `uid` = " . $this->UserArray['ID'] . " WHERE `id` = " . $row['id'];
+                
+                $result = $this->mysqli->query($query);
+                
+                echo 'Success';
+            } else {
+                echo 'The requested Key was not found, please try again.';
+            }
+        } else {
+            echo 'You must be logged in to access this function';
+        }
     }
 }

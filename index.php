@@ -509,6 +509,76 @@ if (isset($_GET['rf'])){
 		$S->connectProfile($profileArray);
 		$S->StoreInit();
 	}
+	else if($_GET['node'] == 'connect'){
+		echo "<div class='side-body-bg'>\n";
+		echo "<span class='scapmain'>Connect your Device to your AnimeFTW.tv Account!</span>\n";
+		echo "<div class='side-body' align=\"center\">\n";
+        echo '<div align="center" style="font-size:16px;">Connect your device to your AnimeFTW.tv account, use the code from the Channel/App to pair the device to your account.</div>';
+        if($profileArray[2] != 0){
+            echo '<br />
+            <div align="center" id="key-wrapper">
+                <form id="key-form">
+                    <div id="key-div-wrapper">
+                        <div>
+                            <input type="input" name="key" id="app-key" style="height:60px;width:260px;font-size:52px;text-align:center;border:1px solid #CCC;border-radius:5px;" maxlength="6" onkeyup="countChar(this)" />
+                        </div>
+                        <div>
+                            (The Key is case sensitive)
+                        </div>
+                    </div>
+                    <div id="hidden-success" style="display:none;min-height:60px;font-size:26px;" align="center">
+                        Your Device has been successfully registered with your account, proceed back to your device to continue with the Device Authentication process.
+                    </div>
+                    <div style="padding-top:20px;">
+                        <input type="button" name="Submit" value="Submit" id="key-submit-button" />
+                    </div>
+                    <div>
+                        Once submitted, your app/channel instance will be able to pull down a token from the servers, if you have issues authenticating your app, please hop in the <a href="/irc" target="_blank">chat</a> or email support@animeftw.tv.
+                    </div>
+                    <div id="key-failure-notice" style="display:none;">                        
+                    </div>
+                </form>
+            </div>
+            <script>
+            function countChar(val) {
+                var len = val.value.length;
+                if (len == 6) {
+                    $("#app-key").css("border","1px solid green");
+                } else {
+                    $("#app-key").css("border","1px solid #CCC");
+                }
+            };
+            $("#key-submit-button").on("click",function(){
+                var len = $("#app-key").val().length;
+                if (len < 6) {
+                    $("#app-key").css("border","1px solid red");
+                    return false;
+                } else {
+                    $("#key-failure-notice").hide();
+                    $.ajax({
+						type: "POST",
+						url: "/scripts.php?view=api&subview=validate-key",
+						data: $("#key-form").serialize(),
+						success: function(html)
+						{
+							if(html.indexOf("Success") >= 0)
+							{
+                                $("#key-div-wrapper").hide();
+                                $("#hidden-success").show();
+							}
+							else{
+								$("#key-failure-notice").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;\'>Error Submitting Request: " + html + "</div>");
+							}
+						}
+					});
+					return false;
+                }
+            });
+            </script>';
+        }
+        echo "</div>";
+		echo "</div>\n";
+    }
 	else {
 		include('includes/classes/content.class.php');
 		$C = new Content();
