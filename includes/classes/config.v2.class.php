@@ -8,12 +8,14 @@
 
 class Config {
 	
-	public $UserArray = array(), $PermArray, $ImageHost, $StatsDB, $MainDB, $MessageCodes, $SettingsArray, $DefaultSettingsArray, $RecentEps=array();
+	public $UserArray = array(), $PermArray, $ImageHost, $StatsDB, $MainDB, $DevTable, $TokenTable, $MessageCodes, $SettingsArray, $DefaultSettingsArray, $RecentEps=array();
 
 	public function __construct($autoBuildUser = FALSE)
 	{
 		$this->StatsDB = 'mainaftw_stats'; // declare the stats DB
 		$this->MainDB = 'mainaftw_anime'; // Main DB for everything else
+		$this->DevTable 	= 'developers'; // Developers Table
+		$this->TokenTable 	= 'developers_api_sessions'; 	// API tokens Table
 		if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 		{
 			$this->MainDB = 'devadmin_anime'; // Main DB for everything else
@@ -824,5 +826,77 @@ class Config {
 		);                                                                                                                   
 																															 
 		$result = curl_exec($ch);
+	}
+    
+	// creates the token, and prints it back to the screen.
+	public function createToken($Data,$DevArray,$UserID,$foreverToken = FALSE)
+	{
+		function guidv4($data){
+			assert(strlen($data) == 16);
+
+			$data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+			$data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+
+			return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+		}
+		// the hash is a mix of the developer id, the username, the login server and the date, it will give
+		// a unique value that can be input into the database for later use.
+		$hash = guidv4(openssl_random_pseudo_bytes(16));
+						
+		// If the developer gives us the remember option and it is yes, then we need to add a sticky session for this token. 
+		// TODO: Either make the developer in charge of the duration of the hash or assign it to the developer account within the database.
+		if(isset($Data['remember']))
+		{
+			$sticky = 1;
+		}
+		else
+		{
+			$sticky = 0;
+		}
+        // if the token will NEVER expire, it gets a 2, the system only looks for 0 or 1 by default.
+        if($foreverToken == TRUE) {
+            $sticky = 2;
+        }
+		
+		// The following will check the table, if the user was disconnected or the server crashed their token is still on the server and we need to delete before we can 
+		// setup a new one.
+		$query = "SELECT `id` FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `did` = '" . $DevArray['id'] . "' AND `uid` = '" . $UserID . "'";
+		$results = $this->mysqli->query($query); // do the query
+		if(!$results)
+		{
+			// there was an error running the query, no idea what, but the user needs to know what.
+			return array('status' => '500', 'message' => 'There was an error with the Query.');
+		}
+		else
+		{ 
+			$count = mysqli_num_rows($results); // count the rows
+			if($rows > 0)
+			{	
+				// There were rows found, we need to remove them all.
+				$results = $this->mysqli->query("DELETE FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `did` = '" . $DevArray['id'] . "' AND `uid` = '" . $UserID . "'");
+				if(!$results)
+				{
+					// there was an error running the query, no idea what, but the user needs to know what.
+                    return array('status' => '500', 'message' => 'There was an error with the Delete Query.');
+				}
+			}
+			else
+			{
+				// Nothing was found, so nothing to do here.
+			}
+			$query = "INSERT INTO `" . $this->MainDB . "`.`" . $this->TokenTable . "` (`id`, `session_hash`, `date`, `did`, `uid`, `sticky`, `ip`) VALUES (NULL, '" . $hash . "', '" . time() . "', '" . $DevArray['id'] . "', '" . $UserID . "', '" . $sticky . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+			$results = $this->mysqli->query($query);
+			if(!$results)
+			{
+				// there was an error running the query, no idea what, but the user needs to know what.
+				return array('status' => '500', 'message' => 'There was an error with the Insert Query.');
+			}
+			else
+			{
+				// After outputting the hash to the client, we need to log them in to the system (if their server is included in the function
+				//$this->reportResult(200,$hash);
+				return array('status' => '200', 'message' => $hash);
+			}
+		}
 	}
 }
