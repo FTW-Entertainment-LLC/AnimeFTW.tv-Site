@@ -60,9 +60,14 @@ class toplist extends Config {
 		{
 			$count = 25;
 		}
-		$query = "SELECT `site_topseries`.`seriesId`, `site_topseries`.`lastPosition`, `site_topseries`.`currentPosition`, `series`.`fullSeriesName`, `series`.`description`, `series`.`category`, `series`.`ratingLink` FROM `site_topseries`, `series` WHERE `series`.`id`=`site_topseries`.`seriesId` ORDER BY `site_topseries`.`currentPosition` ASC LIMIT 0, " . $this->mysqli->real_escape_string($count);
+        
+		if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+			// it means the content we can show is only unlicensed.
+			$licensed = " AND `license` = 0";
+		}        
+        $query = "SELECT `seriesId`, `lastPosition`, `currentPosition`, `fullSeriesName`, `description`, `category`, `ratingLink` FROM `site_topseries` INNER JOIN `series` ON `series`.`id`=`site_topseries`.`seriesId`" . $licensed . " ORDER BY `currentPosition` ASC LIMIT 0, 25";
 		$result = $this->mysqli->query($query);
-		
+		echo $query . '<br />';
 		if($result)
 		{
 			$returnarray['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
