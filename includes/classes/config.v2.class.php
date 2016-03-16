@@ -899,4 +899,18 @@ class Config {
 			}
 		}
 	}
+    
+    # Function replaces dashes in array keys IF we are required to do so.
+    public function replaceArrayKeyDashes($array) {
+        $returnData = '';
+        foreach($array as $key => $value) {
+            // We check to see if the value is an array, if it is, we loop through everything.
+            if(is_array($value)) {
+                $returnData[$key] = $this->replaceArrayKeyDashes($value);
+            } else {
+                $returnData[str_replace('-', '_', $key)] = $value;
+            }
+        }
+        return $returnData;
+    }
 }

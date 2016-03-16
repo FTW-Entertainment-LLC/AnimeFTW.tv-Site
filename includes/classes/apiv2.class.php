@@ -295,6 +295,10 @@ Class api extends Config {
         // we have to check the data to make sure its an array
         if(is_array($data))
         {
+            // Check if the dev is supposed to have dashes in his keys or not..
+            if($this->DevArray['dashes'] == 1){
+                $data = $this->replaceArrayKeyDashes($data);
+            }
             if($this->Style == 'xml')
             {
                 foreach($data as $column => $value)
@@ -380,7 +384,7 @@ Class api extends Config {
     private function validateDevKey()
     {
         $DevKey = $this->Data['devkey']; // declare the developer key from the dataset
-        $query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license`, `deviceauth` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
+        $query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license`, `deviceauth`, `dashes` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
         
         $result = $this->mysqli->query($query);
         
@@ -403,7 +407,8 @@ Class api extends Config {
                 'uid' => $row['uid'], 
                 'ads' => $row['ads'], 
                 'license' => $row['license'],
-                'deviceauth' => $row['deviceauth']
+                'deviceauth' => $row['deviceauth'],
+                'dashes' => $row['dashes'],
             );
             return TRUE; // Return TRUE to let it continue on.
         }
