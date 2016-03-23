@@ -118,6 +118,14 @@ Class api extends Config {
             'disabled' => '1',
             'description' => 'Display reviews for a specific Series.'
         ),
+        'add-review' => array(
+            'action' => 'add-review',
+            'location' => 'review.v2.class.php', // action location
+            'classname' => 'Review', // class name
+            'method' => 'array_addReview', // method name
+            'disabled' => '1',
+            'description' => 'Add a Review for a specific Series.'
+        ),
         'random-series' => array(
             'action' => 'random-series',
             'location' => 'series.v2.class.php', // action location

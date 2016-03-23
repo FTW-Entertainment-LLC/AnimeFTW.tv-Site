@@ -123,4 +123,47 @@ class Review extends Config {
 		}
 		return $returnarray;
 	}
+    
+    # array_addReview - Add a review to a series.
+    public function array_addReview() {
+        // first, ensure that the id is set, we need this as the series id.
+        if(isset($this->Data['id']) && isset($this->Data['review']) && (isset($this->Data['stars']) && is_numeric($this->Data['stars']))) {
+            // id is set, now we check to see if they have made a review before or not.
+            $query = "SELECT COUNT(*) AS `numrows`, `fullSeriesName` FROM `reviews` INNER JOIN `series` ON `series`.`id`='" . $this->mysqli->real_escape_string($this->Data['id']) . "' WHERE `sid` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "' AND uid = " . $this->UserID;
+            $result = $this->mysqli->query($query);
+            $row = $result->fetch_assoc();
+            if($row['fullSeriesName'] == NULL) {
+                // if the series really doesnt exist.. thats the start of a problem.
+                return array('status' => '400', 'message' => "Required data is missing or incorrect, in the request. Please try again.");
+            } else {
+                if($row['numrows'] > 0) {
+                    // There is a review already for this series, from this user.
+                    return array('status' => '409', 'message' => "There is already a review from this user, for this series.");
+                } else {
+                    // No review exists, let's go through adding one.
+                    $query = "INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->mysqli->real_escape_string($this->UserID) . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['review']) . "', '" . $this->mysqli->real_escape_string($this->Data['stars']) . "');";
+                    $result = $this->mysqli->query($query);
+                    
+                    if(!$result) {
+                        return array('status' => '500', 'message' => "An error processing the request was logged, please try again.");
+                        $SubmittedData = 'Data: ';
+                        foreach($this->Data as $key => $value){
+                            if($key == 'devkey') {
+                                // do nothing..
+                            } else {
+                                $SubmittedData .= "${key} => ${value},";
+                            }
+                        }
+                        $slackData = "ERROR: A review was not added, the data is as follows. " . $SubmittedData;
+                    } else {
+                        return array('status' => '200', 'message' => "Request Successful.");
+                        $slackData = "*New Review Posted to " . stripslashes($row['fullSeriesName']) . "*: \n ```" . $this->Data['review'] . "``` <https://www.animeftw.tv/manage/#reviews| Manage this review.>";
+                    }
+                    $slack = $this->postToSlack($slackData);
+                }
+            }
+        } else {
+            return array('status' => '400', 'message' => "Required data is missing or incorrect, in the request. Please try again.");
+        }
+    }
 }
