@@ -145,7 +145,6 @@ class Review extends Config {
                     $result = $this->mysqli->query($query);
                     
                     if(!$result) {
-                        return array('status' => '500', 'message' => "An error processing the request was logged, please try again.");
                         $SubmittedData = 'Data: ';
                         foreach($this->Data as $key => $value){
                             if($key == 'devkey') {
@@ -155,11 +154,13 @@ class Review extends Config {
                             }
                         }
                         $slackData = "ERROR: A review was not added, the data is as follows. " . $SubmittedData;
+                        $slack = $this->postToSlack($slackData);
+                        return array('status' => '500', 'message' => "An error processing the request was logged, please try again.");
                     } else {
-                        return array('status' => '200', 'message' => "Request Successful.");
                         $slackData = "*New Review Posted to " . stripslashes($row['fullSeriesName']) . "*: \n ```" . $this->Data['review'] . "``` <https://www.animeftw.tv/manage/#reviews| Manage this review.>";
+                        $slack = $this->postToSlack($slackData);
+                        return array('status' => '200', 'message' => "Request Successful.");
                     }
-                    $slack = $this->postToSlack($slackData);
                 }
             }
         } else {
