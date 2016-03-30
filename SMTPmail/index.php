@@ -54,6 +54,7 @@ LIMIT ".$_POST['start'].", 100";
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
 	}
+    echo $query2;
 	$result2  = mysql_query($query2) or die('Error : ' . mysql_error());
 	$count = mysql_num_rows($result2);
 	$i = 0;	
