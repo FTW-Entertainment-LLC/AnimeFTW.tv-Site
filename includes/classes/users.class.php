@@ -20,7 +20,18 @@ class AFTWUser extends Config{
 	{
 		parent::__construct();
 		// this is for the usage of the CDN, all images will be there and if its secure we want to use it.
-		if($_SERVER['SERVER_PORT'] == 443)
+        if(isset($_SERVER['HTTP_CF_VISITOR'])){
+            $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
+            if($decoded['scheme'] == 'http'){
+                // http requests
+                $port = 80;
+            } else {
+                $port = 443;
+            }
+        } else {
+            $port = $_SERVER['SERVER_PORT'];
+        }
+		if($port == 443)
 		{
 			$this->ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
 		}

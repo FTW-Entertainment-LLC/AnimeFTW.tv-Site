@@ -3,7 +3,18 @@ include_once('includes/global_functions.php');
 include_once('includes/classes/pages.class.php');
 include_once('includes/classes/toplist.class.php');
 
-if($_SERVER['SERVER_PORT'] == 443)
+if(isset($_SERVER['HTTP_CF_VISITOR'])){
+    $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
+    if($decoded['scheme'] == 'http'){
+        // http requests
+        $port = 80;
+    } else {
+        $port = 443;
+    }
+} else {
+    $port = $_SERVER['SERVER_PORT'];
+}
+if($port == 443)
 {
 	$Host = 'https://d206m0dw9i4jjv.cloudfront.net';
 }
@@ -35,7 +46,7 @@ if($_SERVER['REMOTE_ADDR'] == '202.156.10.227'){
 	header("location: http://www.google.com");
 }
 
-if($_SERVER['SERVER_PORT'] == '443')
+if($port == '443')
 {
 	$sslornot = 'https';
 }

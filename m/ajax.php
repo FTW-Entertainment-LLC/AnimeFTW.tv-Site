@@ -1,15 +1,25 @@
 <?php
 include("../includes/classes/config.v2.class.php");
-
+if(isset($_SERVER['HTTP_CF_VISITOR'])){
+    $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
+    if($decoded['scheme'] == 'http'){
+        // http requests
+        $port = 80;
+    } else {
+        $port = 443;
+    }
+} else {
+    $port = $_SERVER['SERVER_PORT'];
+}
 
 // if its port 80, lets make sure that its not the registration or login page..
-if((isset($_GET['page']) && $_GET['page'] == 'login') && $_SERVER['SERVER_PORT'] == 80)
+if((isset($_GET['page']) && $_GET['page'] == 'login') && $port == 80)
 {
 	// we push them to the login page.
 	echo '<script>window.location = "https://www.animeftw.tv/m/login";</script>';
 	exit;
 }
-else if((isset($_GET['page']) && $_GET['page'] == 'register') && $_SERVER['SERVER_PORT'] == 80)
+else if((isset($_GET['page']) && $_GET['page'] == 'register') && $port == 80)
 {
 	// push them to the registration page
 	echo '<script>window.location = "https://www.animeftw.tv/m/register";</script>';
@@ -18,7 +28,7 @@ else if((isset($_GET['page']) && $_GET['page'] == 'register') && $_SERVER['SERVE
 else
 {
 	// make sure the app is on port 80 to improve speed.
-	if($_SERVER['SERVER_PORT'] == 443 && ($_GET['page'] != 'register' && $_GET['page'] != 'login') && !isset($_POST['method']))
+	if($port == 443 && ($_GET['page'] != 'register' && $_GET['page'] != 'login') && !isset($_POST['method']))
 	{
 		// redirecting to make sure the app keeps its cool
 		echo '<script>window.location = "http://www.animeftw.tv/m/?page=' . $_GET['page'] . '";</script>';

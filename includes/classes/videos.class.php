@@ -18,7 +18,18 @@ class AFTWVideos extends Config{
 	public function __construct()
 	{
 		parent::__construct();
-		if($_SERVER['SERVER_PORT'] == 443)
+        if(isset($_SERVER['HTTP_CF_VISITOR'])){
+            $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
+            if($decoded['scheme'] == 'http'){
+                // http requests
+                $port = 80;
+            } else {
+                $port = 443;
+            }
+        } else {
+            $port = $_SERVER['SERVER_PORT'];
+        }
+		if($port == 443)
 		{
 			$this->CDNHost = 'https://d206m0dw9i4jjv.cloudfront.net';
 		}
@@ -475,8 +486,19 @@ class AFTWVideos extends Config{
 	{
 		function getUrl()
 		{
-			$url  = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] :  'https://'.$_SERVER["SERVER_NAME"];
-			$url .= ( $_SERVER["SERVER_PORT"] !== 80 ) ? ":".$_SERVER["SERVER_PORT"] : "";
+            if(isset($_SERVER['HTTP_CF_VISITOR'])){
+                $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
+                if($decoded['scheme'] == 'http'){
+                    // http requests
+                    $port = 80;
+                } else {
+                    $port = 443;
+                }
+            } else {
+                $port = $_SERVER['SERVER_PORT'];
+            }
+			$url  = @( $port != '443' ) ? 'http://'.$_SERVER["SERVER_NAME"] :  'https://'.$_SERVER["SERVER_NAME"];
+			$url .= ( $port !== 80 ) ? ":".$port : "";
 			$url .= $_SERVER["REQUEST_URI"];
 			return $url;
 		}

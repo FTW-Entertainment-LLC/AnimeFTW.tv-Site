@@ -19,11 +19,11 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 			exit;
 		}
 	}
-	if($_SERVER['SERVER_PORT'] == 80 && $profileArray[14] == 1 && $profileArray[2] != 3)
+	if($port == 80 && $profileArray[14] == 1 && $profileArray[2] != 3)
 	{
 		header('location: https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	}
-	if($_SERVER['PHP_SELF'] == '/videos.php' && $_SERVER['SERVER_PORT'] == 443 && ($profileArray[2] == 3 || $profileArray[13] == 0))
+	if($_SERVER['PHP_SELF'] == '/videos.php' && $port == 443 && ($profileArray[2] == 3 || $profileArray[13] == 0))
 	{
 		header('location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	}

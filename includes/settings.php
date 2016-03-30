@@ -11,7 +11,7 @@ require ( 'functions.php' );				// - the functions
 | System variables needed by the application
 |
 */
-define ( "HOSTNAME", "10.151.1.10" );			// - hostname - nedded to access the database
+define ( "HOSTNAME", "10.150.14.10" );			// - hostname - nedded to access the database
 define ( "DATABASE", "mainaftw_anime" );				// - database name - the name of your mysql database
 define ( "DBUSER", "mainaftw_anime" );				// - database user - what user should we use to access the database
 define ( "DBPASS", "26V)YPh:|IJG" );			// - database password - what password should we use to access the database
