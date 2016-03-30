@@ -46,6 +46,11 @@ LIMIT ".$_POST['start'].", 100";
 	{
 		$query2 = "SELECT `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100 GROUP BY `developers_api_sessions`.`uid`";
 	}
+	else if($_POST['update-type'] == 5)
+	{
+        $twoWeeksAgo = time()-(14*24*60*60);
+		$query2 = "SELECT `Username`, `Email` FROM `users` WHERE `Active` = 'yes' AND `lastActivity` >= ${twoWeeksAgo} LIMIT ".$_POST['start'].", 100 GROUP BY `ID`";
+	}
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
 	}
@@ -448,6 +453,7 @@ echo $count;
 	<option value="2"<? if($level == 2){echo ' selected="selected"';}?>>Admin Notification</option>
 	<option value="3"<? if($level == 3){echo ' selected="selected"';}?>>Christmas Update</option>
 	<option value="4"<? if($level == 4){echo ' selected="selected"';}?>>Kodi Addon Update</option>
+	<option value="5"<? if($level == 5){echo ' selected="selected"';}?>>Active Users (2 weeks)</option>
 </select></td></tr>`
 <tr><td>Message :</td><td><textarea name="message" rows="8" cols="50" id="message"><? if(isset($msgBody)){echo $msgBody;}?></textarea></td></tr>
 <tr><td></td><td><input type="submit" value=" Send " /></td></tr>
