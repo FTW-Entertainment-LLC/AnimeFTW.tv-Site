@@ -49,7 +49,7 @@ LIMIT ".$_POST['start'].", 100";
 	else if($_POST['update-type'] == 5)
 	{
         $twoWeeksAgo = time()-(14*24*60*60);
-		$query2 = "SELECT `Username`, `Email` FROM `users` WHERE `Active` = 'yes' AND `lastActivity` >= ${twoWeeksAgo} LIMIT ".$_POST['start'].", 100 GROUP BY `ID`";
+		$query2 = "SELECT `Username`, `Email` FROM `users` WHERE `Active` = 'yes' AND `lastActivity` >= ${twoWeeksAgo} LIMIT ".$_POST['start'].", 100";
 	}
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
