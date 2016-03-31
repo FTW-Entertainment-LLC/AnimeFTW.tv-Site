@@ -1871,38 +1871,25 @@ HDOC;
 	
 	private function seriesTopSeriesRank($SeriesArray)
 	{
-		$query = "SELECT lastPosition, currentPosition FROM site_topseries WHERE seriesId='".$seriesId."' ORDER BY currentPosition ASC ";
+		$query = "SELECT lastPosition, currentPosition FROM site_topseries WHERE seriesId='".$SeriesArray[0]."' ORDER BY currentPosition ASC ";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
 		$count = mysql_num_rows($result);
 		$lastPosition = $row['lastPosition'];
 		$currentPosition = $row['currentPosition'];
 		$singleRank = '';
-		if($SeriesArray['OVA'] == 0)
-		{
-			if($SeriesArray['moviesOnly'] == 0)
-			{
-				$filmType = 'anime';
-			}
-			else {
-				$filmType = 'movies';
-			}
-		}
-		else {
-			$filmType = 'ovas';
-		}
 		
 		if($currentPosition < $lastPosition)
 		{
-			$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
+			$Rank = $currentPosition.'&nbsp;<img src="' . $this->CDNHost . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
 		}
 		else if ($currentPosition == $lastPosition)
 		{
-			$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
+			$Rank = $currentPosition.'&nbsp;<img src="' . $this->CDNHost . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
 		}
 		else
 		{
-			$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
+			$Rank = $currentPosition.'&nbsp;<img src="' . $this->CDNHost . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
 		}
 
 		if($count < 1)
@@ -1917,7 +1904,7 @@ HDOC;
 			}
 			else
 			{
-				$singleRank .= '<a href="/' . $filmType . '/' . $SeriesArray['seoname'] . '/">' . stripslashes($SeriesArray['fullSeriesName']) . '</a> is ranked #<b>'.$Rank."</b> on AnimeFTW.tv\n";
+				$singleRank .= '<a href="/anime/' . $SeriesArray[2] . '/">' . stripslashes($SeriesArray[3]) . '</a> is ranked #<b>'.$Rank."</b> on AnimeFTW.tv\n";
 			}
 		}		
 		return $singleRank;
