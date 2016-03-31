@@ -48,24 +48,28 @@ class toplist extends Config {
         $this->buildCategories();
         
         $returnarray = array();
-        if($count == NULL && isset($_GET['count']))
-        {
-            $count = $_GET['count'];
-        }
-        else if($count != NULL && !isset($_GET['count']))
-        {
-            $count = $count;
-        }
-        else
-        {
-            $count = 25;
+        if(isset($this->Data['count'])){
+            $count = $this->Data['count'];
+        } else {
+            if($count == NULL && isset($_GET['count']))
+            {
+                $count = $_GET['count'];
+            }
+            else if($count != NULL && !isset($_GET['count']))
+            {
+                $count = $count;
+            }
+            else
+            {
+                $count = 25;
+            }
         }
         
         if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
             // it means the content we can show is only unlicensed.
             $licensed = " AND `license` = 0";
         }        
-        $query = "SELECT `seriesId`, `lastPosition`, `currentPosition`, `fullSeriesName`, `description`, `category`, `ratingLink` FROM `site_topseries` INNER JOIN `series` ON `series`.`id`=`site_topseries`.`seriesId`" . $licensed . " ORDER BY `currentPosition` ASC LIMIT 0, 25";
+        $query = "SELECT `seriesId`, `lastPosition`, `currentPosition`, `fullSeriesName`, `description`, `category`, `ratingLink` FROM `site_topseries` INNER JOIN `series` ON `series`.`id`=`site_topseries`.`seriesId`" . $licensed . " ORDER BY `currentPosition` ASC LIMIT 0, " . $this->mysqli->real_escape_string($count);
         $result = $this->mysqli->query($query);
         
         if($result)
