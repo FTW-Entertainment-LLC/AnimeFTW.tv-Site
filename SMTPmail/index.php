@@ -11,7 +11,15 @@ else {$start = $_GET['start'];}
 
 if(isset($_POST)){$remember = TRUE;}
 else{$remember = FALSE;}
-
+if((isset($_POST['update-type']) && $_POST['update-type'] == 5) || (isset($_GET['type']) && $_GET['type'] == 5))
+{
+    if($_POST['option1'] == ''){
+        $twoWeeksAgo = time()-(14*24*60*60);
+    } else {
+        $twoWeeksAgo = $_POST['option1'];
+    }
+    $option1 = $twoWeeksAgo;
+}
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	if(!isset($_POST['update-type'])){$level = 0;}
@@ -46,15 +54,13 @@ LIMIT ".$_POST['start'].", 100";
 	{
 		$query2 = "SELECT `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100 GROUP BY `developers_api_sessions`.`uid`";
 	}
-	else if($_POST['update-type'] == 5)
-	{
-        $twoWeeksAgo = time()-(14*24*60*60);
-		$query2 = "SELECT `Username`, `Email` FROM `users` WHERE `Active` = 'yes' AND `lastActivity` >= ${twoWeeksAgo} LIMIT ".$_POST['start'].", 100";
+	else if($_POST['update-type'] == 5) {
+		$query2 = "SELECT `Username`, `Email` FROM `users` WHERE `Active` = '1' AND `lastActivity` >= ${twoWeeksAgo} ORDER BY `ID` LIMIT ".$_POST['start'].", 100";
+        echo $query2;
 	}
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
 	}
-    echo $query2;
 	$result2  = mysql_query($query2) or die('Error : ' . mysql_error());
 	$count = mysql_num_rows($result2);
 	$i = 0;	
@@ -74,7 +80,7 @@ LIMIT ".$_POST['start'].", 100";
 		$headers .= "To: $toEmail\r\n";
 		$headers .= "From: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
 		$headers .= "Reply-To: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
-		if($_POST['update-type'] == '1' || $_POST['update-type'] == '2' || $_POST['update-type'] == '4')
+		if($_POST['update-type'] == '1' || $_POST['update-type'] == '2' || $_POST['update-type'] == '4' || $_POST['update-type'] == '5')
 		{
 			# -=-=-=- TEXT EMAIL PART
 			$body .= "--$mime_boundary\r\n";
@@ -399,7 +405,7 @@ LIMIT ".$_POST['start'].", 100";
 		//away we go!
 		//mail($to, $subject, $body, $headers);
 		$SMTPMail = new SMTPClient ($SmtpServer, $SmtpPort, $SmtpUser, $SmtpPass, $from, $to, $subject, $headers, $body);
-		//$SMTPChat = $SMTPMail->SendMail();
+		$SMTPChat = $SMTPMail->SendMail();
 		$body = "";
 		if($count == 100){
 			$redirect = '<script>
@@ -437,6 +443,7 @@ if(isset($redirect))
 <form id="myform" name="myform" method="post" action="?start=<?=($start+100);?>">
 <input type="hidden" name="start" value="<?=$start;?>" />
 <input type="hidden" name="auto" value="on" />
+<input type="hidden" name="option1" value="<?=$option1;?>" />
 <?php
 $now = date("r");
 echo "Script Start: {$now} <br />\n";
