@@ -547,7 +547,7 @@ class Episode extends Config {
     }
     
     private function findCurrentVideoLocation($eid=null) {
-        if($id == null){
+        if($eid == null){
             // the eid is not set, so we set it for them
             $eid = $this->Data['id'];
         }
