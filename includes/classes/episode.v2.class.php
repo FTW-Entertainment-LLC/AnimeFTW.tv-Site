@@ -266,7 +266,7 @@ class Episode extends Config {
 							$finalresults['results'][$i][$key] = $value;
 						}
 					}
-					$currentPositionArray = $this->findCurrentVideoLocation();
+					$currentPositionArray = $this->findCurrentVideoLocation($row['id']);
 					$finalresults['results'][$i]['video-position'] = $currentPositionArray['position'];
 					$finalresults['results'][$i]['last-watched'] = $currentPositionArray['last-watched'];
 					$finalresults['results'][$i]['total-comments'] = $Comment->bool_totalComments($row['id']);
@@ -546,8 +546,12 @@ class Episode extends Config {
 		}
 	}
 	
-	private function findCurrentVideoLocation() {
-		$query = "SELECT `time`, `updated`, `max` FROM `" . $this->MainDB . "`.`episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
+	private function findCurrentVideoLocation($eid=null) {
+        if($id == null){
+            // the eid is not set, so we set it for them
+            $eid = $this->Data['id'];
+        }
+		$query = "SELECT `time`, `updated`, `max` FROM `" . $this->MainDB . "`.`episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = '" . $this->mysqli->real_escape_string($eid) . "'";
 		$result = $this->mysqli->query($query);
 		
 		// add the series specific info to the output
