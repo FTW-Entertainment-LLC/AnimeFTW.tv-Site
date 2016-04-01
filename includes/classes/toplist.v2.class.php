@@ -42,7 +42,7 @@ class toplist extends Config {
         }
     }
     
-    public function array_showTopAnime($count = NULL)
+    public function array_showTopAnime($count = NULL,$start = NULL)
     {
         // build the cateogory listing.
         $this->buildCategories();
@@ -51,17 +51,23 @@ class toplist extends Config {
         if(isset($this->Data['count'])){
             $count = $this->Data['count'];
         } else {
-            if($count == NULL && isset($_GET['count']))
-            {
+            if($count == NULL && isset($_GET['count'])) {
                 $count = $_GET['count'];
-            }
-            else if($count != NULL && !isset($_GET['count']))
-            {
+            } else if($count != NULL && !isset($_GET['count'])) {
                 $count = $count;
-            }
-            else
-            {
+            } else {
                 $count = 25;
+            }
+        }
+        if(isset($this->Data['start'])){
+            $start = $this->Data['start'];
+        } else {
+            if($start == NULL && isset($_GET['start'])) {
+                $start = $_GET['count'];
+            } else if($start != NULL && !isset($_GET['start'])) {
+                $start = $start;
+            } else {
+                $start = 0;
             }
         }
         
@@ -69,7 +75,7 @@ class toplist extends Config {
             // it means the content we can show is only unlicensed.
             $licensed = " AND `license` = 0";
         }        
-        $query = "SELECT `seriesId`, `lastPosition`, `currentPosition`, `fullSeriesName`, `description`, `category`, `ratingLink` FROM `site_topseries` INNER JOIN `series` ON `series`.`id`=`site_topseries`.`seriesId`" . $licensed . " ORDER BY `currentPosition` ASC LIMIT 0, " . $this->mysqli->real_escape_string($count);
+        $query = "SELECT `seriesId`, `lastPosition`, `currentPosition`, `fullSeriesName`, `description`, `category`, `ratingLink` FROM `site_topseries` INNER JOIN `series` ON `series`.`id`=`site_topseries`.`seriesId`" . $licensed . " ORDER BY `currentPosition` ASC LIMIT " . $this->mysqli->real_escape_string($start) . ", " . $this->mysqli->real_escape_string($count);
         $result = $this->mysqli->query($query);
         
         if($result)
