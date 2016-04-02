@@ -395,6 +395,11 @@ class Episode extends Config {
         $where = " AND `episode`.`Movie` = 1";
         $orderBy = "`series`.`fullSeriesName` ASC, `episode`.`epnumber` DESC";
         $columns = "`episode`.`id`, `series`.`fullSeriesName`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`";
+        $addonQuery = '';
+		if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+            // it means the content we can show is only unlicensed.
+			$addonQuery = " AND `license` = 0";
+		}
         // limit the query by a certain amount
         if(isset($this->Data['count']) && is_numeric($this->Data['count']))
         {
@@ -467,7 +472,7 @@ class Episode extends Config {
         $columns .= ", `sprites`.`width` as spriteWidth, `sprites`.`height` as spriteHeight, `sprites`.`totalWidth` as spriteTotalWidth, `sprites`.`rate` as spriteRate, `sprites`.`count` as spriteCount";
             
         $this->mysqli->query("SET NAMES 'utf8'");
-        $query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`" . $spritesJoin . ", `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
+        $query = "SELECT " . $columns . " FROM `" . $this->MainDB . "`.`episode`" . $spritesJoin . ", `" . $this->MainDB . "`.`series` WHERE `series`.`id`=`episode`.`sid`" . $where . $addonQuery . " ORDER BY " . $orderBy . " LIMIT $startpoint, $count";
         //execute the query
         $result = $this->mysqli->query($query);
             
