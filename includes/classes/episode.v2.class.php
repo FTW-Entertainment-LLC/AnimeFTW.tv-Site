@@ -85,7 +85,7 @@ class Episode extends Config {
                             $results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
                         }
                     }
-                    else if($key == 'seriesName' || $key == 'sid')
+                    else if($key == 'seriesName')
                     {
                         // we don't need this..
                     }
