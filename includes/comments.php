@@ -1,6 +1,6 @@
 <?php
-	require_once("/home/mainaftw/public_html/includes/classes/config.v2.class.php");
-	 $C = new Config();
+require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/classes/config.v2.class.php");
+$C = new Config();
 
 echo '<div align="center" style="padding-right:80px;">';
 echo '	<ol id="update" class="timeline">';
