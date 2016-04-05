@@ -20,25 +20,31 @@ class Sessions extends Config {
 		$this->UserArray = $input;
 	}
 	
-	public function setUserSessionData($id,$username,$rememberme)
-	{
+	public function setUserSessionData($id,$username,$rememberme) {
 		// We need to set the following cookies to ensure that we are secure in what we do.
 		// cookies:
-		//	au - id of the user
-		//  hh - hash - shared secret, uid and mktime
-		//  vd - hash based on the user agent (just the browser) and the username
-		$randomkey = $this->generateRandomString(200);
-		$vdkey = MD5($this->getOS($_SERVER['HTTP_USER_AGENT']) . $username . "dcb93b6e8d4fdcc8be4bc95e61ee1a28" . time());
+		//	ii - id of the user
+		//  au - authorization hash, matches up to the same field in the database.
+		//  st - session token of the user, matches up to the database.
+        $userDetails = $this->detectUserAgent();
+        
+        $authorizationToken = $this->generateUUIDV4(openssl_random_pseudo_bytes(16));
+        $sessionToken = $this->generateUUIDV4(openssl_random_pseudo_bytes(16));
+        
 		// set the sessions
-		setcookie("au", $id, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-		setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-		setcookie("vd", $vdkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+		setcookie("0ii", $id, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+		setcookie("0au", $authorizationToken, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
+		setcookie("0st", $sessionToken, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
 		// set the information in the database.
-		$query = "INSERT INTO `" . $this->MainDB . "`.`user_session` (`id`, `added`, `updated`, `uid`, `agent`, `validate`, `ip`) VALUES ('" . mysql_real_escape_string($vdkey) . "', '" . time() . "', '" . time() ."', '" . $id . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "', '" . mysql_real_escape_string($randomkey) . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
+		$query = "INSERT INTO `" . $this->MainDB . "`.`user_session` (`id`, `added`, `updated`, `uid`, `agent`, `validate`, `ip`) VALUES ('" . mysql_real_escape_string($sessionToken) . "', '" . time() . "', '" . time() ."', '" . $id . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "', '" . mysql_real_escape_string($randomkey) . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
+		$query2 = "INSERT INTO `" . $this->MainDB . "`.`user_authorization` (`id`, `uid`, `sid`, `update`, `browser`, `platform`, `version`, `ip`) VALUES ('" . $authorizationToken . "', '" . $id . "', '" . $sessionToken ."', '" . time() . "', '" . mysql_real_escape_string($userDetails['browser']) . "', '" . mysql_real_escape_string($userDetails['platform']) . "', '" . mysql_real_escape_string($userDetails['version']) . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
 		
 		$result = mysql_query($query);
-		if(!$result)
-		{
+		if(!$result) {
+			echo 'Error processing the update ' . mysql_error();
+		}
+        $result = mysql_query($query2);
+		if(!$result) {
 			echo 'Error processing the update ' . mysql_error();
 		}
 	}
@@ -53,83 +59,79 @@ class Sessions extends Config {
 	public function logoutOfSession()
 	{
 		// remove it from the database.
-		$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `validate` = '" . mysql_real_escape_string($_COOKIE['hh']) . "'";
+		$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['st']) . "' AND `uid` = '" . $this->UserArray[1] . "'";
 		$result = mysql_query($query);
-		if(!$result)
-		{
+		$query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `sid` = '" . mysql_real_escape_string($_COOKIE['st']) . "'";
+		$result2 = mysql_query($query2);
+		if(!$result || !$result2) {
 			echo 'Error processing the update ' . mysql_error();
 			echo $query;
-		}
-		else
-		{
+		} else {
 			// unset the values first.
+			unset($_COOKIE['ii']);
 			unset($_COOKIE['au']);
-			unset($_COOKIE['hh']);
-			unset($_COOKIE['vd']);
+			unset($_COOKIE['st']);
 			// set the sessions
+			setcookie("ii", "", time() - 3600, "/");
 			setcookie("au", "", time() - 3600, "/");
-			setcookie("hh", "", time() - 3600, "/");
-			setcookie("vd", "", time() - 3600, "/");
+			setcookie("st", "", time() - 3600, "/");
 			// redirect them to the login page
 			header("location: /login");
 		}
 	}
 	
-	public function removeSession($Type=0,$allSessions = false)
-	{
-		if(($this->UserArray[2] == 1 || $this->UserArray[2] == 2) || $this->UserArray[1] == $_GET['uid'])
-		{
-			if($Type == 0)
-			{
+	public function removeSession($Type=0,$allSessions = false) {
+		if(($this->UserArray[2] == 1 || $this->UserArray[2] == 2) || $this->UserArray[1] == $_GET['uid']) {
+			if($Type == 0) {
 				// desktop session
-				if($allSessions != false)
-				{
+				if($allSessions != false) {
 					// We will want to remove ALL sessions of the requested.
-					$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `uid` = " . mysql_real_escape_string($_GET['uid']);
+					$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `uid` = " . mysql_real_escape_string($_GET['uid']) . "'";
 					
-					if($_GET['uid'] == $this->UserArray[1])
-					{
+					if($_GET['uid'] == $this->UserArray[1]) {
 						// if the user id is the same as the logged in user, we want to ensure that the existing session is not logged out.
-						$queryAddon = " AND `id` != " . mysql_real_escape_string($_COOKIE['vd']);
-					}
-					else
-					{
+						$queryAddon = " AND `id` != " . mysql_real_escape_string($_COOKIE['st']);
+					} else {
 						// nope, give em hell and banish all of the sessions.
 						$queryAddon = "";
 					}
-				}
-				else
-				{
+                    
+                    // Also clean up all of the authorization keys
+                    $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `uid` = '" . mysql_real_escape_string($_GET['uid']) . "'";
+                    $query2 = $query2 . $queryAddon;
+                    $result2 = mysql_query($query2);
+				} else {
 					// only one session.
 					$query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_GET['id']) . "'";
 				}
-			}
-			else
-			{
+                $query = $query . $queryAddon;
+                
+                // results
+                $result = mysql_query($query);
+                if(!$result) {
+                    echo 'Error in executing the Query.';
+                    exit;
+                }
+                echo 'Success';
+			} else {
 				// api sessions
-				if($allSessions != false)
-				{
+				if($allSessions != false) {
 					// We will want to remove ALL sessions of the requested, since this is not a current session thing, we can remove all, all the time.
 					$query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `uid` = " . mysql_real_escape_string($_GET['uid']);
-				}
-				else
-				{
+				} else {
 					// only one session.
 					$query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `id` = '" . mysql_real_escape_string($_GET['id']) . "'";
 				}
-			}
 			
-			// result
-			$result = mysql_query($query);
-			if(!$result)
-			{
-				echo 'Error in executing the Query.';
-				exit;
+                // result
+                $result = mysql_query($query);
+                if(!$result) {
+                    echo 'Error in executing the Query.';
+                    exit;
+                }
+                echo 'Success';
 			}
-			echo 'Success';
-		}
-		else
-		{
+		} else {
 			echo 'PERMISSION DENIED.';
 		}
 	}

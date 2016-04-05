@@ -136,35 +136,97 @@ class Config {
         else
         {            
             // we need to check if the token and authentication are setup correctly. (site token)
-            $query = "SELECT id as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . $this->mysqli->real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->mysqli->real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . $this->mysqli->real_escape_string($_COOKIE['hh']) . "'";
-            
-            $result = $this->mysqli->query($query);
-            $count = mysqli_num_rows($result);
-            
-            if($count > 0) {
-                $query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `updated` = " . time() . " WHERE `id` = '" . $this->mysqli->real_escape_string($_COOKIE['vd']) . "' AND `uid` = '" . $this->mysqli->real_escape_string($_COOKIE['au']) . "' AND `validate` = '" . $this->mysqli->real_escape_string($_COOKIE['hh']) . "'";
+            if(!isset($_COOKIE['0ii']) || !isset($_COOKIE['0au']) || !isset($_COOKIE['0st'])) {
+                $count = 0;
+            } else {
+                // build out the cookies.
+                $authorizationId = $_COOKIE['0au'];
+                $sessionId = $_COOKIE['0st'];
+                $userCookieId = $_COOKIE['0ii'];
+                
+                // initial count query
+                $query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . $this->mysqli->real_escape_string($sessionId) . "' AND `uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
                 $result = $this->mysqli->query($query);
+                $count = $result->fetch_assoc();            
+            }
+            // There is an active token for this user, lets proceed.
+            if($count > 0)
+            {
+                // unset the previous variables.
                 unset($query);
                 unset($result);
-                $query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($_COOKIE['au']) . "'";
+                // First thing we will do is validate the authorization token, there must be one prior to moving forward.
+                $query = "SELECT * FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . $this->mysqli->real_escape_string($authorizationId) . "' AND `uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
                 $result = $this->mysqli->query($query);
-                $row = $result->fetch_assoc();
-                if($remote == FALSE)
-                {
-                    // we want to set the validate cookie each time we refresh, this helps prevent access to accounts, and should mitigate XSS attacks as soon as you change the page.
-                    $randomkey = $this->generateRandomString(200);
-                    setcookie("hh", $randomkey, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
-                    $query = "UPDATE `" . $this->MainDB . "`.`user_session` SET `validate` = '" . $randomkey . "' WHERE `id` = '" .  $this->mysqli->real_escape_string($_COOKIE['vd']) . "'";
-                    $this->mysqli->query($query);
+                
+                if(!$result) {
+                    echo "There was an error selecting the authorization token.";
+                    exit;
                 }
-                $UserID = $row['ID'];
-            }
-            else {
+                $row = $result->fetch_assoc();
+                
+                // we need to perform a few items to make sure this is a clean session.
+                // Ensure the auth settings match, if they do not, compare what the changes are.
+                // If the changes are no substantial, then we will let them proceed while updating their profile.
+                // This ensures that users can take laptops to different networks without too many issues.
+                // it also helps us to avoid constantly changing auth hashes which cause issues down the line.
+                
+                // pull down the user's information.
+                $userDetails = $this->detectUserAgent();
+                
+                // contant to default open.
+                $continue = FALSE;
+                $changed = 0;
+                if($row['ip'] != $_SERVER['REMOTE_ADDR'] && $row['browser'] == $userDetails['browser'] && $row['platform'] == $userDetails['platform'] && $row['version'] == $userDetails['version']) {
+                    // First check is if the IP changed, but everything else was the same.
+                    $changed = 1;
+                    $continue = TRUE;
+                } else if($row['ip'] == $_SERVER['REMOTE_ADDR'] && $row['browser'] == $userDetails['browser'] && $row['platform'] == $userDetails['platform'] && $row['version'] != $userDetails['version']) {
+                    // If the only change is the version, then they can proceed.
+                    $changed = 2;
+                    $continue = TRUE;
+                } else if($row['ip'] == $_SERVER['REMOTE_ADDR'] && $row['browser'] == $userDetails['browser'] && $row['platform'] == $userDetails['platform'] && $row['version'] == $userDetails['version']) {
+                    // No changes!
+                    $continue = TRUE;
+                } else {
+                    // We do not allow any other security changes to be made, so they will be kicked out.
+                }
+                
+                // Check if the continue option has been changed to true.
+                if($continue == TRUE) {
+                    // They have access, first, update the authorization token so we don't keep having to see the same changes.
+                    if($changed == 1) {
+                        // The ip changed.
+                        $query = "UPDATE `" . $this->MainDB . "`.`user_authorization` SET `ip` = '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "' WHERE `id` = '" . $this->mysqli->real_escape_string($authorizationId) . "' AND `uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
+                        $result = $this->mysqli->query($query);
+                    } else if($changed == 2) {
+                        // The version of the browser changed.
+                        $query = "UPDATE `" . $this->MainDB . "`.`user_authorization` SET `version` = '" . $this->mysqli->real_escape_string($userDetails['version']) . "' WHERE `id` = '" . $this->mysqli->real_escape_string($authorizationId) . "' AND `uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
+                        $result = $this->mysqli->query($query);
+                    } else {
+                        // no other changes are to be made.
+                    }
+  
+                    // update the token and user profile, so that the user knows the last time this session was used.              
+                    $query = "UPDATE `" . $this->MainDB . "`.`user_session` INNER JOIN `" . $this->MainDB . "`.`users` ON (`users`.`ID`=`user_session`.`uid`) SET `user_session`.`updated` = '" . time() . "', `users`.`lastActivity`='" . time() . "' WHERE `user_session`.`id` = '" . $this->mysqli->real_escape_string($sessionId) . "' AND `user_session`.`uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
+                    $result = $this->mysqli->query($query);
+                    unset($query);
+                    unset($result);
+                    
+                    // start building the user details
+                    $query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($userCookieId) . "'";
+                    $result = $this->mysqli->query($query);
+                    $row = $result->fetch_assoc();
+                    $UserID = $row['ID'];
+                } else {
+                    // The session is not valid, they will see no session data.
+                    $UserID = NULL;
+                }
+            } else {
                 $UserID = NULL;
-            }            
+            }
         }
-        if($UserID != NULL)
-        {
+        if($UserID != NULL) {
             
             $this->UserArray['logged-in'] .= 1;
             foreach($row AS $key => $value)
@@ -174,9 +236,7 @@ class Config {
             $this->UserArray['FancyUsername'] .= $this->string_fancyUsername(0,$row['Username'],$row['Active'],$row['Level_access'],$row['advancePreffix'],$row['advanceImage']);
             //they clear the authentication process...
             $this->mysqli->query('UPDATE `' . $this->MainDB . '`.`users` SET `lastActivity` = \''.time().'\' WHERE ID=\'' . $this->mysqli->real_escape_string($UserID) . '\'');
-        }
-        else 
-        {
+        } else {
             // user is not logged in, let's reject everything.
                 $this->UserArray['logged-in'] .= 0;
         }
@@ -595,6 +655,81 @@ class Config {
         $randomString = substr(str_shuffle(MD5(microtime())), 0, $length);
         return $randomString;
     }
+	
+    public static function detectUserAgent() { 
+        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+        
+        // options
+		$os_platform    =   "Unknown OS Platform";
+		$os_array       =   array (
+			'/windows nt 10/i'     	=>  'Windows 10',
+			'/windows nt 6.3/i'     =>  'Windows 8.1',
+			'/windows nt 6.2/i'     =>  'Windows 8',
+			'/windows nt 6.1/i'     =>  'Windows 7',
+			'/windows nt 6.0/i'     =>  'Windows Vista',
+			'/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
+			'/windows nt 5.1/i'     =>  'Windows XP',
+			'/windows xp/i'         =>  'Windows XP',
+			'/windows nt 5.0/i'     =>  'Windows 2000',
+			'/windows me/i'         =>  'Windows ME',
+			'/win98/i'              =>  'Windows 98',
+			'/win95/i'              =>  'Windows 95',
+			'/win16/i'              =>  'Windows 3.11',
+			'/macintosh|mac os x/i' =>  'Mac OS X',
+			'/mac_powerpc/i'        =>  'Mac OS 9',
+			'/linux/i'              =>  'Linux',
+			'/ubuntu/i'             =>  'Ubuntu',
+			'/iphone/i'             =>  'iPhone',
+			'/ipod/i'               =>  'iPod',
+			'/ipad/i'               =>  'iPad',
+			'/android/i'            =>  'Android',
+			'/blackberry/i'         =>  'BlackBerry',
+			'/webos/i'              =>  'Mobile',
+			'/cros/i'               =>  'ChromeOS',
+		);
+        $browser        =   "Unknown Browser";
+		$browser_array  =   array (
+			'/msie/i'       =>  'Internet Explorer',
+			'/trident/i'    =>  'Internet Explorer',
+			'/firefox/i'    =>  'Firefox',
+			'/safari/i'     =>  'Safari',
+			'/chrome/i'     =>  'Chrome',
+			'/opera/i'      =>  'Opera',
+			'/netscape/i'   =>  'Netscape',
+			'/maxthon/i'    =>  'Maxthon',
+			'/konqueror/i'  =>  'Konqueror',
+			'/mobile/i'     =>  'Handheld Browser',
+			'/palemoon/i'	=>	'Palemoon'
+		);
+
+        // Identify the browser. Check Opera and Safari first in case of spoof. Let Google Chrome be identified as Safari. 
+        foreach($browser_array as $regex => $value) {
+			if(preg_match($regex, $userAgent)){
+				$browser = $value;
+			}
+		}
+
+        // What version? 
+        if (preg_match('/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/', $userAgent, $matches)) { 
+            $version = $matches[1]; 
+        } else { 
+            $version = 'unknown'; 
+        } 
+
+        // Running on what platform?
+        foreach($os_array as $regex => $value) {
+			if(preg_match($regex, $userAgent)) {
+				$platform = $value;
+			}
+		}
+
+        return array ( 
+            'browser'   => $browser, 
+            'version'   => $version, 
+            'platform'  => $platform, 
+            'userAgent' => $userAgent 
+        ); 
+    }
     
     public function getOS($agent)
     {
@@ -842,17 +977,9 @@ class Config {
     // creates the token, and prints it back to the screen.
     public function createToken($Data,$DevArray,$UserID,$foreverToken = FALSE)
     {
-        function guidv4($data){
-            assert(strlen($data) == 16);
-
-            $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
-            $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
-
-            return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-        }
         // the hash is a mix of the developer id, the username, the login server and the date, it will give
         // a unique value that can be input into the database for later use.
-        $hash = guidv4(openssl_random_pseudo_bytes(16));
+        $hash = $this->generateUUIDV4(openssl_random_pseudo_bytes(16));
                         
         // If the developer gives us the remember option and it is yes, then we need to add a sticky session for this token. 
         // TODO: Either make the developer in charge of the duration of the hash or assign it to the developer account within the database.
@@ -923,5 +1050,14 @@ class Config {
             }
         }
         return $returnData;
+    }
+    
+    public static function generateUUIDV4($data) {
+        assert(strlen($data) == 16);
+
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 }
