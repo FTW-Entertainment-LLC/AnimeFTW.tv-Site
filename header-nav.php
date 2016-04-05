@@ -10,16 +10,7 @@ else {
 	$logo = "<a href=\"/\" title=\"".$PageTitle."\"><img src=\"/images/new-logo.png\" alt=\"".$PageTitle."\" style=\"border:0px;\" title=\"AnimeFTW.tv, your home for High Quality Streaming Anime\" /></a>";
 }
 //$logo = "<a href=\"http://www.animeftw.tv/forums/global-announcements/topic-2537/s-0\" title=\"".$PageTitle."\"><img src=\"/images/birthday/AnimeFTW_Birthday_Logo.png\" alt=\"".$PageTitle."\" style=\"border:0px;\" title=\"AnimeFTW.tv is 4 Years old this Week!\" /></a>";
-	
-    echo '
-<div style="background:#ff6868;color:white;font-size:14px;" align="center">
-Welcome Back!<br />
-If you are seeing this, then we have recovered from the DDoS attack that saw us down for 30 hours.<br />
-We have made many changes to the site to handle the new DDoS mitigation, and will be following up with a news post with more details.<br />
-If you find a bug, PLEASE post it in the <a href="/forums">forums</a> this will help us fix anything as we adapt to the new platform.<br />
-Thank you, AnimeFTW.tv Staff.
-</div>';
-echo "	<table cellpadding='0' cellspacing='0' width='100%'>\n	<tr>\n";
+	echo "	<table cellpadding='0' cellspacing='0' width='100%'>\n	<tr>\n";
 	echo "	<td class='header-bg'>\n";
 	echo "		<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n	<tr>\n";
 	echo "			<td class='header-logo' style='padding-top: 9px;'>\n".$logo."</td>\n";

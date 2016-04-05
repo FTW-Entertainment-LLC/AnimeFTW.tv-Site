@@ -44,6 +44,7 @@ class AFTWUserNav extends Config {
 			
 			include('notifications.class.php');
 			$N = new AFTWNotifications();
+            $N->connectProfile($this->UserArray);
 			echo '
 					   <a href="#" id="linkglobal"><img src="/images/new-icons/notifications_new.png" alt="" title="View your Site Notifications" height="18px" /><span id="notesprite">' . $N->ShowSprite() . '</span></a>
 							<ul style="display: none;" id="ulglobal">
