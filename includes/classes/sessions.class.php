@@ -59,22 +59,22 @@ class Sessions extends Config {
     public function logoutOfSession()
     {
         // remove it from the database.
-        $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['st']) . "' AND `uid` = '" . $this->UserArray[1] . "'";
+        $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['0st']) . "' AND `uid` = '" . $this->UserArray[1] . "'";
         $result = mysql_query($query);
-        $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['au']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `sid` = '" . mysql_real_escape_string($_COOKIE['st']) . "'";
+        $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysql_real_escape_string($_COOKIE['0au']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `sid` = '" . mysql_real_escape_string($_COOKIE['0st']) . "'";
         $result2 = mysql_query($query2);
         if(!$result || !$result2) {
             echo 'Error processing the update ' . mysql_error();
             echo $query;
         } else {
             // unset the values first.
-            unset($_COOKIE['ii']);
-            unset($_COOKIE['au']);
-            unset($_COOKIE['st']);
+            unset($_COOKIE['0ii']);
+            unset($_COOKIE['0au']);
+            unset($_COOKIE['0st']);
             // set the sessions
-            setcookie("ii", "", time() - 3600, "/");
-            setcookie("au", "", time() - 3600, "/");
-            setcookie("st", "", time() - 3600, "/");
+            setcookie("0ii", "", time() - 3600, "/");
+            setcookie("0au", "", time() - 3600, "/");
+            setcookie("0st", "", time() - 3600, "/");
             // redirect them to the login page
             header("location: /login");
         }
