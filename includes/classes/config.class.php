@@ -651,9 +651,6 @@ class Config {
     
     public function getOS($agent)
     {
-        // Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 929) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537
-        // Mozilla/5.0 (PlayStation Vita 3.57) AppleWebKit/537.73 (KHTML, like Gecko) Silk/3.2
-        // Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; Xbox)
         $os_platform    =   "Unknown OS Platform";
         $os_array       =   array(
             '/windows nt 10/i'      =>  'Windows 10',
