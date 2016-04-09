@@ -654,7 +654,7 @@ class Config {
         return $randomString;
     }
     
-    public static function detectUserAgent() { 
+    public function detectUserAgent() { 
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
         
         // What version? 
