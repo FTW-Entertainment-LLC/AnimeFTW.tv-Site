@@ -638,7 +638,7 @@ class AFTWVideos extends Config{
 				var current_time = $(\'#aftw-player\').find(\'video\').get(0).currentTime;
 				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration;
 				
-				if((Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time)) || current_time == durration)
+				if((Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time)) || Math.round(current_time) == Math.round(durration))
 				{
 					$.ajax({
 						url: "/scripts.php?view=check-episode&id=' . $EpisodeArray[15] . '&time=" + Math.round(current_time) + "&max=" + Math.round(durration),
