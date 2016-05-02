@@ -72,10 +72,10 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	<?php
 	if($profileArray[8] == 1)
 	{
-		echo '<link rel="stylesheet" href="/christmas.css?v=4001" type="text/css" />';
+		echo '<link rel="stylesheet" href="/christmas.css?v=4002" type="text/css" />';
 	}
 	else {
-		echo '<link rel="stylesheet" href="/aftw.css?v=4005" type="text/css" />';
+		echo '<link rel="stylesheet" href="/aftw.css?v=4006" type="text/css" />';
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 0))
 	{
