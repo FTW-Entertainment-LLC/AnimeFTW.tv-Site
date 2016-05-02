@@ -15,7 +15,7 @@
 class AFTWDev{
 	var $did, $ssl, $series, $eid, $ads, $UserName, $Categories;
 		
-	var $Host = 'https://d206m0dw9i4jjv.cloudfront.net';
+	var $Host = 'https://img03.animeftw.tv';
 	
 	public function __construct()
 	{

@@ -9,7 +9,6 @@
 class AFTWVideos extends Config{
 	var $id;
 	var $ssl;
-	var $CDNHost;
 	var $UserArray; //added 8/4/2014 by robotman321
 	var $RecentEps; //added 3/21/2015 by robotman321
 	var $watchListSelection;
@@ -18,25 +17,6 @@ class AFTWVideos extends Config{
 	public function __construct()
 	{
 		parent::__construct();
-        if(isset($_SERVER['HTTP_CF_VISITOR'])){
-            $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
-            if($decoded['scheme'] == 'http'){
-                // http requests
-                $port = 80;
-            } else {
-                $port = 443;
-            }
-        } else {
-            $port = $_SERVER['SERVER_PORT'];
-        }
-		if($port == 443)
-		{
-			$this->CDNHost = 'https://d206m0dw9i4jjv.cloudfront.net';
-		}
-		else
-		{
-			$this->CDNHost = 'http://img02.animeftw.tv';
-		}
 		$this->buildCategories();
 	}
 	
@@ -203,16 +183,16 @@ class AFTWVideos extends Config{
 		echo '
 		<div align="center">
 			Series Types: 
-			<a href="/anime/type/airing">Airing Series <img src="' . $this->CDNHost . '/airing_icon.gif" alt="Airing" style="vertical-align:middle;" border="0" /></a> | 
+			<a href="/anime/type/airing">Airing Series <img src="' . $this->Host . '/airing_icon.gif" alt="Airing" style="vertical-align:middle;" border="0" /></a> | 
 			<a href="/anime/type/completed">Completed Series</a> | 
-			<a href="/anime/type/movies">Series with Movies <img src="' . $this->CDNHost . '/movie_blue.png" alt="Movie" style="vertical-align:middle;" border="0" /></a> | 
+			<a href="/anime/type/movies">Series with Movies <img src="' . $this->Host . '/movie_blue.png" alt="Movie" style="vertical-align:middle;" border="0" /></a> | 
 			<a href="/anime/type/divx">DivX Based</a>
 		</div>
 		<div align="center">
 			My WatchList Legend:
-			<img src="' . $this->CDNHost . '/flag_red.png" alt="planning to watch icon" style="vertical-align:middle;" border="0" /> Planning to Watch | 
-			<img src="' . $this->CDNHost . '/flag_yellow.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Currently Watching | 
-			<img src="' . $this->CDNHost . '/flag_green.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Finished Watching
+			<img src="' . $this->Host . '/flag_red.png" alt="planning to watch icon" style="vertical-align:middle;" border="0" /> Planning to Watch | 
+			<img src="' . $this->Host . '/flag_yellow.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Currently Watching | 
+			<img src="' . $this->Host . '/flag_green.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Finished Watching
 		</div>
 		<br />';
 		echo '<div align="center">';
@@ -400,19 +380,19 @@ class AFTWVideos extends Config{
 				// it exists..
 				if($this->watchListSelection[$row['id']]['status'] == 1)
 				{
-					$status = '&nbsp;<img src="' . $this->CDNHost . '/flag_red.png" alt="" title="In your WatchList Planning to Watch" style="height:14px;display:inline;" />';
+					$status = '&nbsp;<img src="' . $this->Host . '/flag_red.png" alt="" title="In your WatchList Planning to Watch" style="height:14px;display:inline;" />';
 				}
 				else if($this->watchListSelection[$row['id']]['status'] == 2)
 				{
-					$status = '&nbsp;<img src="' . $this->CDNHost . '/flag_yellow.png" alt="" title="In your WatchList under Watching" style="height:14px;display:inline;" />';
+					$status = '&nbsp;<img src="' . $this->Host . '/flag_yellow.png" alt="" title="In your WatchList under Watching" style="height:14px;display:inline;" />';
 				}
 				else if($this->watchListSelection[$row['id']]['status'] == 3)
 				{
-					$status = '&nbsp;<img src="' . $this->CDNHost . '/flag_green.png" alt="" title="In your WatchList as Finished" style="height:14px;display:inline;" />';
+					$status = '&nbsp;<img src="' . $this->Host . '/flag_green.png" alt="" title="In your WatchList as Finished" style="height:14px;display:inline;" />';
 				}
 				else if($this->watchListSelection[$row['id']]['status'] == 4)
 				{
-					$status = '&nbsp;<img src="' . $this->CDNHost . '/flag_orange.png" alt="" title="In your WatchList as Someday Maybe" style="height:14px;display:inline;" />';
+					$status = '&nbsp;<img src="' . $this->Host . '/flag_orange.png" alt="" title="In your WatchList as Someday Maybe" style="height:14px;display:inline;" />';
 				}
 				else
 				{
@@ -434,21 +414,21 @@ class AFTWVideos extends Config{
 			$Type = '';
 		}
 		else if($row['seriesType'] == 1){
-			$Type = '&nbsp;<img src="' . $this->CDNHost . '/mkv-series.png" alt="MKV series" title="This series is in DivX Web 2.0 Format" style="vertical-align:middle;" border="0" />';
+			$Type = '&nbsp;<img src="' . $this->Host . '/mkv-series.png" alt="MKV series" title="This series is in DivX Web 2.0 Format" style="vertical-align:middle;" border="0" />';
 		}
 		else {
 			$Type = '';
 		}
 		
 		if($stillRelease == 'yes'){
-			$airing = '&nbsp;<img src="' . $this->CDNHost . '/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
+			$airing = '&nbsp;<img src="' . $this->Host . '/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
 		}
 		else {
 			$airing = '&nbsp;';
 		}
 		
 		if($moviesOnly == 1){
-			$Type .= '&nbsp;<img src="' . $this->CDNHost . '/movie_blue.png" alt="Movie" title="This is a Movie"  style="vertical-align:middle;" border="0" />';
+			$Type .= '&nbsp;<img src="' . $this->Host . '/movie_blue.png" alt="Movie" title="This is a Movie"  style="vertical-align:middle;" border="0" />';
 		}
 		if($type == 1){
 			$url = '/reviews/series-'.$row['id'];
@@ -583,11 +563,11 @@ class AFTWVideos extends Config{
 		// check the image.
 		if($EpisodeArray[15] == 0)
 		{
-			$epimage = $this->CDNHost . '/video-images/noimage.png';
+			$epimage = $this->Host . '/video-images/noimage.png';
 		}
 		else
 		{
-			$epimage = "{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_screen.jpeg";
+			$epimage = "{$this->Host}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_screen.jpeg";
 		}
 		// Autoplay functionality.
 		$autoplay = "";
@@ -664,7 +644,7 @@ class AFTWVideos extends Config{
 						cache: false,
 						success: function(response) {
 							if(response.indexOf("Success") >= 0){
-								$(".tracker-button").html(\'<img src="https://d206m0dw9i4jjv.cloudfront.net/added_tracker.png" alt="" title="Auto Addition was Successful!" style="float:left;padding-top:1px;padding-right:3px;" />&nbsp;<span>Auto-Added!</span>\');
+								$(".tracker-button").html(\'<img src="' . $this->Host . '/added_tracker.png" alt="" title="Auto Addition was Successful!" style="float:left;padding-top:1px;padding-right:3px;" />&nbsp;<span>Auto-Added!</span>\');
 								$(".tracker-added-date").html(response);
 							}
 							else
@@ -721,7 +701,7 @@ class AFTWVideos extends Config{
 		</script>
 		<script>
 		$(document).ready(function(){
-			$(\'.vjs-loading-spinner\').html(\'<img src="' . $this->CDNHost . '/fay-loading-image.gif" alt="Loading...">\');
+			$(\'.vjs-loading-spinner\').html(\'<img src="' . $this->Host . '/fay-loading-image.gif" alt="Loading...">\');
 		});
 		</script>';
 		if($this->UserArray[2] == 3)
@@ -863,7 +843,7 @@ HDOC;
 			for($i = 0; $i < $SpriteArray['count']; $i++) {
 				echo $tab5 . $i * $SpriteArray['rate'] . ": {\n";
 				if ($i === 0)
-					echo $tab5 . "	src: \"{$this->CDNHost}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
+					echo $tab5 . "	src: \"{$this->Host}/video-images/{$EpisodeArray[14]}/{$EpisodeArray[10]}_sprite.jpeg\",\n";
 					echo $tab5 . "	style: {\n";
 					echo $tab5 . "		left: '-" . (($SpriteArray['width'] / 2) + ($SpriteArray['width'] * $i)) . "px',\n";
 				if ($i === 0) {
@@ -975,7 +955,7 @@ HDOC;
 										<div class="video-information">
 											<div class="video-information-top">
 												<div class="video-information-image" align="center">
-													<img src="' . $this->CDNHost . '/seriesimages/' . $SeriesArray[0] . '.jpg" alt="series-image" style="max-height:120px;max-width:93px;" />
+													<img src="' . $this->Host . '/seriesimages/' . $SeriesArray[0] . '.jpg" alt="series-image" style="max-height:120px;max-width:93px;" />
 												</div>
 												<div class="video-information-details">
 													<div class="video-information-title"><span title="This episode is titled..">' . stripslashes($EpisodeArray[1]) . '</span></div>
@@ -1002,11 +982,11 @@ HDOC;
 											<div class="video-information-bottom">
 												<div style="margin-top:3px;">
 												Share Via:<br />
-												<a title="Share this Episode on Facebook" href="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.animeftw.tv%2Fanime%2F' . $SeriesArray[2] . '%2Fep-' . $EpisodeArray[0] . '" target="_blank"><img src="' . $this->CDNHost . '/social-networking/icon-facebookv2.png" alt="facebook" /></a>&nbsp;
-												<a title="Share this Episode on Twitter" href="http://www.twitter.com/home?status=Watching+'.urlencode($SeriesArray[3]).'+episode+' . $EpisodeArray[0] . '+at+AnimeFTW.tv+'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->CDNHost . '/social-networking/icon-twitterv2.png" alt="twitter" /></a>&nbsp;
-												<a title="Share this Episode on Digg" href="http://digg.com/submit?phase=2&amp;url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->CDNHost . '/social-networking/icon-diggv2.png" alt="Digg" /></a>&nbsp;
-												<a title="Share this Episode on StumbleUpon" href="http://www.stumbleupon.com/submit?url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->CDNHost . '/social-networking/icon-stumbleuponv2.png" alt="StumbleUpon" /></a>&nbsp;
-												<a title="Share this Episode on Google+" href="https://plus.google.com/u/0/share?url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->CDNHost . '/social-networking/icon-google-plusv2.png" alt="Google Plus" /></a>
+												<a title="Share this Episode on Facebook" href="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.animeftw.tv%2Fanime%2F' . $SeriesArray[2] . '%2Fep-' . $EpisodeArray[0] . '" target="_blank"><img src="' . $this->Host . '/social-networking/icon-facebookv2.png" alt="facebook" /></a>&nbsp;
+												<a title="Share this Episode on Twitter" href="http://www.twitter.com/home?status=Watching+'.urlencode($SeriesArray[3]).'+episode+' . $EpisodeArray[0] . '+at+AnimeFTW.tv+'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->Host . '/social-networking/icon-twitterv2.png" alt="twitter" /></a>&nbsp;
+												<a title="Share this Episode on Digg" href="http://digg.com/submit?phase=2&amp;url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->Host . '/social-networking/icon-diggv2.png" alt="Digg" /></a>&nbsp;
+												<a title="Share this Episode on StumbleUpon" href="http://www.stumbleupon.com/submit?url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->Host . '/social-networking/icon-stumbleuponv2.png" alt="StumbleUpon" /></a>&nbsp;
+												<a title="Share this Episode on Google+" href="https://plus.google.com/u/0/share?url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->Host . '/social-networking/icon-google-plusv2.png" alt="Google Plus" /></a>
 												</div>
 											</div>
 										</div>
@@ -1077,16 +1057,16 @@ HDOC;
 					}
 					else
 					{
-						$html5tag = '<a href="/what-is-the-aftw-html5-player"><img src="' . $this->CDNHost . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:25px;" border="0" title="This is an AnimeFTW.tv v2.0 HTML5 Player Series!" /></a>';
+						$html5tag = '<a href="/what-is-the-aftw-html5-player"><img src="' . $this->Host . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:25px;" border="0" title="This is an AnimeFTW.tv v2.0 HTML5 Player Series!" /></a>';
 						if($SeriesArray[19] == 1)
 						{
 							// 720p only series
-							$quality = '&nbsp;<img src="' . $this->CDNHost . '/series-pages/hd-720p-icon.png" alt="720p Videos available" style="vertical-align:middle;" border="0" />&nbsp;';
+							$quality = '&nbsp;<img src="' . $this->Host . '/series-pages/hd-720p-icon.png" alt="720p Videos available" style="vertical-align:middle;" border="0" />&nbsp;';
 						}
 						else if($SeriesArray[19] == 2)
 						{
 							// 1080p and 720p series
-							$quality = '&nbsp;<img src="' . $this->CDNHost . '/series-pages/hd-720p-icon.png" alt="720p Videos available" style="vertical-align:middle;" border="0" title="Watch ' . stripslashes($SeriesArray[3]) . ' in 720p!" />&nbsp;<img src="' . $this->CDNHost . '/series-pages/hd-1080p-icon.png" alt="1080p Videos available" style="vertical-align:middle;" border="0" title="Watch ' . stripslashes($SeriesArray[3]) . ' in 1080p!" />';
+							$quality = '&nbsp;<img src="' . $this->Host . '/series-pages/hd-720p-icon.png" alt="720p Videos available" style="vertical-align:middle;" border="0" title="Watch ' . stripslashes($SeriesArray[3]) . ' in 720p!" />&nbsp;<img src="' . $this->Host . '/series-pages/hd-1080p-icon.png" alt="1080p Videos available" style="vertical-align:middle;" border="0" title="Watch ' . stripslashes($SeriesArray[3]) . ' in 1080p!" />';
 						}
 						else
 						{
@@ -1103,7 +1083,7 @@ HDOC;
 						echo '
 						<div class="series-top-wrapper" style="border-bottom:1px solid #d8d8d8;padding-bottom:5px;">
 							<div class="series-image-column" style="display:inline-block;padding:0 5px 5px 5px;vertical-align:top;">
-								<img src="' . $this->CDNHost . '/seriesimages/' . $SeriesArray[0] . '.jpg" alt="Series Image" style="max-width:225px;" />
+								<img src="' . $this->Host . '/seriesimages/' . $SeriesArray[0] . '.jpg" alt="Series Image" style="max-width:225px;" />
 							</div>
 							<div class="series-details-column" style="display:inline-block;vertical-align:top;padding:0 5px 5px 5px;width:70%;border-left:1px solid #d8d8d8;">
 								<div style="width:100%;">
@@ -1130,7 +1110,7 @@ HDOC;
 									echo '
 											<div style="width:49%;display:inline-block;vertical-align:top;">
 												<div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Rated:</div>
-												<a href="https://ftwentertainment.com/ratings" target="_blank"><img src="' . $this->CDNHost . '/ratings/'.$SeriesArray[7].'" border="0" border="0" style="height:25px;" /></a>
+												<a href="https://ftwentertainment.com/ratings" target="_blank"><img src="' . $this->Host . '/ratings/'.$SeriesArray[7].'" border="0" border="0" style="height:25px;" /></a>
 											</div>
 										</div>';
 									if ($SeriesArray[12] != 0 || $SeriesArray[13] != 0)
@@ -1326,11 +1306,11 @@ HDOC;
 		{
 			if($row['image'] == 0)
 			{
-				$epimage = $this->CDNHost . '/video-images/noimage.png';
+				$epimage = $this->Host . '/video-images/noimage.png';
 			}
 			else
 			{
-				$epimage = "{$this->CDNHost}/video-images/{$sid}/{$row['id']}_screen.jpeg";
+				$epimage = "{$this->Host}/video-images/{$sid}/{$row['id']}_screen.jpeg";
 			}
 			if($row['epnumber'] == $EpisodeArray[0])
 			{
@@ -1493,7 +1473,7 @@ HDOC;
 			<a href="/anime/' . $row['seoname'] . '/" style="text-decoration:none;">
 			<div class="episode-list-entry">
 				<div class="episode-list-entry-image">
-					<img src="' . $this->CDNHost . '/seriesimages/' . $row['id'] . '.jpg" alt="series image" style="height:80px;" />
+					<img src="' . $this->Host . '/seriesimages/' . $row['id'] . '.jpg" alt="series image" style="height:80px;" />
 				</div>
 				<div class="episode-list-entry-details">
 					<div class="episode-list-entry-epname"><span style="font-size:14px;color:black;">' . stripslashes($row['fullSeriesName']) . '</span></div>
@@ -1602,11 +1582,11 @@ HDOC;
 			{
 				if($image == 0)
 				{
-						$episodepreview = $this->CDNHost . '/video-images/noimage.png';
+						$episodepreview = $this->Host . '/video-images/noimage.png';
 				}
 				else 
 				{
-					$episodepreview = "{$this->CDNHost}/video-images/{$sid}/{$id}_screen.jpeg";
+					$episodepreview = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";
 				}
 				$epname    = stripslashes($epname);
 				
@@ -1693,7 +1673,7 @@ HDOC;
 					echo '
 					<div style="display:inline-block;position:relative;text-decoration:none;color:white;"' . $LoggedInData . '>
 						' . $beginlink . '
-							<div class="details" style="float: left;width:100%;position:absolute;left:0;bottom:0;height:60px;background:url(\'' . $this->CDNHost .'/series-pages/gradiant-background2.png\') repeat-x;">
+							<div class="details" style="float: left;width:100%;position:absolute;left:0;bottom:0;height:60px;background:url(\'' . $this->Host .'/series-pages/gradiant-background2.png\') repeat-x;">
 								<div class="text-align:right;color: #666666;vertical-align:bottom;text-align:bottom;" align="left">
 									<div style="height:100%;margin-top:10px;padding:4px;">' . $VideoTitle . ': ' . $epnumber . '<br />Titled: ' . $epname . '</div>
 								</div>
@@ -1881,15 +1861,15 @@ HDOC;
 		
 		if($currentPosition < $lastPosition)
 		{
-			$Rank = $currentPosition.'&nbsp;<img src="' . $this->CDNHost . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
+			$Rank = $currentPosition.'&nbsp;<img src="' . $this->Host . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
 		}
 		else if ($currentPosition == $lastPosition)
 		{
-			$Rank = $currentPosition.'&nbsp;<img src="' . $this->CDNHost . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
+			$Rank = $currentPosition.'&nbsp;<img src="' . $this->Host . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
 		}
 		else
 		{
-			$Rank = $currentPosition.'&nbsp;<img src="' . $this->CDNHost . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
+			$Rank = $currentPosition.'&nbsp;<img src="' . $this->Host . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
 		}
 
 		if($count < 1)
@@ -1973,12 +1953,12 @@ HDOC;
 		if($row['hd'] == 1)
 		{
 			// 720p only series
-			$quality = '&nbsp;<img src="' . $this->CDNHost . '/series-pages/hd-720p-icon.png" alt="720p Video available" style="vertical-align:middle;height:18px;" border="0" title="Watch this ' . $MovieOrNot . ' in 720p!" />&nbsp;';
+			$quality = '&nbsp;<img src="' . $this->Host . '/series-pages/hd-720p-icon.png" alt="720p Video available" style="vertical-align:middle;height:18px;" border="0" title="Watch this ' . $MovieOrNot . ' in 720p!" />&nbsp;';
 		}
 		else if($row['hd'] == 2)
 		{
 			// 1080p and 720p series
-			$quality = '&nbsp;<img src="' . $this->CDNHost . '/series-pages/hd-720p-icon.png" alt="720p Video available" style="vertical-align:middle;height:18px;" border="0" title="Watch this ' . $MovieOrNot . ' in 720p!" />&nbsp;<img src="' . $this->CDNHost . '/series-pages/hd-1080p-icon.png" alt="1080p Video available" style="vertical-align:middle;height:18px;" border="0" title="Watch this ' . $MovieOrNot . ' in 1080p!" />';
+			$quality = '&nbsp;<img src="' . $this->Host . '/series-pages/hd-720p-icon.png" alt="720p Video available" style="vertical-align:middle;height:18px;" border="0" title="Watch this ' . $MovieOrNot . ' in 720p!" />&nbsp;<img src="' . $this->Host . '/series-pages/hd-1080p-icon.png" alt="1080p Video available" style="vertical-align:middle;height:18px;" border="0" title="Watch this ' . $MovieOrNot . ' in 1080p!" />';
 		}
 		else
 		{
@@ -2016,11 +1996,11 @@ HDOC;
 		{
 			if($row['image'] == 0)
 			{
-					$episodepreview = $this->CDNHost . '/video-images/noimage.png';
+					$episodepreview = $this->Host . '/video-images/noimage.png';
 			}
 			else 
 			{
-				$episodepreview = "{$this->CDNHost}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
+				$episodepreview = "{$this->Host}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 			}
 			$DisplayImage = '
 			<div>
@@ -2056,7 +2036,7 @@ HDOC;
 			<div style="display:inline-block;width:29%;vertical-align:top;font-size:12px;">
 				<div>
 					Episode Info:<br />
-					<img src="' . $this->CDNHost . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:18px;" border="0" title="Watch this video on the AnimeFTW.tv HTML5 Player!" />
+					<img src="' . $this->Host . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:18px;" border="0" title="Watch this video on the AnimeFTW.tv HTML5 Player!" />
 					' . $quality . $this->showDownloadOption($row['id'],$CanDownload) . ' 
 				</div>
 			</div>
@@ -2091,7 +2071,7 @@ HDOC;
 				$data = '
 				<ul class="download-menu" id="dropdown-' . $row['id'] . '">
 					<li>
-						<a href="#" onClick="return false;"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>
+						<a href="#" onClick="return false;"><img src="' . $this->Host . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>
 						<ul>';
 				$i = 0;
 				while($i <= $row['hd']){
@@ -2114,10 +2094,10 @@ HDOC;
 				</ul>';
 			}
 			else {
-				$data .= '<a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
+				$data .= '<a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;"><img src="' . $this->Host . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
 			}
 			return $data;
-			//return '<a href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->CDNHost . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
+			//return '<a href="//videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $row['videotype'] . '"><img src="' . $this->Host . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
 		}
 	}
 }

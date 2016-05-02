@@ -32,11 +32,12 @@ if(isset($_SERVER['HTTP_CF_VISITOR'])){
 }
 if($port == 443)
 {
-	$ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+	//$ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+	$ImageHost = 'https://img03.animeftw.tv';
 }
 else
 {
-	$ImageHost = 'http://img02.animeftw.tv';
+	$ImageHost = 'http://img03.animeftw.tv';
 }
 
 include_once('header.php');

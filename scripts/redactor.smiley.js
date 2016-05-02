@@ -5,7 +5,7 @@
 		return {
 			langs: {
 				en: {
-					"smilies": "<img src='https://d206m0dw9i4jjv.cloudfront.net/themes/default/smilies/=%29-20x20.png' alt='' />"
+					"smilies": "<img src='https://img03.animeftw.tv/themes/default/smilies/=%29-20x20.png' alt='' />"
 				}
 			},
 			init: function()
@@ -13,17 +13,17 @@
 				var smilies = {
 					"0": {
 						title: ";^2",
-						code: "<img src='https://d206m0dw9i4jjv.cloudfront.net/themes/default/smilies/;%5E2-20x20.png' alt='' />",
+						code: "<img src='https://img03.animeftw.tv/themes/default/smilies/;%5E2-20x20.png' alt='' />",
 						args: [';%5E2-20x20.png',';%5E2-128x128.png']
 					},
 					"1": {
 						title: "^-^",
-						code: "<img src='https://d206m0dw9i4jjv.cloudfront.net/themes/default/smilies/%5E-%5E-20x20.png' alt='' />",
+						code: "<img src='https://img03.animeftw.tv/themes/default/smilies/%5E-%5E-20x20.png' alt='' />",
 						args: ['%5E-%5E-20x20.png','%5E-%5E-128x128.png']
 					},
 					"2": {
 						title: "=)",
-						code: "<img src='https://d206m0dw9i4jjv.cloudfront.net/themes/default/smilies/=%29-20x20.png' alt='' />",
+						code: "<img src='https://img03.animeftw.tv/themes/default/smilies/=%29-20x20.png' alt='' />",
 						args: ['=%29-20x20.png','=%29-128x128.png']
 					}
 				};
