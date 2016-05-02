@@ -47,12 +47,13 @@ class Config {
         }
         if($port == 443)
         {
-            $this->Host = 'https://d206m0dw9i4jjv.cloudfront.net';
+            //$this->Host = 'https://d206m0dw9i4jjv.cloudfront.net';
+            $this->Host = 'https://img03.animeftw.tv';
         }
         else
         {
-            //$this->Host = 'http://img02.animeftw.tv';
-            $this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
+            //$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
+            $this->Host = 'https://img03.animeftw.tv';
         }
         
         // build the site default settings..

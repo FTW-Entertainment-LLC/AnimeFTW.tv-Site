@@ -1,7 +1,7 @@
 <?php
 include_once('includes/global_functions.php');
 include_once('includes/classes/pages.class.php');
-include_once('includes/classes/toplist.class.php');
+//include_once('includes/classes/toplist.class.php');
 
 if(isset($_SERVER['HTTP_CF_VISITOR'])){
     $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
@@ -14,13 +14,10 @@ if(isset($_SERVER['HTTP_CF_VISITOR'])){
 } else {
     $port = $_SERVER['SERVER_PORT'];
 }
-if($port == 443)
-{
-	$Host = 'https://d206m0dw9i4jjv.cloudfront.net';
-}
-else
-{
-	$Host = 'http://img02.animeftw.tv';
+if($port == 443) {
+	$Host = 'https://img03.animeftw.tv';
+} else {
+	$Host = 'http://img03.animeftw.tv';
 }
 
 $globalvarsquery = mysql_query("SELECT * FROM global_settings WHERE id='1'");
