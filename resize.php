@@ -10,14 +10,12 @@ if(isset($_SERVER['HTTP_CF_VISITOR'])){
 } else {
     $port = $_SERVER['SERVER_PORT'];
 }
-		if($port == 443)
-		{
-			$Host = 'https://d206m0dw9i4jjv.cloudfront.net';
-		}
-		else
-		{
-			$Host = 'http://img02.animeftw.tv';
-		}
+if($port == 443) {
+    //$Host = 'https://d206m0dw9i4jjv.cloudfront.net';
+    $Host = 'https://img03.animeftw.tv';
+} else {
+    $Host = 'http://img03.animeftw.tv';
+}
 class SimpleImage {
    
    var $image;

@@ -11,11 +11,12 @@
 			$siteroot = 'www.animeftw.tv';
 			if($_SERVER['SERVER_PORT'] == 443)
 			{
-				$CDNHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+				//$CDNHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+				$CDNHost = 'https://img03.animeftw.tv';
 			}
 			else
 			{
-				$CDNHost = 'http://img02.animeftw.tv';
+				$CDNHost = 'http://img03.animeftw.tv';
 			}
 #-----------------------------------------------------------
 # Function html_to_bbcode
@@ -1060,14 +1061,6 @@
 			#-------------------------------------------------------------
 			
 		function seriesTopSeriesRank($seriesId) {
-			if($_SERVER['SERVER_PORT'] == 443)
-			{
-				$CDNbaseurl = 'https://d206m0dw9i4jjv.cloudfront.net';
-			}
-			else
-			{
-				$CDNbaseurl = 'http://img02.animeftw.tv';
-			}
 				$query = "SELECT lastPosition, currentPosition FROM site_topseries 
 						WHERE seriesId='".$seriesId."'
 						ORDER BY currentPosition 
@@ -1080,14 +1073,14 @@
 					$listedName = checkSeries2($seriesId);
 					if($currentPosition < $lastPosition)
 					{
-						$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
+						$Rank = $currentPosition.'&nbsp;<img src="' . $CDNHost . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
 					}
 					else if ($currentPosition == $lastPosition)
 					{
-						$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
+						$Rank = $currentPosition.'&nbsp;<img src="' . $CDNHost . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
 					}
 					else {
-						$Rank = $currentPosition.'&nbsp;<img src="' . $CDNbaseurl . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
+						$Rank = $currentPosition.'&nbsp;<img src="' . $CDNHost . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
 					}
 
 					if($listedName == 'na')

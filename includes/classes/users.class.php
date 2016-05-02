@@ -33,12 +33,12 @@ class AFTWUser extends Config{
         }
 		if($port == 443)
 		{
-			$this->ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+			//$this->ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
+			$this->ImageHost = 'https://img03.animeftw.tv';
 		}
 		else
 		{
-			$this->ImageHost = 'http://img02.animeftw.tv';
-			//$this->ImageHost = 'http://d206m0dw9i4jjv.cloudfront.net';
+			$this->ImageHost = 'http://img03.animeftw.tv';
 		}
 	}
 	

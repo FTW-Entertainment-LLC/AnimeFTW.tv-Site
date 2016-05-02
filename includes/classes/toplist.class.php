@@ -6,11 +6,17 @@
 ## Copywrite 2011 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-class AFTWtoplist {
+class AFTWtoplist extends Config {
+    
 	var $num; //amount of series to show
 	var $sing; //1:0, for base series pages or single instances.
 	var $type;
 	
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    
 	//grab all the vars
 	function get_num($i){$this->num = $i;}
 	function get_sing($i){$this->sing = $i;}
@@ -19,26 +25,6 @@ class AFTWtoplist {
 	#function TopAnime($num)
 	#displays a given amount of toseries based on the $num param
 	function TopAnime(){
-        if(isset($_SERVER['HTTP_CF_VISITOR'])){
-            $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
-            if($decoded['scheme'] == 'http'){
-                // http requests
-                $port = 80;
-            } else {
-                $port = 443;
-            }
-        } else {
-            $port = $_SERVER['SERVER_PORT'];
-        }
-		if($port == 443)
-		{
-			$ImageLoc = 'https://d206m0dw9i4jjv.cloudfront.net';
-		}
-		else
-		{
-			$ImageLoc = 'http://img02.animeftw.tv';
-			//$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
-		}
 		$query = "SELECT seriesId, lastPosition, currentPosition FROM site_topseries ORDER BY currentPosition ASC LIMIT 0, ".$this->num;
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		if($this->num == 10){$topTen = '<ol class="top10">'."\n";}
@@ -46,13 +32,13 @@ class AFTWtoplist {
   		while(list($seriesId,$lastPosition,$currentPosition) = mysql_fetch_array($result)){
 			$listedName = $this->ShowData2($seriesId);
 			if($currentPosition < $lastPosition){
-				$Rank = '&nbsp;<img src="' . $ImageLoc . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
+				$Rank = '&nbsp;<img src="' . $this->Host . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
 			}
 			else if ($currentPosition == $lastPosition){
-				$Rank = '&nbsp;<img src="' . $ImageLoc . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
+				$Rank = '&nbsp;<img src="' . $this->Host . '/arrow_none.gif" title="Rank Unchanged, Previous Rank: '.$lastPosition.'" alt="" />';
 			}
 			else {
-				$Rank = '&nbsp;<img src="' . $ImageLoc . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
+				$Rank = '&nbsp;<img src="' . $this->Host . '/arrow_down.gif" alt="" title="Rank Went Down, Previous Rank: '.$lastPosition.'" />';
 			}
 			if($listedName == 'na'){
 				$topTen .= '';
