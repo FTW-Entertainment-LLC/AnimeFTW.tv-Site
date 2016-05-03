@@ -360,6 +360,10 @@ class processData extends Config {
 				mysql_query($query) or die(mysql_error());
 				
 				$this->ModRecord('Added a Series to the Tracker, ' . mysql_real_escape_string($_POST['Series']));
+                if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv' && (isset($_POST['Status']) && isset($_POST['Previous-Status']) && $_POST['Status'] != $_POST['Previous-Status'] && ($_POST['Status'] == 'done' || $_POST['Status'] == 'ongoing'))){
+                    $slackData = "*New Series added to the tracker by " . $this->string_fancyUsername($_POST['uploader'],NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \nTitled: " . $_POST['Series'] . "\nPosted in the " . $_POST['Status'] . " Section. <https://www.animeftw.tv/manage/#uploads| Manage this entry.>";
+                    $slack = $this->postToSlack($slackData,1);
+                }
 				echo 'Success';
 				//echo $query;
 			}
@@ -407,6 +411,10 @@ class processData extends Config {
 				mysql_query($query) or die(mysql_error());
 				
 				$this->ModRecord('Editted Tracker entry ' . mysql_real_escape_string($_POST['ueid']));
+                if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv' && (isset($_POST['Status']) && isset($_POST['Previous-Status']) && $_POST['Status'] != $_POST['Previous-Status'] && ($_POST['Status'] == 'done' || $_POST['Status'] == 'ongoing'))){
+                    $slackData = "*New Series updated on the tracker by " . $this->string_fancyUsername($_POST['uploader'],NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \nTitled: " . $_POST['Series'] . "\nPosted in the " . $_POST['Status'] . " Section. <https://www.animeftw.tv/manage/#uploads| Manage this entry.>";
+                    $slack = $this->postToSlack($slackData,1);
+                }
 				echo 'Success';
 				//echo $query;
 			}

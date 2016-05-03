@@ -794,8 +794,12 @@ class Config {
     }
     
     # Function to post alerts to Slack.
-    public function postToSlack($sendingText){
-        $url = 'https://hooks.slack.com/services/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';
+    public function postToSlack($sendingText,$type=null){
+        if($type == null || $type == 0) {
+            $url = 'https://hooks.slack.com/services/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';
+        } else {
+            $url = 'https://hooks.slack.com/services/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';
+        }
         
         $data = array(
             "text" => $sendingText,
