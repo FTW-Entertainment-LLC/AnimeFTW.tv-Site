@@ -492,6 +492,118 @@ class Config {
         return $fixedUsername;
     }
     
+    public function string_fancyUsername($ID,$Username = NULL,$Active = NULL, $Level_access = NULL, $advancePreffix = NULL,$advanceImage = NULL,$UsernameOnly = NULL,$ArrayOutput = FALSE)
+    {
+        if($ID == 0)
+        {
+            // if the ID is 0, we need to let them use the supplied credentials
+        }
+        else
+        {
+            // ID is supplied, we need to give them the goods.
+            $query = 'SELECT `Username`, `display_name`, `Active`, `Level_access`, `avatarActivate`, `avatarExtension`, `advancePreffix`, `advanceImage` FROM `' . $this->MainDB . '`.`users` WHERE `ID` = \'' . mysql_real_escape_string($ID) . '\'';
+            $results = mysql_query($query);
+            $row = mysql_fetch_assoc($results);
+            $Username = $row['Username'];
+            $display_name = $row['display_name'];
+            $Active = $row['Active'];
+            $Level_access = $row['Level_access'];
+            $advancePreffix = $row['advancePreffix'];
+            $advanceImage = $row['advanceImage'];
+            if($row['avatarActivate'] == 'yes')
+            {
+                // The avatar is considered active in the system.
+                $avatar = $this->Host . '/avatars/user' . $ID . '.' . $row['avatarExtension'];
+            }
+            else
+            {
+                // it's not active..
+                $avatar = $this->Host . '/avatars/default.jpg';
+            }
+        }
+        
+        // Added 8/10/2014 - robotman321
+        // If the user has a custom Display_name, we make that the primary username
+        if($display_name != $Username && $display_name != NULL)
+        {
+            // The display name has been setup, lets use that
+        }
+        else
+        {
+            $display_name = $Username;
+        }
+        
+        // Added 8/5/2014 - robotman321
+        // Enables the use of non link username construction.
+        if($UsernameOnly != NULL)
+        {
+            $fixedUsername = $display_name;
+        }
+        else
+        {
+            // ADDON:
+            // Built so that users built within the Android App do not get redirected away from the app and stay in the app.
+            if(stristr($_SERVER['HTTP_USER_AGENT'],'tv.animeftw.android/3.0') || stristr($_SERVER['REQUEST_URI'],'/m/'))
+            {
+                $link = '<a href="#" onClick="$(\'#content\').load(\'ajax.php?page=profile&username=' . $Username . '\'); return false;">';
+            }
+            else
+            {
+                $link = '<a href="/user/' . $Username . '">';
+            }
+            if($Active == 1)
+            { 
+                if ($Level_access != 3)
+                {
+                    if($advancePreffix != NULL || $advancePreffix != '')
+                    {
+                        $spanbefore = '<span style="">';
+                        $spanafter = '</span>';
+                    }
+                    else
+                    {
+                        $spanbefore = '';
+                        $spanafter = '';
+                    }
+                    if($Level_access == 1)
+                    {
+                        $fixedUsername = $spanbefore . '<img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                    }
+                    else if($Level_access == 2)
+                    {
+                        $fixedUsername = $spanbefore . '<img src="/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                    }
+                    else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
+                    {
+                        // /images/staff-icon.png
+                        $fixedUsername = $spanbefore . '<img src="/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                    }
+                    else if($Level_access == 7)
+                    {
+                        $fixedUsername = $spanbefore . '<img src="/images/advancedimages/' . $advanceImage . '.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                    }
+                    else
+                    {
+                        $fixedUsername = $spanbefore . $link . $display_name . '</a>' . $spanafter;
+                    }
+                }
+                else
+                {
+                    $fixedUsername = $link . $display_name . '</a>';
+                }
+            }
+            else
+            {
+                $fixedUsername = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $Username . '"><s>' . $display_name . '</s></a>';
+            }
+        }
+        if($ArrayOutput == TRUE)
+        {
+            $fixedUsername = array($fixedUsername,$avatar);
+        }
+        return $fixedUsername;
+    }
+        
     public function formatAvatar($ID,$target = 'self',$link = TRUE,$height = NULL)
     {
         $query = "SELECT `ID`, `Username`, `avatarActivate`, `avatarExtension` FROM `users` WHERE `ID`='" . mysql_real_escape_string($ID) . "'";
