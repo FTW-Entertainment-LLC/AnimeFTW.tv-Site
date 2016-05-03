@@ -918,7 +918,7 @@ class Config {
         );
         
         $data_string = json_encode($data);
-        echo $data_string;
+        //echo $data_string;
         $ch = curl_init($url);                                                                      
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
