@@ -638,7 +638,8 @@ class Uploads extends Config {
 				</tr>				
 				<tr> 
 					<td width="150" class="fontcolor"><b>Status</b></td>
-					<td>';
+					<td>
+                    <input type="hidden" name="Previous-Status" id="Previous-Status" value="' . $Status . '" />';
 					$EntryList = '';
 					$EntryArray = $this->array_entryStatus();
 					foreach($EntryArray AS $key=>$EntryStatus)
