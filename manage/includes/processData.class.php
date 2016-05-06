@@ -375,7 +375,7 @@ class processData extends Config {
 		else if($_POST['method'] == 'UploadsEdit')
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
-			{
+			{                
 				// if the update was performed in the ongoing or done category, we need to record that as something updated so that we alert the head honchos
 				if(isset($_POST['Status']) && ($_POST['Status'] == 'ongoing' || $_POST['Status'] == 'done'))
 				{
@@ -405,9 +405,16 @@ class processData extends Config {
 				
 				// ADDED: 27/03/15 by Robotman321
 				// will update the Requests entry to ensure things are kept up to date.
-				$EntryStatuses = array("pending", "claimed", "encoding", "uploading", "ongoing", "stalled", "done", "live", "denied");
+                // UPDATED: 06/05/2016 by Robotman321
+                // Uses Database value to verify status.
+                $query = "SELECT `value` FROM `settings` WHERE `name` = 'all_upload_statuses' LIMIT 1";
+                $result = mysql_query($query);
+                
+                $row = mysql_fetch_assoc($result);
+                
+				$EntryStatuses = explode($row['value'], '|');
 				// we will want to map the request to the uploads entry down the line, it will keep things working correctly..
-				$query = "UPDATE `requests` SET `status` = " . array_search($_POST['Status'], $EntryStatuses) . " WHERE `anidb` = " . mysql_real_escape_string($_POST['anidb']);
+				$query = "UPDATE `requests` SET `status` = '" . array_search($_POST['Status'], $EntryStatuses) . "' WHERE `anidb` = " . mysql_real_escape_string($_POST['anidb']);
 				mysql_query($query) or die(mysql_error());
 				
 				$this->ModRecord('Editted Tracker entry ' . mysql_real_escape_string($_POST['ueid']));
