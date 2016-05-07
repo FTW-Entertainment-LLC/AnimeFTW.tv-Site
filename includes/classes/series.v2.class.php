@@ -171,7 +171,7 @@ class Series extends Config {
 		if($this->Data['action'] == 'random-series')
 		{
 			$orderBy = " ORDER BY RAND() ";
-			$start = "";
+			$start = "0,";
 		}
 		else
 		{
