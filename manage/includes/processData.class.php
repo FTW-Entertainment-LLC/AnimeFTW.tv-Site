@@ -412,7 +412,8 @@ class processData extends Config {
                 
                 $row = mysql_fetch_assoc($result);
                 
-				$EntryStatuses = explode($row['value'], '|');
+				$EntryStatuses = explode('|', $row['value']);
+                
 				// we will want to map the request to the uploads entry down the line, it will keep things working correctly..
 				$query = "UPDATE `requests` SET `status` = '" . array_search($_POST['Status'], $EntryStatuses) . "' WHERE `anidb` = " . mysql_real_escape_string($_POST['anidb']);
 				mysql_query($query) or die(mysql_error());
