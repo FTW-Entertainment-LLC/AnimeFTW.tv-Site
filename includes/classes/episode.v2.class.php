@@ -394,7 +394,7 @@ class Episode extends Config {
         $finalresults = array();
         $where = " AND `episode`.`Movie` = 1";
         $orderBy = "`series`.`fullSeriesName` ASC, `episode`.`epnumber` DESC";
-        $columns = "`episode`.`id`, `series`.`fullSeriesName`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`description`";
+        $columns = "`episode`.`id`, `series`.`fullSeriesName`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`description`, `series`.`category`";
         $addonQuery = '';
 		if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
             // it means the content we can show is only unlicensed.
