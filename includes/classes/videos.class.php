@@ -590,14 +590,14 @@ class AFTWVideos extends Config{
 		{
 			// it's equal to 1, which means its just 720p
 			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
-			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
+			echo '					<source src="//videos2.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
 		}																						 // swordartonline_720p_10_ns.mkv
 		else if($EpisodeArray[12] == 2 && $this->UserArray[2] != 3)
 		{
 			// its equal to 2, which means its 1080p
 			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
-			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
-			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_1080p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="1080" data-default="true" />';
+			echo '					<source src="//videos2.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
+			echo '					<source src="//videos2.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_1080p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="1080" data-default="true" />';
 		}
 		else
 		{
@@ -2076,13 +2076,13 @@ HDOC;
 				$i = 0;
 				while($i <= $row['hd']){
 					if($i == 0){
-						$data .= '<li><a href="#" onClick="window.location.href=\'//videos.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;">480p</a></li>';
+						$data .= '<li><a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;">480p</a></li>';
 					}
 					else if($i == 1){
-						$data .= '<li><a href="#" onClick="window.location.href=\'//videos.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=720\'; return false;">720p</a></li>';
+						$data .= '<li><a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=720\'; return false;">720p</a></li>';
 					}
 					else if($i == 2){
-						$data .= '<li><a href="#" onClick="window.location.href=\'//videos.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=1080\'; return false;">1080p</a></li>';
+						$data .= '<li><a href="#" onClick="window.location.href=\'//videos2.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=1080\'; return false;">1080p</a></li>';
 					}
 					else {
 					}
