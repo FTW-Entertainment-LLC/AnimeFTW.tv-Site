@@ -54,10 +54,7 @@ class AFTWDonate {
 		$row = mysql_fetch_array($query);
 		echo '<div class="tbl">';
 		echo $row['description'];
-		echo '</div><br />';
-		echo '<div class="tbl">';
-		echo 'It was asked of us, what type of space would we gain from this upgrade, and why would you need so much space?<br /><br />
-		Well, the simple answer is this, we currently utilize 4TB of space over two RAID-1 drive arrays, it\'s nice but not something to be super proud of.. In the new system, we will employe 12, 2TB disks, over a <a href="http://en.wikipedia.org/wiki/RAID_5#RAID_5">RAID 5</a>, which would give us roughly 20.5TB of usable space, all while keeping a new level of redundancy in place. Not to mention, we will keep Zeus 1.0 onsite as a backup box, using it to sync files and possibly as a hot failover in case of an emergency. <br /><br /> There has been months of thought and work put into this setup, it gives us an easy 4-5 year growth period without the need to worry about space, and has the processing power to let us do what we need in terms of video manipulation.</div>';
+		echo '</div>';
 	}
 	
 	private function RightColumn(){
