@@ -109,11 +109,11 @@ if (isset($_GET['rf'])){
     function news($Config) 
 	{
 		//12 for staff, 14 for staff and ams
-		if($profileArray[2] == 1 || $profileArray[2] == 2 || $profileArray[2] == 4 || $profileArray[2] == 5 || $profileArray[2] == 6)
+		if($Config->UserArray[2] == 1 || $Config->UserArray[2] == 2 || $Config->UserArray[2] == 4 || $Config->UserArray[2] == 5 || $Config->UserArray[2] == 6)
 		{
 			$addonquery = ' OR t.tfid=12 OR t.tfid=14';
 		}
-		else if($profileArray[2] == 7)
+		else if($Config->UserArray[2] == 7)
 		{
 			$addonquery = ' OR t.tfid=14';
 		}
@@ -121,9 +121,10 @@ if (isset($_GET['rf'])){
 		{
 			$addonquery = '';
 		}
+        $query = "SELECT `tid`, `ttitle`, `tpid`, `tfid`, `tdate`, `fseo` FROM `forums_threads` INNER JOIN `forums_forum` ON `forums_forum`.`fid`=`forums_threads`.`tfid` WHERE `forums_threads`.`tfid` in (" . $showForumPosts . ") ORDER BY `tid` DESC";
 		$query = "SELECT t.tid, t.ttitle, t.tpid, t.tfid, t.tdate, p.pbody, f.ftitle, f.fseo FROM forums_threads as t, forums_post as p, forums_forum as f 
 		WHERE (t.tfid='1' OR t.tfid='2' OR t.tfid='9'" . $addonquery . ") AND p.pistopic='1' AND p.puid=t.tpid AND p.ptid=t.tid AND f.fid=t.tfid ORDER BY t.tid DESC LIMIT 0, 8";
-		if($profileArray[0] == 1)
+		if($Config->UserArray[0] == 1)
 		{
 			echo '<!-- Query:' . $query . ' -->';
 		}
