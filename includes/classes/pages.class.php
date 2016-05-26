@@ -185,9 +185,14 @@ class AFTWpage{
 		return $bodyTop;
 	}
 	
-	public function LatestNews(){				
+	public function LatestNews($profileArray){				
 		mysql_query("SET NAMES 'utf8'"); 
-		$query = mysql_query("SELECT t.tid, t.ttitle, t.tpid, t.tfid, t.tdate, f.fseo FROM forums_threads AS t, forums_forum AS f WHERE (t.tfid='1' OR t.tfid='2' OR t.tfid='9') AND f.fid = t.tfid ORDER BY tid DESC LIMIT 0, 1");
+        if ($profileArray[2] != 0 && $profileArray[2] != 3) {
+            $showForumPosts = "'1','2','9', '14'";
+        } else {
+            $showForumPosts = "'1','2','9'";
+        }
+		$query = mysql_query("SELECT `tid`, `ttitle`, `tpid`, `tfid`, `tdate`, `fseo` FROM `forums_threads` INNER JOIN `forums_forum` ON `forums_forum`.`fid`=`forums_threads`.`tfid` WHERE `forums_threads`.`tfid` in (" . $showForumPosts . ") ORDER BY `tid` DESC LIMIT 0, 1");
 		$row = mysql_fetch_array($query);
 		$ttitle = stripslashes($row['ttitle']);
 		$ttitle = htmlspecialchars($ttitle);
