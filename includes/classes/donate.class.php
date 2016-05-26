@@ -60,10 +60,7 @@ class AFTWDonate {
 	private function RightColumn(){
 		$this->ProgressBox();
 		$this->DonationTiers();
-		echo '<div class="apple_overlay" id="donate">';
-		echo '<h2 style="margin:0px">Donate to AnimeFTW.tv</h2>';
-		echo '<div class="comments" id="donatediv">Loading. Please Wait...</div>';
-		echo '</div>';
+		$this->donors();
 	}
 	
 	private function ProgressBox(){
@@ -128,6 +125,7 @@ class AFTWDonate {
         } else {
             echo "<div class='side-body-bg'>";
             echo "<div class='scapmain'>Donate Today!</div>\n";
+            echo "<div class='side-body floatfix'>\n";
             echo '
 				<div align="center" style="vertical-align:center">
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -146,12 +144,12 @@ class AFTWDonate {
                 <div>
                 </div>
                 ';
-            echo "</div>\n";
+            echo "</div></div>\n";
         }
 	}
 	
 	# function CalculateDonors
-	private function CalculateDonors($donate,$dlimit){
+	private function CalculateDonors($donate,$dlimit = 0){
 		// This is basically going to check all the donation records and let us know if it falls under the specifications
 		if($dlimit != 0){$limit = ' AND mc_gross <= '.$dlimit;}else{$limit = '';} //if the tier is the top tier theres nothing to compare it with, so don't give it the limit..
 		$query = "SELECT count(id) FROM donation_paypal WHERE mc_gross >= ".$donate.$limit." AND item_name = '".$this->donation_name."'";
@@ -166,10 +164,10 @@ class AFTWDonate {
 				if($i < ($total-1)){$first_name1 .= ', ';}
 				$i++;
 			}
-			return '<div class="totaldonors"><b>'.$total.' Donors</b><div style="font-size:8px;">Thanks to: '.$first_name1.'</div></div>'; // return the variable so it doesnt screw everything up!
+			echo '<div class="totaldonors"><b>'.$total.' Donors for this month.</b><div style="font-size:8px;">Thanks to: '.$first_name1.'</div></div>'; // return the variable so it doesnt screw everything up!
 		}
 		else {
-			return '<div class="totaldonors"><b>'.$total.' Donors</b></div>'; // return the variable so it doesnt screw everything up!
+			echo '<div class="totaldonors" align="center"><b>'.$total.' Donors for this month.</b></div>'; // return the variable so it doesnt screw everything up!
 		}
 	}
 	
@@ -288,6 +286,15 @@ class AFTWDonate {
 	private function UpdateViews(){
 		mysql_query("UPDATE donation_settings SET views = views+1 WHERE round_id = ".$this->donation_round);
 	}
+    
+    private function donors()
+    {
+        echo "<div class='side-body-bg'>";
+        echo "<div class='scapmain'>This Month's Donors!</div>\n";
+        echo "<div class='side-body floatfix'>\n";
+        $this->CalculateDonors(0);
+        echo '</div></div>';
+    }
 }
 
 ?>
