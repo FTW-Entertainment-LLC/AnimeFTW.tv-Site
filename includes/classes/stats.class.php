@@ -89,7 +89,6 @@ class AFTWstats extends Config {
             exit;
         }
         $row = mysql_fetch_assoc($result);
-        
         if ($row['value'] == 1 && $this->UserArray[0] == 1) {
             if ($horizontal == false) {
                 echo "<div class='side-body-bg'>";
@@ -101,12 +100,13 @@ class AFTWstats extends Config {
                     </a>
                 </div>';
                 echo "</div></div>\n";
-            } else {
+            } elseif ($horizontal == true && $this->UserArray[2] == 3) {
                 echo '<div align="center">
                     <a href="/donate">
                         <img src="//img03.animeftw.tv/support-aftw-horizontal.png" alt="support aftw" />
                     </a>
-                </div>';
+                </div>';                
+            } else {
             }
         }
     }
