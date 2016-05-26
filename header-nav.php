@@ -82,7 +82,7 @@ else {
 	echo "				<div class='search-text'>";
 	include_once('includes/classes/pages.class.php');
 	$pt = new AFTWpage();
-	$pt->LatestNews();
+	$pt->LatestNews($profileArray);
 	echo "				</div><div id='SearchResults'></div>";
 	echo "			</div></div>";
 	echo "			</td>\n";
