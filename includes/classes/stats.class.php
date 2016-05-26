@@ -78,6 +78,39 @@ class AFTWstats extends Config {
 			return floor($ageYears);
 		}
 	}
+    
+    public function donationBox($horizontal = false)
+    {
+        $query = "SELECT `value` FROM `settings` WHERE `id` = 10";
+        $result = mysql_query($query);
+        
+        if (!$result) {
+            echo 'There was an issue running the donation box query';
+            exit;
+        }
+        $row = mysql_fetch_assoc($result);
+        
+        if ($row['value'] == 1 && $this->UserArray[0] == 1) {
+            if ($horizontal == false) {
+                echo "<div class='side-body-bg'>";
+                echo "<div class='scapmain'>Donate to AnimeFTW.tv!</div>\n";
+                echo "<div class='side-body floatfix'>\n";
+                echo '<div align="center">
+                    <a href="/donate">
+                        <img src="//img03.animeftw.tv/support-aftw.png" alt="support aftw" />
+                    </a>
+                </div>';
+                echo "</div></div>\n";
+            } else {
+                echo '<div align="center">
+                    <a href="/donate">
+                        <img src="//img03.animeftw.tv/support-aftw-horizontal.png" alt="support aftw" />
+                    </a>
+                </div>';
+            }
+        }
+    }
+    
 	public function BirthdayBox(){
 		$Month = date("m");
 		$Day = date("d");

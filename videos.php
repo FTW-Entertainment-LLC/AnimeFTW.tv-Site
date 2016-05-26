@@ -2,11 +2,14 @@
 include_once('includes/classes/config.class.php');
 include_once('includes/classes/videos.class.php');
 include_once('includes/classes/pages.class.php');
+include_once('includes/classes/stats.class.php');
 $Config = new Config();
 $Config->buildUserInformation();
 $v = new AFTWVideos(); //Build our videos
 $p = new AFTWpage();
+$stats = new AFTWstats();
 $v->connectProfile($Config->outputUserInformation());
+$stats->connectProfile($Config->UserArray);
 if(isset($_GET['type']) && $_GET['type'] == 'anime'){
 	if(isset($_GET['seo'])){$seo = $_GET['seo'];}else{$seo = '';}
 	if(isset($_GET['eid'])){$eid = $_GET['eid'];}else{$eid = '';}
@@ -115,6 +118,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 					echo "<br />\n";
 					echo "<span class='poster'>Sorting through Anime for the tag: <b>".$_GET['param']."</b></span>\n";
 					echo "</div>\n";
+                    echo $stats->donationBox(true); 
 					echo "<br />";
 					echo "<div id=\"lister\">";
 					echo '<br />'.$v->tagCloud('anime').'<br />';
@@ -129,6 +133,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 						echo "<br />\n";
 						echo "<span class='poster'>Sorting through series for: <b>".$_GET['vtype']."</b></span>\n";
 						echo "</div>\n";
+                        echo $stats->donationBox(true);
 						echo "<br />";
 						echo "<div id=\"lister\">";
 						echo '<br />'.$v->tagCloud('anime').'<br />';
@@ -152,6 +157,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 					echo "<br />\n";
 					echo "<span class='poster'>Displaying all results that are in the: <b>".$_GET['param']."+</b> age Tag.</span>\n";
 					echo "</div>\n";
+                    echo $stats->donationBox(true);
 					echo "<br />";
 					echo "<div id=\"lister\">";
 					echo '<br />'.$v->tagCloud('anime').'<br />';
@@ -171,6 +177,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 				echo "<br />\n";
 				echo "<span class='poster'>&nbsp;All of the Anime that AnimeFTW.tv supplies is listed below.<br>&nbsp;If you don't find what you're looking for, you can request anime <a href='/requests'>here</a>.</span>\n";
 				echo "</div>\n";
+                echo $stats->donationBox(true);
 				echo "<br />";
 				echo '<div align="center" ><a href="#" id="tagcloud-toggle">:: Toggle the Tag Cloud ::</a></div>';
 				echo "<div id=\"tagcloud\" style=\"display:none\">";
@@ -193,6 +200,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 			if($_GET['type'] == 'amv')
 			{
 				echo bodyTopInfo($index_global_message,'yes',$profileArray,$Config);
+                echo $stats->donationBox(true);
 				echo '<div class="left_articles_mod">
 				<h2>AMV\'s Uploaded to AnimeFTW.tv\'s Servers</h2>
 				<p class="description">AMVs listed Below</p>

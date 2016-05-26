@@ -989,7 +989,12 @@ HDOC;
 												<a title="Share this Episode on Google+" href="https://plus.google.com/u/0/share?url=https://www.animeftw.tv'.$_SERVER['REQUEST_URI'].'" target="_blank"><img src="' . $this->Host . '/social-networking/icon-google-plusv2.png" alt="Google Plus" /></a>
 												</div>
 											</div>
-										</div>
+										</div>';
+                                        include_once('stats.class.php');
+                                        $stats = new AFTWstats();
+                                        $stats->connectProfile($this->UserArray);
+                                        echo $stats->donationBox(true);
+                                        echo '
 										<div class="video-comments">
 											<div class="video-comments-header" style="font-size:16px;margin:5px 0 0 20px;">Video Comments:</div>
 											<div class="comments" id="comments1"><div align="center" style="padding:10px;text-align:center;font-size:16px;"><img src="/images/loading-mini.gif" alt="" />&nbsp;Loading Comments. Please Wait...</div></div>

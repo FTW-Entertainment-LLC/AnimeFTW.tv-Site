@@ -565,6 +565,7 @@ if (isset($_GET['rf'])){
 		echo "</div></div></div>\n";
 		$stats->ShowStoreCategories();
 	}
+	$stats->donationBox();
 	if($profileArray[2] != 0){
 		echo "<!-- Start Top 10 List -->";
 		$top->get_num(10);
