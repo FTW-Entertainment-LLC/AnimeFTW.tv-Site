@@ -46,7 +46,7 @@ class AFTWDonate {
 	}
 	
 	private function LeftColumn(){
-		echo '<span class="scapmain">AnimeFTW.tv Donation Area</span>
+		echo '<span class="scapmain">Donate to AnimeFTW.tv!</span>
 			<br />
 			<span class="poster">The website and all our services are completely self funded, we rely on <i>viewers like you</i> to maintain our Anime Library and keep us going strong!</span>
 			</div>';
@@ -54,36 +54,6 @@ class AFTWDonate {
 		$row = mysql_fetch_array($query);
 		echo '<div class="tbl">';
 		echo $row['description'];
-		echo '</div><br />';
-		echo '<div class="side-body-bg"><span class="scapmain">Specific Prize Details</span>
-			<br />
-			<span class="poster">We we\'re asked about what types of boxed anime would we offer, well here is a list of the ones that we either have or can get super quick :)</span>
-			</div>';
-		echo '<div class="tbl">';
-		echo 'Here is a current list of DVD/BD box sets we can get in a snap or have:
-			<ul>
-			<li>Red Garden (DVD)</li>
-			<li>Ergo Proxy (DVD)</li>
-			<li>Shuffle (DVD)</li>
-			<li>Trigun (DVD)</li>
-			<li>Kanon (DVD)</li>
-			<li>Utawarerumono (DVD)</li>
-			<li>Desert Punk (DVD)</li>
-			<li>Gunslinger Girl (DVD)</li>
-			<li>Tokyo Majin (DVD)</li>
-			<li>Welcome to the NHK (DVD)</li>
-			<li>Air Gear (DVD)</li>
-			<li>Mongolian Chop Squad (DVD)</li>
-			<li>Claymore (DVD)</li>
-			<li>Trinity Blood (DVD)</li>
-			<li>Gurren Lagann (DVD)</li>
-			<li>Black Cat (DVD)</li>
-			<li>Melancholy of Haruhi Suzumiya (DVD)</li>
-			<li>Samurai Champloo (DVD) & (BD)</li>
-			<li>Ragnarok (DVD)</li>
-			<li>Chaos;Head (BD/DVD Combo)</li>
-			</ul><br />
-			There are more that we can get, just shoot us a PM if there is one you are looking for and we can tell you if it will be do-able or not :)';
 		echo '</div><br />';
 		echo '<div class="tbl">';
 		echo 'It was asked of us, what type of space would we gain from this upgrade, and why would you need so much space?<br /><br />
@@ -132,31 +102,55 @@ class AFTWDonate {
 	}
 	
 	private function DonationTiers(){
-		echo "<div class='side-body-bg'>";
-		echo "<div class='scapmain'>Donation Tiers</div>\n";
-		echo '<div style="font-size:10px;" align="center">(Click a box to proceed)</div>';
-		$query = mysql_query("SELECT COUNT(id) FROM donation_tiers WHERE donation_round = ".$this->donation_round);
-		$total = mysql_result($query, 0);
-		if($total == 0){ // we need to be able to display nothing if an error occours.. gogo awesomesauce
-			echo "<div class='side-body floatfix' align='center'>\n";
-			echo "<h4>The donations are either closed or misconfigured.</h4>";
-			echo "</div>";
-		}
-		else {
-			$query = "SELECT id, name, donate, donate_limit, details FROM donation_tiers WHERE donation_round = ".$this->donation_round." ORDER BY level ASC";
-			$results = mysql_query($query);
-			while(list($id,$name,$donate,$donate_limit,$details) = mysql_fetch_array($results)){
-				echo '<div id="tieritem" class="floatfix">
-					<a href="#" rel="#donate" onClick="javascript:ajax_loadContent(\'donatediv\',\'/scripts.php?view=donate&id='.$id.'\');">
-					<div class="tiertitle">'.$name.'</div>
-					'.$this->CalculateDonors($donate,$donate_limit).'
-					<div class="tierdonation"><i>Donate '.$donate.' Dollars or more.</i></div>
-					<div>Prizes: <br />'.$details.'</div>
-					</a>
-				</div>';
-			}
-		}
-		echo "</div>\n";
+        if (1 ==2) {
+            echo "<div class='side-body-bg'>";
+            echo "<div class='scapmain'>Donation Tiers</div>\n";
+            echo '<div style="font-size:10px;" align="center">(Click a box to proceed)</div>';
+            $query = mysql_query("SELECT COUNT(id) FROM donation_tiers WHERE donation_round = ".$this->donation_round);
+            $total = mysql_result($query, 0);
+            if($total == 0){ // we need to be able to display nothing if an error occours.. gogo awesomesauce
+                echo "<div class='side-body floatfix' align='center'>\n";
+                echo "<h4>The donations are either closed or misconfigured.</h4>";
+                echo "</div>";
+            }
+            else {
+                $query = "SELECT id, name, donate, donate_limit, details FROM donation_tiers WHERE donation_round = ".$this->donation_round." ORDER BY level ASC";
+                $results = mysql_query($query);
+                while(list($id,$name,$donate,$donate_limit,$details) = mysql_fetch_array($results)){
+                    echo '<div id="tieritem" class="floatfix">
+                        <a href="#" rel="#donate" onClick="javascript:ajax_loadContent(\'donatediv\',\'/scripts.php?view=donate&id='.$id.'\');">
+                        <div class="tiertitle">'.$name.'</div>
+                        '.$this->CalculateDonors($donate,$donate_limit).'
+                        <div class="tierdonation"><i>Donate '.$donate.' Dollars or more.</i></div>
+                        <div>Prizes: <br />'.$details.'</div>
+                        </a>
+                    </div>';
+                }
+            }
+            echo "</div>\n";
+        } else {
+            echo "<div class='side-body-bg'>";
+            echo "<div class='scapmain'>Donate Today!</div>\n";
+            echo '
+				<div align="center" style="vertical-align:center">
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    <span>Donate using Paypal:</span><br />
+                    <input type="hidden" name="cmd" value="_donations">
+                    <input type="hidden" name="notify_url" value="https://www.ftwentertainment.com/paypal-gateway?action=ipn">
+                    <input type="hidden" name="item_name" value="' . $this->donation_name . '">
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="return" value="https://www.animeftw.tv/donate/thank-you">
+                    <input type="hidden" name="business" value="paypal@ftwentertainment.com">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"><br />
+                    <input type="text" name="amount" value="" placeholder="Donation Amount" />
+                    </form>
+				</div>
+                <div>
+                </div>
+                ';
+            echo "</div>\n";
+        }
 	}
 	
 	# function CalculateDonors
