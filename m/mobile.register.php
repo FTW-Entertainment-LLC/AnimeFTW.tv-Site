@@ -87,8 +87,8 @@
 	}
 	
 	function makeUrlFriendly($postUsername) {
-		$output = preg_replace("/\s/e" , "_" , $postUsername);
-		$output = preg_replace("/\W/e" , "" , $output);
+		$output = @preg_replace("/\s/e" , "_" , $postUsername);
+		$output = @preg_replace("/\W/e" , "" , $output);
 		return strtolower($output);
 	}
 ?>
