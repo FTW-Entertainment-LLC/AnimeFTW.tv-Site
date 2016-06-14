@@ -27,24 +27,24 @@ class watchlist extends Config {
 	
 	public function array_displayWatchList($allEntries = FALSE){
 		// variables
-		$columns = "`id`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`";
+		$columns = "`watchlist`.`id`, `watchlist`.`date`, `watchlist`.`update`, `watchlist`.`sid`, `watchlist`.`status`, `watchlist`.`email`, `watchlist`.`currentep`, `watchlist`.`tracker`, `watchlist`.`tracker_latest`, `watchlist`.`comment`, `series`.`fullSeriesName`";
 		$where = "`uid` = " . $this->UserID;
 		$orderby = "";
 		
 		// we want all of the user's entries.. 
 		if($allEntries == TRUE){
-			$columns = "`id`, `sid`";
+			$columns = "`watchlist`.`id`, `watchlist`.`sid`";
 		}
 		else {
 			// options that could potentially be set.
 			if(isset($this->Data['id'])) {
 				// If the ID is set, we are narrowing down on a specific entry.
-				$where .= " AND `id` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
+				$where .= " AND `watchlist`.`id` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "'";
 			}
 			
 			if(isset($this->Data['sid'])) {
 				// If the ID is set, we are narrowing down on a specific entry.
-				$where .= " AND `sid` = '" . $this->mysqli->real_escape_string($this->Data['sid']) . "'";
+				$where .= " AND `watchlist`.`sid` = '" . $this->mysqli->real_escape_string($this->Data['sid']) . "'";
 			}
 			
 			if(isset($this->Data['sort'])) {
@@ -103,7 +103,7 @@ class watchlist extends Config {
 			}
 		}
 		// Form the query.
-		$query = "SELECT ${columns} FROM `watchlist` WHERE ${where} ${orderby}";
+		$query = "SELECT ${columns} FROM `watchlist` INNER JOIN `series` ON `series`.`id`=`watchlist`.`sid` WHERE ${where} ${orderby}";
 		
 		// make sure we are using UTF-8 chars
 		$this->mysqli->set_charset("utf8");
@@ -147,6 +147,7 @@ class watchlist extends Config {
 						}
 					}
 				}
+                $returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['sid'] . '.jpg';
 				// If the request is for a specific My WatchList entry, we will pull down the proper layout for the various types.
 				if((isset($this->Data['id']) || isset($this->Data['sid'])) && $row['tracker'] == 1) {
 					// tracker was set, we send them
