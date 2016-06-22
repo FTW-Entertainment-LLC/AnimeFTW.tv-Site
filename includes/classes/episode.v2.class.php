@@ -151,7 +151,7 @@ class Episode extends Config {
             // no reason to worry, we just need to filter by latest episode now.. 
         }
         // Add support for viewing the last X videos added.
-        if(isset($this->Data['latest'])) {
+        if(isset($this->Data['latest']) && strtolower($this->Data['latest']) == 'true') {
             // latest is set, we will limit them to the latest ## episodes by default.
             // Unless they use the timeframe flag, which will allow them to specify a time frame from the current time
             // that they wish to pull down episodes from.
