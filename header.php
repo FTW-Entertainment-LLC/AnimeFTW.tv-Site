@@ -50,15 +50,16 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	}
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="robots" content="index, follow">
-	<meta name="keywords" content="streaming anime, hd anime, anime, free, hd, high definition, hq, high quality, online, stream, streaming, manga, chat, mkv, naruto, divx anime, divx"> 
-	<meta name="description" content="AnimeFTW.tv has free streaming anime in High Quality, including Psychic School, Garden of Words, Attack on Titan, R15 OAD, See Me After Class, The Devil is a Part-Timer, Sword Art Online, Akira, Mind Game, Steins;Gate, I Don't have many Friends, Valvrave the Liberator, Fairy Tail and Btooom!"/>
+	<meta name="description" content="AnimeFTW.tv free high quality straming anime, in html5. View on the web, android, ios, windows phone and kodi devices."/>
     <meta name="application-name" content="AnimeFTW.tv"/>
     <meta name="msapplication-TileColor" content="#5bdaff"/>
     <meta name="msapplication-TileImage" content="/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png"/>
+    <meta property="og:title" content="<?=$PageTitle;?>" />
+    <meta property="og:url" content="<?=$_SERVER['REQUEST_URI']; ?>" />
     <link rel="search" type="application/opensearchdescription+xml" title="AnimeFTW.tv Site Search" href="/AFTWSiteSearch.xml">
 	<?php
 	if($profileArray[0] == 1)
@@ -341,4 +342,5 @@ body {
 <script type="text/javascript" src="/scripts/aftw-functions.js?v=4.0.3"></script>
 </head>
 <body>
+<div style="display:none;"><h1>Streaming Anime, High Quality</h1></div>
 <div id="loaderImage"></div>

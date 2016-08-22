@@ -8,6 +8,7 @@
 \****************************************************************/
 
 $includePath = ($_SERVER['HTTP_HOST'] === "v4.aftw.ftwdevs.com" ||
+                $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com'||
 				$_SERVER['HTTP_HOST'] === "phpdev") ? "../.." : "/home/mainaftw/public_html";
 
 require_once("{$includePath}/includes/classes/cronabstract.class.php");
