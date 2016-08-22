@@ -20,3 +20,4 @@ Disallow: /stats
 Disallow: /m
 Disallow: /api
 
+Sitemap: https://www.animeftw.tv/sitemap.xml
