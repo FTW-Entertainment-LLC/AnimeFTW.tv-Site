@@ -6,7 +6,7 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 {
     $rootdirectory = $_SERVER['DOCUMENT_ROOT'];
 }
@@ -23,13 +23,13 @@ class Config {
     public function __construct($autoBuildUser = FALSE){        
         // Declare the main database
         $this->MainDB = 'mainaftw_anime';
-        if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+        if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
         {
             $this->MainDB = 'devadmin_anime'; // Main DB for everything else
         }
         // Set the domain..
         $this->ThisDomain = ".animeftw.tv";
-        if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com')
+        if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
         {
             $this->ThisDomain = ".ftwdevs.com";
         }
