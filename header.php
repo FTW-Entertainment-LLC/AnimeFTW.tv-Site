@@ -52,14 +52,17 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 <!DOCTYPE html>
 <html lang="en" >
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
     <meta name="robots" content="index, follow">
-	<meta name="description" content="AnimeFTW.tv free high quality straming anime, in html5. View on the web, android, ios, windows phone and kodi devices."/>
-    <meta name="application-name" content="AnimeFTW.tv"/>
-    <meta name="msapplication-TileColor" content="#5bdaff"/>
-    <meta name="msapplication-TileImage" content="/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png"/>
-    <meta property="og:title" content="<?=$PageTitle;?>" />
-    <meta property="og:url" content="<?=$_SERVER['REQUEST_URI']; ?>" />
+	<meta name="description" content="AnimeFTW.tv free high quality straming anime, in html5. View on the web, android, ios, windows phone and kodi devices.">
+    <meta name="application-name" content="AnimeFTW.tv">
+    <meta name="msapplication-TileColor" content="#5bdaff">
+    <meta name="msapplication-TileImage" content="/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png">
+    <meta property="og:title" content="<?=$PageTitle;?> - Watch anime online in HD">
+    <meta property="og:description" content="AnimeFTW.tv free high quality streaming anime, in html5. View on the web, android, ios, windows phone and kodi devices.">
+    <meta property="og:url" content="https://www.animeftw.tv<?=$_SERVER['REQUEST_URI'];?>">
+    <meta property="og:site_name" content="AnimeFTW.tv">
+    <meta property="og:type" content="website">
     <link rel="search" type="application/opensearchdescription+xml" title="AnimeFTW.tv Site Search" href="/AFTWSiteSearch.xml">
 	<?php
 	if($profileArray[0] == 1)
