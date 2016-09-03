@@ -196,11 +196,11 @@ a.feature01:hover .overlay01{position:absolute;z-index:3;width:154px;height:86px
 a.feature01 .overlay01 .caption01,img.caption01{position:absolute;height:30px;line-height:30px;width:100%;z-index:3;text-indent:-9999em;color:#000;font-size:11px;bottom:0;overflow:hidden}
 a.feature01:hover .caption01{text-indent:10px;background:rgb(17,180,233);background:rgba(17,180,233,0.75)}
 a.feature01 img{display:block}
-#NT_copy{background-color:#333;color:#FFF;font-weight:bold;font-size:10px;font-family:"Trebuchet MS";width:400px;left:0;top:0;padding:4px;position:absolute;text-align:left;z-index:20;border-radius:0 10px 10px 10px;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=87);-moz-opacity:.87;-khtml-opacity:.87;opacity:.87;}
+#NT_copy{background-color:#333;color:#FFF;font-weight:bold;font-size:10px;font-family:"Trebuchet MS";width:400px;left:0;top:0;padding:4px;position:absolute;text-align:left;z-index:20;border-radius:0 10px 10px 10px;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=87);-khtml-opacity:.87;opacity:.87;}
 #ajax_tooltipObj{z-index:1000000;text-align:left}
 #ajax_tooltipObj div{position:relative}
 #ajax_tooltipObj .ajax_tooltip_arrow{;width:20px;position:absolute;left:0px;top:0px;background-repeat:no-repeat;background-position:center left;z-index:1000005;height:60px}
-#ajax_tooltipObj .ajax_tooltip_content{background-color:#333;color:#FFF;font-weight:bold;font-size:10px;font-family:"Trebuchet MS";width:400px;left:10px;top:0;padding:4px;position:absolute;text-align:left;z-index:20;border-radius:0 10px 10px 10px;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=87);-moz-opacity:.87;-khtml-opacity:.87;opacity:.87;}
+#ajax_tooltipObj .ajax_tooltip_content{background-color:#333;color:#FFF;font-weight:bold;font-size:10px;font-family:"Trebuchet MS";width:400px;left:10px;top:0;padding:4px;position:absolute;text-align:left;z-index:20;border-radius:0 10px 10px 10px;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=87);-khtml-opacity:.87;opacity:.87;}
 #pageselected{font-weight:bold}
 .fontcolor a,.fontcolor span{background-color:#F8F8F8;padding:1px 2px 1px 2px}
 .fontcolor a:hover{background-color:#F0F0F0}
@@ -236,8 +236,8 @@ a.feature01 img{display:block}
 .topRatedList li{list-style-type:none}
 .highlight01 a:hover img,.highlight01 a:focus img{outline-color:#1E528C}
 .highlight01 a:hover:after,.highlight01 a:focus:after{background:rgb(30,82,140);background:rgba(30,82,140,0.7);background:-moz-linear-gradient(top,rgba(30,82,140,0.7),rgba(43,117,200,0.7));background:-webkit-gradient(linear,0% 0%,0% 100%,from(rgba(30,82,140,0.7)),to(rgba(43,117,200,0.7)));color:#fff;text-shadow:1px 1px 1px #000}
-a.linkopacity img{filter:alpha(opacity=40); -moz-opacity:0.5; opacity:0.5; -khtml-opacity:0.5}
-a.linkopacity:hover img{ filter:alpha(opacity=100); -moz-opacity:1.0; opacity:1.0; -khtml-opacity:1.0}
+a.linkopacity img{filter:alpha(opacity=40);opacity:0.5; -khtml-opacity:0.5}
+a.linkopacity:hover img{ filter:alpha(opacity=100);opacity:1.0; -khtml-opacity:1.0}
 .speech_bubble{  position:relative}
 .speech_bubble.say{  margin-top:8px}
 .speech_bubble.say .top-left,.speech_bubble.say .top-right,.speech_bubble.say .bottom-left,.speech_bubble.say .bottom-right{  background:url(' . $C->Host . $stylelocation . 'say_sprite_2.png) no-repeat top left;  height:16px}
@@ -424,7 +424,7 @@ div.feature02 img{display:block}
 .srow2{padding:8px;}
 .sactive{background-color:#4eff08;}
 .sinactive{background-color:#ff0000;}
-div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float:right;text-align:top;margin-top:-20px;margin-left:60px;padding:5px 7px 5px 7px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;-webkit-box-shadow:0 8px 20px 0 #262626;box-shadow:0 8px 20px 0 #262626;}
+div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float:right;text-align:top;margin-top:-20px;margin-left:20px;padding:5px 7px 5px 7px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;-webkit-box-shadow:0 8px 20px 0 #262626;box-shadow:0 8px 20px 0 #262626;}
 .aftwNot{padding:0; padding-top:2px; position:relative; height:25px; margin-top:6px; display:inline-block; width:24px; cursor:pointer;}
 .aftwU{padding:0 5px 0 0; padding-top:2px; position:relative; height:25px; margin-top:6px; display:inline-block; cursor:pointer; font-size:14px;}
 .aftwNot img{ height:18px;padding:2px 2px 0 2px;}
@@ -556,10 +556,8 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
     padding: 3px 0;
     margin: 3px 0 0 1px;
     -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
             border-radius: 3px;
     -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
-       -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
             box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
 }          
 .download-menu ul.dropit-submenu a {
