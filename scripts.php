@@ -589,8 +589,16 @@ if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 				echo 'You have already voted on this user.';
 			}
 		}
-	}
-	else
+	} else if (isset($_GET['mode']) && $_GET['mode'] == 'hide-dot') {
+        // action=hide-dot&value=notifiaction-dot
+        if (isset($_GET['value']) && $_GET['value'] == 'notification-dot') {
+            // Remove the notification dot for the userbar
+            // add a cookie that never expires so it does not appear.
+            setcookie("enahnced-bar", "1", time() + (60*60*24*365), "/", $Config->ThisDomain, 0, 1);
+        } else {
+            // Dont send output.
+        }
+    } else
 	{
 		echo 'Utility section';
 	}

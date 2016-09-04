@@ -76,10 +76,10 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	<?php
 	if($profileArray[8] == 1)
 	{
-		echo '<link rel="stylesheet" href="/christmas.css?v=4002" type="text/css" />';
+		echo '<link rel="stylesheet" href="/christmas.css?v=4003" type="text/css" />';
 	}
 	else {
-		echo '<link rel="stylesheet" href="/aftw.css?v=4006" type="text/css" />';
+		echo '<link rel="stylesheet" href="/aftw.css?v=4007" type="text/css" />';
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 0))
 	{
@@ -345,5 +345,18 @@ body {
 <script type="text/javascript" src="/scripts/aftw-functions.js?v=4.0.3"></script>
 </head>
 <body>
+<?php
+if ($_SERVER['PHP_SELF'] == '/index.php') {
+    echo '<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.async = true; 
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7&appId=1451417695153600";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, \'script\', \'facebook-jssdk\'));</script>';
+}
+?>
 <div style="display:none;"><h1>Streaming Anime, High Quality</h1></div>
 <div id="loaderImage"></div>
