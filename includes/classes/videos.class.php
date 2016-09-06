@@ -503,7 +503,7 @@ class AFTWVideos extends Config{
 			{
 				echo '<!-- key exists -->';
 				// success. However, we need to check the timestamp against our current time, if its > 4 weeks or is more than 95% of the way through the video, let's just let it go.
-				if($this->RecentEps[$EpisodeArray[15]]['updated'] < (time()-2419200) || (is_numeric($this->RecentEps[$EpisodeArray[15]]['max']) && ($this->RecentEps[$EpisodeArray[15]]['time']/$this->RecentEps[$EpisodeArray[15]]['max'])*100 > 95))
+				if($this->RecentEps[$EpisodeArray[15]]['updated'] < (time()-2419200) || ((is_numeric($this->RecentEps[$EpisodeArray[15]]['max']) && $this->RecentEps[$EpisodeArray[15]]['max'] > 0) && ($this->RecentEps[$EpisodeArray[15]]['time']/$this->RecentEps[$EpisodeArray[15]]['max'])*100 > 95))
 				{
 					// sorry.. your time was too far off, or you already watched through this video before.. so we will just let it ride out without a stamp.
 					$vidPosition = '';
