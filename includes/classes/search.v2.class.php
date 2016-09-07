@@ -60,6 +60,12 @@ class Search extends Config {
 		{
 			$count = 10;
 		}
+        
+        // The windows dev is a derp so we must override some settings.
+        if ($_SERVER['HTTP_USER_AGENT'] == 'NativeHost') {
+            $count = 100;
+            $start = 0;
+        }
 		$input = $this->mysqli->real_escape_string($input);
 		if($this->AccessLevel == 0)
 		{
