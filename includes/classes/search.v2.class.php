@@ -46,11 +46,11 @@ class Search extends Config {
 		
 		if(isset($this->Data['start']))
 		{
-			$start = $this->Data['start'] . ",";
+			$start = $this->Data['start'];
 		}
 		else
 		{
-			$start = "0,";
+			$start = "0";
 		}
 		if(isset($this->Data['count']))
 		{
@@ -61,25 +61,26 @@ class Search extends Config {
 			$count = 10;
 		}
 		$input = $this->mysqli->real_escape_string($input);
-		if($this->UserArray[2] == 0)
+		if($this->AccessLevel == 0)
 		{
 			// the user is an unregistered user, give them limited information
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 50";
+            $query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT ${start}, ${count}";
 		}
-		else if($this->UserArray[2] == 3)
+		else if($this->AccessLevel== 3)
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASCLIMIT 0, 50";
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT ${start}, ${count}";
 		}
 		else
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT 0, 50";		
+            $query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT ${start}, ${count}";		
 		}
+        
 		$result  = $this->mysqli->query($query);
 		$numrows = $result->num_rows;
 		if($numrows > 0)
 		{
 			$results = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => 'Success, results displayed.');			
-			$results['start'] = rtrim($start, ',');
+			$results['start'] = $start;
 			$results['count'] = $count;
 			$results['numrows'] = $numrows;
 			$i = 0;
