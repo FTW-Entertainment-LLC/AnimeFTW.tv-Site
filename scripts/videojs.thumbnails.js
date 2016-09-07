@@ -103,9 +103,6 @@
     img.className = 'vjs-thumbnail';
     extend(img.style, settings['0'].style);
 
-    // Add the tooltip
-    $(div).append($("      <div id='vjs-tip'>      <div id='vjs-tip-arrow'></div>      <div id='vjs-tip-inner'></div>      </div>    "));
-
     // center the thumbnail over the cursor if an offset wasn't provided
     if (!img.style.left && !img.style.right) {
       img.onload = function() {
@@ -129,7 +126,15 @@
     // add the thumbnail to the player
     progressControl = player.controlBar.progressControl;
     progressControl.el().appendChild(div);
-
+    // find the proper element to use for time calculations
+    var eleForTime;
+    for( var e in progressControl.el().childNodes ) {
+      var childNode = progressControl.el().childNodes[e];
+      if( childNode.className.indexOf('vjs-progress-holder') >= 0 ) {
+        eleForTime = childNode;
+        break;
+      }
+    }
     moveListener = function(event) {
       var mouseTime, time, active, left, setting, pageX, right, width, halfWidth, pageXOffset, clientRect;
       active = 0;
@@ -145,16 +150,16 @@
       // find the page offset of the mouse
       left = pageX || (event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft);
       // subtract the page offset of the positioned offset parent
-      left -= offsetParent(progressControl.el()).getBoundingClientRect().left + pageXOffset;
+      left -= eleForTime.getBoundingClientRect().left + pageXOffset;
 
       // apply updated styles to the thumbnail if necessary
       // mouseTime is the position of the mouse along the progress control bar
       // `left` applies to the mouse position relative to the player so we need
       // to remove the progress control's left offset to know the mouse position
       // relative to the progress control
-      mouseTime = Math.floor((left - progressControl.el().offsetLeft) / progressControl.width() * duration);
+      mouseTime = left / eleForTime.getBoundingClientRect().width * duration;
       for (time in settings) {
-        if (mouseTime > time) {
+        if (mouseTime >= time) {
           active = Math.max(active, time);
         }
       }
@@ -176,30 +181,7 @@
         left = halfWidth;
       }
 
-      div.style.visibility = "visible";
       div.style.left = left + 'px';
-
-      var seekBar = player.controlBar.progressControl.seekBar;
-
-      var mousePosition = (event.pageX - $(seekBar.el()).offset().left) / seekBar.width();
-      var timeInSeconds = mousePosition * player.duration();
-
-      if (timeInSeconds === player.duration()) {
-        timeInSeconds = timeInSeconds - 0.1;
-      }
-
-      var minutes = Math.floor(timeInSeconds / 60);
-      var seconds = Math.floor(timeInSeconds - minutes * 60);
-
-      if (seconds < 10) {
-        seconds = "0" + seconds;
-      }
-
-      $('#vjs-tip-inner').html("" + minutes + ":" + seconds);
-      $('#vjs-tip-inner')
-          .css("width", $('#vjs-tip-inner').width() + "px")
-          .css("right", (($('#vjs-tip-inner').width() / 2) + 8) + "px");
-      $('#vjs-tip').css('visibility', 'visible');
     };
 
     // update the thumbnail while hovering
@@ -207,9 +189,7 @@
     progressControl.on('touchmove', moveListener);
 
     moveCancel = function(event) {
-      div.style.left = '-100000px';
-      div.style.visibility = "hidden";
-      $('#vjs-tip').css("visibility", "hidden");
+      div.style.left = '-1000px';
     };
 
     // move the placeholder out of the way when not hovering
@@ -217,6 +197,5 @@
     progressControl.on('touchcancel', moveCancel);
     progressControl.on('touchend', moveCancel);
     player.on('userinactive', moveCancel);
-
   });
 })();
