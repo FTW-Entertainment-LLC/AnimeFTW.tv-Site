@@ -62,7 +62,7 @@ class Search extends Config {
 		}
         
         // The windows dev is a derp so we must override some settings.
-        if ($_SERVER['USER_AGENT'] == 'NativeHost') {
+        if ($_SERVER['HTTP_USER_AGENT'] == 'NativeHost') {
             $count = 100;
             $start = 0;
         }
