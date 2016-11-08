@@ -44,7 +44,7 @@ else {
 	
 		if($profileArray[2] == 1)
 		{
-			echo "<a id=\"tab-7\" class=\"aftw-main-nav\" href=\"https://discord.gg/JCm5b5E\">Chat</a>";
+			echo "<a id=\"tab-7\" class=\"aftw-main-nav\" target=\"_blank\" href=\"https://discord.gg/JCm5b5E\">Chat</a>";
 		}
 	}
 	else
