@@ -44,7 +44,7 @@ else {
 	
 		if($profileArray[2] == 1)
 		{
-			echo "<a id=\"tab-7\" class=\"aftw-main-nav\" href=\"#\" onClick=\"window.open('/irc','winname','directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0,scrollbars=no,resizable=no,width=650,height=550'); return false;\">Chat</a>";
+			echo "<a id=\"tab-7\" class=\"aftw-main-nav\" target=\"_blank\" href=\"https://discord.gg/JCm5b5E\">Chat</a>";
 		}
 	}
 	else
