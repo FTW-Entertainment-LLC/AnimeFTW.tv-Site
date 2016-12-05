@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: videos.class.php                                     
-## Author: Brad Riemann                                         
+## FileName: videos.class.php
+## Author: Brad Riemann
 ## Usage: Displays Series information and Episode information.
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -13,11 +13,13 @@ class AFTWVideos extends Config{
     var $RecentEps; //added 3/21/2015 by robotman321
     var $watchListSelection;
     var $Categories = array(); // added 10/10/2014 by robotman321
+    var $watchListStatuses = array();
     
     public function __construct()
     {
         parent::__construct();
         $this->buildCategories();
+        $this->watchListStatuses();
     }
     
     public function connectProfile($input)
@@ -119,15 +121,15 @@ class AFTWVideos extends Config{
     #-------------------------------------------------------------
     
     public function showListing ($listType,$sort,$alevel,$stype,$url = NULL){
-        if($alevel == 0){$aonly = "AND aonly='0'";}
-        else if ($alevel == 3){$aonly = "AND aonly<='1'";}
+        if($alevel == 0){$aonly = "AND `series`.`aonly` = '0'";}
+        else if ($alevel == 3){$aonly = "AND `series`.`aonly` <= '1'";}
         else{$aonly = '';}
         $catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($sort));
         if($stype == 0) {
             if($sort == NULL) {
-                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."ORDER BY fullSeriesName";
+                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
             } else {
-                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."AND category LIKE '% ".$catsort." %' ORDER BY seriesName";
+                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' AND `series`.`category` LIKE '% ".$catsort." %' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
             }
         }
         else if($stype == 1)
@@ -176,6 +178,8 @@ class AFTWVideos extends Config{
             $seriesArray[$records['letter']][$records['fullSeriesName']]['seriesType'] = $records['seriesType'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['seriesList'] = $records['seriesList'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['moviesOnly'] = $records['moviesOnly'];
+            $seriesArray[$records['letter']][$records['fullSeriesName']]['status'] = $records['status'];
+            $seriesArray[$records['letter']][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
         }
         echo '
         <div align="center">
@@ -186,13 +190,41 @@ class AFTWVideos extends Config{
             <a href="/anime/type/divx">DivX Based</a>
         </div>
         <div align="center">
-            My WatchList Legend:
-            <img src="' . $this->Host . '/flag_red.png" alt="planning to watch icon" style="vertical-align:middle;" border="0" /> Planning to Watch | 
-            <img src="' . $this->Host . '/flag_yellow.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Currently Watching | 
-            <img src="' . $this->Host . '/flag_green.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Finished Watching
+            <div style="display:inline-block;">
+                My WatchList Legend:
+            </div>
+            <div style="display:inline-block;">
+                <div class="mywatchlist-flag-sprite mywatchlist-flag-untracked">&nbsp;</div>
+                <div style="display:inline-block;">
+                    Untracked Series | 
+                </div>
+            </div>
+            <div style="display:inline-block;">
+                <div class="mywatchlist-flag-sprite mywatchlist-flag-planning">&nbsp;</div>
+                <div style="display:inline-block;">
+                    Planning to Watch | 
+                </div>
+            </div>
+            <div style="display:inline-block;">
+                <div class="mywatchlist-flag-sprite mywatchlist-flag-current">&nbsp;</div>
+                <div style="display:inline-block;">
+                    Currently Watching | 
+                </div>
+            </div>
+            <div style="display:inline-block;">
+                <div class="mywatchlist-flag-sprite mywatchlist-flag-finished">&nbsp;</div>
+                <div style="display:inline-block;">
+                    Finished Watching
+                </div>
+            </div>
         </div>
         <br />';
         echo '<div align="center">';
+        foreach(range('0','9') as $i) {
+            echo (array_key_exists ("$i", $alpha)) ? '<a href="#'.$i.'" title="'.$alpha["$i"].' results" class="anime-sort-listing">'.$i.'</a> | ' : "$i | ";
+        }
+        echo (array_key_exists (".", $alpha)) ? '<a href="#." title="' . $alpha["."].' results" class="anime-sort-listing">.</a>' : ".";
+        echo ' | ';
         foreach(range('A','Z') as $i) {
             echo (array_key_exists ("$i", $alpha)) ? '<a href="#'.$i.'" title="'.$alpha["$i"].' results" class="anime-sort-listing">'.$i.'</a>' : "$i";
             echo ($i != 'Z') ? ' | ':'';
@@ -247,7 +279,6 @@ class AFTWVideos extends Config{
                 });;
             </script>';
         } else if($displayType == 1) {
-            //foreach(range('A','Z') as $i) {
             foreach(range('A','B') as $i) {
                 echo $this->displayAnimeListingPosters($i,$seriesArray);
             }
@@ -264,7 +295,7 @@ class AFTWVideos extends Config{
             <script type="text/javascript" src="/scripts/jquery.unveil.js?v=1.0.0"></script>
             <script>
             $(document).ready(function() {
-                $("img").unveil();
+                $("img").unveil(300);
             });
             </script>
             <script>
@@ -288,8 +319,6 @@ class AFTWVideos extends Config{
                     return false;
                 });
             });
-            </script>
-            <script>
             $(document).ready( function() {
 
                 function updateTableHeaders() {
@@ -338,19 +367,26 @@ class AFTWVideos extends Config{
     description: Gives back a list of anime in poster format.
     */
     private function displayAnimeListingPosters($i,$seriesArray) {
+        $this->watchListStatuses[NULL] = 'untracked';
         echo '<div class="">';
         echo '<div href="#'.$i.'" class="anime-list-header" style="font-size:24px;font-weight:bold;">'.$i.'</div><br />';
         foreach($seriesArray[$i] as $key => $array) {
-            //print_r($array);
+            $watchListStatus = explode(' ', $this->watchListStatuses[$array['status']]);
             echo '
-            <a href="/anime/' . $array['seoname'] . '/">
-            <div class="series-entry-wrapper tbl" style="display:inline-block;width:173px;vertical-align:top;margin:2px 2px 5px 2px;">
-                <div class="series-image" align="center" style="min-height:265px;">
-                    <img class="anime-listing-image" data-src="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" data-src-retina="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" src="' . $this->Host . '/loading-large.gif" style="width:168px;" alt="Series Image for ' . stripslashes($array['fullSeriesName']) . '" />
+                <a href="/anime/' . $array['seoname'] . '/">
+                <div id="wrapper-' . $array['id'] . '" class="series-entry-wrapper tbl" style="display:inline-block;width:173px;vertical-align:top;margin:2px 2px 5px 2px;">
+                    <div class="series-image" align="center" style="min-height:265px;">
+                        <img class="anime-listing-image" data-src="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" data-src-retina="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" src="' . $this->Host . '/loading-large.gif" style="width:168px;" alt="Series Image for ' . stripslashes($array['fullSeriesName']) . '" />
+                    </div>
+                    <div class="series-listing-hotbar">
+                        <div style="display:inline-block;width:33.333332%;">
+                            <div class="mywatchlist-flag-sprite mywatchlist-flag-' . strtolower($watchListStatus[0]) . '">&nbsp;</div>
+                        </div>
+                        <div style="display:inline-block;width:33.333332%;">HD</div>
+                        <div style="display:inline-block;width:33.333332%;"></div>
+                    </div>
+                    <div class="series-name" align="center" style="font-size:12px;font-weight:bold;"> ' . stripslashes($array['fullSeriesName']) . ' </div>
                 </div>
-                <div class="series-listing-hotbar"></div>
-                <div class="series-name" align="center" style="font-size:12px;font-weight:bold;"> ' . stripslashes($array['fullSeriesName']) . ' </div>
-            </div>
             </a>';
         }
         echo '</div>';
@@ -364,7 +400,8 @@ class AFTWVideos extends Config{
         } else {
             $aonly = '';
         }
-        $sql = "SELECT `id`, `fullSeriesName`, `seoname`, `description`, `stillRelease`, `seriesType`, `seriesList`, `moviesOnly` FROM `series` WHERE `fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `active`='yes' ".$aonly."ORDER BY `fullSeriesName`";
+        $sql = "SELECT `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
+        //$sql = "SELECT `id`, `fullSeriesName`, `seoname`, `description`, `stillRelease`, `seriesType`, `seriesList`, `moviesOnly` FROM `series` WHERE `fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `active`='yes' ".$aonly."ORDER BY `fullSeriesName`";
         $query = mysql_query ($sql) or die (mysql_error());
         $total_rows = mysql_num_rows($query) or die("<br />Error: No results found");
         $seriesArray = [];
@@ -381,6 +418,8 @@ class AFTWVideos extends Config{
             $seriesArray[$alpha][$records['fullSeriesName']]['seriesType'] = $records['seriesType'];
             $seriesArray[$alpha][$records['fullSeriesName']]['seriesList'] = $records['seriesList'];
             $seriesArray[$alpha][$records['fullSeriesName']]['moviesOnly'] = $records['moviesOnly'];
+            $seriesArray[$alpha][$records['fullSeriesName']]['status'] = $records['status'];
+            $seriesArray[$alpha][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
         }
         
         echo $this->displayAnimeListingPosters($alpha,$seriesArray);
@@ -2214,6 +2253,15 @@ HDOC;
                 $data .= '<a href="#" onClick="window.location.href=\'//videos.animeftw.tv/download.php?series=' . $row['seriesName'] . '&preffix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&hd=480\'; return false;"><img src="' . $this->Host . '/' . $DLIcon . '" alt="Advanced Download" title="Click To download ' . $row['fullSeriesName'] . ' Episode ' . $row['epnumber'] . '" style="" border="0" /></a>';
             }
             return $data;
+        }
+    }
+    
+    private function watchListStatuses() {
+        $query = "SELECT * FROM `watchlist_statuses`";
+        $result = mysql_query($query);
+        
+        while(list($id, $StatusName) = mysql_fetch_array($result)) {
+            $this->watchListStatuses[$id] = $StatusName;
         }
     }
 }

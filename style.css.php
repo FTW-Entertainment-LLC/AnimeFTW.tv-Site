@@ -565,5 +565,18 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 .user-sprite-notification {background-position:-32px 0px;}
 .user-sprite-user {background-position:0px -32px;}
 .user-sprite-lightbulb {background-position:-32px -32px;}
+.series-listing-section{margin: auto;padding: 20px;width: 500px;position: relative;font-size: 20px;}
+.series-listing-section-header-wrapper{height:20px;}
+.series-listing-section-header{transition: all 0.4s ease;}
+.sticky{font-size: 30px;background-color: rgba(200, 200, 200, 0.5);height: 40px;}
+.sticky-active{position: fixed;top: 0;}
+.sticky-parked{position: absolute;bottom: 0px;}
+.series-entry-wrapper {border:1px solid #f3f3f3;}
+.series-entry-wrapper:hover {border:1px solid #' . $styletextcolordark . '}
+.mywatchlist-flag-sprite {background: url("' . $C->Host . $stylelocation . 'flag_sprite.png");display:inline-block;min-height:16px;min-width:16px;}
+.mywatchlist-flag-watching {background-position:64px 0px;}
+.mywatchlist-flag-planning {background-position:48px 0px;}
+.mywatchlist-flag-finished {background-position:32px 0px;}
+.mywatchlist-flag-untracked {background-position:16px 0px;}
 ';
 ?>
