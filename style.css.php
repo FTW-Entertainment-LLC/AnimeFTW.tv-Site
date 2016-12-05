@@ -578,5 +578,9 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 .mywatchlist-flag-planning {background-position:48px 0px;}
 .mywatchlist-flag-finished {background-position:32px 0px;}
 .mywatchlist-flag-untracked {background-position:16px 0px;}
+.video-size-sprite {background: url("' . $C->Host . $stylelocation . 'video-size-sprite.png");display:inline-block;min-height:16px;min-width:23px;}
+.video-size-480p {background-position:69px 0px;}
+.video-size-720p {background-position:46px 0px;}
+.video-size-1080p {background-position:23px 0px;}
 ';
 ?>

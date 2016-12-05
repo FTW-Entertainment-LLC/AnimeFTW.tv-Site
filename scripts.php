@@ -955,7 +955,6 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 			{
 			}
 		} else if (isset($_GET['show']) && $_GET['show'] == 'view-details') {
-            //?view=dynamic-load&show=view-details&page=&id=
 			include_once('includes/classes/videos.class.php');
 			$V = new AFTWVideos();
 			$V->connectProfile($Config->outputUserInformation());

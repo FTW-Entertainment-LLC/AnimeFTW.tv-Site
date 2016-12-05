@@ -127,9 +127,9 @@ class AFTWVideos extends Config{
         $catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($sort));
         if($stype == 0) {
             if($sort == NULL) {
-                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
+                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
             } else {
-                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' AND `series`.`category` LIKE '% ".$catsort." %' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
+                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' AND `series`.`category` LIKE '% ".$catsort." %' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
             }
         }
         else if($stype == 1)
@@ -178,6 +178,7 @@ class AFTWVideos extends Config{
             $seriesArray[$records['letter']][$records['fullSeriesName']]['seriesType'] = $records['seriesType'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['seriesList'] = $records['seriesList'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['moviesOnly'] = $records['moviesOnly'];
+            $seriesArray[$records['letter']][$records['fullSeriesName']]['hd'] = $records['hd'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['status'] = $records['status'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
         }
@@ -320,6 +321,27 @@ class AFTWVideos extends Config{
                 });
             });
             $(document).ready( function() {
+                $(".mywatchlist-flag").click(function() {
+                    if (typeof $(this).attr("id") != \'undefined\') {
+                        var this_id = $(this).attr("id").substring(10);
+                        alert(this_id);
+                        var dataObject = "wid=0";
+                        $.ajax({
+                            type: "POST",
+                            url: "/scripts.php?view=watchlist&node=seriesview&id=" + this_id + "&stage=after",
+                            data: dataObject,
+                            cache: false,
+                            success: function(html){
+                                
+                            }
+                        });
+                    } else {
+                        alert("we need to add this!");
+                    }
+                    return false;
+                });
+            });
+            $(document).ready( function() {
 
                 function updateTableHeaders() {
                    $(".persist-area").each(function() {
@@ -372,18 +394,39 @@ class AFTWVideos extends Config{
         echo '<div href="#'.$i.'" class="anime-list-header" style="font-size:24px;font-weight:bold;">'.$i.'</div><br />';
         foreach($seriesArray[$i] as $key => $array) {
             $watchListStatus = explode(' ', $this->watchListStatuses[$array['status']]);
+            if (is_numeric($array['status'])) {
+                $seriesTitle = ' title="This series is in your My WatchList, the status is ' . $this->watchListStatuses[$array['status']] . '"';
+                $seriesWatchListId = ' id="watchlist-' . $array['watchlist_id'] . '"';
+            } else {
+                $seriesTitle = ' title="This series is currently NOT in your My WatchList, click to add it!"';
+                $seriesWatchListId = '';
+            }
             echo '
                 <a href="/anime/' . $array['seoname'] . '/">
                 <div id="wrapper-' . $array['id'] . '" class="series-entry-wrapper tbl" style="display:inline-block;width:173px;vertical-align:top;margin:2px 2px 5px 2px;">
-                    <div class="series-image" align="center" style="min-height:265px;">
+                    <div class="series-image" align="center" style="min-height:225px;">
                         <img class="anime-listing-image" data-src="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" data-src-retina="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" src="' . $this->Host . '/loading-large.gif" style="width:168px;" alt="Series Image for ' . stripslashes($array['fullSeriesName']) . '" />
                     </div>
-                    <div class="series-listing-hotbar">
-                        <div style="display:inline-block;width:33.333332%;">
-                            <div class="mywatchlist-flag-sprite mywatchlist-flag-' . strtolower($watchListStatus[0]) . '">&nbsp;</div>
+                    <div class="series-listing-hotbar" align="center">
+                        <div style="display:inline-block;width:20.333332%;">
+                            <div' . $seriesWatchListId . ' class="mywatchlist-flag-sprite mywatchlist-flag-' . strtolower($watchListStatus[0]) . ' mywatchlist-flag"' . $seriesTitle . '>&nbsp;</div>
                         </div>
-                        <div style="display:inline-block;width:33.333332%;">HD</div>
-                        <div style="display:inline-block;width:33.333332%;"></div>
+                        <div style="display:inline-block;width:66.323332%;">';
+                        if ($array['hd'] == 2) {
+                            //1080p and below
+                            echo '<div class="video-size-sprite video-size-480p">&nbsp;</div>&nbsp;';
+                            echo '<div class="video-size-sprite video-size-720p">&nbsp;</div>&nbsp;';
+                            echo '<div class="video-size-sprite video-size-1080p">&nbsp;</div>';
+                        } else if ($array['hd'] == 1) {
+                            //720p and below
+                            echo '<div class="video-size-sprite video-size-480p">&nbsp;</div>&nbsp;';
+                            echo '<div class="video-size-sprite video-size-720p">&nbsp;</div>';
+                        } else {
+                            // base 480p
+                            echo '<div class="video-size-sprite video-size-480p">&nbsp;</div>';
+                        }
+                        echo '
+                        </div>
                     </div>
                     <div class="series-name" align="center" style="font-size:12px;font-weight:bold;"> ' . stripslashes($array['fullSeriesName']) . ' </div>
                 </div>
@@ -400,8 +443,7 @@ class AFTWVideos extends Config{
         } else {
             $aonly = '';
         }
-        $sql = "SELECT `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
-        //$sql = "SELECT `id`, `fullSeriesName`, `seoname`, `description`, `stillRelease`, `seriesType`, `seriesList`, `moviesOnly` FROM `series` WHERE `fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `active`='yes' ".$aonly."ORDER BY `fullSeriesName`";
+        $sql = "SELECT `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
         $query = mysql_query ($sql) or die (mysql_error());
         $total_rows = mysql_num_rows($query) or die("<br />Error: No results found");
         $seriesArray = [];
@@ -418,6 +460,7 @@ class AFTWVideos extends Config{
             $seriesArray[$alpha][$records['fullSeriesName']]['seriesType'] = $records['seriesType'];
             $seriesArray[$alpha][$records['fullSeriesName']]['seriesList'] = $records['seriesList'];
             $seriesArray[$alpha][$records['fullSeriesName']]['moviesOnly'] = $records['moviesOnly'];
+            $seriesArray[$alpha][$records['fullSeriesName']]['hd'] = $records['hd'];
             $seriesArray[$alpha][$records['fullSeriesName']]['status'] = $records['status'];
             $seriesArray[$alpha][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
         }
