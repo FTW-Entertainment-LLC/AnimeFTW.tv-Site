@@ -127,9 +127,9 @@ class AFTWVideos extends Config{
         $catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($sort));
         if($stype == 0) {
             if($sort == NULL) {
-                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
+                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`Movies`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
             } else {
-                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' AND `series`.`category` LIKE '% ".$catsort." %' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
+                $sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`Movies`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' AND `series`.`category` LIKE '% ".$catsort." %' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
             }
         }
         else if($stype == 1)
@@ -178,6 +178,7 @@ class AFTWVideos extends Config{
             $seriesArray[$records['letter']][$records['fullSeriesName']]['seriesType'] = $records['seriesType'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['seriesList'] = $records['seriesList'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['moviesOnly'] = $records['moviesOnly'];
+            $seriesArray[$records['letter']][$records['fullSeriesName']]['movies'] = $records['Movies'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['hd'] = $records['hd'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['status'] = $records['status'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
@@ -185,10 +186,9 @@ class AFTWVideos extends Config{
         echo '
         <div align="center">
             Series Types: 
-            <a href="/anime/type/airing">Airing Series <img src="' . $this->Host . '/airing_icon.gif" alt="Airing" style="vertical-align:middle;" border="0" /></a> | 
+            <a href="/anime/type/airing">Airing Series <div class="airing-series">&nbsp;</div></a> | 
             <a href="/anime/type/completed">Completed Series</a> | 
-            <a href="/anime/type/movies">Series with Movies <img src="' . $this->Host . '/movie_blue.png" alt="Movie" style="vertical-align:middle;" border="0" /></a> | 
-            <a href="/anime/type/divx">DivX Based</a>
+            <a href="/anime/type/movies">Series with Movies <div class="contains-a-movie">&nbsp;</div></a>
         </div>
         <div align="center">
             <div style="display:inline-block;">
@@ -285,10 +285,6 @@ class AFTWVideos extends Config{
             }
             echo '
             <div class="series-section persist-area">
-
-                <div class="series-section-header-wrapper">
-                    <div class="series-section-header">Section Header 1</div>
-                </div>
                 <div class="series-section-content">
                 ' . $this->DisplayLinks('a',2,$alevel) . '
                 </div>
@@ -408,22 +404,37 @@ class AFTWVideos extends Config{
                         <img class="anime-listing-image" data-src="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" data-src-retina="' . $this->Host . '/seriesimages/' . $array['id'] . '.jpg" src="' . $this->Host . '/loading-large.gif" style="width:168px;" alt="Series Image for ' . stripslashes($array['fullSeriesName']) . '" />
                     </div>
                     <div class="series-listing-hotbar" align="center">
-                        <div style="display:inline-block;width:20.333332%;">
-                            <div' . $seriesWatchListId . ' class="mywatchlist-flag-sprite mywatchlist-flag-' . strtolower($watchListStatus[0]) . ' mywatchlist-flag"' . $seriesTitle . '>&nbsp;</div>
+                        <div style="display:inline-block;width:15.333332%;">';
+                        if ($this->UserArray[0] == 1) {
+                            echo '
+                            <div' . $seriesWatchListId . ' class="mywatchlist-flag-sprite mywatchlist-flag-' . strtolower($watchListStatus[0]) . ' mywatchlist-flag"' . $seriesTitle . '>&nbsp;</div>';
+                        }
+                        echo '
                         </div>
-                        <div style="display:inline-block;width:66.323332%;">';
+                        <div style="display:inline-block;width:45.323332%;">';
                         if ($array['hd'] == 2) {
                             //1080p and below
-                            echo '<div class="video-size-sprite video-size-480p">&nbsp;</div>&nbsp;';
-                            echo '<div class="video-size-sprite video-size-720p">&nbsp;</div>&nbsp;';
-                            echo '<div class="video-size-sprite video-size-1080p">&nbsp;</div>';
+                            echo '<div class="video-size-sprite video-size-480p" title="This Anime is available in 480p!">&nbsp;</div>&nbsp;';
+                            echo '<div class="video-size-sprite video-size-720p" title="This Anime is available in 720p!">&nbsp;</div>&nbsp;';
+                            echo '<div class="video-size-sprite video-size-1080p" title="This Anime is available in 1080p!">&nbsp;</div>';
                         } else if ($array['hd'] == 1) {
                             //720p and below
-                            echo '<div class="video-size-sprite video-size-480p">&nbsp;</div>&nbsp;';
-                            echo '<div class="video-size-sprite video-size-720p">&nbsp;</div>';
+                            echo '<div class="video-size-sprite video-size-480p" title="This Anime is available in 480p!">&nbsp;</div>&nbsp;';
+                            echo '<div class="video-size-sprite video-size-720p" title="This Anime is available in 720p!">&nbsp;</div>';
                         } else {
                             // base 480p
-                            echo '<div class="video-size-sprite video-size-480p">&nbsp;</div>';
+                            echo '<div class="video-size-sprite video-size-480p" title="This Anime is available in 480p!">&nbsp;</div>';
+                        }
+                        echo '
+                        </div>
+                        <div style="display:inline-block;width:20.9999%;">';
+                        if ($array['movies'] == 1) {
+                            // contains movies
+                            echo '<div class="contains-a-movie" title="This Series contains a Movie.">&nbsp;</div>'."\n";
+                        }
+                        if ($array['stillRelease'] == 'yes') {
+                            // Series is still releasing
+                            echo '<div class="airing-series" title="This Series is still airing.">&nbsp;</div>'."\n";
                         }
                         echo '
                         </div>
@@ -443,7 +454,7 @@ class AFTWVideos extends Config{
         } else {
             $aonly = '';
         }
-        $sql = "SELECT `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
+        $sql = "SELECT `series`.`id`, `series`.`fullSeriesName`, `series`.`seoname`, `series`.`description`, `series`.`stillRelease`, `series`.`seriesType`, `series`.`seriesList`, `series`.`moviesOnly`, `series`.`Movies`, `series`.`hd`, `watchlist`.`status`, `watchlist`.`id` AS `watchlist_id` FROM `series` LEFT OUTER JOIN `watchlist` ON `watchlist`.`sid`=`series`.`id` AND `watchlist`.`uid`= " . $this->UserArray[1] . " WHERE `series`.`fullSeriesName` LIKE '" . mysql_real_escape_string(strtolower($alpha)) . "%' AND `series`.`active` = 'yes' AND `series`.`seriesList` = '$listType' " . $aonly . "ORDER BY `series`.`fullSeriesName`";
         $query = mysql_query ($sql) or die (mysql_error());
         $total_rows = mysql_num_rows($query) or die("<br />Error: No results found");
         $seriesArray = [];
@@ -460,6 +471,7 @@ class AFTWVideos extends Config{
             $seriesArray[$alpha][$records['fullSeriesName']]['seriesType'] = $records['seriesType'];
             $seriesArray[$alpha][$records['fullSeriesName']]['seriesList'] = $records['seriesList'];
             $seriesArray[$alpha][$records['fullSeriesName']]['moviesOnly'] = $records['moviesOnly'];
+            $seriesArray[$alpha][$records['fullSeriesName']]['movies'] = $records['Movies'];
             $seriesArray[$alpha][$records['fullSeriesName']]['hd'] = $records['hd'];
             $seriesArray[$alpha][$records['fullSeriesName']]['status'] = $records['status'];
             $seriesArray[$alpha][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
