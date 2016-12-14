@@ -584,5 +584,10 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 .video-size-1080p {background-position:23px 0px;}
 .contains-a-movie {background: url("' . $C->Host . $stylelocation . 'movie-icon.png");display:inline-block;min-height:16px;min-width:23px;}
 .airing-series {background: url("' . $C->Host . $stylelocation . 'airing-series-icon.png");display:inline-block;min-height:16px;min-width:16px;}
+.ratings-sprite {background: url("' . $C->Host . $stylelocation . 'ratings-sprite.png");display:inline-block;min-height:52px;min-width:60px;}
+.ratings-e-rating {}
+.ratings-12-rating {background-position:60px 0px;}
+.ratings-15-rating {background-position:120px 52px;}
+.ratings-18-rating {background-position:60px 52px;}
 ';
 ?>

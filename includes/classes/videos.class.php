@@ -183,39 +183,76 @@ class AFTWVideos extends Config{
             $seriesArray[$records['letter']][$records['fullSeriesName']]['status'] = $records['status'];
             $seriesArray[$records['letter']][$records['fullSeriesName']]['watchlist_id'] = $records['watchlist_id'];
         }
-        echo '
+        /*echo '
         <div align="center">
             Series Types: 
             <a href="/anime/type/airing">Airing Series <div class="airing-series">&nbsp;</div></a> | 
             <a href="/anime/type/completed">Completed Series</a> | 
             <a href="/anime/type/movies">Series with Movies <div class="contains-a-movie">&nbsp;</div></a>
-        </div>
-        <div align="center">
-            <div style="display:inline-block;">
-                My WatchList Legend:
-            </div>
-            <div style="display:inline-block;">
-                <div class="mywatchlist-flag-sprite mywatchlist-flag-untracked">&nbsp;</div>
-                <div style="display:inline-block;">
-                    Untracked Series | 
+        </div>';*/
+        echo '
+        <div id="advance-filtering-wrapper" style="width:100%;padding-bottom:5px;">
+            <div class="filtering-title" style="font-size:14px;border-bottom:1px solid #666666;color:#666666;">Advanced Filtering</div>
+            <div>
+                <div style="display:inline-block;width:15.333332%;padding:2px;vertical-align:top;">
+                    <div style="font-size:10px;border-bottom:1px solid #666666;color:#666666;">Ratings</div>
+                    <div style="width:100%;">
+                        <div style="display:inline-block;width:47.9996%;">
+                            <div style="padding-left:20px;"><input type="checkbox" id="rating-e-checkbox" name="rating-e-checkbox" /></div>
+                            <label for="rating-e-checkbox">
+                                <div class="ratings-sprite ratings-e-rating" id="rating-e">&nbsp;</div>
+                            </label>
+                        </div>
+                        <div style="display:inline-block;width:47.9996%;">
+                            <div style="padding-left:20px;"><input type="checkbox" id="rating-12-checkbox" name="rating-12-checkbox" /></div>
+                            <label for="rating-12-checkbox">
+                                <div class="ratings-sprite ratings-12-rating" id="rating-12">&nbsp;</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div style="padding-top:3px;width:100%;">
+                        <div style="display:inline-block;width:47.9996%;">
+                            <div style="padding-left:20px;"><input type="checkbox" id="rating-15-checkbox" name="rating-15-checkbox" /></div>
+                            <label for="rating-15-checkbox">
+                                <div class="ratings-sprite ratings-15-rating" id="rating-15">&nbsp;</div>
+                            </label>
+                        </div>
+                        <div style="display:inline-block;width:47.9996%;">
+                            <div style="padding-left:20px;"><input type="checkbox" id="rating-18-checkbox" name="rating-18-checkbox" /></div>
+                            <label for="rating-18-checkbox">
+                                <div class="ratings-sprite ratings-18-rating" id="rating-18">&nbsp;</div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div style="display:inline-block;">
-                <div class="mywatchlist-flag-sprite mywatchlist-flag-planning">&nbsp;</div>
-                <div style="display:inline-block;">
-                    Planning to Watch | 
+                <div style="display:inline-block;width:17.333332%;padding:2px;vertical-align:top;">
+                    <div style="font-size:10px;border-bottom:1px solid #666666;color:#666666;">My WatchList</div>
+                    <div style="padding:5px;">
+                        <div class="mywatchlist-flag-sprite mywatchlist-flag-untracked">&nbsp;</div>
+                        <div style="display:inline-block;">
+                            Untracked Series
+                        </div>
+                    </div>
+                    <div style="padding:5px;">
+                        <div class="mywatchlist-flag-sprite mywatchlist-flag-planning">&nbsp;</div>
+                        <div style="display:inline-block;">
+                            Planning to Watch
+                        </div>
+                    </div>
+                    <div style="padding:5px;">
+                        <div class="mywatchlist-flag-sprite mywatchlist-flag-current">&nbsp;</div>
+                        <div style="display:inline-block;">
+                            Currently Watching
+                        </div>
+                    </div>
+                    <div style="padding:5px;">
+                        <div class="mywatchlist-flag-sprite mywatchlist-flag-finished">&nbsp;</div>
+                        <div style="display:inline-block;">
+                            Finished Watching
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div style="display:inline-block;">
-                <div class="mywatchlist-flag-sprite mywatchlist-flag-current">&nbsp;</div>
-                <div style="display:inline-block;">
-                    Currently Watching | 
-                </div>
-            </div>
-            <div style="display:inline-block;">
-                <div class="mywatchlist-flag-sprite mywatchlist-flag-finished">&nbsp;</div>
-                <div style="display:inline-block;">
-                    Finished Watching
+                <div style="display:inline-block;width:32.333332%;">
                 </div>
             </div>
         </div>
