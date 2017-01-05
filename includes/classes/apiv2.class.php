@@ -20,6 +20,7 @@ Class api extends Config {
             'classname' => 'Episode', // class name
             'method' => 'array_displayEpisodes', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Displays all of the episodes for a series with a given id, must have the id of the series to view all episodes.'
         ),
         'record-episode' => array(
@@ -28,6 +29,7 @@ Class api extends Config {
             'classname' => 'Episode', // class name
             'method' => 'array_recordEpisodeTime', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Records the current time in seconds that an episode is currently at. Useful for starting a video at a certain point.'
         ),
         'display-single-episode' => array(
@@ -36,6 +38,7 @@ Class api extends Config {
             'classname' => 'Episode', // class name
             'method' => 'array_displaySingleEpisode', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Display a single Episode, displays all of the details to a single episode. Requires an episode id to complete the action.'
         ),
         'display-series' => array(
@@ -44,6 +47,7 @@ Class api extends Config {
             'classname' => 'Series', // class name
             'method' => 'array_displaySeries', // method name
             'disabled' => '0',
+            'loginRequired' => '0',
             'description' => 'Displays X series in Alphabetic order, will start A-Z with the first 20 series.'
         ),
         'display-single-series' => array(
@@ -52,6 +56,7 @@ Class api extends Config {
             'classname' => 'Series', // class name
             'method' => 'array_displaySingleSeries', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Displays a single series, you must have the id of the series in order to use it.'
         ),
         'display-movies' => array(
@@ -60,6 +65,7 @@ Class api extends Config {
             'classname' => 'Episode', // class name
             'method' => 'array_displayMovies', // method name
             'disabled' => '1',
+            'loginRequired' => '0',
             'description' => 'Displays only Movies from the episode listing.'
         ),
         'display-tag-cloud' => array(
@@ -68,6 +74,7 @@ Class api extends Config {
             'classname' => 'Series', // class name
             'method' => 'array_displayTagCloud', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Display the tag cloud.'
         ),
         'search' => array(
@@ -76,6 +83,7 @@ Class api extends Config {
             'classname' => 'Search', // class name
             'method' => 'array_siteSearch', // method name
             'disabled' => '1',
+            'loginRequired' => '0',
             'description' => 'Search the site for a series or a video.'
         ),
         'display-comments' => array(
@@ -84,6 +92,7 @@ Class api extends Config {
             'classname' => 'Comment', // class name
             'method' => 'array_displayComments', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Display comments for a video or profile.'
         ),
         'add-comment' => array(
@@ -92,6 +101,7 @@ Class api extends Config {
             'classname' => 'Comment', // class name
             'method' => 'array_addComment', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Add a comment to a video'
         ),
         'logout' => array(
@@ -100,6 +110,7 @@ Class api extends Config {
             'classname' => 'User', // class name
             'method' => 'logoutUser', // method name
             'disabled' => '1',
+            'loginRequired' => '0',
             'description' => 'Logs out the user, destroys the Token'
         ),
         'register' => array(
@@ -108,6 +119,7 @@ Class api extends Config {
             'classname' => 'Register', // class name
             'method' => 'registerUser', // method name
             'disabled' => '1',
+            'loginRequired' => '0',
             'description' => 'Register an account with AnimeFTW.tv'
         ),
         'display-reviews' => array(
@@ -116,6 +128,7 @@ Class api extends Config {
             'classname' => 'Review', // class name
             'method' => 'array_displayReviews', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Display reviews for a specific Series.'
         ),
         'add-review' => array(
@@ -124,6 +137,7 @@ Class api extends Config {
             'classname' => 'Review', // class name
             'method' => 'array_addReview', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Add a Review for a specific Series.'
         ),
         'random-series' => array(
@@ -132,6 +146,7 @@ Class api extends Config {
             'classname' => 'Series', // class name
             'method' => 'array_displaySeries', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Display X Random Series.'
         ),
         'latest-news' => array(
@@ -140,6 +155,7 @@ Class api extends Config {
             'classname' => 'News', // class name
             'method' => 'array_showLatestNews', // method name
             'disabled' => '0',
+            'loginRequired' => '0',
             'description' => 'Shows the Latest News for the site.'
         ),
         'top-series' => array(
@@ -148,6 +164,7 @@ Class api extends Config {
             'classname' => 'toplist', // class name
             'method' => 'array_showTopAnime', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Shows the top X series in the listing'
         ),
         'rate-episode' => array(
@@ -156,6 +173,7 @@ Class api extends Config {
             'classname' => 'Rating', // class name
             'method' => 'bool_submitEpisodeRating', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'Rate an episode 1-5 stars.'
         ),
         'display-profile' => array(
@@ -164,6 +182,7 @@ Class api extends Config {
             'classname' => 'User', // class name
             'method' => 'array_dispayUserProfile', // method name
             'disabled' => '0',
+            'loginRequired' => '1',
             'description' => 'View the full profile of a user.'
         ),
         'edit-profile' => array(
@@ -172,6 +191,7 @@ Class api extends Config {
             'classname' => 'User', // class name
             'method' => 'array_editUserProfile', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Submit Edits to a Users profile.'
         ),
         'display-categories' => array(
@@ -180,6 +200,7 @@ Class api extends Config {
             'classname' => 'Series', // class name
             'method' => 'array_displayCategories', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Displays available Categories.'
         ),
         'display-watchlist' => array(
@@ -188,6 +209,7 @@ Class api extends Config {
             'classname' => 'Watchlist', // class name
             'method' => 'array_displayWatchList', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Displays available My WatchList Entries.'
         ),
         'add-watchlist' => array(
@@ -196,6 +218,7 @@ Class api extends Config {
             'classname' => 'Watchlist', // class name
             'method' => 'array_addWatchListEntry', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Adds a watchlist entry to a users account.'
         ),
         'delete-watchlist' => array(
@@ -204,6 +227,7 @@ Class api extends Config {
             'classname' => 'Watchlist', // class name
             'method' => 'array_deleteWatchListEntry', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Delete a watchlist entry to a users account.'
         ),
         'edit-watchlist' => array(
@@ -212,6 +236,7 @@ Class api extends Config {
             'classname' => 'Watchlist', // class name
             'method' => 'array_editWatchListEntry', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Edit a watchlist entry to a users account.'
         ),
         'app-settings' => array(
@@ -220,7 +245,44 @@ Class api extends Config {
             'classname' => 'Settings', // class name
             'method' => 'array_displayAppSettings', // method name
             'disabled' => '1',
+            'loginRequired' => '1',
             'description' => 'Shows Application level settings.'
+        ),
+        'validate-device' => array(
+            'action' => 'validate-device',
+            'location' => 'device.v2.class.php', // action location
+            'classname' => 'Device', // class name
+            'method' => 'validateDevice', // method name
+            'disabled' => '1',
+            'loginRequired' => '0',
+            'description' => 'Validates a device with a given input'
+        ),
+        'generate-device-key' => array(
+            'action' => 'generate-device-key',
+            'location' => 'device.v2.class.php', // action location
+            'classname' => 'Device', // class name
+            'method' => 'generateDeviceKey', // method name
+            'disabled' => '1',
+            'loginRequired' => '0',
+            'description' => 'Generates a Device Key for use on non-account applications.'
+        ),
+        'loginRequired' => array(
+            'action' => 'loginRequired',
+            'location' => 'register.v2.class.php', // action location
+            'classname' => 'Device', // class name
+            'method' => 'registerUser', // method name
+            'disabled' => '1',
+            'loginRequired' => '0',
+            'description' => 'No login attempt, so we assume this was a registration.'
+        ),
+        'login' => array(
+            'action' => 'login',
+            'location' => 'register.v2.class.php', // action location
+            'classname' => 'Device', // class name
+            'method' => 'registerUser', // method name
+            'disabled' => '1',
+            'loginRequired' => '0',
+            'description' => 'No login attempt, so we assume this was a registration.'
         ),
     );
 
@@ -328,6 +390,32 @@ Class api extends Config {
         }
     }
     
+    // Function to validate the requested action to ensure if it is something a non-logged-in person can view.
+    private function validateAction()
+    {
+        // This function validates an action.
+        if (isset($this->APIActions[$this->Data['action']]) || array_key_exists($this->Data['action'], $this->APIActions)) {
+            // Action exists that was requested, now we check to see if the function is allowed for their current state.
+            if (isset($this->Data['token']) && $this->tokenAuthorization('validate') == TRUE) {
+                // Token is supplied and is active.
+                return TRUE;
+            } else {
+                // The token may be supplied, or not, but it is not a valid login.
+                // We check if te action can be used by non-logged in persons.
+                if ($this->APIActions[$this->Data['action']]['loginRequired'] == 0) {
+                    // The action has validity for non-logged-in persons, so let them proceed.
+                    return TRUE;
+                } else {
+                    // This function is a login only function
+                    return FALSE;
+                }
+            }
+        } else {
+            // Function does not exist, however the end user won't know that.
+            return FALSE;
+        }
+    }
+    
     // the `final frontier` for the API script, this will get things rolling.
     private function launchAPI()
     {
@@ -336,56 +424,34 @@ Class api extends Config {
         // 3) launch into the sub routines of the API.
         
         // we validate the developer key, if they pass go, they collect 200 bits
-        if($this->validateDevKey() == TRUE)
-        {
-            // we want to log everything that includes a valid dev key.. later on we may change this to log everything..
-            if(isset($this->Data['username']) && isset($this->Data['password']) && (!isset($this->Data['action']) || (isset($this->Data['action']) && $this->Data['action'] == 'login')))
-            {
-                $this->tokenAuthorization('create'); // we need to create a token for this user
-            }
-            else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'register'))
-            {
-                // There was no sign of a login, the last thing we can do in the non-authorized state is to register an account, so lets check that
-                include_once("register.v2.class.php");
-                $Register = new Register($this->Data,$this->UserID,$this->DevArray);
-                $this->formatData($Register->registerUser()); // set the wheels in motion.
-            }
-            else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'validate-device'))
-            {
-                include_once("device.v2.class.php");
-                $Device = new Device($this->Data,$this->UserID,$this->DevArray);
-                $this->formatData($Device->validateDevice());
-            }
-            else if(!isset($this->Data['token']) && (isset($this->Data['action']) && $this->Data['action'] == 'generate-device-key'))
-            {
-                include_once("device.v2.class.php");
-                $Device = new Device($this->Data,$this->UserID,$this->DevArray);
-                $this->formatData($Device->generateDeviceKey());
-            }
-            else
-            {
-                //Username and password were not given, we need to see if the token that should be given is propr
-                if($this->tokenAuthorization('validate') == TRUE)
-                {
-                    // the validation of the token has gone through, now the sub functions can be called.
-                    $this->launchAPISubFunctions();
-                }
-                else
-                {
-                    // since validation failed, we need to let them know they need to login again.
+        if($this->validateDevKey() == TRUE) {
+            // UPDATED: 04/01/2017
+            // We change from a login only system to allow ALL of the functions to work, we will then authenticate AFTER the action is requested (or not)
+            if (isset($this->Data['action'])) {
+                // There is an action defined, so we treate it as a valid first response that we will attempt to make sure the system can work with.
+                if ($this->validateAction() == TRUE) {
+                    // Action is valid, or they can reach it.
+                    if ($this->Data['action'] == 'login' || $this->Data['action'] == 'loginRequired') {
+                        // It is theoretically possible that someone enters in the action of login, as such we need to ensure that they CAN login.
+                        $this->tokenAuthorization('create');
+                    } else {
+                        // With the token approved, we start the api fully.
+                        $this->launchAPISubFunctions();
+                    }
+                } else {
+                    // Action supplied is either not valid or requires a login to access, return a 405 error, indicates they need authentication.
                     $this->reportResult(405);
                 }
+            } else {
+                // The action is not set, so we assume they want to login since there are no other valid options without an action.
+                $this->tokenAuthorization('create');
             }
-            $this->RecordDevLogs();
-            // check if username (email) and password are given, if they are, authenticate against the database
-            // and get a token created for the user.
-        }
-        else
-        {
+        } else {
             // wrong, good bye..
             $this->reportResult(403);
-            $this->RecordDevLogs();
         }
+        // Record ALL hits in the api logs.
+        $this->RecordDevLogs();
     }
     
     // function will validate the developer key
@@ -436,7 +502,10 @@ Class api extends Config {
                 $count = mysqli_num_rows($results);
                 if($count < 1)
                 {
-                    // no rows found, they need to go back and try again.
+                    // no rows were found, we will let them proceed based on the access level of the action
+                    $this->UserID = 0;
+                    $this->AccessLevel = 0;
+                    
                     return FALSE;
                 }
                 else
