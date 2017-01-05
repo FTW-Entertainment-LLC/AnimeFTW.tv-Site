@@ -55,7 +55,7 @@ class AFTWWatchlist extends Config {
 		}
 		else {
 			$sid = htmlspecialchars($_GET['id']);
-			if(isset($_GET['stage']) && $_GET['stage'] == 'before'){
+			if(!isset($_GET['stage']) || (isset($_GET['stage']) && $_GET['stage'] == 'before')){
 				$result  = mysql_query("SELECT id FROM watchlist WHERE uid = '" . $this->UserArray[1] . "' AND sid = '".mysql_real_escape_string($sid)."'");
 				$watchlist_total = mysql_num_rows($result);
 				if($watchlist_total == 1){ // we have them now, give them the DENIED access!

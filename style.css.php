@@ -565,5 +565,29 @@ div.newnavbar{position:fixed;z-index:9999;background-color:rgba(0,0,0,0.8);float
 .user-sprite-notification {background-position:-32px 0px;}
 .user-sprite-user {background-position:0px -32px;}
 .user-sprite-lightbulb {background-position:-32px -32px;}
+.series-listing-section{margin: auto;padding: 20px;width: 500px;position: relative;font-size: 20px;}
+.series-listing-section-header-wrapper{height:20px;}
+.series-listing-section-header{transition: all 0.4s ease;}
+.sticky{font-size: 30px;background-color: rgba(200, 200, 200, 0.5);height: 40px;}
+.sticky-active{position: fixed;top: 0;}
+.sticky-parked{position: absolute;bottom: 0px;}
+.series-entry-wrapper {border:1px solid #f3f3f3;}
+.series-entry-wrapper:hover {border:1px solid #' . $styletextcolordark . '}
+.mywatchlist-flag-sprite {background: url("' . $C->Host . $stylelocation . 'flag_sprite.png");display:inline-block;min-height:16px;min-width:16px;}
+.mywatchlist-flag-watching {background-position:64px 0px;}
+.mywatchlist-flag-planning {background-position:48px 0px;}
+.mywatchlist-flag-finished {background-position:32px 0px;}
+.mywatchlist-flag-untracked {background-position:16px 0px;}
+.video-size-sprite {background: url("' . $C->Host . $stylelocation . 'video-size-sprite.png");display:inline-block;min-height:16px;min-width:23px;}
+.video-size-480p {background-position:69px 0px;}
+.video-size-720p {background-position:46px 0px;}
+.video-size-1080p {background-position:23px 0px;}
+.contains-a-movie {background: url("' . $C->Host . $stylelocation . 'movie-icon.png");display:inline-block;min-height:16px;min-width:23px;}
+.airing-series {background: url("' . $C->Host . $stylelocation . 'airing-series-icon.png");display:inline-block;min-height:16px;min-width:16px;}
+.ratings-sprite {background: url("' . $C->Host . $stylelocation . 'ratings-sprite.png");display:inline-block;min-height:52px;min-width:60px;}
+.ratings-e-rating {}
+.ratings-12-rating {background-position:60px 0px;}
+.ratings-15-rating {background-position:120px 52px;}
+.ratings-18-rating {background-position:60px 52px;}
 ';
 ?>

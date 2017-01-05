@@ -954,7 +954,12 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 			else
 			{
 			}
-		}
+		} else if (isset($_GET['show']) && $_GET['show'] == 'view-details') {
+			include_once('includes/classes/videos.class.php');
+			$V = new AFTWVideos();
+			$V->connectProfile($Config->outputUserInformation());
+            $V->displaySpecificAnimeListingPosters($_POST['letter']);
+        }
 	}
 	else
 	{
