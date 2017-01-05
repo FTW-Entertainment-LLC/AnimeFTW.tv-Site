@@ -151,12 +151,28 @@ class Series extends Config {
 			$filter = "";
 		}
 		
+        // allow sifting of categories.
+        $categoryFilter = "";
+		if (isset($this->Data['categories']) && $this->Data['categories'] != '') {
+            $categories = explode(',', $this->Data['categories']);
+            foreach ($categories as $category) {
+                $categoryFilter .= " AND `category` LIKE '%" . trim($category, " ") . " ,%'";
+            }
+		}
+		
 		// we need to allow for randomization in a series view		
 		if ($this->Data['action'] == 'random-series') {
 			$orderBy = " ORDER BY RAND() ";
 			$start = "0,";
 		} else {
 			$orderBy = " ORDER BY fullSeriesName ";
+		}
+        
+        // Field to sort by movies only.
+		if (isset($this->Data['movies'])) {
+			$containsMovies = " AND `Movies` = 1";
+		} else {
+			$containsMovies = "";
 		}
 		
 		// Add support for viewing the last X series added.
@@ -193,16 +209,16 @@ class Series extends Config {
 		}
 		
 		if ($SortNum == 1) {
-			$query = "SELECT $columns FROM `series` WHERE `active` = 'yes'" . $this->AdvanceRestrictions . " ORDER BY `id` ASC LIMIT 25";
+			$query = "SELECT $columns FROM `series` WHERE `active` = 'yes'${categoryFilter}${containsMovies}" . $this->AdvanceRestrictions . " ORDER BY `id` ASC LIMIT 25";
 		} elseif ($gsort != NULL) {
 			if (strlen($gsort) > 1) {
 				$catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($gsort));
-				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
+				$query = "SELECT $columns FROM series WHERE active='yes'${containsMovies} AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
 			} else {
-				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
+				$query = "SELECT $columns FROM series WHERE active='yes'${categoryFilter}${containsMovies} AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
 			}
 		} else {
-			$query = "SELECT $columns FROM `series` WHERE active='yes'${filter} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
+			$query = "SELECT $columns FROM `series` WHERE active='yes'${categoryFilter}${containsMovies}${filter} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
 		}
         
 		// make sure we are using UTF-8 chars
