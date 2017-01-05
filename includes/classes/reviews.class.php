@@ -176,10 +176,10 @@ class Review extends Config {
 					</div>
 					<div id="review-notice" style="display:none;">
 						When Reviewing:<br />
-						1. Note that users we see your review at the bottom of each series (unfiltered), please use language appropriate for all ages.<br />
+						1. Note that users ​will see your review at the bottom of each series (unfiltered), please use language appropriate for all ages.<br />
 						2. No Links are allowed, if links are submitted we will remove them as part of the review process.<br />
 						3. Avoid using spoilers, while we understand that not everything can be filtered for a review, we ask that spoilers be kept to a minimum.<br />
-						4. Do not use one liner\'s for your review, these are series reviews and as such you are expected to put thought into your review.<br />
+						4. Do not use less than 80 words in your review, these are meant to be cumulative reviews of a series expressing opinions and thought about all episodes, not just one.<br />
 						5. Have fun, we appreciate reviews as they add character to our site with fresh user submitted content.<br />
 					</div>
 					<script>

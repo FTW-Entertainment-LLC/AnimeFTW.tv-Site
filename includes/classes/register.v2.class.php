@@ -63,7 +63,7 @@ class Register extends Config {
 		}
 		else
 		{
-			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => $this->MessageCodes["Result Codes"]["404"]["Message"]);
+			return array('status' => $this->MessageCodes["Result Codes"]["404"]["Status"], 'message' => 'Not all fields were filled out, please fill them out and try again.');
 		}
 	}
 	
