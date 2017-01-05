@@ -109,37 +109,26 @@ class Series extends Config {
 		// these will be the details returned for the series, we don't want them to have the whole cake and eat it too
 		$columns = "`id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` ";
 		// render the options that we will accept, includes amount of series, alphanumeric sorting
-		if(isset($this->Data['sort']))
-		{
+		if (isset($this->Data['sort'])) {
 			// we will have options to sort by first letter of the seriesname, 
+		} else {
 		}
-		else
-		{
-		}
-		if(isset($this->Data['start']))
-		{
-			if(!is_numeric($this->Data['start'])) {
+		if (isset($this->Data['start'])) {
+			if (!is_numeric($this->Data['start'])) {
 				$start = "0,";
-			}
-			else {
+			} else {
 				$start = $this->Data['start'] . ",";
 			}
-		}
-		else
-		{
+		} else {
 			$start = "0,";
 		}
-		if(isset($this->Data['count']))
-		{
-			if(!is_numeric($this->Data['count'])) {
+		if (isset($this->Data['count'])) {
+			if (!is_numeric($this->Data['count'])) {
 				$count = 10;
-			}
-			else {
+			} else {
 				$count = $this->Data['count'];
 			}
-		}
-		else
-		{
+		} else {
 			$count = 10;
 		}
 	
@@ -147,96 +136,75 @@ class Series extends Config {
 		//Alphabetical limitation
 		//Zigbigidorlu was here :B
 		$alphalimit = "";
-		if(!is_null($alpha))
-		{
-			if($alpha == "1")
-			{
+		if (!is_null($alpha)) {
+			if ($alpha == "1") {
 				$alphalimit = "AND `fullSeriesName` NOT REGEXP '^[a-zA-Z]'";
-			}
-			elseif(ctype_alpha($alpha))
-			{
+			} elseif (ctype_alpha($alpha)) {
 				$alpha = substr($alpha,0,1);
 				$alphalimit = "AND `fullSeriesName` LIKE '$alpha%'";
 			}
 		}
 		
-		if(isset($this->Data['filter'])){
+		if (isset($this->Data['filter'])) {
 			$filter = " AND `category` LIKE '%" . $this->Data['filter'] . " ,%'";
-		}
-		else {
+		} else {
 			$filter = "";
 		}
 		
 		// we need to allow for randomization in a series view		
-		if($this->Data['action'] == 'random-series')
-		{
+		if ($this->Data['action'] == 'random-series') {
 			$orderBy = " ORDER BY RAND() ";
 			$start = "0,";
-		}
-		else
-		{
+		} else {
 			$orderBy = " ORDER BY fullSeriesName ";
 		}
 		
 		// Add support for viewing the last X series added.
-		if(isset($this->Data['latest'])) {
+		if (isset($this->Data['latest'])) {
 			// latest is set, we will limit them to the latest ## series by default.
 			// Unless they use the timeframe flag, which will allow them to specify a time frame from the current time
 			// that they wish to pull down series from.
-			if(isset($this->Data['timeframe'])) {
+			if (isset($this->Data['timeframe'])) {
 				// They can use m, s  or h at the end, this way we can do &timeframe=15m or timeframe=60s
 				$timeType = substr($this->Data['timeframe'], -1);
 				$timeFrame = substr($this->Data['timeframe'], 0, -1);
-				if(strtolower($timeType) == 'm') {
+				if (strtolower($timeType) == 'm') {
 					// Minutes timeframe.
 					$finalTime = time()-($timeFrame*60);
-				}
-				elseif(strtolower($timeType) == 'h') {
+				} elseif (strtolower($timeType) == 'h') {
 					// hours
 					$finalTime = time()-($timeFrame*60*60);
-				}
-				else {
+				} else {
 					// seconds is the default, we will not accept anything else.
 					$finalTime = time()-$timeFrame;
 				}
 				$where .= " AND `date` >= " . $this->mysqli->real_escape_string($finalTime);
-			}
-			else {
+			} else {
 			}
 			$columns = "`id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd` ";
 			$orderBy = " ORDER BY `series`.`id` DESC";
-		}
-		else {
+		} else {
 			$latest = "";
 		}
 		
-		$addonQuery = '';
-		if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+		if ($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
 			// it means the content we can show is only unlicensed.
-			$addonQuery = " AND `license` = 0";
+			$this->AdvanceRestrictions .= " AND `license` = 0";
 		}
 		
-		if($SortNum == 1)
-		{
-			$query = "SELECT $columns FROM `series` WHERE `active` = 'yes'$addonQuery $aonly ORDER BY `id` ASC LIMIT 25";
-		}
-		else if($gsort != NULL)
-		{
-			if(strlen($gsort) > 1)
-			{
+		if ($SortNum == 1) {
+			$query = "SELECT $columns FROM `series` WHERE `active` = 'yes'" . $this->AdvanceRestrictions . " ORDER BY `id` ASC LIMIT 25";
+		} elseif ($gsort != NULL) {
+			if (strlen($gsort) > 1) {
 				$catsort = $this->parseNestedArray($this->Categories, 'name', ucfirst($gsort));
-				$query = "SELECT $columns FROM series WHERE active='yes'${addonQuery} AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
+				$query = "SELECT $columns FROM series WHERE active='yes' AND category LIKE '% ".$catsort." %' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName " . $sort . " LIMIT " . $start . " " . $count;
+			} else {
+				$query = "SELECT $columns FROM series WHERE active='yes' AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
 			}
-			else 
-			{
-				$query = "SELECT $columns FROM series WHERE active='yes'${addonQuery} AND seriesName LIKE '".$gsort."%' " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ORDER BY fullSeriesName ".$sort." LIMIT ".$start." ".$count;
-			}
+		} else {
+			$query = "SELECT $columns FROM `series` WHERE active='yes'${filter} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
 		}
-		else 
-		{
-			$query = "SELECT $columns FROM `series` WHERE active='yes'{$filter}${addonQuery} " . $this->AdvanceRestrictions . " $alphalimit " . $orderBy . " ".$sort." LIMIT ".$start." ".$count;
-		}
-		
+        
 		// make sure we are using UTF-8 chars
 		$this->mysqli->set_charset("utf8");
 		
@@ -257,29 +225,23 @@ class Series extends Config {
 		$watchlistEntries = $Watchlist->array_displayWatchList(TRUE);
 		$i = 0;
 		$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
-		while($row = $result->fetch_assoc())
-		{
+		while ($row = $result->fetch_assoc()) {
 			$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
 			// a result was found, build the array for return.
-			foreach($row AS $key => &$value)
-			{
-				if($key == 'ratingLink')
-				{
+			foreach ($row AS $key => &$value) {
+				if ($key == 'ratingLink') {
 					$returneddata['results'][$i]['rating'] = substr($value,0,-4);
 					$returneddata['results'][$i][$key] = $this->ImageHost . '/ratings/' . $value;
-				}
-				else
-				{
-					if(isset($booleanSwitch[$value])){
+				} else {
+					if (isset($booleanSwitch[$value])) {
 						$returneddata['results'][$i][$key] = $booleanSwitch[$value];
-					}
-					else {
+					} else {
 						$returneddata['results'][$i][$key] = $value;
 					}
 				}
 			}
 			$returneddata['results'][$i]['watchlist'] = "0";
-			if(array_key_exists($row['id'],$watchlistEntries)){
+			if (array_key_exists($row['id'],$watchlistEntries)) {
 				$returneddata['results'][$i]['watchlist'] = "1";
 			}
 			$returneddata['results'][$i]['image'] = $this->ImageHost . '/seriesimages/' . $row['id'] . '.jpg';

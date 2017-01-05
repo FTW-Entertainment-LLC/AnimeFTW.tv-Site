@@ -391,7 +391,8 @@ Class api extends Config {
     }
     
     // Function to validate the requested action to ensure if it is something a non-logged-in person can view.
-    private function validateAction() {
+    private function validateAction()
+    {
         // This function validates an action.
         if (isset($this->APIActions[$this->Data['action']]) || array_key_exists($this->Data['action'], $this->APIActions)) {
             // Action exists that was requested, now we check to see if the function is allowed for their current state.
@@ -443,7 +444,7 @@ Class api extends Config {
                 }
             } else {
                 // The action is not set, so we assume they want to login since there are no other valid options without an action.
-                $this->tokenAuthorization('create'); // we need to create a token for this user
+                $this->tokenAuthorization('create');
             }
         } else {
             // wrong, good bye..
@@ -501,7 +502,10 @@ Class api extends Config {
                 $count = mysqli_num_rows($results);
                 if($count < 1)
                 {
-                    // no rows found, they need to go back and try again.
+                    // no rows were found, we will let them proceed based on the access level of the action
+                    $this->UserID = 0;
+                    $this->AccessLevel = 0;
+                    
                     return FALSE;
                 }
                 else
