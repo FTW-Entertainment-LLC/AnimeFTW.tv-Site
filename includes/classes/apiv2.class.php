@@ -284,6 +284,15 @@ Class api extends Config {
             'loginRequired' => '0',
             'description' => 'No login attempt, so we assume this was a registration.'
         ),
+        'validate-token' => array(
+            'action' => 'validate-token',
+            'location' => 'register.v2.class.php', // action location
+            'classname' => 'Device', // class name
+            'method' => 'registerUser', // method name
+            'disabled' => '1',
+            'loginRequired' => '0',
+            'description' => 'Validate token, is not needed, but is required for the kodi addon.'
+        ),
     );
 
     // class constructor method
@@ -609,6 +618,9 @@ Class api extends Config {
                     unset($array);
                 }
             }
+        } elseif (isset($this->Data['action']) && $this->Data['action'] == 'validate-token') {
+            // dummy function.
+            $this->formatData(array('status' => '500', 'message' => 'This was a dummy function.'));
         }
         else if(isset($this->Data['action']) && $this->Data['action'] == 'logout')
         {
