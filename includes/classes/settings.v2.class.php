@@ -21,6 +21,7 @@ class Settings extends Config {
 
 	public function array_displayAppSettings() {
 		$results = array('status' => 200, 'message' => "Request Successful.");
+        $results['top-categories'] = '1,6,15';
 		if($this->DevArray['ads'] == 1 && $this->AccessLevel == 3) {
 			// The developer has ads, so we allow them to see ads in the request.
 			$results['enabled'] = '1';
