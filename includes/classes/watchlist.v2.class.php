@@ -27,7 +27,7 @@ class watchlist extends Config {
 	
 	public function array_displayWatchList($allEntries = FALSE){
 		// variables
-		$columns = "`watchlist`.`id`, `watchlist`.`date`, `watchlist`.`update`, `watchlist`.`sid`, `watchlist`.`status`, `watchlist`.`email`, `watchlist`.`currentep`, `watchlist`.`tracker`, `watchlist`.`tracker_latest`, `watchlist`.`comment`, `series`.`fullSeriesName`";
+		$columns = "`watchlist`.`id`, `watchlist`.`date`, `watchlist`.`update`, `watchlist`.`sid`, `watchlist`.`status`, `watchlist`.`email`, `watchlist`.`currentep`, `watchlist`.`tracker`, `watchlist`.`tracker_latest`, `watchlist`.`comment`, `series`.`fullSeriesName`, `series`.`description`";
 		$where = "`uid` = " . $this->UserID;
 		$orderby = "";
 		
