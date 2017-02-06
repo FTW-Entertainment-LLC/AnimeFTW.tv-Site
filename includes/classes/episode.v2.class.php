@@ -96,6 +96,7 @@ class Episode extends Config {
                 }
                 $currentPositionArray = $this->findCurrentVideoLocation();
                 $results['video-position'] = $currentPositionArray['position'];
+                $results['video-length'] = $currentPositionArray['length'];
                 $results['last-watched'] = $currentPositionArray['last-watched'];
                 $results['total-comments'] = $Comment->bool_totalComments($this->Data['id']);
                 $results['average-rating'] = $Ratings['average-rating']; // pass through the average rating.
@@ -247,6 +248,7 @@ class Episode extends Config {
                     }
                     $currentPositionArray = $this->findCurrentVideoLocation($row['id']);
                     $finalresults['results'][$i]['video-position'] = $currentPositionArray['position'];
+                    $finalresults['results'][$i]['video-length'] = $currentPositionArray['length'];
                     $finalresults['results'][$i]['last-watched'] = $currentPositionArray['last-watched'];
                     $finalresults['results'][$i]['total-comments'] = $Comment->bool_totalComments($row['id']);
                     $finalresults['results'][$i]['average-rating'] = $Ratings['average-rating']; // pass through the average rating.
@@ -528,7 +530,7 @@ class Episode extends Config {
     }
     
     private function findCurrentVideoLocation($eid=null) {
-        if($eid == null){
+        if ($eid == null) {
             // the eid is not set, so we set it for them
             $eid = $this->Data['id'];
         }
@@ -538,25 +540,22 @@ class Episode extends Config {
         // add the series specific info to the output
         $count = $result->num_rows;
         
-        if($count > 0) {
+        if ($count > 0) {
             $row = $result->fetch_assoc();
             
             // we need to make sure that the current entry is more than 90% watched, if it is not, then we give them the current time.
-            if($row['max'] == NULL) {
-                return array('position' => $row['time'], 'last-watched' => $row['updated']);
-            }
-            else {
+            if ($row['max'] == NULL) {
+                return array('position' => $row['time'], 'last-watched' => $row['updated'], 'length' => '0');
+            } else {
                 $percentage = round(($row['time']/$row['max'])*100);
                 if($percentage >= 90) {
-                    return array('position' => '0', 'last-watched' => $row['updated']);
-                }
-                else {
-                    return array('position' => $row['time'], 'last-watched' => $row['updated']);
+                    return array('position' => '0', 'last-watched' => $row['updated'], 'length' => $row['max']);
+                } else {
+                    return array('position' => $row['time'], 'last-watched' => $row['updated'], 'length' => $row['max']);
                 }
             }
-        }
-        else {
-            return array('position' => '0', 'last-watched' => '0');
+        } else {
+            return array('position' => '0', 'last-watched' => '0', 'length' => '0');
         }
     }
 }
