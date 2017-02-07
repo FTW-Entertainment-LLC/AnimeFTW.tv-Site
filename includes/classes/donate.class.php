@@ -149,6 +149,9 @@ class AFTWDonate
                     <input type="text" name="amount" value="" placeholder="Donation Amount" />
                     </form>
                 </div>
+                <div align="center" style="padding-top:5px;">
+                    <a href="https://cex.io/#/modal/donation/pid/DP100005408" target="_blank" ><img src="https://cex.io/img/donations/donations_button.svg" alt="Donations"></a>
+                </div>
                 <div>
                 </div>
                 ';
