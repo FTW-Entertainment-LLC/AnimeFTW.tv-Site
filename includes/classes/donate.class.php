@@ -21,7 +21,7 @@ class AFTWDonate
     */
     
     //#- Vars -#\\
-    var $profileArray, $donation_round, $donation_name, $donation_active, $donation_goal;
+    var $profileArray, $donation_round, $donation_name, $donation_active, $donation_goal, $donation_description;
     
     //#- Contruct -#\\
     public function __construct()
@@ -55,11 +55,9 @@ class AFTWDonate
         echo '<span class="scapmain">Donate to AnimeFTW.tv!</span>
             <br />
             <span class="poster">The website and all our services are completely self funded, we rely on <i>viewers like you</i> to maintain our Anime Library and keep us going strong!</span>
-            </div>';
-        $query = mysql_query("SELECT description FROM donation_settings WHERE round_id = ".$this->donation_round);
-        $row = mysql_fetch_array($query);
-        echo '<div class="tbl">';
-        echo $row['description'];
+            </div>
+            <div class="tbl">';
+        echo $this->donation_description;
         echo '</div>';
     }
     
@@ -73,7 +71,10 @@ class AFTWDonate
     private function ProgressBox()
     {
         $goal = $this->donation_goal;
-        $query = mysql_query("SELECT mc_gross FROM donation_paypal WHERE item_name = '".$this->donation_name."'");
+        $todayDate = date('y-m-d');
+        $firstDay = strtotime(date('Y-m-01', strtotime($todayDate)));
+        $lastDay = strtotime(date('Y-m-t', strtotime($todayDate)));
+        $query = mysql_query("SELECT mc_gross FROM donation_paypal WHERE `date` >= ${firstDay} AND `date` <= ${lastDay}");
         $total = 0;
         while (list($mc_gross) = mysql_fetch_array($query)) {
             $total = $total+$mc_gross;
@@ -181,22 +182,26 @@ class AFTWDonate
     # function BuildGlobalVars
     private function BuildGlobalVars()
     {
-        // Function is designed to query the settings table to load the global class variables for the donation script
-        $query = "SELECT name, value FROM settings WHERE name = 'donation_round' OR name = 'donation_active'";
+        // We check to see if donations are active.
+        $query = "SELECT name, value FROM settings WHERE name = 'donation_active'";
         $results = mysql_query($query);
-        while (list($name,$value) = mysql_fetch_array($results)) {
-            if ($name == 'donation_round') { // if this is the donation round, lets set it.
-                $this->donation_round = $value;
-            }
-            if ($name == 'donation_active') { // if the donations are active, let's set that as well
-                $this->donation_active = $value;
-            }
-        }
-        $query = "SELECT goal, round_name FROM donation_settings WHERE round_id = ".$this->donation_round;
-        $results = mysql_query($query);
-        $row = mysql_fetch_array($results);
-        $this->donation_name = $row['round_name'];
-        $this->donation_goal = $row['goal'];        
+        $row = mysql_fetch_assoc($results);
+        if ($row['value'] == '1') {
+            // We confirmed we have an active donation drive.
+            $query = "SELECT `goal`, `round_name`, `description` FROM `donation_settings` WHERE `active` = 1";
+            $results = mysql_query($query);
+            $row = mysql_fetch_array($results);
+            
+            $this->donation_active = 1;
+            $this->donation_name = $row['round_name'];
+            $this->donation_goal = $row['goal'];
+            $this->donation_description = $row['description'];
+        } else {
+            $this->donation_active = 0;
+            $this->donation_name = 'None configured';
+            $this->donation_goal = '0';
+            $this->donation_description = 'There are currently no active donation rounds.';
+        }      
     }
     
     private function BuildDonatePage()

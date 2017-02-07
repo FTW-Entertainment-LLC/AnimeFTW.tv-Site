@@ -36,13 +36,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 		exit;
 	}
 	if($_SERVER['REQUEST_URI'] == '/donate' || $_SERVER['REQUEST_URI'] == '/donate/'){
-		if($profileArray[0] == 0){
-			header('location: http://www.animeftw.tv/');
-			exit;
-		}
-		else {
-			$donate->Build($profileArray);
-		}
+		$donate->Build($profileArray);
 	}
 	if(($profileArray[0] == 0) && $_SERVER['HTTP_HOST'] == 'dev.animeftw.tv'){
 		header('location: http://www.animeftw.tv/');
