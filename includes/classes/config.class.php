@@ -908,13 +908,15 @@ class Config {
     # Function to post alerts to Slack.
     public function postToSlack($sendingText,$type=null){
         if($type == null || $type == 0) {
-            $url = 'https://hooks.slack.com/services/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';
+            // post to #alerts
+            $url = 'https://discordapp.com/api/webhooks/245573855249301504/1lRP0UaoEflbNwrebqKxEf2FP64EPnV4v0P9K4KF8m1QUWXxdfjYym_9lzp_TBIWum3I';
         } else {
-            $url = 'https://hooks.slack.com/services/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';
+            // Post to #managers
+            $url = 'https://discordapp.com/api/webhooks/278872024724537344/jsvA94duEkd0Sor3zZbzQ0zfRPwhFeX74Mg41cS6n3XRuGqbjQV2XOlHYj5pi3k3DxtT';
         }
         
         $data = array(
-            "text" => $sendingText,
+            "content" => $sendingText,
         );
         
         $data_string = json_encode($data);
