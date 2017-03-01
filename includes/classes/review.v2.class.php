@@ -157,7 +157,7 @@ class Review extends Config {
                         $slack = $this->postToSlack($slackData);
                         return array('status' => '500', 'message' => "An error processing the request was logged, please try again.");
                     } else {
-                        $slackData = "*New Review Posted to " . stripslashes($row['fullSeriesName']) . "*: \n ```" . $this->Data['review'] . "``` <https://www.animeftw.tv/manage/#reviews| Manage this review.>";
+                        $slackData = "*New Review Posted to " . stripslashes($row['fullSeriesName']) . "*: \n ```" . $this->Data['review'] . "``` <https://www.animeftw.tv/manage/#reviews>";
                         $slack = $this->postToSlack($slackData);
                         return array('status' => '200', 'message' => "Request Successful.");
                     }
