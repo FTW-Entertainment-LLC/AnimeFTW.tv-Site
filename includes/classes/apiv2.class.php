@@ -330,14 +330,11 @@ Class api extends Config {
     // function will determine if the developer is requesting JSON or XML output. (We can expand later.)
     private function determineStyle()
     {
-        // we check, is there an output format request, is it json?
-        if (isset($this->Data['output']) && strtolower($this->Data['output'] == 'json')) {
-            $this->Style = 'json';
-        } elseif (isset($this->Data['output']) && strtolower($this->Data['output'] == 'xml'))  {
-        // since there was nothing for Json, we cannot assume the dev asked for it, we need to see if they want xml
+        if (isset($this->Data['output']) && strtolower($this->Data['output'] == 'xml'))  {
+            // since there was nothing for Json, we cannot assume the dev asked for it, we need to see if they want xml
             $this->Style = 'xml';
         } else {
-        // for everything else we default to json, cause it looks nicer..
+            // for everything else we default to json, cause it looks nicer..
             $this->Style = 'json';
         }
     }
@@ -349,9 +346,6 @@ Class api extends Config {
         if ($Message == NULL) {
             // Message is null, which means we can take it from the array
             $Message = $this->MessageCodes["Result Codes"][$ResultCode]["Message"];
-        } else {
-            // Message was given, so we need to use THAT.
-            $Message = $Message;
         }
         $Result = array('status' => $this->MessageCodes["Result Codes"][$ResultCode]["Status"], 'message' => $Message); // we put the error and the message together for the output..
         $this->formatData($Result); // format the data how the client is looking for..
