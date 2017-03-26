@@ -10,13 +10,15 @@
 
 class watchlist extends Config {
 
-    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes, $UserArray;
+    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 
     public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
     {
         parent::__construct();
         $this->Data = $Data;
-        $this->UserArray = $UserArray;
+        if ($UserArray != NULL) {
+            $this->UserArray = $UserArray;
+        }
         $this->DevArray = $DevArray;
         $this->permissionArray = $permissionArray;
     }
