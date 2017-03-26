@@ -14,7 +14,7 @@ class Episode extends Config {
     {
         parent::__construct(TRUE);
         $this->Data = $Data;
-		$this->UserArray = $UserArray;
+        $this->UserArray = $UserArray;
         $this->DevArray = $DevArray;
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
     }
@@ -357,10 +357,10 @@ class Episode extends Config {
         $orderBy = "`series`.`fullSeriesName` ASC, `episode`.`epnumber` DESC";
         $columns = "`episode`.`id`, `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`description`, `series`.`category`";
         $addonQuery = '';
-		if($this->DevArray['license'] == 0 && ($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)) {
+        if($this->DevArray['license'] == 0 && ($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)) {
             // it means the content we can show is only unlicensed.
-			$addonQuery = " AND `license` = 0";
-		}
+            $addonQuery = " AND `license` = 0";
+        }
         // limit the query by a certain amount
         if(isset($this->Data['count']) && is_numeric($this->Data['count']))
         {

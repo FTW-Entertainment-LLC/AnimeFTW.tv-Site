@@ -14,11 +14,11 @@ class watchlist extends Config {
 
     public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
     {
-		parent::__construct();
-		$this->Data = $Data;
-		$this->UserArray = $UserArray;
-		$this->DevArray = $DevArray;
-		$this->permissionArray = $permissionArray;
+        parent::__construct();
+        $this->Data = $Data;
+        $this->UserArray = $UserArray;
+        $this->DevArray = $DevArray;
+        $this->permissionArray = $permissionArray;
     }
     
     public function connectProfile($input){
