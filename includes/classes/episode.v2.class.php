@@ -16,6 +16,7 @@ class Episode extends Config {
         $this->Data = $Data;
         $this->UserArray = $UserArray;
         $this->DevArray = $DevArray;
+        $this->permissionArray = $permissionArray;
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
     }
     
@@ -52,20 +53,31 @@ class Episode extends Config {
                     }
                     else if($key == 'hd')
                     {
+                        if ($this->permissionArray['15']['value'] == '31') {
+                            // 1080p content is their default option.
+                            $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+                        } else if ($this->permissionArray['15']['value'] == '30') {
+                            // 720p content is their default option.
+                            $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+                        } else {
+                            $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+                        }
                         if($value == 2)
                         {
-                            $results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+                            $results['video'] = $video;
+                            $results['video-480p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
                             $results['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                             $results['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
                         }
                         else if($value == 1)
                         {
-                            $results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+                            $results['video'] = $video;
+                            $results['video-480p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
                             $results['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                         }
                         else
                         {
-                            $results['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
+                            $results['video'] = $video;
                         }
                     }
                     else if($key == 'seriesName')
@@ -213,15 +225,26 @@ class Episode extends Config {
                             $finalresults['results'][$i]['image-320x280'] = $this->ImageHost . '/video-images/320x280/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
                             $finalresults['results'][$i]['image-640x560'] = $this->ImageHost . '/video-images/640x560/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
                         } elseif($key == 'hd') {
+                            if ($this->permissionArray['15']['value'] == '31') {
+                                // 1080p content is their default option.
+                                $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+                            } else if ($this->permissionArray['15']['value'] == '30') {
+                                // 720p content is their default option.
+                                $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+                            } else {
+                                $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+                            }
                             if($value == 2) {
-                                $finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+                                $finalresults['results'][$i]['video'] = $video;
+                                $finalresults['results'][$i]['video-480p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
                                 $finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                                 $finalresults['results'][$i]['video-1080p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
                             } elseif($value == 1) {
-                                $finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
+                                $finalresults['results'][$i]['video'] = $video;
+                                $finalresults['results'][$i]['video-480p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
                                 $finalresults['results'][$i]['video-720p'] = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                             } else {
-                                $finalresults['results'][$i]['video'] = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.' . $videotype;
+                                $finalresults['results'][$i]['video'] = $video;
                             }
                         } elseif($key == 'seriesName') {
                             // we don't need this..
