@@ -8,16 +8,17 @@
 
 class Register extends Config {
 
-	public $Data, $UserID, $DevArray;
+	public $UserArray, $DevArray, $permissionArray;
 	private $AllowSpecialChars;
 
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL)
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
 	{
 		parent::__construct();
 		parent::array_buildAPICodes();
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
+		$this->permissionArray = $permissionArray;
 		$this->AllowSpecialChars = 0;
 	}
 	

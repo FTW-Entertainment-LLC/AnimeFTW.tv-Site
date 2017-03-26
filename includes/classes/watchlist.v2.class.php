@@ -10,15 +10,15 @@
 
 class watchlist extends Config {
 
-    public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes, $UserArray;
+    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes, $UserArray;
 
-    public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+    public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
     {
-        parent::__construct();
-        $this->Data = $Data;
-        $this->UserID = $UserID;
-        $this->DevArray = $DevArray;
-        $this->AccessLevel = $AccessLevel;
+		parent::__construct();
+		$this->Data = $Data;
+		$this->UserArray = $UserArray;
+		$this->DevArray = $DevArray;
+		$this->permissionArray = $permissionArray;
     }
     
     public function connectProfile($input){
@@ -28,7 +28,7 @@ class watchlist extends Config {
     public function array_displayWatchList($allEntries = FALSE){
         // variables
         $columns = "`watchlist`.`id`, `watchlist`.`date`, `watchlist`.`update`, `watchlist`.`sid`, `watchlist`.`status`, `watchlist`.`email`, `watchlist`.`currentep`, `watchlist`.`tracker`, `watchlist`.`tracker_latest`, `watchlist`.`comment`, `series`.`fullSeriesName`, `series`.`description`";
-        $where = "`uid` = " . $this->UserID;
+        $where = "`uid` = " . $this->UserArray['ID'];
         $orderby = "";
         
         // we want all of the user's entries.. 
@@ -145,7 +145,7 @@ class watchlist extends Config {
     public function array_addWatchListEntry(){
         if (isset($this->Data['id']) && is_numeric($this->Data['id'])) {
             // the ID was supplied, moving forward.
-            $query = "INSERT INTO `watchlist` (`id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`) VALUES (NULL, '" . $this->UserID . "', '" . time() . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '1', '1', '0', '0', '0', '')";
+            $query = "INSERT INTO `watchlist` (`id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`) VALUES (NULL, '" . $this->UserArray['ID'] . "', '" . time() . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '1', '1', '0', '0', '0', '')";
             $result = $this->mysqli->query($query);
             if ($result) {
                 $results = array(
@@ -173,7 +173,7 @@ class watchlist extends Config {
         // we start off by checking to make sure the id of the WatchList entry was given, if it wasn't send them back.
         if (isset($this->Data['id']) && is_numeric($this->Data['id'])) {
             // first we will query to get all of the existing details.
-            $query = "SELECT `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment` FROM `watchlist` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
+            $query = "SELECT `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment` FROM `watchlist` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserArray['ID'];
             $result = $this->mysqli->query($query);
             $existingRow = $result->fetch_assoc();
             
@@ -231,7 +231,7 @@ class watchlist extends Config {
             } else {
                 $querySetOptions = rtrim(rtrim($querySetOptions), ',');
                 // initiate the new query, there was an update.
-                $query = "UPDATE `watchlist` SET ${querySetOptions} WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
+                $query = "UPDATE `watchlist` SET ${querySetOptions} WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserArray['ID'];
                 $result = $this->mysqli->query($query);
                 
                 if (!$result) {
@@ -250,7 +250,7 @@ class watchlist extends Config {
             // The ID was not set, so there is no way for them to pass.
             return array('status' => "501", 'message' => "There was a configuration issue with the request, ensure all requirements are met.");
         } else {
-            $query = "DELETE FROM `watchlist` WHERE `sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserID;
+            $query = "DELETE FROM `watchlist` WHERE `sid` = " . $this->mysqli->real_escape_string($this->Data['id']) . " AND `uid` = " . $this->UserArray['ID'];
             // we want to get affected rows back, so that we can safely let them know if it was deleted or not.
             if ($stmt = $this->mysqli->prepare($query)) {
                 $stmt->execute();
@@ -265,7 +265,7 @@ class watchlist extends Config {
     }
     
     private function bool_totalWatchListEntries(){
-        $query = "SELECT COUNT(id) as count FROM `watchlist` WHERE `uid` = " . $this->UserID . "";
+        $query = "SELECT COUNT(id) as count FROM `watchlist` WHERE `uid` = " . $this->UserArray['ID'] . "";
         $result = $this->mysqli->query($query);
         $row = $result->fetch_assoc();
         return $row['count'];
@@ -274,10 +274,10 @@ class watchlist extends Config {
     private function array_returnTrackerInformation($sid,$tracker_latest) {
         if ($tracker_latest == '1') {
             // latest episode watched.
-            $query = "SELECT `episode`.`epnumber` as `numrows` FROM `episode_tracker`, `episode` WHERE `episode_tracker`.`seriesName` = " . $sid . " AND `episode_tracker`.`uid` = " . $this->UserID . " AND `episode`.`id`=`episode_tracker`.`eid` ORDER BY `eid` DESC LIMIT 0, 1";
+            $query = "SELECT `episode`.`epnumber` as `numrows` FROM `episode_tracker`, `episode` WHERE `episode_tracker`.`seriesName` = " . $sid . " AND `episode_tracker`.`uid` = " . $this->UserArray['ID'] . " AND `episode`.`id`=`episode_tracker`.`eid` ORDER BY `eid` DESC LIMIT 0, 1";
         } else {
             // cumulative
-            $query = "SELECT COUNT(id) as `numrows` FROM `episode_tracker` WHERE `seriesName` = " . $sid . " AND `uid` = " . $this->UserID;
+            $query = "SELECT COUNT(id) as `numrows` FROM `episode_tracker` WHERE `seriesName` = " . $sid . " AND `uid` = " . $this->UserArray['ID'];
         }
         
         $result = $this->mysqli->query($query);

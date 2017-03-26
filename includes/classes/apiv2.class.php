@@ -10,8 +10,8 @@
 
 Class api extends Config {
     
-    protected $Method, $Style, $Data = array(), $UserID, $AccessLevel;
-    var $username, $password, $DevArray, $MessageCodes;
+    protected $Method, $Style, $Data = array();
+    var $username, $password, $DevArray, $MessageCodes, $permissionArray, $UserArray;
     
     private $APIActions = array(
         'display-episodes' => array(
@@ -421,13 +421,13 @@ Class api extends Config {
             // We change from a login only system to allow ALL of the functions to work, we will then authenticate AFTER the action is requested (or not)
             if (isset($this->Data['action'])) {
                 // There is an action defined, so we treate it as a valid first response that we will attempt to make sure the system can work with.
+                // Token validation is also done through this function.
                 if ($this->validateAction() == TRUE) {
                     // Action is valid, or they can reach it.
                     if ($this->Data['action'] == 'login' || $this->Data['action'] == 'loginRequired') {
                         // It is theoretically possible that someone enters in the action of login, as such we need to ensure that they CAN login.
                         $this->tokenAuthorization('create');
                     } else {
-                        // With the token approved, we start the api fully.
                         $this->launchAPISubFunctions();
                     }
                 } else {
@@ -483,21 +483,48 @@ Class api extends Config {
         if ($Type == 'validate') {
             // We need to validate the token given to us
             if (isset($this->Data['token']))  {
-                // this will need some sanitization...
-                $query = "SELECT `" . $this->TokenTable . "`.`id`, `" . $this->TokenTable . "`.`session_hash`, `" . $this->TokenTable . "`.`date`, `" . $this->TokenTable . "`.`did`, `" . $this->TokenTable . "`.`uid`, `users`.`Level_access` FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "`, `" . $this->MainDB . "`.`users` WHERE `" . $this->TokenTable . "`.`session_hash` = '" . $this->Data['token'] . "' AND `" . $this->TokenTable . "`.`did` = '" . $this->DevArray['id'] . "' AND `users`.`ID`=`" . $this->TokenTable . "`.`uid`";
+                // 1. Get the Username, display_name, Level_access for the logged in user
+                $query = "SELECT `users`.`ID`, `users`.`Username`, `users`.`display_name`, `users`.`Level_access` FROM `" . $this->MainDB . "`.`users`, `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `users`.`ID` = `" . $this->TokenTable . "`.`uid` AND `" . $this->TokenTable . "`.`session_hash` = '" . $this->Data['token'] . "'";
                 $results = $this->mysqli->query($query);
                 $count = mysqli_num_rows($results);
                 if ($count < 1) {
                     // no rows were found, we will let them proceed based on the access level of the action
-                    $this->UserID = 0;
-                    $this->AccessLevel = 0;
+                    $this->UserArray['ID']           = 0;       // uid of the user needed later in life
+                    $this->UserArray['Username']     = 'guest'; // Username of the logged in user.
+                    $this->UserArray['display_name'] = 'guest'; // display_name of the logged in user.
+                    $this->UserArray['Level_access'] = 0;       // Level access of the logged in user.
                     
                     return FALSE;
                 } else {
+                    // User exists, enter the details into the UserArray
                     $row = $results->fetch_assoc();
-                    $this->UserID         = $row['uid'];             // Userid of the user needed later in life
-                    $this->AccessLevel    = $row['Level_access'];    // Level access of the logged in user.
-                    // w00t, this is a success, update the date on the row, to make sure.
+                    $this->UserArray['ID']           = $row['ID'];             // uid of the user needed later in life
+                    $this->UserArray['Username']     = $row['Username'];       // Username of the logged in user.
+                    $this->UserArray['display_name'] = $row['display_name'];   // display_name of the logged in user.
+                    $this->UserArray['Level_access'] = $row['Level_access'];   // Level access of the logged in user.
+                    
+                    // 2. Grab all available settings, then compare against what was returned, save the option and value in an array
+                    $query = "SELECT `id`, `group`, `default_option` FROM `user_setting_option`";
+                    $results = $this->mysqli->query($query);
+                    while ($row = $results->fetch_assoc()) {
+                        $this->permissionArray[$row['id']]['id'] = $row['id'];
+                        $this->permissionArray[$row['id']]['group'] = $row['group'];
+                        $this->permissionArray[$row['id']]['value'] = $row['default_option'];
+                    }
+                    // 3. Grab all of the permissions for the user, if any.
+                    $query = "SELECT `user_setting`.`option_id`, `user_setting`.`value`, `user_setting`.`disabled` FROM " . $this->MainDB . ".`user_setting` WHERE `user_setting`.`uid` = " . $this->UserArray['ID'];
+                    $results = $this->mysqli->query($query);
+                    $count = mysqli_num_rows($results);
+                    if ($count > 0) {
+                        // Inject each row into the permissions space.
+                        while ($row = $results->fetch_assoc()) {
+                            if ($row['disabled'] == 0 && strpos($this->permissionArray[$row['option_id']]['group'], $this->UserArray['Level_access']) !== FALSE) {
+                                // if the field is not disabled (0) AND they are in the group allowed to use the setting.
+                                $this->permissionArray[$row['option_id']]['value'] = $row['value'];
+                            }
+                        }
+                    }
+                    // successful validation, update the last activity of the user.
                     $results = $this->mysqli->query("UPDATE `" . $this->MainDB . "`.`" . $this->TokenTable . "` SET `date` = '" . time() . "' WHERE `session_hash` = '" . $this->mysqli->real_escape_string($this->Data['token']) . "' AND did = '" . $this->DevArray['id'] . "'");
                     // return true to the system so that it can continue on.
                     return TRUE;
@@ -513,7 +540,7 @@ Class api extends Config {
                 // the authentication was correct, which means the user can log in, we need to create the token,
                 // and hand it back to the developer.
                 //$this->createToken();
-                $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserID));
+                $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserArray));
             } else if ($validateLogin[0] == FALSE && $validateLogin[1] == 403) {
                 # User is there, but not active.
                 $this->reportResult(403,"The User account is not active, please activate before logging in.");
@@ -536,7 +563,7 @@ Class api extends Config {
         
         // validate the user logins given to us.
         if ($UserValidation[0] == TRUE && $UserValidation[2] == 1) {
-            $this->UserID = $UserValidation[1]; // we need to make the userid be a global for later usage..
+            $this->UserArray['ID'] = $UserValidation[1]; // we need to make the uid be a global for later usage..
             return array(TRUE,200,'Login successful.');
         } else if($UserValidation[0] == TRUE && $UserValidation[2] == 0) {
             return array(FALSE,403,'The User Account is not Active, please activate the account to login.');
@@ -585,7 +612,7 @@ Class api extends Config {
         } else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"] && $this->Data['action'] != '') {
             include("includes/classes/" . $this->APIActions[$this->Data['action']]["location"]);
             
-            $C = new $this->APIActions[$this->Data['action']]["classname"]($this->Data,$this->UserID,$this->DevArray,$this->AccessLevel);
+            $C = new $this->APIActions[$this->Data['action']]["classname"]($this->Data,$this->UserArray,$this->DevArray,$this->permissionArray);
             $Method = $this->APIActions[$this->Data['action']]["method"];
             $this->formatData($C->$Method());
         } else {
@@ -614,14 +641,14 @@ Class api extends Config {
             $devid = 0;
         }
         
-        if (isset($this->UserID)) {
+        if ($this->UserArray['ID'] != 0) {
             // if the user id is set, then they are logged in with a valid token.
             // update the last activity.
-            $query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $this->UserID . '\'';
+            $query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $this->UserArray['ID'] . '\'';
             $this->mysqli->query($query);
             // build the query to insert into the dev logs.
             $query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
-VALUES ('".time()."', '" . $devid . "', '" . $this->UserID . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
+VALUES ('".time()."', '" . $devid . "', '" . $this->UserArray['ID'] . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
         } else {
             $query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
 VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $Data . "')";

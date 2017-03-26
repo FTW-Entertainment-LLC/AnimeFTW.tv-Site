@@ -8,16 +8,16 @@
 
 class News extends Config {
 
-	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 	private $AdvanceRestrictions;
 
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
 	{
 		parent::__construct();
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
-		$this->AccessLevel = $AccessLevel;
+		$this->permissionArray = $permissionArray;
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 	}
 	

@@ -8,21 +8,21 @@
 
 class Settings extends Config {
 
-	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
 	{
 		parent::__construct();
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
-		$this->AccessLevel = $AccessLevel;
+		$this->permissionArray = $permissionArray;
 	}
 
 	public function array_displayAppSettings() {
 		$results = array('status' => 200, 'message' => "Request Successful.");
         $results['top-categories'] = '1,6,15';
-		if($this->DevArray['ads'] == 1 && $this->AccessLevel == 3) {
+		if($this->DevArray['ads'] == 1 && $this->UserArray['Level_access'] == 3) {
 			// The developer has ads, so we allow them to see ads in the request.
 			$results['enabled'] = '1';
 			$results['total'] = '1';			

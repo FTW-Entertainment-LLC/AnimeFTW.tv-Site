@@ -8,31 +8,14 @@
 
 class Episode extends Config {
 
-    public $Data, $UserID, $DevArray, $MessageCodes, $UserArray;
+    public $Data, $DevArray, $MessageCodes, $UserArray, $permissionArray;
     
-    public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL,$DirectUserArray = NULL)
+    public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL,$DirectUserArray = NULL)
     {
         parent::__construct(TRUE);
         $this->Data = $Data;
-        // check if the data is null, we will override settings that would normally be reserved for the API.
-        if($UserID == NULL)
-        {
-            $this->UserID = $this->UserArray['ID'];
-        }
-        else
-        {
-            $this->UserID = $UserID;
-        }
+		$this->UserArray = $UserArray;
         $this->DevArray = $DevArray;
-        // again, for non-api driven model, we want to use the same information, per-say, so let's override this.
-        if($AccessLevel == NULL)
-        {
-            $this->AccessLevel = $this->UserArray['Level_access'];
-        }
-        else
-        {    
-            $this->AccessLevel = $AccessLevel;
-        }
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
     }
     
@@ -57,7 +40,7 @@ class Episode extends Config {
                 $results = '';
                 $videotype = $row['videotype'];
                 $results['status'] = $this->MessageCodes["Result Codes"]["200"]["Status"];
-                $Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserID);
+                $Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserArray['ID']);
                 foreach($row AS $key => &$value)
                 {
                     if($key == 'image')
@@ -175,7 +158,7 @@ class Episode extends Config {
             $orderBy = "`episode`.`date` DESC";
         } else {
             $latest = "";
-            if ((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3) {
+            if ((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->UserArray['Level_access'] == 3) {
                 // developer does not have ads enabled, so we will need to limit them.
                 $startpoint = 0;
                 $count = 2;
@@ -215,14 +198,14 @@ class Episode extends Config {
                 include_once("rating.v2.class.php");
                 $Rating = new Rating();
                 $i = 0;
-                if ((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3 && !isset($this->Data['latest'])) {
+                if ((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->UserArray['Level_access'] == 3 && !isset($this->Data['latest'])) {
                     $i = 1;
                     $finalresults['results'][0] = $addonEpisode;
                 }
                 while ($row = $result->fetch_assoc()) {
                     // a result was found, build the array for return.
                     $videotype = $row['videotype'];
-                    $Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserID);
+                    $Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserArray['ID']);
                     foreach ($row AS $key => &$value) {
                         if ($key == 'image') {
                             $finalresults['results'][$i]['image'] = $this->ImageHost . '/video-images/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
@@ -291,9 +274,9 @@ class Episode extends Config {
     {
         // check to make sure the ID is set, this would be of the episode.
         // also check for a time variable, it MUST be in seconds.
-        if(isset($this->Data['id']) && is_numeric($this->Data['id']) && isset($this->Data['time']) && is_numeric($this->Data['time']) && $this->AccessLevel != 0)
+        if(isset($this->Data['id']) && is_numeric($this->Data['id']) && isset($this->Data['time']) && is_numeric($this->Data['time']) && $this->UserArray['Level_access'] != 0)
         {
-            $query = "SELECT `id` FROM `episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+            $query = "SELECT `id` FROM `episode_timer` WHERE `uid` = " . $this->UserArray['ID'] . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
             $result = $this->mysqli->query($query);
             if(!$result)
             {
@@ -318,7 +301,7 @@ class Episode extends Config {
                         }
                     }
                     // there are rows... lets update.
-                    $query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . ", `updated` = " . time() . $maxlength . " WHERE `uid` = " . $this->UserID . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
+                    $query = "UPDATE `episode_timer` SET `time` = " . $this->mysqli->real_escape_string($this->Data['time']) . ", `updated` = " . time() . $maxlength . " WHERE `uid` = " . $this->UserArray['ID'] . " AND `eid` = " . $this->mysqli->real_escape_string($this->Data['id']);
                     $result = $this->mysqli->query($query);
                     if(!$result)
                     {
@@ -347,7 +330,7 @@ class Episode extends Config {
                         }
                     }
                     // all data is present, we need to record in the episode table.
-                    $query = "INSERT INTO `episode_timer` (`id`, `uid`, `eid`, `time`, `updated`" . $maxdurration . ") VALUES (NULL, " . $this->UserID . ", " . $this->mysqli->real_escape_string($this->Data['id']) . ", " . $this->mysqli->real_escape_string($this->Data['time']) . ", " . time() . $maxvalue .")";
+                    $query = "INSERT INTO `episode_timer` (`id`, `uid`, `eid`, `time`, `updated`" . $maxdurration . ") VALUES (NULL, " . $this->UserArray['ID'] . ", " . $this->mysqli->real_escape_string($this->Data['id']) . ", " . $this->mysqli->real_escape_string($this->Data['time']) . ", " . time() . $maxvalue .")";
                     $result = $this->mysqli->query($query);
                     if(!$result)
                     {
@@ -374,7 +357,7 @@ class Episode extends Config {
         $orderBy = "`series`.`fullSeriesName` ASC, `episode`.`epnumber` DESC";
         $columns = "`episode`.`id`, `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`sid`, `episode`.`epname`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `series`.`description`, `series`.`category`";
         $addonQuery = '';
-		if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+		if($this->DevArray['license'] == 0 && ($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)) {
             // it means the content we can show is only unlicensed.
 			$addonQuery = " AND `license` = 0";
 		}
@@ -434,7 +417,7 @@ class Episode extends Config {
         }
         else {
             $latest = "";
-            if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3){
+            if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->UserArray['Level_access'] == 3){
                 // developer does not have ads enabled, so they are not allowed to see 
                 $startpoint = 0;
                 $count = 0;
@@ -471,7 +454,7 @@ class Episode extends Config {
             include_once("rating.v2.class.php");
             $Rating = new Rating();
             $i = 0;
-            if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->AccessLevel == 3 && !isset($this->Data['latest'])){
+            if((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->UserArray['Level_access'] == 3 && !isset($this->Data['latest'])){
                 $i = 1;
                 $finalresults['results'][0] = $addonEpisode;
             }
@@ -479,7 +462,7 @@ class Episode extends Config {
             {
                 // a result was found, build the array for return.
                 $videotype = $row['videotype'];
-                $Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserID);
+                $Ratings = $Rating->array_ratingsInformation($row['id'],$this->UserArray['ID']);
                 foreach($row AS $key => &$value)
                 {
                     if($key == 'image')
@@ -534,7 +517,7 @@ class Episode extends Config {
             // the eid is not set, so we set it for them
             $eid = $this->Data['id'];
         }
-        $query = "SELECT `time`, `updated`, `max` FROM `" . $this->MainDB . "`.`episode_timer` WHERE `uid` = " . $this->UserID . " AND `eid` = '" . $this->mysqli->real_escape_string($eid) . "'";
+        $query = "SELECT `time`, `updated`, `max` FROM `" . $this->MainDB . "`.`episode_timer` WHERE `uid` = " . $this->UserArray['ID'] . " AND `eid` = '" . $this->mysqli->real_escape_string($eid) . "'";
         $result = $this->mysqli->query($query);
         
         // add the series specific info to the output

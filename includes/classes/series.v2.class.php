@@ -8,18 +8,18 @@
 
 class Series extends Config {
 
-	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 	private $AdvanceRestrictions;
-
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+    
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
 	{
 		parent::__construct();
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
-		$this->AccessLevel = $AccessLevel;
+		$this->permissionArray = $permissionArray;
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
-		if($this->AccessLevel == 0 || $this->AccessLevel == 3)
+		if($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)
 		{
 			// Special restrictions for guests and basic members
 			$this->AdvanceRestrictions = ' AND `aonly` <= 1 AND (id != 6 OR id != 35 OR id != 138 OR id != 194 OR id != 238 OR id != 364 OR id != 403 OR id != 446 OR id != 456 OR id != 735 OR id != 818 OR id != 1006)';
@@ -36,13 +36,13 @@ class Series extends Config {
 		if(isset($this->Data['id']) && is_numeric($this->Data['id']))
 		{
 			$addonQuery = '';
-			if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+			if($this->DevArray['license'] == 0 && ($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)) {
 				// it means the content we can show is only unlicensed.
 				$addonQuery = " AND `license` = 0";
 			}
 			// We consider this a valid single series, an ID needs to be supplied, and nothing else to ensure system level continuity.
 			$this->mysqli->query("SET NAMES 'utf8'");
-			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd`, (SELECT COUNT(id) FROM `" . $this->MainDB . "`.`watchlist` WHERE `sid`=`series`.`id` AND `uid`= " . $this->UserID . ") AS `watchlist` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions . $addonQuery;
+			$query = "SELECT `id`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesonly`, `noteReason`, `category`, `prequelto`, `sequelto`, `hd`, (SELECT COUNT(id) FROM `" . $this->MainDB . "`.`watchlist` WHERE `sid`=`series`.`id` AND `uid`= " . $this->UserArray['ID'] . ") AS `watchlist` FROM `" . $this->MainDB . "`.`series` WHERE `id` = " . $this->mysqli->real_escape_string($this->Data['id']) . $this->AdvanceRestrictions . $addonQuery;
 			$result = $this->mysqli->query($query);
 			
 			$count = $result->num_rows;
@@ -53,10 +53,10 @@ class Series extends Config {
 				$Review = new Review();
 				// include watchlist class
 				include_once("watchlist.v2.class.php");
-				$Watchlist = new Watchlist($this->Data,$this->UserID,$this->DevArray,$this->AccessLevel);
+				$Watchlist = new Watchlist($this->Data,$this->UserArray,$this->DevArray,$this->permissionArray);
 				$watchlistEntries = $Watchlist->array_displayWatchList(TRUE);
 				$row = $result->fetch_assoc();
-				$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
+				$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserArray['ID']);
 				// a result was found, build the array for return.
 				$results = array('status' => $this->MessageCodes["Result Codes"]["200"]["Status"], 'message' => "Request Successful.");
 				
@@ -203,7 +203,7 @@ class Series extends Config {
 			$latest = "";
 		}
 		
-		if ($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+		if ($this->DevArray['license'] == 0 && ($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)) {
 			// it means the content we can show is only unlicensed.
 			$this->AdvanceRestrictions .= " AND `license` = 0";
 		}
@@ -237,12 +237,12 @@ class Series extends Config {
 		$Review = new Review();
 		// include watchlist class
 		include_once("watchlist.v2.class.php");
-		$Watchlist = new Watchlist($this->Data,$this->UserID,$this->DevArray,$this->AccessLevel);
+		$Watchlist = new Watchlist($this->Data,$this->UserArray,$this->DevArray,$this->permissionArray);
 		$watchlistEntries = $Watchlist->array_displayWatchList(TRUE);
 		$i = 0;
 		$booleanSwitch = array('true' => "1", 'false' => "0", 'yes' => "1", 'no' => "0");
 		while ($row = $result->fetch_assoc()) {
-			$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserID);
+			$Reviews = $Review->array_reviewsInformation($row['id'],$this->UserArray['ID']);
 			// a result was found, build the array for return.
 			foreach ($row AS $key => &$value) {
 				if ($key == 'ratingLink') {

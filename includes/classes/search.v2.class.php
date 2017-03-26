@@ -10,16 +10,16 @@
 
 class Search extends Config {
 
-	public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+	public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 	var $Categories = array(); // added 10/10/2014 by robotman321
 
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
 	{
 		parent::__construct();
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
-		$this->AccessLevel = $AccessLevel;
+		$this->permissionArray = $permissionArray;
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 	}
 	
@@ -67,12 +67,12 @@ class Search extends Config {
             $start = 0;
         }
 		$input = $this->mysqli->real_escape_string($input);
-		if($this->AccessLevel == 0)
+		if($this->UserArray['Level_access'] == 0)
 		{
 			// the user is an unregistered user, give them limited information
             $query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` = '0' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT ${start}, ${count}";
 		}
-		else if($this->AccessLevel== 3)
+		else if($this->UserArray['Level_access']== 3)
 		{
 			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category` FROM `series` WHERE `active` = 'yes' AND `aonly` <= '1' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC LIMIT ${start}, ${count}";
 		}

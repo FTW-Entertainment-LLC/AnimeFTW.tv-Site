@@ -8,42 +8,27 @@
 
 class User extends Config {
 
-	public $Data, $UserID, $DevArray, $MessageCodes, $UserArray;
+	public $Data, $DevArray, $MessageCodes, $UserArray, $permissionArray;
 	
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL,$DirectUserArray = NULL)
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL,$DirectUserArray = NULL)
 	{
 		parent::__construct(TRUE);
 		$this->Data = $Data;
-		// check if the data is null, we will override settings that would normally be reserved for the API.
-		if($UserID == NULL)
-		{
-			$this->UserID = $this->UserArray['ID'];
-		}
-		else
-		{
-			$this->UserID = $UserID;
-		}
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
-		// again, for non-api driven model, we want to use the same information, per-say, so let's override this.
-		if($AccessLevel == NULL)
-		{
-			$this->AccessLevel = $this->UserArray['Level_access'];
-		}
-		else
-		{	
-			$this->AccessLevel = $AccessLevel;
-		}
+		$this->permissionArray = $permissionArray;
+		$this->DevArray = $DevArray;
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 	}
 	
 	public function array_dispayUserProfile(){
 		if(isset($this->Data['lite'])){
 			// This indicates that we are building the lite version of the profile, with specific options only.
-			$query = "SELECT `ID`, `Username`, `display_name`, `Level_access`, `lastActivity`, `Email`, `views`, `firstName`, `lastName`, `gender`, `ageDate`, `ageYear`, `ageMonth`, `country`, `avatarExtension`, `avatarActivate`, `personalMsg`, `advanceActive`, `timeZone` FROM `users` WHERE `ID` = " . $this->UserID;
+			$query = "SELECT `ID`, `Username`, `display_name`, `Level_access`, `lastActivity`, `Email`, `views`, `firstName`, `lastName`, `gender`, `ageDate`, `ageYear`, `ageMonth`, `country`, `avatarExtension`, `avatarActivate`, `personalMsg`, `advanceActive`, `timeZone` FROM `users` WHERE `ID` = " . $this->UserArray['ID'];
 		}
 		else {
 			// for everything else we give the full output.
-			$query = "SELECT `ID`, `Username`, `display_name`, `Level_access`, `lastActivity`, `Email`, `views`, `firstName`, `lastName`, `gender`, `ageDate`, `ageYear`, `ageMonth`, `country`, `avatarExtension`, `avatarActivate`, `personalMsg`, `advanceActive`, `timeZone`, (SELECT COUNT(id) FROM `messages` WHERE `rid` = " . $this->UserID . " AND `viewed` = 1) as `newmessages` FROM `users` WHERE `ID` = " . $this->UserID;
+			$query = "SELECT `ID`, `Username`, `display_name`, `Level_access`, `lastActivity`, `Email`, `views`, `firstName`, `lastName`, `gender`, `ageDate`, `ageYear`, `ageMonth`, `country`, `avatarExtension`, `avatarActivate`, `personalMsg`, `advanceActive`, `timeZone`, (SELECT COUNT(id) FROM `messages` WHERE `rid` = " . $this->UserArray['ID'] . " AND `viewed` = 1) as `newmessages` FROM `users` WHERE `ID` = " . $this->UserArray['ID'];
 		}	
 		// grab the results.
 		$result = $this->mysqli->query($query);
@@ -120,7 +105,7 @@ class User extends Config {
 			return array('status' => '404', 'message' => "Data was missing, please ensure all profile fields are submitted.");
 		}
 		else {
-			$query = "UPDATE `users` SET `Email` = '" . $this->mysqli->real_escape_string($this->Data['email']) . "', `firstName` = '" . $this->mysqli->real_escape_string($this->Data['firstname']) . "', `lastName` = '" . $this->mysqli->real_escape_string($this->Data['lastname']) . "', `gender` = '" . $this->mysqli->real_escape_string($this->Data['gender']) . "', `ageDate` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `ageYear` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `ageMonth` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `country` = '" . $this->mysqli->real_escape_string($this->Data['country']) . "', `personalMsg` = '" . $this->mysqli->real_escape_string($this->Data['personalmsg']) . "', `timeZone` = '" . $this->mysqli->real_escape_string($this->Data['timezone']) . "' WHERE `ID` = " . $this->UserID;
+			$query = "UPDATE `users` SET `Email` = '" . $this->mysqli->real_escape_string($this->Data['email']) . "', `firstName` = '" . $this->mysqli->real_escape_string($this->Data['firstname']) . "', `lastName` = '" . $this->mysqli->real_escape_string($this->Data['lastname']) . "', `gender` = '" . $this->mysqli->real_escape_string($this->Data['gender']) . "', `ageDate` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `ageYear` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `ageMonth` = '" . $this->mysqli->real_escape_string($this->Data['']) . "', `country` = '" . $this->mysqli->real_escape_string($this->Data['country']) . "', `personalMsg` = '" . $this->mysqli->real_escape_string($this->Data['personalmsg']) . "', `timeZone` = '" . $this->mysqli->real_escape_string($this->Data['timezone']) . "' WHERE `ID` = " . $this->UserArray['ID'];
 			$result = $this->mysqli->query($query);
 			if(!$result){
 				return array('status' => '500', 'message' => "There was an unknown error recording the User details.");

@@ -10,18 +10,15 @@
 
 class Comment extends Config {
 
-	var $PerPage, $Epid, $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes, $UserArray;
+	var $PerPage, $Epid, $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes, $UserArray;
 
-	public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL,$Epid=0)
+	public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
 	{
-		// include the parent config so we can do stuffs.
 		parent::__construct();
-		
-		// Options needed when the API is being used.
 		$this->Data = $Data;
-		$this->UserID = $UserID;
+		$this->UserArray = $UserArray;
 		$this->DevArray = $DevArray;
-		$this->AccessLevel = $AccessLevel;
+		$this->permissionArray = $permissionArray;
 		$this->array_buildAPICodes(); // establish the status codes to be returned to the api.
 		
 		// deploy the variables used in normal operations.
@@ -521,7 +518,7 @@ class Comment extends Config {
 			else {
 				$spoiler = 0;
 			}
-			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`, `source`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($spoiler) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserID . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->DevArray['id'] . "')";
+			$query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`, `source`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($spoiler) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserArray['ID'] . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->DevArray['id'] . "')";
 			
 			$result = $this->mysqli->query($query);
 			
@@ -531,7 +528,7 @@ class Comment extends Config {
 			}
 			else {
 				if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv'){
-					$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($this->UserID,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . " from the " . $this->DevArray['name'] . "*: \n ```" . $this->Data['comment'] . "``` <https://www.animeftw.tv/manage/#comments>";
+					$slackData = "*New Episode Comment Posted by " . $this->string_fancyUsername($this->UserArray['ID'],NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . " from the " . $this->DevArray['name'] . "*: \n ```" . $this->Data['comment'] . "``` <https://www.animeftw.tv/manage/#comments>";
 					$slack = $this->postToSlack($slackData);
 				}
 				// success
