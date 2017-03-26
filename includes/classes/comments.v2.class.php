@@ -10,13 +10,15 @@
 
 class Comment extends Config {
 
-    var $PerPage, $Epid, $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes, $UserArray;
+    var $PerPage, $Epid, $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 
     public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL,$Epid=0)
     {
         parent::__construct();
         $this->Data = $Data;
-        $this->UserArray = $UserArray;
+        if ($UserArray != NULL) {
+            $this->UserArray = $UserArray;
+        }
         $this->DevArray = $DevArray;
         $this->permissionArray = $permissionArray;
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
