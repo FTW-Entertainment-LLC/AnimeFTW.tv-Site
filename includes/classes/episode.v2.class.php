@@ -55,10 +55,10 @@ class Episode extends Config {
                     {
                         if ($this->permissionArray['15']['value'] == '31' && $value == 2) {
                             // 1080p content is their default option.
-                            $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+                            $video = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
                         } else if (($this->permissionArray['15']['value'] == '30' || $this->permissionArray['15']['value'] == '31') && $value == 1) {
                             // 720p content is their default option.
-                            $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+                            $video = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                         } else {
                             $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
                         }
@@ -227,10 +227,10 @@ class Episode extends Config {
                         } elseif($key == 'hd') {
                             if ($this->permissionArray['15']['value'] == '31' && $value == 2) {
                                 // 1080p content is their default option.
-                                $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
+                                $video = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
                             } else if (($this->permissionArray['15']['value'] == '30' || $this->permissionArray['15']['value'] == '31') && $value == 1) {
                                 // 720p content is their default option.
-                                $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
+                                $video = 'http://videos2.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                             } else {
                                 $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_' . $row['epnumber'] . '_ns.mp4';
                             }
