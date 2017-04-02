@@ -10,8 +10,8 @@
 
 Class api extends Config {
     
-    protected $Method, $Style, $Data = array(), $UserID, $AccessLevel;
-    var $username, $password, $DevArray, $MessageCodes;
+    protected $Method, $Style, $Data = array();
+    var $username, $password, $DevArray, $MessageCodes, $permissionArray, $UserArray;
     
     private $APIActions = array(
         'display-episodes' => array(
@@ -314,13 +314,11 @@ Class api extends Config {
     {
         $input = Array();
         // loop through the POST data, adding it to the input array.
-        foreach($_POST as $key => $value)
-        {
+        foreach ($_POST as $key => $value) {
             $input[$key] = $value;
         }
         // Look through the GET data, adding it to the input array.
-        foreach($_GET as $key => $value)
-        {
+        foreach ($_GET as $key => $value) {
             $input[$key] = $value;
         }
         // This array will contain both POST and GET data.
@@ -332,36 +330,22 @@ Class api extends Config {
     // function will determine if the developer is requesting JSON or XML output. (We can expand later.)
     private function determineStyle()
     {
-        // we check, is there an output format request, is it json?
-        if(isset($this->Data['output']) && strtolower($this->Data['output'] == 'json'))
-        {
-            $this->Style = 'json';
-        }
-        // since there was nothing for Json, we cannot assume the dev asked for it, we need to see if they want xml
-        elseif(isset($this->Data['output']) && strtolower($this->Data['output'] == 'xml'))
-        {
+        if (isset($this->Data['output']) && strtolower($this->Data['output'] == 'xml'))  {
+            // since there was nothing for Json, we cannot assume the dev asked for it, we need to see if they want xml
             $this->Style = 'xml';
-        }
-        // for everything else we default to json, cause it looks nicer..
-        else
-        {
+        } else {
+            // for everything else we default to json, cause it looks nicer..
             $this->Style = 'json';
         }
     }
     
     // Part of the API includes error reporting to the developers, this will need to output formats that 
     // are known by the Devs.
-    private function reportResult($ResultCode = 401,$Message = NULL)
+    private function reportResult($ResultCode = 401,$Message = null)
     {
-        if($Message == NULL)
-        {
+        if ($Message == null) {
             // Message is null, which means we can take it from the array
             $Message = $this->MessageCodes["Result Codes"][$ResultCode]["Message"];
-        }
-        else
-        {
-            // Message was given, so we need to use THAT.
-            $Message = $Message;
         }
         $Result = array('status' => $this->MessageCodes["Result Codes"][$ResultCode]["Status"], 'message' => $Message); // we put the error and the message together for the output..
         $this->formatData($Result); // format the data how the client is looking for..
@@ -372,28 +356,21 @@ Class api extends Config {
     private function formatData($data)
     {
         // we have to check the data to make sure its an array
-        if(is_array($data))
-        {
+        if (is_array($data)) {
             // Check if the dev is supposed to have dashes in his keys or not..
-            if($this->DevArray['dashes'] == 1){
+            if($this->DevArray['dashes'] == 1) {
                 $data = $this->replaceArrayKeyDashes($data);
             }
-            if($this->Style == 'xml')
-            {
-                foreach($data as $column => $value)
-                {
+            if ($this->Style == 'xml') {
+                foreach ($data as $column => $value) {
                     echo '<' . $column . '><![CDATA[' . stripslashes($value) . ']]></' . $column . '>';
                 }
-            }
+            } else {
             // JSON output
-            else
-            {
                 echo json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
             }
             
-        }
-        else
-        {
+        } else {
             // the aw crap option.. the array wasnt an array so we have to halt everything!
             $this->reportResult(400);
         }
@@ -405,23 +382,23 @@ Class api extends Config {
         // This function validates an action.
         if (isset($this->APIActions[$this->Data['action']]) || array_key_exists($this->Data['action'], $this->APIActions)) {
             // Action exists that was requested, now we check to see if the function is allowed for their current state.
-            if (isset($this->Data['token']) && $this->tokenAuthorization('validate') == TRUE) {
+            if (isset($this->Data['token']) && $this->tokenAuthorization('validate') == true) {
                 // Token is supplied and is active.
-                return TRUE;
+                return true;
             } else {
                 // The token may be supplied, or not, but it is not a valid login.
                 // We check if te action can be used by non-logged in persons.
                 if ($this->APIActions[$this->Data['action']]['loginRequired'] == 0) {
                     // The action has validity for non-logged-in persons, so let them proceed.
-                    return TRUE;
+                    return true;
                 } else {
                     // This function is a login only function
-                    return FALSE;
+                    return false;
                 }
             }
         } else {
             // Function does not exist, however the end user won't know that.
-            return FALSE;
+            return false;
         }
     }
     
@@ -433,18 +410,18 @@ Class api extends Config {
         // 3) launch into the sub routines of the API.
         
         // we validate the developer key, if they pass go, they collect 200 bits
-        if($this->validateDevKey() == TRUE) {
+        if($this->validateDevKey() == true) {
             // UPDATED: 04/01/2017
             // We change from a login only system to allow ALL of the functions to work, we will then authenticate AFTER the action is requested (or not)
             if (isset($this->Data['action'])) {
                 // There is an action defined, so we treate it as a valid first response that we will attempt to make sure the system can work with.
-                if ($this->validateAction() == TRUE) {
+                // Token validation is also done through this function.
+                if ($this->validateAction() == true) {
                     // Action is valid, or they can reach it.
                     if ($this->Data['action'] == 'login' || $this->Data['action'] == 'loginRequired') {
                         // It is theoretically possible that someone enters in the action of login, as such we need to ensure that they CAN login.
                         $this->tokenAuthorization('create');
                     } else {
-                        // With the token approved, we start the api fully.
                         $this->launchAPISubFunctions();
                     }
                 } else {
@@ -474,12 +451,9 @@ Class api extends Config {
         $count = mysqli_num_rows($result);
         
         // if there are no results, throw an error.
-        if($count < 1)
-        {
-            return FALSE; // There was no match.. return a false..
-        }
-        else
-        {
+        if ($count < 1) {
+            return false; // There was no match.. return a false..
+        } else {
             $row = $result->fetch_assoc();
             $this->DevArray = array(
                 'id' => $row['id'], 
@@ -493,64 +467,78 @@ Class api extends Config {
                 'deviceauth' => $row['deviceauth'],
                 'dashes' => $row['dashes'],
             );
-            return TRUE; // Return TRUE to let it continue on.
+            return true; // Return true to let it continue on.
         }
     }
     
     // Token validation and authorization function, options, `create` and `validate`
     private function tokenAuthorization($Type = 'create')
     {
-        if($Type == 'validate')
-        {
+        if ($Type == 'validate') {
             // We need to validate the token given to us
-            if(isset($this->Data['token']))
-            {
-                // this will need some sanitization...
-                $query = "SELECT `" . $this->TokenTable . "`.`id`, `" . $this->TokenTable . "`.`session_hash`, `" . $this->TokenTable . "`.`date`, `" . $this->TokenTable . "`.`did`, `" . $this->TokenTable . "`.`uid`, `users`.`Level_access` FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "`, `" . $this->MainDB . "`.`users` WHERE `" . $this->TokenTable . "`.`session_hash` = '" . $this->Data['token'] . "' AND `" . $this->TokenTable . "`.`did` = '" . $this->DevArray['id'] . "' AND `users`.`ID`=`" . $this->TokenTable . "`.`uid`";
+            if (isset($this->Data['token']))  {
+                // 1. Get the Username, display_name, Level_access for the logged in user
+                $query = "SELECT `users`.`ID`, `users`.`Username`, `users`.`display_name`, `users`.`Level_access` FROM `" . $this->MainDB . "`.`users`, `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `users`.`ID` = `" . $this->TokenTable . "`.`uid` AND `" . $this->TokenTable . "`.`session_hash` = '" . $this->Data['token'] . "'";
                 $results = $this->mysqli->query($query);
                 $count = mysqli_num_rows($results);
-                if($count < 1)
-                {
+                if ($count < 1) {
                     // no rows were found, we will let them proceed based on the access level of the action
-                    $this->UserID = 0;
-                    $this->AccessLevel = 0;
+                    $this->UserArray['ID']           = 0;       // uid of the user needed later in life
+                    $this->UserArray['Username']     = 'guest'; // Username of the logged in user.
+                    $this->UserArray['display_name'] = 'guest'; // display_name of the logged in user.
+                    $this->UserArray['Level_access'] = 0;       // Level access of the logged in user.
                     
-                    return FALSE;
-                }
-                else
-                {
+                    return false;
+                } else {
+                    // User exists, enter the details into the UserArray
                     $row = $results->fetch_assoc();
-                    $this->UserID         = $row['uid'];             // Userid of the user needed later in life
-                    $this->AccessLevel    = $row['Level_access'];    // Level access of the logged in user.
-                    // w00t, this is a success, update the date on the row, to make sure.
+                    $this->UserArray['ID']           = $row['ID'];             // uid of the user needed later in life
+                    $this->UserArray['Username']     = $row['Username'];       // Username of the logged in user.
+                    $this->UserArray['display_name'] = $row['display_name'];   // display_name of the logged in user.
+                    $this->UserArray['Level_access'] = $row['Level_access'];   // Level access of the logged in user.
+                    
+                    // 2. Grab all available settings, then compare against what was returned, save the option and value in an array
+                    $query = "SELECT `id`, `group`, `default_option` FROM `user_setting_option`";
+                    $results = $this->mysqli->query($query);
+                    while ($row = $results->fetch_assoc()) {
+                        $this->permissionArray[$row['id']]['id'] = $row['id'];
+                        $this->permissionArray[$row['id']]['group'] = $row['group'];
+                        $this->permissionArray[$row['id']]['value'] = $row['default_option'];
+                    }
+                    // 3. Grab all of the permissions for the user, if any.
+                    $query = "SELECT `user_setting`.`option_id`, `user_setting`.`value`, `user_setting`.`disabled` FROM " . $this->MainDB . ".`user_setting` WHERE `user_setting`.`uid` = " . $this->UserArray['ID'];
+                    $results = $this->mysqli->query($query);
+                    $count = mysqli_num_rows($results);
+                    if ($count > 0) {
+                        // Inject each row into the permissions space.
+                        while ($row = $results->fetch_assoc()) {
+                            if ($row['disabled'] == 0 && strpos($this->permissionArray[$row['option_id']]['group'], $this->UserArray['Level_access']) !== false) {
+                                // if the field is not disabled (0) AND they are in the group allowed to use the setting.
+                                $this->permissionArray[$row['option_id']]['value'] = $row['value'];
+                            }
+                        }
+                    }
+                    // successful validation, update the last activity of the user.
                     $results = $this->mysqli->query("UPDATE `" . $this->MainDB . "`.`" . $this->TokenTable . "` SET `date` = '" . time() . "' WHERE `session_hash` = '" . $this->mysqli->real_escape_string($this->Data['token']) . "' AND did = '" . $this->DevArray['id'] . "'");
                     // return true to the system so that it can continue on.
-                    return TRUE;
+                    return true;
                 }
-            }
-            else
-            {
+            } else {
                 // token was not set, how they got here I dont know..
-                return FALSE;
+                return false;
             }
-        }
-        else
-        {
+        } else {
             // Since there are only two functions we, we assume they must be wanting to create a session.
             $validateLogin = $this->validateUser();
-            if($validateLogin[0] == TRUE && $validateLogin[1] == 200)
-            {
+            if ($validateLogin[0] == true && $validateLogin[1] == 200) {
                 // the authentication was correct, which means the user can log in, we need to create the token,
                 // and hand it back to the developer.
                 //$this->createToken();
-                $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserID));
-            }
-            else if($validateLogin[0] == FALSE && $validateLogin[1] == 403){
+                $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserArray));
+            } else if ($validateLogin[0] == false && $validateLogin[1] == 403) {
                 # User is there, but not active.
                 $this->reportResult(403,"The User account is not active, please activate before logging in.");
-            }
-            else
-            {
+            } else {
                 // credentials were NOT correct, they need to try again.
                 $this->reportResult(406);
             }
@@ -568,20 +556,16 @@ Class api extends Config {
         $UserValidation = $this->array_validateAPIUser($this->Data['username'],$this->Data['password']);
         
         // validate the user logins given to us.
-        if($UserValidation[0] == TRUE && $UserValidation[2] == 1){
-            $this->UserID = $UserValidation[1]; // we need to make the userid be a global for later usage..
-            return array(TRUE,200,'Login successful.');
-        }
-        else if($UserValidation[0] == TRUE && $UserValidation[2] == 0) {
-            return array(FALSE,403,'The User Account is not Active, please activate the account to login.');
-        }
-        else if($UserValidation[0] == TRUE && $UserValidation[2] == 2) {
-            return array(FALSE,402,'The User account has been suspended.');
-        }
-        else
-        {
+        if ($UserValidation[0] == true && $UserValidation[2] == 1) {
+            $this->UserArray['ID'] = $UserValidation[1]; // we need to make the uid be a global for later usage..
+            return array(true,200,'Login successful.');
+        } else if($UserValidation[0] == true && $UserValidation[2] == 0) {
+            return array(false,403,'The User Account is not Active, please activate the account to login.');
+        } else if($UserValidation[0] == true && $UserValidation[2] == 2) {
+            return array(false,402,'The User account has been suspended.');
+        } else {
             // no users turned up anywhere.
-            return array(FALSE,404,'The user is unknown.');
+            return array(false,404,'The user is unknown.');
         }
     }
     
@@ -599,18 +583,13 @@ Class api extends Config {
     // that the dev could push through the app, this function jumps to all of those.
     private function launchAPISubFunctions()
     {
-        if(isset($this->Data['action']) && $this->Data['action'] == 'result-codes')
-        {
+        if (isset($this->Data['action']) && $this->Data['action'] == 'result-codes') {
             $this->formatData($this->MessageCodes);
-        }
-        else if(isset($this->Data['action']) && $this->Data['action'] == 'available-actions')
-        {
+        } else if(isset($this->Data['action']) && $this->Data['action'] == 'available-actions') {
             //$this->formatData($this->APIActions);
             //print_r($this->APIActions);
-            foreach($this->APIActions AS $Action)
-            {
-                if($Action['disabled'] == 0)
-                {
+            foreach ($this->APIActions AS $Action) {
+                if ($Action['disabled'] == 0) {
                     $array = array();
                     $array[$Action['action']]['action'] = $Action['action'];
                     $array[$Action['action']]['description'] = $Action['description'];
@@ -621,22 +600,16 @@ Class api extends Config {
         } elseif (isset($this->Data['action']) && $this->Data['action'] == 'validate-token') {
             // dummy function.
             $this->formatData(array('status' => '500', 'message' => 'This was a dummy function.'));
-        }
-        else if(isset($this->Data['action']) && $this->Data['action'] == 'logout')
-        {
+        } else if(isset($this->Data['action']) && $this->Data['action'] == 'logout') {
             // we will now destroy the token, causing the user to log out.
             $this->destroyToken();
-        }
-        else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"] && $this->Data['action'] != '')
-        {
+        } else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"] && $this->Data['action'] != '') {
             include("includes/classes/" . $this->APIActions[$this->Data['action']]["location"]);
             
-            $C = new $this->APIActions[$this->Data['action']]["classname"]($this->Data,$this->UserID,$this->DevArray,$this->AccessLevel);
+            $C = new $this->APIActions[$this->Data['action']]["classname"]($this->Data,$this->UserArray,$this->DevArray,$this->permissionArray);
             $Method = $this->APIActions[$this->Data['action']]["method"];
             $this->formatData($C->$Method());
-        }
-        else
-        {
+        } else {
             // The default action/no action will check the token and give a simple response back stating that it is still active.
             $this->reportResult(500,"The action was unknown.");
         }
@@ -647,8 +620,8 @@ Class api extends Config {
     {
         $Data = array();
         // we need to loop through the data, if there is a password string we replace it with stars.
-        foreach($this->Data as $key => $value) {
-            if($key == 'password') {
+        foreach ($this->Data as $key => $value) {
+            if ($key == 'password') {
                 $len = strlen($value);
                 $value = substr($value, 0,1). str_repeat('*',$len - 2) . substr($value, $len - 1 ,1);
             }
@@ -656,23 +629,21 @@ Class api extends Config {
         }
         $Data = json_encode($Data);
         
-        if(array_key_exists("id",$this->DevArray)){
+        if (array_key_exists("id",$this->DevArray)) {
             $devid = $this->DevArray['id'];
-        }
-        else {
+        } else {
             $devid = 0;
         }
         
-        if(isset($this->UserID)){
+        if ($this->UserArray['ID'] != 0) {
             // if the user id is set, then they are logged in with a valid token.
             // update the last activity.
-            $query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $this->UserID . '\'';
+            $query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $this->UserArray['ID'] . '\'';
             $this->mysqli->query($query);
             // build the query to insert into the dev logs.
             $query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
-VALUES ('".time()."', '" . $devid . "', '" . $this->UserID . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
-        }
-        else {
+VALUES ('".time()."', '" . $devid . "', '" . $this->UserArray['ID'] . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . json_encode($Data) . "')";
+        } else {
             $query = "INSERT INTO developers_logs (`date`, `did`, `uid`, `agent`, `ip`, `url`)
 VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $Data . "')";
         }
@@ -680,36 +651,28 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
         $this->mysqli->query($query);
     }
     
-    private function recordGoogleAnalytics(){
+    private function recordGoogleAnalytics()
+    {
         // This function was designed just to throw a post notification over to google's analytics servers. 
         // It allows us to keep track of traffic hitting the api.
         
         // first we parse through the data, we don't want to send username or passwords to google.
         $dp = '/api/v2';
         // first we add the developer key..
-        if(isset($this->Data['devkey'])){
+        if (isset($this->Data['devkey'])) {
             $dp .= '/' . $this->Data['devkey'];
         }
         // then add the action
-        if(isset($this->Data['action'])){
+        if (isset($this->Data['action'])) {
             $dp .= '/' . $this->Data['action'];
-        }
-        else if(!isset($this->Data['action']) && (isset($this->Data['username']) && isset($this->Data['password']) && !isset($this->Data['email']))){
+        } else if (!isset($this->Data['action']) && (isset($this->Data['username']) && isset($this->Data['password']) && !isset($this->Data['email']))) {
             // there is no action but they are logging in.
             $dp .= '/login';
         }
         // if we defined an ID, let's allow it to be passed through.
-        if(isset($this->Data['id'])){
+        if (isset($this->Data['id'])) {
             $dp .= '/' . $this->Data['id'];
         }
-        // More will be added later, but for now this gives us even more incite.
-        /*foreach($this->Data as $key => &$value){
-            if(strtolower($key) == 'password'){
-            }
-            else {
-                $dp .= '/' . $key;
-            }
-        }*/
         $url = 'https://www.google-analytics.com/collect';
         $myvars = array(
             'v' => 1,
@@ -727,7 +690,7 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_POST,TRUE);
+        curl_setopt($ch, CURLOPT_POST,true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($myvars));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
