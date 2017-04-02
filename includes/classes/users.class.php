@@ -1175,9 +1175,12 @@ class AFTWUser extends Config{
 		}
 		else
 		{
+            include_once('settings.class.php');
+            $Settings = new Settings();
+            $Settings->connectProfile($this->UserArray);
 			//build constants first..
-			$this->array_userSiteSettings($ruid); //builds the list of user specific settings.
-			$this->array_availableSiteSettings(); //builds the list of options for each option.
+			$Settings->array_userSiteSettings($ruid); //builds the list of user specific settings.
+			$Settings->array_availableSiteSettings(); //builds the list of options for each option.
 			
 			// then we build the rest of the data..
 			echo '
@@ -1197,7 +1200,7 @@ class AFTWUser extends Config{
 				<div>
 					<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">' . stripslashes($row['name']) . '</div>
 				</div>
-				<div>' . $this->returnSiteSettings($row['id']) . '
+				<div>' . $Settings->returnSiteSettings($row['id']) . '
 				</div>
 				<br />';
 			}

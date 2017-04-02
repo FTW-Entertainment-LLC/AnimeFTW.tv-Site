@@ -14,7 +14,7 @@ class Content extends Config {
     # Vars               #
     \******************/
     
-    var $uid, $UserArray;
+    var $uid, $UserArray, $SettingsArray, $DefaultSettingsArray;
     
     /******************\
     # Public Functions #
@@ -118,7 +118,70 @@ class Content extends Config {
     
     private function displayEblastSettings()
     {
-        
+        // Ensure the Base64 email and uid were supplied
+        if (isset($_GET['email']) && isset($_GET['id'])) {
+            $userId = substr($this->base64url_decode($_GET['id']),4);
+            $email = $this->base64url_decode($_GET['email']);
+            // Validate that the base64 of the email and the uid checks out.
+            $query = "SELECT ID FROM `users` WHERE `Email` = '" . mysql_real_escape_string($email) . "' AND `ID` = " . mysql_real_escape_string($userId);
+            $result = mysql_query($query);
+            $count = mysql_num_rows($result);
+            echo "<div class='side-body-bg'>\n";
+            echo "<span class='scapmain'>Manage your AnimeFTW.tv email setttings!<br></span><br>\n";
+            echo "<div class='side-body' align=\"center\">\n";
+            if ($count < 1) {
+                echo '<h4>ERROR: There was an issue performing the request, please try again later.</h4>';
+            } else {
+                // Populate the various settings that are available for Email notifications.
+                include_once('settings.class.php');
+                $Settings = new Settings(true);
+                
+                $Settings->array_userSiteSettings($userId); //builds the list of user specific settings.
+                $Settings->array_availableSiteSettings(); //builds the list of options for each option.
+                echo '
+                <form id="SiteSettings">
+                <input type="hidden" name="method" value="EditEblastSettings" />
+                <input type="hidden" name="data" value="$aSDxAAs3SSa/' . $_GET['id'] . '/' . $_GET['email'] . '/0dAS8dE$dPOSoq" />
+                <br />
+                <div>
+                    <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Please use this form to update your notification settings for the AnimeFTW.tv Website.</div>
+                </div>
+                <div>' . $Settings->returnSiteSettings(1) . '</div>
+                <br>
+                <div align="right">
+                    <div style="min-height:16px;">
+                        <div class="form_results" style="display:none;"></div>
+                    </div>
+                <input type="submit" value=" Update " name="settings-submit" id="settings-submit" /></div>
+                </form>
+                <script>
+                    $("#settings-submit").click(function(){
+                        $.ajax({
+                            type: "POST",
+                            url: "/scripts.php?view=settings&go=notifications",
+                            data: $("#SiteSettings").serialize(),
+                            success: function(html)
+                            {
+                                if(html.indexOf("Success") >= 0)
+                                {
+                                    $(".form_results").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Notification Settings Updated Successfully.</div>");											
+                                    $(".form_results").delay(8000).slideUp();
+                                }
+                                else{
+                                    $(".form_results").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;\'>Error Updating Notification Settings: " + html + "</div>");
+                                }
+                            }
+                        });
+                        return false;
+                    });
+                </script>';
+                
+                
+            }
+            $query = "";
+            echo "</div>\n";
+            echo "</div>\n";
+        }
     }
 }
 

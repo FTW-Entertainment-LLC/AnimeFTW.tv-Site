@@ -346,8 +346,15 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	}
 	else if(isset($_GET['go']) && $_GET['go'] == 'post')
 	{
-		$u->processSiteSettingsUpdate($profileArray);
+        include_once('includes/classes/settings.class.php');
+        $s = new Settings();
+		$s->processSiteSettingsUpdate($profileArray);
 		exit; // so we don't try and process anything else..
+	}
+	else if(isset($_GET['go']) && $_GET['go'] == 'notifications'){
+        include_once('includes/classes/settings.class.php');
+        $s = new Settings(true);
+		$s->processSiteSettingsUpdate();
 	}
 	else 
 	{
