@@ -38,33 +38,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	
 	if($_POST['update-type'] == 1)
 	{
-		$query2 = "SELECT `users`.`Username`, `users`.`Email` 
+		$query2 = "SELECT `users`.`ID`, `users`.`Username`, `users`.`Email` 
 FROM `users` WHERE `Active` = '1' AND NOT EXISTS
 (SELECT `id` FROM `user_setting` WHERE `user_setting`.`option_id` = 6 AND `user_setting`.`value` != 11 AND `users`.`ID`=`user_setting`.`uid`)
 LIMIT ".$_POST['start'].", 100";
+        $mailType = 'Anime Update';
 	}
 	else if($_POST['update-type'] == 2)
-	{
-		$query2 = "SELECT `users`.`Username`, `users`.`Email` 
-FROM `users` WHERE `Active` = '1' AND NOT EXISTS
-(SELECT `id` FROM `user_setting` WHERE `user_setting`.`option_id` = 7 AND `user_setting`.`value` != 14 AND `users`.`ID`=`user_setting`.`uid`)
+	{ // Admin notifications
+		$query2 = "SELECT `users`.`ID`, `users`.`Username`, `users`.`Email` FROM `user_setting`, `users` WHERE `users`.`ID`=`user_setting`.`uid` AND `users`.`Active` = 1 AND `user_setting`.`option_id` = 7 ORDER BY `user_setting`.`uid` 
 LIMIT ".$_POST['start'].", 100";
+        $mailType = 'Admin Notification';
 	}
 	else if($_POST['update-type'] == 4)
 	{
-		$query2 = "SELECT `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100 GROUP BY `developers_api_sessions`.`uid`";
+		$query2 = "SELECT `users`.`ID`, `users`.`Username`, `users`.`Email` FROM `developers_api_sessions`, `users` WHERE `developers_api_sessions`.`did` = 3 AND `users`.`ID`=`developers_api_sessions`.`uid` LIMIT ".$_POST['start'].", 100 GROUP BY `developers_api_sessions`.`uid`";
+        $mailType = 'Newsletter';
 	}
 	else if($_POST['update-type'] == 5) {
-		$query2 = "SELECT `Username`, `Email` FROM `users` WHERE `Active` = '1' AND `lastActivity` >= ${twoWeeksAgo} ORDER BY `ID` LIMIT ".$_POST['start'].", 100";
+		$query2 = "SELECT `ID`, `Username`, `Email` FROM `users` WHERE `Active` = '1' AND `lastActivity` >= ${twoWeeksAgo} ORDER BY `ID` LIMIT ".$_POST['start'].", 100";
         echo $query2;
+        $mailType = 'Newsletter';
 	}
 	else {
 		//$query2 = "SELECT Username, Email FROM users WHERE Active='1' AND notifications='1' AND Level_access='".$level."' ORDER BY ID LIMIT ".$_POST['start'].", 100";
 	}
 	$result2  = mysql_query($query2) or die('Error : ' . mysql_error());
 	$count = mysql_num_rows($result2);
+        
 	$i = 0;	
-	while(list($Username, $Email) = mysql_fetch_array($result2)) {
+	while(list($ID, $Username, $Email) = mysql_fetch_array($result2)) {
 		$toUsername = $Username;
 		$toEmail = $Email;
 		//begin email buildup
@@ -80,6 +83,7 @@ LIMIT ".$_POST['start'].", 100";
 		$headers .= "To: $toEmail\r\n";
 		$headers .= "From: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
 		$headers .= "Reply-To: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
+        $headers .= "Feedback-ID: " . md5($subject) . "-" . $Email . ":" . $ID . ":" . $mailType . ":AnimeFTW.tvMail\r\n";
 		if($_POST['update-type'] == '1' || $_POST['update-type'] == '2' || $_POST['update-type'] == '4' || $_POST['update-type'] == '5')
 		{
 			# -=-=-=- TEXT EMAIL PART

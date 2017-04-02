@@ -10,15 +10,15 @@
 
 class Review extends Config {
 
-    public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes;
+    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
 
-    public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+    public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
     {
         parent::__construct();
         $this->Data = $Data;
-        $this->UserID = $UserID;
+        $this->UserArray = $UserArray;
         $this->DevArray = $DevArray;
-        $this->AccessLevel = $AccessLevel;
+        $this->permissionArray = $permissionArray;
     }
     
     public function bool_totalReviews($id)
@@ -129,7 +129,7 @@ class Review extends Config {
         // first, ensure that the id is set, we need this as the series id.
         if(isset($this->Data['id']) && isset($this->Data['review']) && (isset($this->Data['stars']) && is_numeric($this->Data['stars']))) {
             // id is set, now we check to see if they have made a review before or not.
-            $query = "SELECT COUNT(*) AS `numrows`, `fullSeriesName` FROM `reviews` INNER JOIN `series` ON `series`.`id`='" . $this->mysqli->real_escape_string($this->Data['id']) . "' WHERE `sid` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "' AND uid = " . $this->UserID;
+            $query = "SELECT COUNT(*) AS `numrows`, `fullSeriesName` FROM `reviews` INNER JOIN `series` ON `series`.`id`='" . $this->mysqli->real_escape_string($this->Data['id']) . "' WHERE `sid` = '" . $this->mysqli->real_escape_string($this->Data['id']) . "' AND uid = " . $this->UserArray['ID'];
             $result = $this->mysqli->query($query);
             $row = $result->fetch_assoc();
             if($row['fullSeriesName'] == NULL) {
@@ -141,7 +141,7 @@ class Review extends Config {
                     return array('status' => '409', 'message' => "There is already a review from this user, for this series.");
                 } else {
                     // No review exists, let's go through adding one.
-                    $query = "INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->mysqli->real_escape_string($this->UserID) . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['review']) . "', '" . $this->mysqli->real_escape_string($this->Data['stars']) . "');";
+                    $query = "INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->mysqli->real_escape_string($this->UserArray['ID']) . "', '" . time() . "', '" . $this->mysqli->real_escape_string($this->Data['review']) . "', '" . $this->mysqli->real_escape_string($this->Data['stars']) . "');";
                     $result = $this->mysqli->query($query);
                     
                     if(!$result) {
