@@ -53,10 +53,10 @@ class Episode extends Config {
                     }
                     else if($key == 'hd')
                     {
-                        if ($this->permissionArray['15']['value'] == '31') {
+                        if ($this->permissionArray['15']['value'] == '31' && $value == 2) {
                             // 1080p content is their default option.
                             $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
-                        } else if ($this->permissionArray['15']['value'] == '30') {
+                        } else if (($this->permissionArray['15']['value'] == '30' || $this->permissionArray['15']['value'] == '31') && $value == 1) {
                             // 720p content is their default option.
                             $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                         } else {
@@ -225,10 +225,10 @@ class Episode extends Config {
                             $finalresults['results'][$i]['image-320x280'] = $this->ImageHost . '/video-images/320x280/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
                             $finalresults['results'][$i]['image-640x560'] = $this->ImageHost . '/video-images/640x560/' . $row['sid'] . '/' . $row['id'] . '_screen.jpeg';
                         } elseif($key == 'hd') {
-                            if ($this->permissionArray['15']['value'] == '31') {
+                            if ($this->permissionArray['15']['value'] == '31' && $value == 2) {
                                 // 1080p content is their default option.
                                 $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_1080p_' . $row['epnumber'] . '_ns.mp4';
-                            } else if ($this->permissionArray['15']['value'] == '30') {
+                            } else if (($this->permissionArray['15']['value'] == '30' || $this->permissionArray['15']['value'] == '31') && $value == 1) {
                                 // 720p content is their default option.
                                 $video = 'http://videos.animeftw.tv/' . $row['seriesName'] . '/' . $row['epprefix'] . '_720p_' . $row['epnumber'] . '_ns.mp4';
                             } else {
