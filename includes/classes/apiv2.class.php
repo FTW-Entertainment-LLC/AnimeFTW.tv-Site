@@ -341,9 +341,9 @@ Class api extends Config {
     
     // Part of the API includes error reporting to the developers, this will need to output formats that 
     // are known by the Devs.
-    private function reportResult($ResultCode = 401,$Message = NULL)
+    private function reportResult($ResultCode = 401,$Message = null)
     {
-        if ($Message == NULL) {
+        if ($Message == null) {
             // Message is null, which means we can take it from the array
             $Message = $this->MessageCodes["Result Codes"][$ResultCode]["Message"];
         }
@@ -382,23 +382,23 @@ Class api extends Config {
         // This function validates an action.
         if (isset($this->APIActions[$this->Data['action']]) || array_key_exists($this->Data['action'], $this->APIActions)) {
             // Action exists that was requested, now we check to see if the function is allowed for their current state.
-            if (isset($this->Data['token']) && $this->tokenAuthorization('validate') == TRUE) {
+            if (isset($this->Data['token']) && $this->tokenAuthorization('validate') == true) {
                 // Token is supplied and is active.
-                return TRUE;
+                return true;
             } else {
                 // The token may be supplied, or not, but it is not a valid login.
                 // We check if te action can be used by non-logged in persons.
                 if ($this->APIActions[$this->Data['action']]['loginRequired'] == 0) {
                     // The action has validity for non-logged-in persons, so let them proceed.
-                    return TRUE;
+                    return true;
                 } else {
                     // This function is a login only function
-                    return FALSE;
+                    return false;
                 }
             }
         } else {
             // Function does not exist, however the end user won't know that.
-            return FALSE;
+            return false;
         }
     }
     
@@ -410,13 +410,13 @@ Class api extends Config {
         // 3) launch into the sub routines of the API.
         
         // we validate the developer key, if they pass go, they collect 200 bits
-        if($this->validateDevKey() == TRUE) {
+        if($this->validateDevKey() == true) {
             // UPDATED: 04/01/2017
             // We change from a login only system to allow ALL of the functions to work, we will then authenticate AFTER the action is requested (or not)
             if (isset($this->Data['action'])) {
                 // There is an action defined, so we treate it as a valid first response that we will attempt to make sure the system can work with.
                 // Token validation is also done through this function.
-                if ($this->validateAction() == TRUE) {
+                if ($this->validateAction() == true) {
                     // Action is valid, or they can reach it.
                     if ($this->Data['action'] == 'login' || $this->Data['action'] == 'loginRequired') {
                         // It is theoretically possible that someone enters in the action of login, as such we need to ensure that they CAN login.
@@ -452,7 +452,7 @@ Class api extends Config {
         
         // if there are no results, throw an error.
         if ($count < 1) {
-            return FALSE; // There was no match.. return a false..
+            return false; // There was no match.. return a false..
         } else {
             $row = $result->fetch_assoc();
             $this->DevArray = array(
@@ -467,7 +467,7 @@ Class api extends Config {
                 'deviceauth' => $row['deviceauth'],
                 'dashes' => $row['dashes'],
             );
-            return TRUE; // Return TRUE to let it continue on.
+            return true; // Return true to let it continue on.
         }
     }
     
@@ -488,7 +488,7 @@ Class api extends Config {
                     $this->UserArray['display_name'] = 'guest'; // display_name of the logged in user.
                     $this->UserArray['Level_access'] = 0;       // Level access of the logged in user.
                     
-                    return FALSE;
+                    return false;
                 } else {
                     // User exists, enter the details into the UserArray
                     $row = $results->fetch_assoc();
@@ -512,7 +512,7 @@ Class api extends Config {
                     if ($count > 0) {
                         // Inject each row into the permissions space.
                         while ($row = $results->fetch_assoc()) {
-                            if ($row['disabled'] == 0 && strpos($this->permissionArray[$row['option_id']]['group'], $this->UserArray['Level_access']) !== FALSE) {
+                            if ($row['disabled'] == 0 && strpos($this->permissionArray[$row['option_id']]['group'], $this->UserArray['Level_access']) !== false) {
                                 // if the field is not disabled (0) AND they are in the group allowed to use the setting.
                                 $this->permissionArray[$row['option_id']]['value'] = $row['value'];
                             }
@@ -521,21 +521,21 @@ Class api extends Config {
                     // successful validation, update the last activity of the user.
                     $results = $this->mysqli->query("UPDATE `" . $this->MainDB . "`.`" . $this->TokenTable . "` SET `date` = '" . time() . "' WHERE `session_hash` = '" . $this->mysqli->real_escape_string($this->Data['token']) . "' AND did = '" . $this->DevArray['id'] . "'");
                     // return true to the system so that it can continue on.
-                    return TRUE;
+                    return true;
                 }
             } else {
                 // token was not set, how they got here I dont know..
-                return FALSE;
+                return false;
             }
         } else {
             // Since there are only two functions we, we assume they must be wanting to create a session.
             $validateLogin = $this->validateUser();
-            if ($validateLogin[0] == TRUE && $validateLogin[1] == 200) {
+            if ($validateLogin[0] == true && $validateLogin[1] == 200) {
                 // the authentication was correct, which means the user can log in, we need to create the token,
                 // and hand it back to the developer.
                 //$this->createToken();
                 $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserArray));
-            } else if ($validateLogin[0] == FALSE && $validateLogin[1] == 403) {
+            } else if ($validateLogin[0] == false && $validateLogin[1] == 403) {
                 # User is there, but not active.
                 $this->reportResult(403,"The User account is not active, please activate before logging in.");
             } else {
@@ -556,16 +556,16 @@ Class api extends Config {
         $UserValidation = $this->array_validateAPIUser($this->Data['username'],$this->Data['password']);
         
         // validate the user logins given to us.
-        if ($UserValidation[0] == TRUE && $UserValidation[2] == 1) {
+        if ($UserValidation[0] == true && $UserValidation[2] == 1) {
             $this->UserArray['ID'] = $UserValidation[1]; // we need to make the uid be a global for later usage..
-            return array(TRUE,200,'Login successful.');
-        } else if($UserValidation[0] == TRUE && $UserValidation[2] == 0) {
-            return array(FALSE,403,'The User Account is not Active, please activate the account to login.');
-        } else if($UserValidation[0] == TRUE && $UserValidation[2] == 2) {
-            return array(FALSE,402,'The User account has been suspended.');
+            return array(true,200,'Login successful.');
+        } else if($UserValidation[0] == true && $UserValidation[2] == 0) {
+            return array(false,403,'The User Account is not Active, please activate the account to login.');
+        } else if($UserValidation[0] == true && $UserValidation[2] == 2) {
+            return array(false,402,'The User account has been suspended.');
         } else {
             // no users turned up anywhere.
-            return array(FALSE,404,'The user is unknown.');
+            return array(false,404,'The user is unknown.');
         }
     }
     
@@ -690,7 +690,7 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_HTTP_VERSION,CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_POST,TRUE);
+        curl_setopt($ch, CURLOPT_POST,true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($myvars));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
