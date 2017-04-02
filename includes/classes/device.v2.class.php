@@ -8,20 +8,21 @@
 
 class Device extends Config {
 
-    public $Data, $UserID, $DevArray, $UserArray;
+    public $Data, $DevArray, $UserArray, $permissionArray;
 
-    public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL)
+    public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
     {
         parent::__construct();
         $this->Data = $Data;
-        $this->UserID = $UserID;
+        $this->UserArray = $UserArray;
         $this->DevArray = $DevArray;
+        $this->permissionArray = $permissionArray;
     }
-	
-	public function connectProfile($input)
-	{
-		$this->UserArray = $input;
-	}
+    
+    public function connectProfile($input)
+    {
+        $this->UserArray = $input;
+    }
     
     public function validateDevice()
     {

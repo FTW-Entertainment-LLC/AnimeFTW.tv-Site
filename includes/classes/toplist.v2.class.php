@@ -10,16 +10,16 @@
 
 class toplist extends Config {
 
-    public $Data, $UserID, $DevArray, $AccessLevel, $MessageCodes, $UserArray;
+    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes, $UserArray;
     var $Categories = array(); // added 10/10/2014 by robotman321
 
-    public function __construct($Data = NULL,$UserID = NULL,$DevArray = NULL,$AccessLevel = NULL)
+    public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
     {
         parent::__construct();
         $this->Data = $Data;
-        $this->UserID = $UserID;
+        $this->UserArray = $UserArray;
         $this->DevArray = $DevArray;
-        $this->AccessLevel = $AccessLevel;
+        $this->permissionArray = $permissionArray;
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
     }
     
@@ -71,7 +71,7 @@ class toplist extends Config {
             }
         }
         
-        if($this->DevArray['license'] == 0 && ($this->AccessLevel == 0 || $this->AccessLevel == 3)) {
+        if($this->DevArray['license'] == 0 && ($this->UserArray['Level_access'] == 0 || $this->UserArray['Level_access'] == 3)) {
             // it means the content we can show is only unlicensed.
             $licensed = " AND `license` = 0";
         }        
