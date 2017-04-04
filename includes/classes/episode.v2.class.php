@@ -14,7 +14,9 @@ class Episode extends Config {
     {
         parent::__construct(TRUE);
         $this->Data = $Data;
-        $this->UserArray = $UserArray;
+        if ($UserArray != NULL) {
+            $this->UserArray = $UserArray;
+        }
         $this->DevArray = $DevArray;
         $this->permissionArray = $permissionArray;
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
