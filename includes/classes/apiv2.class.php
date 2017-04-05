@@ -534,7 +534,7 @@ Class api extends Config {
                 // the authentication was correct, which means the user can log in, we need to create the token,
                 // and hand it back to the developer.
                 //$this->createToken();
-                $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserArray));
+                $this->formatData($this->createToken($this->Data,$this->DevArray,$this->UserArray['ID']));
             } else if ($validateLogin[0] == false && $validateLogin[1] == 403) {
                 # User is there, but not active.
                 $this->reportResult(403,"The User account is not active, please activate before logging in.");
