@@ -60,11 +60,9 @@ class EpisodeStats extends Config {
         // Loop through each episode that has been watched in the last hour (condensed array version).
         foreach ($episodesRecorded as $episode) {
             // 1. Update the views of the episode on the episode..
-            echo "Updating episode views.<br>";
             $this->mysqli->query("UPDATE `" . $this->MainDB . "`.`episode` SET `views` = `views` + " . $episode['views'] . " WHERE `id` = " . $episode['eid']);
             
             // 2. Record Episode Stats information in the stats table.
-            echo "Inserting into stats table.<br>";
             $available = $this->checkIfEntryExists($eid);
             if($available == 0)
             {
@@ -79,7 +77,6 @@ class EpisodeStats extends Config {
             $this->mysqli->query($query);
             
             // 3. Add entries to the episodestats table, which will be used to calculate the overall topseries listings.
-            echo "Inserting into episodestats table.<br>";
             $query = "INSERT INTO `" . $this->MainDB . "`.`episodestats` (`eid`, `epSeriesId`, `ip`, `date`, `epNumber`, `uid`) VALUES ('" . $episode['eid'] . "', '" . $this->seriesIDLookup($episode['eid']) . "', '0', '" . time() . "', '" . $episode['eid'] . "', '0');";
             $result = $this->mysqli->query($query);
         }
