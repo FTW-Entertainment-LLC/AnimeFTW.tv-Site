@@ -9,7 +9,7 @@
 ## Updated: 17/09/2014 @ 3:30pm CST by Robotman321
 \****************************************************************/
 
-require_once("../classes/config.v2.class.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/classes/config.v2.class.php");
     
 class EpisodeStats extends Config {
     private $CronID, $ScriptDay, $CollectionTime, $seriesArray = [];
@@ -20,7 +20,11 @@ class EpisodeStats extends Config {
         // variable declarations
         $this->CronID            = 14;                // ID of this cron
         $this->ScriptDay        = strtotime(date("j F Y"));             // Used for matching any records created at this time.
-        $this->CollectionTime     = 60*60*2;            // the period of time we want to take from, default is 2 hours
+        if (isset($_GET['collection-time']) && $_GET['collection-time'] > 7200) {
+            $this->CollectionTime = $_GET['collection-time'];
+        } else {
+            $this->CollectionTime     = 60*60*2;            // the period of time we want to take from, default is 2 hours
+        }
         
         // SCript init
         $this->initializeScript();
