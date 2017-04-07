@@ -8,8 +8,6 @@
 ## Version: 1.0.0
 ## Updated: 17/09/2014 @ 3:30pm CST by Robotman321
 \****************************************************************/
-
-require_once($_SERVER['DOCUMENT_ROOT'] . "/includes/classes/config.v2.class.php");
     
 class EpisodeStats extends Config {
     private $CronID, $ScriptDay, $CollectionTime, $seriesArray = [];
