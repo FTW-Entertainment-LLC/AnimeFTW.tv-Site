@@ -88,17 +88,17 @@ class AnimeRequest extends Config{
     
     function getMaxVotes()
     {
-        if($this->UserArray[2]==0){
+        if ($this->UserArray[2]==0) {
             return 0;
-        }else if($this->UserArray[2]==3){
+        } elseif ($this->UserArray[2]==3) {
             return 5;
-        }else{
+        } else {
             return 10;
         }
     }function canEdit(){
-        if($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6){
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -109,11 +109,10 @@ class AnimeRequest extends Config{
         $this->maxvotes = $this->getMaxVotes();
         $this->votes = $this->getRemainingVotes();
         $this->oldvotes = $this->getOldVotes();
-        if($this->canEdit()||$this->UserArray[2]==5)
-        {
+        if ($this->canEdit()||$this->UserArray[2]==5) {
             $this->editmode = isset($_GET["edit"]);
         }
-        if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ 
+        if (isset($_GET['highlight']) && is_numeric($_GET['highlight'])) {
             $this->highlight = $_GET['highlight'];
             
         }
@@ -141,8 +140,8 @@ class AnimeRequest extends Config{
                     </div>
                     <div class="col">';
                         $value = "";
-                        if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
-                            if(isset($_GET["name"])){
+                        if (isset($_GET["search"]) && $_GET["search"]=="Submit") {
+                            if (isset($_GET["name"])) {
                                 $value = ' value="'.$_GET["name"].'"';
                             }
                             
@@ -158,13 +157,14 @@ class AnimeRequest extends Config{
                     <div class="col">
                         ';
                         $value = 1;
-                        if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
-                            if(isset($_GET["status"])){
+                        if (isset($_GET["search"])&&$_GET["search"]=="Submit") {
+                            if (isset($_GET["status"])) {
                                 $value = $_GET["status"];
                             }
                             
                         }
-                        $this->getSelect(array("----", "Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $value, null, "status", false);
+                        
+                        $this->getSelect(array("----", "Pending", "Claimed", "Encoding", "Uploading", "Quality Control", "Ongoing", "Stalled", "Done", "Live", "Denied"), $value, null, "status", false);
                         echo '
                         <a href = "javascript:;" id="statushelp" title="Click to view status meanings!">?</a>
                         <div id="statushelp-content" title="Status Help" style="display:none">
@@ -172,6 +172,7 @@ class AnimeRequest extends Config{
                         <b>Claimed</b> - A Video Technician has claimed this series, meaning they\'ll start working on the series soon.<br><br>
                         <b>Encoding</b> - The series is currently being encoded.<br><br>
                         <b>Uploading</b> - The series is currently being uploaded to our servers.<br><br>
+                        <b>Quality Control</b> - The series is currently being checked for issues prior to being added to the site.<br><br>
                         <b>Ongoing</b> - This series is currently airing, and is live on the website.<br><br>
                         <b>Stalled</b> - The series is stalled for some reason.<br><br>
                         <b>Done</b> - The series is done and should come up on the website anytime soon.<br><br>
@@ -188,11 +189,10 @@ class AnimeRequest extends Config{
                     <div class="col">
                         ';
                         $value = 1;
-                        if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
-                            if(isset($_GET["type"])){
+                        if (isset($_GET["search"]) && $_GET["search"]=="Submit") {
+                            if (isset($_GET["type"])) {
                                 $value = $_GET["type"];
                             }
-                            
                         }
                         $this->getSelect(array("----", "Series", "OVA", "Movie"), $value, null, "type", false);
                         echo '
@@ -204,8 +204,8 @@ class AnimeRequest extends Config{
                     </div>
                     <div class="col">';
                         $value = "";
-                        if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
-                            if(isset($_GET["anidbid"])){
+                        if (isset($_GET["search"]) && $_GET["search"]=="Submit") {
+                            if (isset($_GET["anidbid"])) {
                                 $value = ' value="'.$_GET["anidbid"].'"';
                             }
                             
@@ -220,8 +220,8 @@ class AnimeRequest extends Config{
                     </div>
                     <div class="col">';
                         $value = "";
-                        if(isset($_GET["search"])&&$_GET["search"]=="Submit"){
-                            if(isset($_GET["username"])){
+                        if (isset($_GET["search"]) && $_GET["search"]=="Submit") {
+                            if (isset($_GET["username"])) {
                                 $value = ' value="'.$_GET["username"].'"';
                             }
                             
@@ -246,13 +246,13 @@ class AnimeRequest extends Config{
         Current votes: '.$this->votes.' times<br>
         Previous votes: '.$this->oldvotes.'
         </div>';
-        if($this->canEdit()){
-            if($this->editmode){
+        if ($this->canEdit()) {
+            if ($this->editmode) {
                 $_GET["edit"] = null;
                 echo '<span style="float: right"><a href="?'.http_build_query($_GET).'">Leave edit mode</a></span><br>';
-                $_GET["edit"] = TRUE; //Put it back so the next queries have edit mode on if user's still on edit mode.
-            }else{
-                $_GET["edit"] = TRUE;
+                $_GET["edit"] = true; //Put it back so the next queries have edit mode on if user's still on edit mode.
+            } else {
+                $_GET["edit"] = true;
                 echo '<span style="float: right"><a href="?'.http_build_query($_GET).'">Enter edit mode</a></span><br>';
                 $_GET["edit"] = null; //Reset so it doesn't put this in the http build querys after this one.
             }
@@ -260,58 +260,59 @@ class AnimeRequest extends Config{
         }
         $originalsort = null;
         $originaldesc = null;
-        if(isset($_GET["sort"])){
+        if (isset($_GET["sort"])) {
             $originalsort = $_GET["sort"];
-        }if(isset($_GET["DESC"])){
+        }
+        if (isset($_GET["DESC"])) {
             $originaldesc = $_GET["DESC"];
         }
         $_GET["sort"]="name";
         $temphighlight;
-        if(isset($_GET["highlight"])){
+        if (isset($_GET["highlight"])) {
             $temphighlight = $_GET["highlight"];
             $_GET["highlight"] = null; //Delete this from the get variables, so it doesn't get inlcuded in the links below.
         }
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;} //Check if the sort is the same one as the selected one, if so, then change to descending order.
-        if($originaldesc==true){$_GET["DESC"]=null;}; //If desc was there from the start, then we want it to go back to ascending order
+        if ($originalsort == $_GET["sort"]){$_GET["DESC"]=true;} //Check if the sort is the same one as the selected one, if so, then change to descending order.
+        if ($originaldesc == true){$_GET["DESC"]=null;}; //If desc was there from the start, then we want it to go back to ascending order
         $sn = http_build_query($_GET);
         $_GET["DESC"] = null;
-        $_GET["sort"]="votes";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        $_GET["sort"] = "votes";
+        if ($originalsort == $_GET["sort"]){$_GET["DESC"] = true;}
+        if ($originaldesc == true){$_GET["DESC"] = null;};
         $sv = http_build_query($_GET);
         $_GET["DESC"] = null;
-        $_GET["sort"]="status";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        $_GET["sort"] = "status";
+        if ($originalsort == $_GET["sort"]) {$_GET["DESC"] = true;}
+        if ($originaldesc == true) {$_GET["DESC"] = null;};
         $ss = http_build_query($_GET);
         $_GET["DESC"] = null;
-        $_GET["sort"]="type";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        $_GET["sort"] = "type";
+        if ($originalsort == $_GET["sort"]) {$_GET["DESC"]=true;}
+        if ($originaldesc == true) {$_GET["DESC"]=null;};
         $st = http_build_query($_GET);
         $_GET["DESC"] = null;
         $_GET["sort"]="episodes";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        if ($originalsort == $_GET["sort"]) {$_GET["DESC"]=true;}
+        if ($originaldesc == true) {$_GET["DESC"]=null;};
         $se = http_build_query($_GET);
         $_GET["DESC"] = null;
-        $_GET["sort"]="anidb";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        $_GET["sort"] = "anidb";
+        if ($originalsort == $_GET["sort"]) {$_GET["DESC"]=true;}
+        if ($originaldesc == true) {$_GET["DESC"]=null;};
         $sa = http_build_query($_GET);
         $_GET["DESC"] = null;
-        $_GET["sort"]="requestedby";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        $_GET["sort"] = "requestedby";
+        if ($originalsort == $_GET["sort"]) {$_GET["DESC"]=true;}
+        if ($originaldesc == true) {$_GET["DESC"]=null;};
         $sr = http_build_query($_GET);
         $_GET["DESC"] = null;
-        $_GET["sort"]="date";
-        if($originalsort==$_GET["sort"]){$_GET["DESC"]=true;}
-        if($originaldesc==true){$_GET["DESC"]=null;};
+        $_GET["sort"] = "date";
+        if ($originalsort == $_GET["sort"]) {$_GET["DESC"]=true;}
+        if ($originaldesc == true) {$_GET["DESC"]=null;};
         $sd = http_build_query($_GET);
         $_GET["DESC"] = $originaldesc;
         $_GET["sort"] = $originalsort; //Reset so the next http_build_query puts this in where it's not supposed to
-        if(isset($temphighlight)){
+        if (isset($temphighlight)) {
             $_GET["highlight"] = $temphighlight; //Put it back, so it can find the page.
         }
         echo '
@@ -327,28 +328,28 @@ class AnimeRequest extends Config{
             <div class="hcol" style = "width: 101px"><a href="?'.$sd.'" title="Sort by date">Date</a></div>
         </div>';
         $sort = "user_requests.status, vote_count DESC";
-        if(isset($_GET["sort"])){
+        if (isset($_GET["sort"])) {
             $s = $_GET["sort"];
-            if($s=="votes"){
+            if ($s=="votes") {
                 $sort = "vote_count ";
-            }else if($s=="requestedby"){
+            } elseif ($s == "requestedby") {
                 $sort = "user_requests.Username ";
-            }else{
+            } else {
                 $sort = "user_requests.".$s." ";
             }
-            if(isset($_GET["DESC"])){
+            if (isset($_GET["DESC"])) {
                 $sort = $sort."DESC";
             }
         }
         $this->page = 0;
-        if(isset($_GET["page"])){
+        if (isset($_GET["page"])) {
             $this->page = $_GET["page"];
-        }else{
+        } else {
             $this->page = 1;
         }
         $sname = "";
         $searchquery = "";
-        if(isset($_GET["search"])&&$_GET["search"]=="Submit"){ 
+        if (isset($_GET["search"]) && $_GET["search"] == "Submit") { 
             $sname = $_GET["name"];
             $sstatus = $_GET["status"];
             $sstatus = $sstatus-1;
@@ -356,32 +357,35 @@ class AnimeRequest extends Config{
             $stype = $stype-1;
             $sanidb = $_GET["anidbid"];
             $susername = $_GET["username"];
-            if(!empty($sname)||$sstatus>0||$stype>0||!empty($sanidb)||!empty($susername)){
+            if (!empty($sname) || $sstatus>0 || $stype>0 || !empty($sanidb) || !empty($susername)) {
                 $searchquery = "WHERE ";
             }
-            if(!empty($sname)){
+            if (!empty($sname)){
                 $searchquery = $searchquery."user_requests.name LIKE '%".$sname."%' ";
                 if($sstatus>0||$stype>0||!empty($sanidb)||!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
                     $searchquery = $searchquery."AND ";
                 }
             }
-            if($sstatus>0){
+            if ($sstatus>0) {
                 $searchquery = $searchquery."user_requests.status ='".$sstatus."' ";
-                if($stype>0||!empty($sanidb)||!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+                if ($stype>0 || !empty($sanidb) || !empty($susername)) { //If any of the fields after this is not empty, then we put a "AND " in the query.
                     $searchquery = $searchquery."AND ";
                 }
                 
-            }if($stype>0){
+            }
+            if ($stype>0) {
                 $searchquery = $searchquery."user_requests.type ='".$stype."' ";
-                if(!empty($sanidb)||!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+                if (!empty($sanidb) || !empty($susername)) { //If any of the fields after this is not empty, then we put a "AND " in the query.
                     $searchquery = $searchquery."AND ";
                 }
-            }if(!empty($sanidb)){
+            }
+            if (!empty($sanidb)) {
                 $searchquery = $searchquery."user_requests.anidb = '".$sanidb."' ";
-                if(!empty($susername)){ //If any of the fields after this is not empty, then we put a "AND " in the query.
+                if (!empty($susername)) { //If any of the fields after this is not empty, then we put a "AND " in the query.
                     $searchquery = $searchquery."AND ";
                 }
-            }if(!empty($susername)){
+            }
+            if (!empty($susername)) {
                 $searchquery = $searchquery."user_requests.Username LIKE '%".$susername."%' ";
             }
         }
@@ -404,13 +408,13 @@ class AnimeRequest extends Config{
         $total_results = $this->SingleVarQuery($pages_query, "amount");
         $this->max_pages = ceil($total_results / $this->rpp);
         $i = 0;
-        while(list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
+        while (list($username, $id, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details, $tid, $uid) = mysql_fetch_array($result)) { //$uid: upload board id.
             //echo $uid;
             $uploadstatus = null;
-            if($uid&&$status!=9){ //If someone denies this request, then we no longer follow the uploads board status for it.
+            if ($uid && $status != 9) { //If someone denies this request, then we no longer follow the uploads board status for it.
                 $uploadstatus = $this->SingleVarQuery("SELECT status FROM uestatus WHERE ID=".$uid, "status");
                 $uploadstatus = $this->getStatusNum(ucfirst($uploadstatus));
-                if($status!=$uploadstatus){
+                if ($status!=$uploadstatus){ 
                     //$status in the request database is not the same as the upload boards database.
                     mysql_query("UPDATE requests SET status=".$uploadstatus." WHERE id=".$id) or die('Error : ' . mysql_error());
                     $status = $uploadstatus; //Change it on this current run too.
@@ -418,10 +422,10 @@ class AnimeRequest extends Config{
             }
             
             $background_color = "";
-            if($i%2==1){
+            if ($i%2==1) {
                 $background_color = " dark ";
             }
-            if($this->highlight==$id){
+            if ($this->highlight == $id) {
                 $background_color = " highlight ";
                 $this->foundhighlight = true;
                 $_GET["highlight"] = NULL; //Remove it from the get variables, so it doesn't get in the http_build_query function if the user changes page.
@@ -445,16 +449,16 @@ class AnimeRequest extends Config{
                 </script>
                 ";
             }
-            if($i==$this->rpp-1){ //If it's the last request.
-                if(isset($_GET['highlight']) && is_numeric($_GET["highlight"])){ //Check if we're trying to highlight an request, then change page if the request is not here.
+            if ($i == $this->rpp-1) { //If it's the last request.
+                if (isset($_GET['highlight']) && is_numeric($_GET["highlight"])) { //Check if we're trying to highlight an request, then change page if the request is not here.
                     $newurl = "";
-                    if(!isset($_GET["page"])){
+                    if (!isset($_GET["page"])) {
                         $_GET["page"]=1;
                     }
-                    if($_GET["page"]<=$this->max_pages){
+                    if ($_GET["page"] <= $this->max_pages) {
                         $_GET["page"] = $this->page+1;
                     }
-                    if($_GET["page"]<=$this->max_pages){
+                    if ($_GET["page"] <= $this->max_pages) {
                         header('Location: requests?'.http_build_query($_GET));
                     }
                 }
@@ -473,25 +477,27 @@ class AnimeRequest extends Config{
                 $personalvotes = intval(mysql_result($result2, 0));
                 echo '
                 <div class="col" style="width: 60px;">'.$rvotes.' <div style="display:inline-block">';
-                if($status==1&&$this->UserArray[2]!=0){ //Vote available only if the request is pending, and if the user is logged in.
-                    if(($this->maxvotes-$this->votes>0)||$personalvotes>0)
+                if ($status==1&&$this->UserArray[2]!=0) { //Vote available only if the request is pending, and if the user is logged in.
+                    if (($this->maxvotes-$this->votes > 0) || $personalvotes > 0) {
                         echo '(';
-                    if($this->maxvotes-$this->votes>0)
+                    }
+                    if ($this->maxvotes-$this->votes>0) {
                         echo '<a data-id="'.$id.'" class="voteclick" href="javascript:;">+</a>';
-                    if($personalvotes>0){
+                    }
+                    if ($personalvotes>0) {
                         echo '<a data-id="'.$id.'" class="votedeleteclick" href="javascript:;">-</a>';
                     }
-                    if(($this->maxvotes-$this->votes>0)||$personalvotes>0)
+                    if (($this->maxvotes-$this->votes>0)||$personalvotes>0) {
                         echo ')';
+                    }
                 }
                 echo '</div></div>
                 <div class="col" style="width: 60px;">';
                 $StatusValue = $this->selectField(array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied"), $status, $id, "status", "changestatus");
                 // ADDED 29/08/2014 to allow for linking of added series.
-                if($StatusValue == "Live" || $StatusValue == "Done" || $StatusValue == "Ongoing"){
+                if ($StatusValue == "Live" || $StatusValue == "Done" || $StatusValue == "Ongoing") {
                     $this->displayEnhancedStatusLink($anidb,$StatusValue);
-                }
-                else {
+                } else {
                     echo $StatusValue;
                 }
                 echo '</div>
@@ -499,7 +505,11 @@ class AnimeRequest extends Config{
                 echo $this->selectField(array("Series", "OVA", "Movie"), $type, $id, "type", "changetype");
                 echo '</div>
                 <div class="col" style="width: 80px;">';
-                if($episodes==0){echo '?';}else{echo $episodes;};
+                if ($episodes==0) {
+                    echo '?';
+                } else {
+                    echo $episodes;
+                }
                 echo '</div>
                 <div class="col" style="width: 60px;"><div style="display:inline-block"><a href="http://anidb.net/a'.$anidb.'" target="_blank">'.$anidb.'</a></div></div>
                 <div class="col" style="width: 160px;"><div style="display:inline-block">'.$this->formatUsername($user_id).'</div></div>
@@ -509,16 +519,17 @@ class AnimeRequest extends Config{
             echo'
             <div class = "reqdetail">';
             
-            if($this->editmode){
+            if ($this->editmode) {
                 echo '<div class="ardelete"><a data-id = "'.$id.'" data-name = "'.$name.'" class = "ardeletelink" href = "javascript:;">Delete entry</a></div>';
                 $extras = " onchange='changeuploadsentry(this)' data-id=".$id." ";
                 echo $this->uploadsEntrySelect($uid, $extras)."<br>";
-            }if($this->UserArray[2]==1||$this->UserArray[2]==2||$this->UserArray[2]==5){
+            }
+            if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 5) {
                 $extra = "";
-                if($this->editmode){
+                if ($this->editmode) {
                     $extra = "margin-top: -10px;";
                 }
-                if($status==1){
+                if ($status==1) {
                     echo '<div class="ardelete" style="'.$extra.'"><a data-id = "'.$id.'" class = "arclaimlink" href = "javascript:;">Claim request!</a></div>';
                 }
             }
@@ -550,19 +561,16 @@ class AnimeRequest extends Config{
             $i++;
         }
         
-        
-        
-        
         $this->PrintPages();
 
         echo "</div><br>";
         $messg = "";
-        if($i==0&&!isset($_GET["search"])){
+        if ($i==0&&!isset($_GET["search"])) {
             $messg = 'Request an anime to display!';
-        }else if($i==0&&isset($_GET["search"])&&$_GET["search"]=="Submit"){
+        } elseif ($i==0&&isset($_GET["search"])&&$_GET["search"]=="Submit") {
             $messg = 'No anime was found!';
         }
-        if(!empty($messg)){
+        if (!empty($messg)) {
             echo '<div class = "reqinfo" style="background-color: #fff;text-align: center;padding: 20px; width: 96%">'.$messg.'</div>';
         }
     }
@@ -572,88 +580,68 @@ class AnimeRequest extends Config{
     public function initFunctions()
     {
         $status = null;
-        if($this->UserArray[2]==0){
+        if ($this->UserArray[2] == 0) {
             echo 'Please login to request an anime.';
             return;
         }
-        if(isset($_GET["id"]) && is_numeric($_GET["id"])){
+        if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
             $status = $this->SingleVarQuery("SELECT status FROM requests WHERE id=".$_GET["id"], "status"); 
         }
         
         // We need to build the form for requesting an anime.
-        if(isset($_GET['mode']) && $_GET['mode'] == 'request-anime-vote-form')
-        {
+        if (isset($_GET['mode']) && $_GET['mode'] == 'request-anime-vote-form') {
             // This is that form.
             $this->animeRequestForm();
-        }
-        //On votes
-        else if(isset($_GET['mode']) && isset($_GET["id"]) && $_GET['mode'] == 'request-anime-vote')
-        {
-            if($status==1){ //dumbproofing, voting shouldn't be possible for any series if it isn't pending.
+        } elseif (isset($_GET['mode']) && isset($_GET["id"]) && $_GET['mode'] == 'request-anime-vote') {
+            //On votes
+            if ($status == 1){ //dumbproofing, voting shouldn't be possible for any series if it isn't pending.
                 $this->vote($_GET["id"]);
             }
-        }
-        //This is when a manager updates the status.
-        else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['status']) && is_numeric($_GET["status"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
-        {
+        } elseif (isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['status']) && is_numeric($_GET["status"])) && (isset($_GET["id"]) && is_numeric($_GET["id"]))) {
+            //This is when a manager updates the status.
             $this->changeRequestValue($_GET["status"], $_GET["id"], "status");
-        }
-        //This is when a manager updates the type.
-        else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['type']) && is_numeric($_GET["type"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
-        {
+        } elseif (isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['type']) && is_numeric($_GET["type"])) && (isset($_GET["id"]) && is_numeric($_GET["id"]))) {
+            //This is when a manager updates the type.
             $this->changeRequestValue($_GET["type"], $_GET["id"], "type");
-        }
-        //This is when a manager edits the entry board.
-        else if(isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['uploadsentry']) && is_numeric($_GET["uploadsentry"])) && (isset($_GET["id"]) && is_numeric($_GET["id"])))
-        {
+        } elseif (isset($_GET['mode']) && $_GET['mode'] == 'manage' && (isset($_GET['uploadsentry']) && is_numeric($_GET["uploadsentry"])) && (isset($_GET["id"]) && is_numeric($_GET["id"]))) {
+            //This is when a manager edits the entry board.
             $this->changeRequestValue($_GET["uploadsentry"], $_GET["id"], "uid");
-        }
-        //This is when a mod deletes an entry.
-        else if(isset($_GET["mode"]) && $_GET["mode"]=="delete" && (isset($_GET["id"]) && is_numeric($_GET["id"])) && isset($_GET["reason"]))
-        {
+        } elseif (isset($_GET["mode"]) && $_GET["mode"] == "delete" && (isset($_GET["id"]) && is_numeric($_GET["id"])) && isset($_GET["reason"])) {
+            //This is when a mod deletes an entry.
             $this->deleteEntry($_GET["id"], $_GET["reason"]);
-        }
-        //This is for video techs, allowing them to claim a request.
-        else if(isset($_GET["mode"]) && $_GET["mode"]=="claim" && (isset($_GET["id"]) && is_numeric($_GET["id"])))
-        {
+        } elseif (isset($_GET["mode"]) && $_GET["mode"] == "claim" && (isset($_GET["id"]) && is_numeric($_GET["id"]))) {
+            //This is for video techs, allowing them to claim a request.
             $this->claimEntry($_GET["id"]);
-        }
-        //Called when a user subtracts their vote.
-        //Needs to be dumbproofed to only be able to subtract votes where the status is neither live nor denied (The votes are returned when they are at that status)
-        else if(isset($_GET["mode"]) && $_GET["mode"]=="subvote" && (isset($_GET["id"]) && is_numeric($_GET["id"])))
-        {
-            if($status==1){ //dumbproofing, users shouldn't be able to subtract votes on series that aren't pending.
+        } elseif (isset($_GET["mode"]) && $_GET["mode"] == "subvote" && (isset($_GET["id"]) && is_numeric($_GET["id"]))) {
+            //Called when a user subtracts their vote.
+            //Needs to be dumbproofed to only be able to subtract votes where the status is neither live nor denied (The votes are returned when they are at that status)
+            if ($status == 1) { //dumbproofing, users shouldn't be able to subtract votes on series that aren't pending.
                 $this->subtractVote($_GET["id"]);
             }
-        }
-        
-        else if(isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])){
+        } elseif (isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])) {
             
             include("includes/classes/anidb.class.php");
             $this->ModRecord("Requested an anime with AniDB (\"".$_GET["anidb"]."\")");
             $AniDB  = new AniDB();
             $AID = $_GET["anidb"];
             $name = $AniDB->getName("en",$AID);
-            if(!$name){
+            if (!$name) {
                 return; //The user will already have recieved an "Anime not found" error if it fails.
             }
             $episodes = $AniDB->getEpisodeCount($AID);
             $description = nl2br($AniDB->getDescription($AID));
             $type = $AniDB->getSeriesType($AID);
-            if($type=="TV Series"||$type=="Web"){
+            if ($type == "TV Series" || $type == "Web") {
                 $type = 1;
-            }else if($type=="OVA"||$type=="TV Special"){
+            } elseif ($type == "OVA" || $type == "TV Special") {
                 $type = 2;
-            }else if($type=="Movie"){
+            } elseif ($type == "Movie"){
                 $type = 3;
-            }else if($type=="Music Video"){
+            } elseif ($type == "Music Video"){
                 echo "Error: Submitted request is a music video.";
                 return;
             }
             $this->addRequest($name, $type, $episodes, $AID, $description, $_GET["details"]);
-        }
-        else
-        {
         }
         
         /*
@@ -668,28 +656,29 @@ class AnimeRequest extends Config{
         echo $this->max_pages.' pages ';
         $lvp = $this->page-4;//lowest visible page
         $hvp = $this->page+4;//highest visible page
-        if($lvp<=0){
+        if ($lvp <= 0) {
             $lvp = 1;
-        }if($hvp>$this->max_pages){
+        }
+        if($hvp > $this->max_pages) {
             $hvp = $this->max_pages;
         }
         
-        if($lvp>1){  //Puts the '<' to the paging
+        if ($lvp > 1) {  //Puts the '<' to the paging
             $_GET['page'] = $this->page-1;
             echo '<a href="?'.http_build_query($_GET).'">&lt;</a>&nbsp;';
         }
-        for($i = $lvp; $i<=$hvp;$i++){
-            if($i==$this->page){
+        for ($i = $lvp; $i<=$hvp;$i++) {
+            if ($i == $this->page) {
                 echo '<span style="font-weight: bold">'.$i.'</span>';
-            }else{
+            } else {
                 $_GET['page'] = $i;
                 echo '<a href="?'.http_build_query($_GET).'">'.$i.'</a>';
             }
-            if($i<$hvp){
+            if ($i<$hvp) {
                 echo ', ';
             }
         }
-        if($hvp<$this->max_pages){ //Puts the '>' to the paging
+        if ($hvp < $this->max_pages) { //Puts the '>' to the paging
             $_GET['page'] = $this->page+1;
             echo '&nbsp;<a href="?'.http_build_query($_GET).'">&gt;</a>';
         }
@@ -702,20 +691,18 @@ class AnimeRequest extends Config{
                 <option value="100">100</option>
             </select></span>';*/
     }
+    
     public function checkAmountOfVotes()
     {
         echo $this->getRemainingVotes() . '<br />';
         $this->maxvotes = $this->getMaxVotes();
         echo $this->maxvotes . '<br />';
-        if($this->getRemainingVotes()<$this->getMaxVotes())
-        {
+        if ($this->getRemainingVotes() < $this->getMaxVotes()) {
             $rid = $_GET["requestanimevote"];
             $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysql_real_escape_string($rid) . ")"; // Added the escape string, cant have people doing silly stuff..
             mysql_query($query) or die('Error : ' . mysql_error());
             return $this->getRemainingVotes(); // Return the remaining votes so we can be sure they dont double dip... this might be needed?
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
@@ -1016,8 +1003,8 @@ class AnimeRequest extends Config{
         
         ';
         
-        if(isset($_GET["edit"])){ //If in edit mode
-            if($this->canEdit()){ //If they have permission to delete
+        if (isset($_GET["edit"])) { //If in edit mode
+            if ($this->canEdit()) { //If they have permission to delete
                 echo '
                     $(".ardeletelink").click(function(e){
                         var id = $(this).data("id");
@@ -1040,7 +1027,7 @@ class AnimeRequest extends Config{
             }
         }
         
-        if($this->UserArray[2]==1 || $this->UserArray[2]==2 || $this->UserArray[2]==5){
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 5) {
             //Rediraction to management is not possible in it's current state.
             echo '
             $(".arclaimlink").click(function(e){
@@ -1082,13 +1069,15 @@ class AnimeRequest extends Config{
         });
         ';
     }
-    private function getStatusNum($status){
+    private function getStatusNum($status)
+    {
         $msg = array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied");
         $index = array_search($status, $msg);
         
         return $index+1; //+1 because "Pending" is status 1 in this class.
     }
-    public function getStatus($status){
+    public function getStatus($status)
+    {
         $msg = array("Pending", "Claimed", "Encoding", "Uploading", "Ongoing", "Stalled", "Done", "Live", "Denied");
         return $msg[$status-1];
     }
@@ -1099,35 +1088,35 @@ class AnimeRequest extends Config{
     //$id: gives the select field a unique id, if there's more than one with the $option name.
     //$option: name of id
     //$jsfunction: function name only
-    private function getSelect($msg, $status, $id, $option, $jsfunction){
+    private function getSelect($msg, $status, $id, $option, $jsfunction)
+    {
         $selected = array_fill(0, count($msg), "");
         $selstring = "selected = 'selected'";
         $selected[$status-1]=$selstring;
         $jsstring = "";
-        if($jsfunction){
+        if ($jsfunction) {
             $jsstring = 'onchange="'.$jsfunction.'(this)"';
         }
         echo '<select data-id="'.$id.'" name="'.$option.'" '.$jsstring.'>';
-        for($i=0;$i<count($msg);$i++){
+        for ($i=0;$i<count($msg);$i++) {
             echo '<option value="'.($i+1).'" '.$selected[$i].'>'.$msg[$i].'</option>';
         }
               
         echo '</select>';
     }
-    private function selectField($msg, $status, $id, $option, $jsfunction){
-        if(!$this->editmode)
-        {
+    
+    private function selectField($msg, $status, $id, $option, $jsfunction)
+    {
+        if (!$this->editmode) {
             return $msg[$status-1];
-        }
-        else
-        {
+        } else {
             $this->getSelect($msg, $status, $id, $option, $jsfunction);
         }
     }
     private function editScripts($values)
     {
-        if($this->editmode){
-            foreach($values as $i){
+        if ($this->editmode) {
+            foreach ($values as $i) {
             echo 'function change'.$i.'(selected){
                     var val = selected.value;
                     var id = $(selected).data("id");
@@ -1141,7 +1130,6 @@ class AnimeRequest extends Config{
                     });
                 }';
             }
-                
         }
     }
     
@@ -1150,8 +1138,8 @@ class AnimeRequest extends Config{
         echo $this->getRemainingVotes() . '<br />';
         $this->maxvotes = $this->getMaxVotes();
         echo $this->maxvotes . '<br />';
-        if($this->getRemainingVotes()<$this->maxvotes) //Check if it's possible to vote
-        {
+        if ($this->getRemainingVotes() < $this->maxvotes) {
+            //Check if it's possible to vote
             $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysql_real_escape_string($rid) . ")"; // Added the escape string, cant have people doing silly stuff..
             mysql_query($query) or die('Error : ' . mysql_error());
         }
@@ -1159,8 +1147,7 @@ class AnimeRequest extends Config{
     
     private function changeRequestValue($value, $arid, $option)
     {
-        if($this->UserArray[2]==1 || $this->UserArray[2]==2 || $this->UserArray[2]==6)
-        {
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             $query = "UPDATE `requests` SET `".$option."` = '" . mysql_real_escape_string($value) . "' WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
             mysql_query($query) or die('Error : ' . mysql_error());
             $this->ModRecord("Updated an Anime Request ".$option." (ID: ".$arid.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
@@ -1169,8 +1156,7 @@ class AnimeRequest extends Config{
     
     private function deleteEntry($arid, $reason)
     {
-        if($this->UserArray[2]==1 || $this->UserArray[2]==2 || $this->UserArray[2]==6)
-        {
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             //Forum posting
             $userIp = @$_SERVER['REMOTE_ADDR'];
             $date = time();
@@ -1205,8 +1191,7 @@ class AnimeRequest extends Config{
     
     private function claimEntry($arid)
     {
-        if($this->UserArray[2]==1 || $this->UserArray[2]==2 || $this->UserArray[2]==5)
-        {
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             $arid = $_GET["id"];
             $query = "UPDATE `requests` SET `status` = '2' WHERE `requests`.`id` = " . mysql_real_escape_string($arid);
             mysql_query($query) or die('Error : ' . mysql_error());
@@ -1224,8 +1209,6 @@ class AnimeRequest extends Config{
             
             $this->ModRecord("Marked an Anime Request (".$arid.") as Claimed."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
         }
-        
-        
     }
     
     private function subtractVote($arid)
@@ -1234,27 +1217,25 @@ class AnimeRequest extends Config{
         mysql_query($query) or die('Error : ' . mysql_error());
     }
     
-    private function addRequest($name, $type, $episodes, $anidb, $description, $details){
-        if(empty($name))
-        {
+    private function addRequest($name, $type, $episodes, $anidb, $description, $details)
+    {
+        if (empty($name)) {
             echo "Couldn't retrieve series name";
             return;
         }
-        if(intval($episodes)<0&&!is_numeric($episodes))
-        {
+        if (intval($episodes) < 0 && !is_numeric($episodes)) {
             echo "Couldn't retrieve episode count";
             return;
         }
-        if(empty($anidb))
-        {
+        if (empty($anidb)) {
             echo "The field 'AniDB ID' is empty";
             return;
-        }if(!is_numeric($anidb)){
+        }
+        if (!is_numeric($anidb)) {
             echo "The field 'AniDB ID' must be numeric";
             return;
         }
-        if(empty($details))
-        {
+        if (empty($details)) {
             echo "The field 'Details' is empty";
             return;
         }
@@ -1265,8 +1246,7 @@ class AnimeRequest extends Config{
         //echo $res;
         
         // Check the results, if there are no rows, then we allow them to be added.
-        if($res<=0)
-        {
+        if ($res<=0) {
             $submittitle = "Anime Request: ".$name;
             $date = time();
             $query = sprintf("INSERT INTO forums_threads (ttitle, tpid, tfid, tdate, tupdated) VALUES ('%s', '%s', '%s', '%s', '%s')",
@@ -1308,26 +1288,27 @@ class AnimeRequest extends Config{
                 mysql_real_escape_string($pistopic),
                 mysql_real_escape_string($userIp));
             mysql_query($query2) or die('Could not connect, way to go retard:' . mysql_error());
-        }
-        else
-        {
+        } else {
             echo "Request already exist";
         }
-    }public function matchRequest($pbody){
+    }
+    
+    public function matchRequest($pbody)
+    {
         $out;
         preg_match_all("/\[animerequest\](\d+)\[\/animerequest\]/", $pbody, $out);
         
-        foreach($out[0] as $i){ //Delete the found text from the body.
+        foreach ($out[0] as $i){ //Delete the found text from the body.
             $pbody = str_replace($i, " ", $pbody);
         }
         
-        foreach($out[1] as $i){
+        foreach ($out[1] as $i) {
             //echo $i;
             $req_query = "SELECT Username, name, status, type, episodes, anidb, user_id, date, description, details FROM user_requests WHERE id='".$i."'";
             $req_result = mysql_query($req_query) or die('Error : ' . mysql_error());
-            if(mysql_num_rows($req_result)>0){
-                while(list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysql_fetch_array($req_result)){
-                    if($episodes==0){
+            if (mysql_num_rows($req_result) > 0) {
+                while (list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysql_fetch_array($req_result)) {
+                    if ($episodes == 0) {
                         $episodes = "?";
                     }
                     $pbody = $pbody.'
@@ -1342,17 +1323,23 @@ class AnimeRequest extends Config{
                     
                     ';
                 }
-            }else{
+            } else {
                 $pbody = $pbody."Anime Request Error: Couldn't retrieve Anime Request information.";
             }
         }
         return $pbody;
-    }private function getVoters($id){
+    }
+    
+    private function getVoters($id)
+    {
         $query = "SELECT count(1) AS `votes`, `voted_by`, `voted_to` FROM `request_votes` WHERE `voted_to`=".$id." group by `voted_by`, `voted_to` ORDER BY votes DESC";
         $result = mysql_query($query) or die('Error : ' . mysql_error());
         return $result;
-    }private function printVoters($result){
-        if(mysql_num_rows($result)>0){
+    }
+    
+    private function printVoters($result)
+    {
+        if (mysql_num_rows($result) > 0) {
             echo '
             <div class="table-row" style="background: linear-gradient(rgb(205, 205, 205), rgb(228, 228, 228), rgb(205, 205, 205));">
                 <div class="col" style="width:100%">
@@ -1363,7 +1350,7 @@ class AnimeRequest extends Config{
                 </div>
             </div>
             ';
-            while(list($votes, $voted_by) = mysql_fetch_array($result)){
+            while (list($votes, $voted_by) = mysql_fetch_array($result)) {
                 echo '
                 <div class="table-row">
                     <div class="col">
@@ -1375,27 +1362,27 @@ class AnimeRequest extends Config{
                 </div>
                 ';
             }
-        }else{
+        } else {
             echo "No one has voted yet.";
         }
     }
-    private function displayEnhancedStatusLink($anidb,$status){
+    
+    private function displayEnhancedStatusLink($anidb,$status)
+    {
         $query = "SELECT `series`.`seoname` FROM `uestatus`,`series` WHERE `uestatus`.`anidbsid`=$anidb AND `uestatus`.`sid` != 0 AND `series`.`id`=`uestatus`.`sid` LIMIT 0, 1";
         
         $result = mysql_query($query);
-        if(!$result){
+        if (!$result) {
             echo "There was an error looking up the enhanced status. Try again later.";
             exit;
         }
         // We check to see if there are any rows for this series, it might be in the ongoing or done section but it hasnt been added yet..
         $count = mysql_num_rows($result);
-        if($count > 0){
+        if ($count > 0) {
             $row = mysql_fetch_assoc($result);
             echo '<a href="/anime/' . $row['seoname'] . '/" target="_blank" title="This is an active series, clicking opens a new tab/window.">' . $status . '</a>';
-        }
-        else {
+        } else {
             echo $status;
         }
     }
 }
-?>
