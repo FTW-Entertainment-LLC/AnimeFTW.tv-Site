@@ -619,29 +619,39 @@ class AnimeRequest extends Config{
                 $this->subtractVote($_GET["id"]);
             }
         } elseif (isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])) {
-            
-            include("includes/classes/anidb.class.php");
-            $this->ModRecord("Requested an anime with AniDB (\"".$_GET["anidb"]."\")");
-            $AniDB  = new AniDB();
             $AID = $_GET["anidb"];
-            $name = $AniDB->getName("en",$AID);
-            if (!$name) {
-                return; //The user will already have recieved an "Anime not found" error if it fails.
+            // No request was found, however we need to verify that the entry is not on the site already.
+            $query = "SELECT `series`.`seoname`, `series`.`fullSeriesName` FROM `series`, `uestatus` WHERE `series`.`id`= `uestatus`.`sid` AND `uestatus`.`anidbsid` = " . mysql_real_escape_string($AID) . " AND `uestatus`.`sid` != 0 LIMIT 1";
+            
+            $result = mysql_query($query);
+            $count = mysql_num_rows($result);
+            if ($count > 0) {
+                // the series is on the site, give them a link to it.
+                $row = mysql_fetch_assoc($result);
+                echo 'This series is already on the site! <a href="/anime/' . $row['seoname'] . '/">' . stripslashes($row['fullSeriesName']) . '</a>';
+            } else {
+                include("includes/classes/anidb.class.php");
+                $this->ModRecord("Requested an anime with AniDB (\"".$_GET["anidb"]."\")");
+                $AniDB  = new AniDB();
+                $name = $AniDB->getName("en",$AID);
+                if (!$name) {
+                    return; //The user will already have recieved an "Anime not found" error if it fails.
+                }
+                $episodes = $AniDB->getEpisodeCount($AID);
+                $description = nl2br($AniDB->getDescription($AID));
+                $type = $AniDB->getSeriesType($AID);
+                if ($type == "TV Series" || $type == "Web") {
+                    $type = 1;
+                } elseif ($type == "OVA" || $type == "TV Special") {
+                    $type = 2;
+                } elseif ($type == "Movie"){
+                    $type = 3;
+                } elseif ($type == "Music Video"){
+                    echo "Error: Submitted request is a music video.";
+                    return;
+                }
+                $this->addRequest($name, $type, $episodes, $AID, $description, $_GET["details"]);
             }
-            $episodes = $AniDB->getEpisodeCount($AID);
-            $description = nl2br($AniDB->getDescription($AID));
-            $type = $AniDB->getSeriesType($AID);
-            if ($type == "TV Series" || $type == "Web") {
-                $type = 1;
-            } elseif ($type == "OVA" || $type == "TV Special") {
-                $type = 2;
-            } elseif ($type == "Movie"){
-                $type = 3;
-            } elseif ($type == "Music Video"){
-                echo "Error: Submitted request is a music video.";
-                return;
-            }
-            $this->addRequest($name, $type, $episodes, $AID, $description, $_GET["details"]);
         }
         
         /*
@@ -1240,7 +1250,7 @@ class AnimeRequest extends Config{
             return;
         }
         $details = strip_tags($details, "<pre><blockquote><h1><h2><h3><h4><h5><p><ul><li><strong><em><del><b><i><a><ol><hr><table><thead><tr><td><tbody><img><br>");
-        $query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=".$anidb.""; //check if it already exist
+        $query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=" . mysql_real_escape_string($anidb) . ""; //check if it already exist
         $result = mysql_query($query) or die('Error : ' . mysql_error());
         $res = mysql_result($result, 0);
         //echo $res;
@@ -1256,7 +1266,7 @@ class AnimeRequest extends Config{
             mysql_real_escape_string($date),
             mysql_real_escape_string($date));
             mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
-            
+                
             $query006 = "SELECT tid FROM forums_threads WHERE tdate='$date'";
             $result006 = mysql_query($query006) or die('Error : ' . mysql_error());
             $row006 = mysql_fetch_array($result006);
