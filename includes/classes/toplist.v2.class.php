@@ -10,7 +10,7 @@
 
 class toplist extends Config {
 
-    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes, $UserArray;
+    public $Data, $UserArray, $DevArray, $permissionArray, $MessageCodes;
     var $Categories = array(); // added 10/10/2014 by robotman321
 
     public function __construct($Data = NULL,$UserArray = NULL,$DevArray = NULL,$permissionArray = NULL)
