@@ -578,6 +578,16 @@ class AFTWVideos extends Config{
 				$autoplay = " autoplay";
 			}
 		}
+        
+        $sdVideoServer = 'videos';
+        $hdVideoServer = 'videos2';
+        // CDN Override
+        if (isset($this->SettingsArray[19]) && $this->SettingArray[19]['disabled'] != 1) {
+            if ($this->SettingsArray[19]['value'] == 38 && $this->UserArray[2] != 3) {
+                $sdVideoServer = 'video-cdn';
+                $hdVideoServer = 'video-cdn';
+            }
+        }
 			
 		// All of the code for the HTML5 player is here.
 		echo '
@@ -589,20 +599,20 @@ class AFTWVideos extends Config{
 		if($EpisodeArray[12] == 1 && $this->UserArray[2] != 3)
 		{
 			// it's equal to 1, which means its just 720p
-			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
-			echo '					<source src="//videos2.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
+			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
+			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
 		}																						 // swordartonline_720p_10_ns.mkv
 		else if($EpisodeArray[12] == 2 && $this->UserArray[2] != 3)
 		{
 			// its equal to 2, which means its 1080p
-			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
-			echo '					<source src="//videos2.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
-			echo '					<source src="//videos2.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_1080p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="1080" data-default="true" />';
+			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
+			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
+			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_1080p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="1080" data-default="true" />';
 		}
 		else
 		{
 			// nothing else to see here.
-			echo '					<source src="//videos.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" />';
+			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" />';
 		}
 		echo '
 			</video>
