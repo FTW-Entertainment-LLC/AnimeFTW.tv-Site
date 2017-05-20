@@ -79,7 +79,7 @@ class AFTWWatchlist extends Config {
 					
 				}
 				else { // it's not in their watchlist, so lets add it!
-					$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysql_real_escape_string($sid)."', '0')";
+					$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysql_real_escape_string($sid)."', '0', '0')";
 					mysql_query($query) or die(mysql_error());	
 					//echo '<img src="/images/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="#" onClick="return false;">Added to My WatchList</a>';
 					$this->SubProfileView(TRUE);
@@ -120,7 +120,7 @@ class AFTWWatchlist extends Config {
 				}
 				else {}
 			}
-			$results = mysql_query("SELECT watchlist.id, watchlist.uid, watchlist.date, watchlist.update, watchlist.sid, watchlist.currentep, watchlist.tracker, watchlist.tracker_latest, watchlist.comment, watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysql_real_escape_string($uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC, watchlist.date DESC LIMIT ".$start.", ".$perpage);
+			$results = mysql_query("SELECT watchlist.id, watchlist.uid, watchlist.date, watchlist.update, watchlist.sid, watchlist.currentep, watchlist.tracker, watchlist.tracker_latest, watchlist.comment, watchlist.round,  watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysql_real_escape_string($uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC, watchlist.date DESC LIMIT ".$start.", ".$perpage);
 			$results2 = mysql_query("SELECT watchlist.id, watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysql_real_escape_string($uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC");
 			$total_rows = mysql_num_rows($results2);
 			if($total_rows == 0){
@@ -129,9 +129,9 @@ class AFTWWatchlist extends Config {
 			else {
 				$this->InternalPaging($total_rows,$perpage,$start,$link,$divid);
 				echo '<br />';
-				while(list($id,$uid,$date,$update,$sid,$currentep,$tracker,$tracker_latest,$comment,$StatusName) = mysql_fetch_array($results))
+				while(list($id,$uid,$date,$update,$sid,$currentep,$tracker,$tracker_latest,$comment,$round,$StatusName) = mysql_fetch_array($results))
 				{
-					$this->BuildSeries($id,$sid,$comment,$date,$update,$currentep,$tracker,$tracker_latest,$comment,$StatusName,$uid,$divid,$link);
+					$this->BuildSeries($id,$sid,$comment,$date,$update,$currentep,$tracker,$tracker_latest,$comment,$round,$StatusName,$uid,$divid,$link);
 				}
 				$this->InternalPaging($total_rows,$perpage,$start,$link,$divid);
 				// the next script will take whatever element is selected and show the ajax page for it so it can do updates..
@@ -149,18 +149,18 @@ class AFTWWatchlist extends Config {
 	}
 		
 	# function BuildSeries
-	private function BuildSeries($id,$sid,$comment,$date = NULL,$update = NULL,$currentep,$tracker = NULL,$tracker_latest = NULL,$comment,$StatusName,$CurrentUser,$divid,$link){
+	private function BuildSeries($id,$sid,$comment,$date = NULL,$update = NULL,$currentep,$tracker = NULL,$tracker_latest = NULL,$comment,$round=0,$StatusName,$CurrentUser,$divid,$link){
 		if($tracker == NULL || $tracker == 0){
 			$results = mysql_query("SELECT series.id, series.fullSeriesName, series.seoname, COUNT(episode.id) AS MaxEps FROM series, episode WHERE series.id = ".$sid." AND episode.sid=series.id");
 		}
 		else { //counts are based on the tracker entries
 			if($tracker_latest == 1){ // latest tracker stats for the episode
-				$results = mysql_query("SELECT episode.epnumber FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.seriesName = '".$sid."' ORDER BY episode.epnumber DESC LIMIT 0, 1 ");
+				$results = mysql_query("SELECT episode.epnumber FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.round='${round}' AND episode_tracker.seriesName = '".$sid."' ORDER BY episode.epnumber DESC LIMIT 0, 1 ");
 				$row = mysql_fetch_array($results);
 				$currentep = $row['epnumber'];
 			}
 			else {
-				$results = mysql_query("SELECT COUNT(episode.id) as MaxEps FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.seriesName = '".$sid."'");
+				$results = mysql_query("SELECT COUNT(episode.id) as MaxEps FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.round='${round}' AND episode_tracker.seriesName = '".$sid."'");
 				$row = mysql_fetch_array($results);
 				$currentep = $row['MaxEps'];
 			}			
@@ -183,22 +183,24 @@ class AFTWWatchlist extends Config {
 		if(isset($_GET['stage'])){	
 			if($TinyMode == TRUE){
 				$sid = $_GET['id'];
-				$query = "SELECT id, uid, sid, comment FROM watchlist WHERE sid = ".mysql_real_escape_string($sid)." AND uid = ".$this->UserArray[1];
+				$query = "SELECT id, uid, sid, comment, round FROM watchlist WHERE sid = ".mysql_real_escape_string($sid)." AND uid = ".$this->UserArray[1];
 				$results = mysql_query($query);
 				$row = mysql_fetch_array($results);
 				$wid = $row['id'];
 				$guid = $row['uid'];
-				$gsid = $row['sid'];	
+				$gsid = $row['sid'];
+                $round = $row['round'];
 			}
 			else {
 				$wid = $_GET['id'];
 				$wid = substr($wid, 3);	
 			
-				$query = "SELECT uid, sid, comment FROM watchlist WHERE id = ".$wid."";
+				$query = "SELECT uid, sid, comment, round FROM watchlist WHERE id = ".$wid."";
 				$results = mysql_query($query);
 				$row = mysql_fetch_array($results);
 				$guid = $row['uid'];
-				$gsid = $row['sid'];	
+				$gsid = $row['sid'];
+                $round = $row['round'];
 			}	
 			
 			if($row['comment'] != ''){$topdown = 'margin-top:-10px;';}else {$topdown = '';}
@@ -219,7 +221,8 @@ class AFTWWatchlist extends Config {
 				$currentep = mysql_real_escape_string($_GET['Currentep']);
 				$Comment = mysql_real_escape_string(urldecode($_GET['Comment']));
 				$Comment = htmlspecialchars($Comment);
-				$query = "UPDATE `watchlist` SET `update` = '".time()."', `status` = '".$status."', `email` = '".$Email."', `currentep` = '".$currentep."', `tracker` = '".$UpdateType."', `tracker_latest` = '".$TrackerLatest."', `comment` = '".$Comment."' WHERE `watchlist`.`id` = ".$wid;
+				$round = mysql_real_escape_string(urldecode($_GET['round']));
+				$query = "UPDATE `watchlist` SET `update` = '".time()."', `status` = '".$status."', `email` = '".$Email."', `currentep` = '".$currentep."', `tracker` = '".$UpdateType."', `tracker_latest` = '".$TrackerLatest."', `comment` = '".$Comment."', `round` = '${round}' WHERE `watchlist`.`id` = ".$wid;
 				//echo $query;
 				mysql_query($query);
 				echo '<span style="color:#E30707;font-size:10px;" id="update-text">Update Succesful!<br /></span>';
@@ -272,6 +275,25 @@ class AFTWWatchlist extends Config {
 				echo '<option value="'.$id.'"'.$selected.'>'.$StatusName.'</option>';
 			}
 			echo '</select></div>';
+            echo $row['round'];
+            
+			echo '<div style="padding-bottom:5px;">
+                <span style="color:#7A7A7A;font-size:10px;">WatchList Round:</span><span style="font-size:9px;">[<a href="#" onClick="return false;" title="Want to watch a series again? Change the viewing round to record the series all over again! Change to a past round to see when the episodes were watched!">?</a>]</span>
+                <br />';
+			echo '<select name="round" id="round">';
+            $trackerArray = $this->countAndReturnEpisodesTracked($row['uid'],$row['sid']);
+            $i = 0;
+            foreach ($trackerArray as $key => $value) {
+                $selected = '';
+                if ($row['round'] == $key) {
+                    $selected = ' selected="selected"';
+                }
+                echo '  <option value="' . $key . '"' . $selected . '>' . $key . ' (' . $value . ' Episodes)</option>';
+                $i++;
+            }
+            echo '  <option value="' . $i . '">' . $i . ' (0 Episodes)</option>';
+			echo '</select></div>';
+            
 			echo '<div style="padding-bottom:5px;"><span style="color:#7A7A7A;font-size:10px;">Tracker or Manual Updates:</span><span style="font-size:9px;">[<a href="#" onClick="return false;" title="Use the tracker or use a manual update. If you select Tracker, this will automatically populate based on additions from the tracker. If you choose manual, you will need to update this!">?</a>]</span><br />';
 			echo '<select name="UpdateType" id="UpdateType">';
 			echo '	<option value="0"'; if($row['tracker'] == 0){echo ' selected="selected"';} echo '>Manual</option>';
@@ -295,7 +317,7 @@ class AFTWWatchlist extends Config {
 			echo '	<option value="1"'; if($TrackerLatest == 1){echo ' selected="selected"';} echo '>Latest</option>';
 			echo '</select></div>';	
 			echo '<script>
-				$(document).ready(function(){                       
+				$(document).ready(function(){
 					$("#UpdateType").change(function() {						
 						if($("#UpdateType").val() == 1)
 						{
@@ -318,9 +340,9 @@ class AFTWWatchlist extends Config {
 			}
 			echo '</div>';
 			if($row['tracker'] == 1){
-				echo '<div><span style="color:#7A7A7A;font-size:10px;">Episode Tracker Episodes:</span><span style="font-size:9px;">[<a href="#" onClick="return false;" title="There are all the episodes in our episode tracker for this series.">?</a>]</span>
+				echo '<div><span style="color:#7A7A7A;font-size:10px;">Episode Tracker Episodes:</span><span style="font-size:9px;">[<a href="#" onClick="return false;" title="There are all the episodes in our episode tracker for this series on this round.">?</a>]</span>
 				<div id="TrackerEpisodes">';
-				$query = "SELECT episode.epnumber, episode.epname FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$guid."' AND episode_tracker.seriesName = '".$gsid."' ORDER BY episode.epnumber";
+				$query = "SELECT episode.epnumber, episode.epname FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$guid."' AND episode_tracker.seriesName = '".$gsid."' AND episode_tracker.round = '" . $row['round'] . "' ORDER BY episode.epnumber";
 				$results = mysql_query($query);
 				while(list($epnumber,$epname) = mysql_fetch_array($results)){
 					echo "<div class=\"z\">Episode #".$epnumber.", titled: ".$epname."</div>";
@@ -417,7 +439,7 @@ class AFTWWatchlist extends Config {
 	
 		$this->array_watchListStatuses(); // build the various statuses we can use in a watchlist.
 		
-		$query = "SELECT `id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment` FROM `watchlist` WHERE `sid` = " . mysql_real_escape_string($sid) . " AND `uid` = " . $this->UserArray[1];
+		$query = "SELECT `id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`, `round` FROM `watchlist` WHERE `sid` = " . mysql_real_escape_string($sid) . " AND `uid` = " . $this->UserArray[1];
 		
 		$result = mysql_query($query);
 		
@@ -429,10 +451,10 @@ class AFTWWatchlist extends Config {
 			if($add == TRUE && $count == 0)
 			{
 				// we want to add a new series to the My WatchList system.
-				$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `comment`, `status`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysql_real_escape_string($sid)."', '0', '', '1')";
+				$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `comment`, `status`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysql_real_escape_string($sid)."', '0', '', '1', '0')";
 				$result = mysql_query($query);
 				
-				 $row = array('id' => mysql_insert_id(), 'uid' => $this->UserArray[1], 'date' => time(), 'update' => time(), 'sid' => $sid, 'status' => '1', 'email' => 1, 'currentep' => 0, 'tracker' => '0', 'tracker_latest' => '', 'comment' => '');
+				 $row = array('id' => mysql_insert_id(), 'uid' => $this->UserArray[1], 'date' => time(), 'update' => time(), 'sid' => $sid, 'status' => '1', 'email' => 1, 'currentep' => 0, 'tracker' => '0', 'tracker_latest' => '', 'comment' => '', 'round' => '0');
 			}
 			else
 			{
@@ -474,7 +496,7 @@ class AFTWWatchlist extends Config {
 					</div>
 				</div>
 				<div style="display:inline-block;width:49%;padding-left:2px;">
-					<div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Tracker or Manuel Updates:</div>
+					<div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Tracker or Manual Updates:</div>
 					<div style="font-size:12px;color:#242424;">
 						<select name="UpdateType" id="UpdateType" class="loginForm">
 							<option value="0"'; if($row['tracker'] == 0){echo ' selected="selected"';} echo '>Manual</option>
@@ -535,26 +557,59 @@ class AFTWWatchlist extends Config {
 						</div> 
 					</div>
 					<div style="padding-top:5px;' . $TrackerActiveDiv . '" id="tracked-episode-listing">';
-					echo $this->buildTrackedEpisodes($this->UserArray[1],$sid);
+					echo $this->buildTrackedEpisodes($this->UserArray[1],$row['id']);
 					echo '
 					</div>
 				</div>
 				<div style="display:inline-block;width:49%;vertical-align:top;padding-left:2px;">
-					<div>
-						<div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Entry Notes:</div>
-						<div style="font-size:12px;color:#242424;">
-							<textarea style="width:175px;height:70px;font-size:10px;color:gray;" id="Comment" name="Comment" class="loginForm">' . $row['comment'] . '</textarea>
-						</div>
-					</div>
-					<div style="padding-top:5px;">
-						<div style="display:inline-block;">
-							<input type="submit" name="submit-button" value=" Update " style="font-size:10px;color:black;" id="watchlist-submit-button" />
-						</div>
-						<div style="display:inline-block;">
-							<div style="display:none;" id="watchlist-loading-image"><img src="' . $this->Host . '/loading-mini.gif" alt="" /></div>
-							<div style="display:none;" id="watchlist-post-submit"><span style="color:green;">Completed</span></div>
-						</div>
-					</div>
+                    <div style="padding-bottom:5px;">
+                        <div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Watching Round:</div>
+                        <div style="font-size:12px;color:#242424;">
+                            <select name="round" id="WatchListRound" class="loginForm">';
+                            $trackerArray = $this->countAndReturnEpisodesTracked($row['uid'],$row['sid']);
+                            $i = 0;
+                            foreach ($trackerArray as $key => $value) {
+                                $selected = '';
+                                if ($row['round'] == $key) {
+                                    $selected = ' selected="selected"';
+                                }
+                                echo '						    <option value="' . $key . '"' . $selected . '>' . $key . ' (' . $value . ' Episodes)</option>';
+                                $i++;
+                            }
+                            if ($i == 0) {
+                                echo '						    <option value="' . $i . '">' . $i . ' (0 Episodes)</option>';
+                                $i++;
+                            }
+                            echo '						    <option value="' . $i . '">' . $i . ' (0 Episodes)</option>';
+                            echo '
+                            </select>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $("#WatchListRound").change(function() {
+                                var this_val = $("#WatchListRound").val();
+                                $(\'#tracked-episode-listing\').load(\'/scripts.php?view=dynamic-load&show=watchlist&stage=view-details&id=' . $row['id'] . '&round=\' + this_val + \'&page=0\');
+                            });
+                        });
+                    </script>
+                    <div>
+                        <div>
+                            <div style="font-size:8px;color:#c0c0c0;vertical-align:top;">Entry Notes:</div>
+                            <div style="font-size:12px;color:#242424;">
+                                <textarea style="width:175px;height:70px;font-size:10px;color:gray;" id="Comment" name="Comment" class="loginForm">' . $row['comment'] . '</textarea>
+                            </div>
+                        </div>
+                        <div style="padding-top:5px;">
+                            <div style="display:inline-block;">
+                                <input type="submit" name="submit-button" value=" Update " style="font-size:10px;color:black;" id="watchlist-submit-button" />
+                            </div>
+                            <div style="display:inline-block;">
+                                <div style="display:none;" id="watchlist-loading-image"><img src="' . $this->Host . '/loading-mini.gif" alt="" /></div>
+                                <div style="display:none;" id="watchlist-post-submit"><span style="color:green;">Completed</span></div>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 			</form>';		
@@ -568,9 +623,9 @@ class AFTWWatchlist extends Config {
 		}
 	}
 	
-	public function viewEntryDetails($sid)
+	public function viewEntryDetails($wid)
 	{
-		$this->buildTrackedEpisodes($this->UserArray[1],$sid,$_GET['page']);
+		$this->buildTrackedEpisodes($this->UserArray[1],$wid,$_GET['page']);
 	}
 	
 	private function array_watchListStatuses()
@@ -587,45 +642,43 @@ class AFTWWatchlist extends Config {
 		}
 	}
 	
-	private function buildTrackedEpisodes($uid,$sid,$page = 0,$count = 5)
+	private function buildTrackedEpisodes($uid,$wid,$page = 0,$count = 5)
 	{
+        $query = "SELECT `id`, `uid`, `sid`, `round` FROM `watchlist` WHERE `id` = '" . mysql_real_escape_string($wid) . "' AND `uid` = '" . $uid . "'";
+        
+        $result = mysql_query($query);
+        $row = mysql_fetch_assoc($result);
+        
+        if (isset($_GET['round']) && is_numeric($_GET['round'])) {
+            $row['round'] = $_GET['round'];
+        }
 		echo '
 						<div>
 							<div style="display:inline-block;width:49%;font-size:8px;color:#c0c0c0;vertical-align:top;">Tracked Episodes:</div>
 							<div style="display:inline-block;width:45%;font-size:10px;color:#c0c0c0;vertical-align:top;">';
-							$this->trackedEpisodeNav($uid,$sid,$page,$count);
+							$this->trackedEpisodeNav($row,$page,$count);
 							echo '
 							</div>
 						</div>
 						<div style="font-size:12px;color:#242424;">';
-		$query = "SELECT `episode`.`epnumber`, `episode`.`epname`, `episode`.`Movie` FROM `episode_tracker`, `episode` WHERE `episode`.`id`=`episode_tracker`.`eid` AND `episode_tracker`.`uid` = '" . $uid . "' AND `episode_tracker`.`seriesName` = '" .$sid . "' ORDER BY `episode`.`epnumber` LIMIT " . ($page*$count) . ", " . $count . "";
+		$query = "SELECT `episode`.`epnumber`, `episode`.`epname`, `episode`.`Movie` FROM `episode_tracker`, `episode` WHERE `episode`.`id`=`episode_tracker`.`eid` AND `episode_tracker`.`uid` = '" . $uid . "' AND `episode_tracker`.`seriesName` = '" . $row['sid'] . "' AND `episode_tracker`.`round` = '" . mysql_real_escape_string($row['round']) . "' ORDER BY `episode`.`epnumber` LIMIT " . ($page*$count) . ", " . $count . "";
 		$result = mysql_query($query);
 		
 		$count = mysql_num_rows($result);
 		
-		if($count < 1)
-		{
+		if ($count < 1) {
 			echo '<div style="font-size:10px;" align="center">Nothing tracked!</div>';
-		}
-		else
-		{
-			while($row = mysql_fetch_assoc($result))
-			{
-				if($row['Movie'] == 1)
-				{
+		} else {
+			while ($row = mysql_fetch_assoc($result)) {
+				if ($row['Movie'] == 1) {
 					// movie...
 					$vidtype = 'Movie';
-				}
-				else
-				{
+				} else {
 					$vidtype = 'Ep';
 				}
-				if(strlen(stripslashes($row['epname'])) > 14)
-				{
+				if (strlen(stripslashes($row['epname'])) > 14) {
 					$episodename = '<span title="' . stripslashes($row['epname']) . '">' . substr(stripslashes($row['epname']),0,13) . '..</span>';
-				}
-				else
-				{
+				} else {
 					$episodename = stripslashes($row['epname']);
 				}
 				echo '<div style="font-size:10px;">' . $vidtype . ' #' . $row['epnumber'] . ' - ' . $episodename . '</div>'."\n";
@@ -635,68 +688,47 @@ class AFTWWatchlist extends Config {
 						</div>';
 	}
 	
-	private function trackedEpisodeNav($uid,$sid,$currentpage,$count)
+	private function trackedEpisodeNav($watchListEntry,$currentpage,$count)
 	{
-		//<a href="#">&lt;</a> <a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">&gt;</a>
-		$query = "SELECT COUNT(id) AS numrows FROM `episode_tracker` WHERE `uid` = $uid AND `seriesName` = $sid";
-		$result = mysql_query($query);
+		$query = "SELECT COUNT(id) AS numrows FROM `episode_tracker` WHERE `uid` = " . $watchListEntry['uid'] . " AND `seriesName` = " . $watchListEntry['sid'] . " AND `round` = " . mysql_real_escape_string($watchListEntry['round']);
+        $result = mysql_query($query);
 		
-		$row = mysql_fetch_assoc($result);
-		if($row['numrows'] > 0)
-		{
+        $row = mysql_fetch_assoc($result);
+		if ($row['numrows'] > 0) {
 			$totalpages = ceil($row['numrows']/$count);
 			
 			// if there are more than 4 pages, we build the previous and next buttons.
-			if($totalpages > 4)
-			{
-				if($currentpage > 0)
-				{
-					$previousbutton = '<a href="#" class="wl-previous-button" id="prev-page" onClick="$(\'#tracked-episode-listing\').load(\'/scripts.php?view=dynamic-load&show=watchlist&stage=view-details&id=' . $sid . '&page=' . ($currentpage-1) . '\');return false;"><span style="font-weight:bold;">&lt;</span></a>';
-				}
-				else
-				{
+			if ($totalpages >= 2) {
+				if ($currentpage > 0) {
+					$previousbutton = '<a href="#" class="wl-previous-button" id="prev-page" onClick="$(\'#tracked-episode-listing\').load(\'/scripts.php?view=dynamic-load&show=watchlist&stage=view-details&id=' . $watchListEntry['id'] . '&page=' . ($currentpage-1) . '\');return false;"><span style="font-weight:bold;">&lt;</span></a>';
+				} else {
 					$previousbutton = '&lt;';
 				}
-				if($currentpage < ($totalpages-1))
-				{
-					$nextbutton = '<a href="#" class="wl-next-button" id="next-page" onClick="$(\'#tracked-episode-listing\').load(\'/scripts.php?view=dynamic-load&show=watchlist&stage=view-details&id=' . $sid . '&page=' . ($currentpage+1) . '\');return false;"><span style="font-weight:bold;">&gt;</span></a>';
-				}
-				else
-				{
+				if ($currentpage < ($totalpages-1)) {
+					$nextbutton = '<a href="#" class="wl-next-button" id="next-page" onClick="$(\'#tracked-episode-listing\').load(\'/scripts.php?view=dynamic-load&show=watchlist&stage=view-details&id=' . $watchListEntry['id'] . '&page=' . ($currentpage+1) . '\');return false;"><span style="font-weight:bold;">&gt;</span></a>';
+				} else {
 					$nextbutton = '&gt;';
 				}
 				
-				if($currentpage > 3)
-				{
+				if ($currentpage > 3) {
 					$startatpage = $currentpage-2;
-				}
-				else
-				{
+				} else {
 					$startatpage = $currentpage;
 				}
-			}
-			else
-			{
-				if($currentpage <= 2)
-				{
+			} else {
+				if ($currentpage <= 2) {
 					$startpage = $currentpage;
-				}
-				else
-				{
+				} else {
 					$startatpage = $currentpage-2;
 				}
 			}
-			
 			echo $previousbutton . ' ' . $totalpages . ' pages ' . $nextbutton;
-		}
-		else
-		{
 		}
 	}
 	
 	public function processFormData()
 	{
-		if(!isset($_POST['wid']) || !isset($_POST['Status']) || !isset($_POST['UpdateType']) || !isset($_POST['CurrentepHidden']) || !isset($_POST['CurrentepActive']) || !isset($_POST['TrackerLatest']) || !isset($_POST['Emails']) || !isset($_POST['Comment']))
+		if(!isset($_POST['wid']) || !isset($_POST['Status']) || !isset($_POST['UpdateType']) || !isset($_POST['CurrentepHidden']) || !isset($_POST['CurrentepActive']) || !isset($_POST['TrackerLatest']) || !isset($_POST['Emails']) || !isset($_POST['Comment']) || !isset($_POST['round']))
 		{
 		}
 		else
@@ -717,10 +749,22 @@ class AFTWWatchlist extends Config {
 			
 			$Comment = mysql_real_escape_string(urldecode($_POST['Comment']));
 			$Comment = htmlspecialchars($Comment);
-			$query = "UPDATE `watchlist` SET `update` = '" . time() . "', `status` = '" . $status . "', `email` = '" . $Email . "', `currentep` = '" . $currentep . "', `tracker` = '" . $UpdateType . "', `tracker_latest` = '" . $TrackerLatest . "', `comment` = '" . $Comment . "' WHERE `id` = '" . mysql_real_escape_string($_POST['wid']) . "' AND `uid` = '" . mysql_real_escape_string($this->UserArray[1]) . "'";
+            $round = mysql_real_escape_string($_POST['round']);
+			$query = "UPDATE `watchlist` SET `update` = '" . time() . "', `status` = '" . $status . "', `email` = '" . $Email . "', `currentep` = '" . $currentep . "', `tracker` = '" . $UpdateType . "', `tracker_latest` = '" . $TrackerLatest . "', `comment` = '" . $Comment . "', `round` = '" . $round . "' WHERE `id` = '" . mysql_real_escape_string($_POST['wid']) . "' AND `uid` = '" . mysql_real_escape_string($this->UserArray[1]) . "'";
 			$result = mysql_query($query);
 			echo $query;
 		}
 	}
+    
+    private function countAndReturnEpisodesTracked($uid, $sid)
+    {
+        $query = "SELECT COUNT(*) as `count`, `round` FROM `episode_tracker` WHERE uid = ${uid} AND `seriesName` = ${sid} GROUP BY `round` ORDER BY `seriesName`";
+        $result = mysql_query($query);
+        $returnArray = [];
+        while($row = mysql_fetch_assoc($result)) {
+            $returnArray[$row['round']] = $row['count'];
+        }
+        return $returnArray;
+    }
 }
 ?>
