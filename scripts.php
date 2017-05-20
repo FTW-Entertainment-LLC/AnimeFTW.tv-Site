@@ -949,7 +949,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 			}
 			else if(isset($_GET['stage']) && $_GET['stage'] == 'view-details')
 			{
-				$W->viewEntryDetails($_GET['id']);
+                $W->viewEntryDetails($_GET['id']);
 			}
 			else
 			{
