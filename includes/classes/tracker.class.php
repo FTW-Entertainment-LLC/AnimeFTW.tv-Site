@@ -193,10 +193,20 @@ class AFTWTracker extends Config {
 	{
 		$query = "SELECT `round` FROM `watchlist`, `episode` WHERE `watchlist`.`uid` = " . $this->UserArray[1] . " AND `episode`.`id` = '" . mysql_real_escape_string($epid) . "' AND `watchlist`.`sid` = `episode`.`sid`";
         $result = mysql_query($query);
+        if (!$result) {
+            $round = 0;
+        } else {
+            $row = mysql_fetch_assoc($result);
+            $round = $row['round'];
+        }
         $row = mysql_fetch_assoc($result);
-		$query = "SELECT `id`, `dateViewed`, `seriesName` FROM `episode_tracker` WHERE `eid` = $epid AND `uid` = " . $this->UserArray[1] . " AND `round` = " . $row['round'];
+		$query = "SELECT `id`, `dateViewed`, `seriesName` FROM `episode_tracker` WHERE `eid` = $epid AND `uid` = " . $this->UserArray[1] . " AND `round` = " . $round;
 		$result = mysql_query($query);
-		$count = mysql_num_rows($result);
+        if ($result) {
+            $count = mysql_num_rows($result);
+        } else {
+            $count = 0;
+        }
 		
 		if ($count == 0) {
 			// There is no count, give them the ability to add this to their Tracker.
