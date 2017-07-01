@@ -591,11 +591,13 @@ if (isset($_GET['rf'])){
         </div>
     </div>';
     if($profileArray[8] == 1) {
-        echo "<br /><a href=\"https://www.microsoft.com/en-us/store/apps/animeftwtv/9nblggh5k288\" target='_blank'><img src=\"" . $Config->Host . "/themes/christmas/windows-phone-logo.png\" alt=\"\" width=\"225px\" /></a><br />";
-        echo "<br /><a href='http://kodi.tv/' target='_blank'><img src='" . $Config->Host . "/themes/christmas/kodi-image.png' alt='Kodi Logo' border='0' width=\"225px\" /></a><br />";
+        echo "<br /><a href='https://www.microsoft.com/en-us/store/apps/animeftwtv/9nblggh5k288' target='_blank'><img src='" . $Config->Host . "/themes/christmas/windows-phone-logo.png' alt='' width='225px' /></a><br />";
+        echo "<br /><a href='//www.animeftw.tv/forums/xbmc-plugin-support/topic-4730/s-0' target='_blank'><img src='" . $Config->Host . "/themes/christmas/kodi-image.png' alt='Kodi Logo' border='0' width='225px' /></a><br />";
+        echo "<br /><a href='//www.animeftw.tv/forums/roku-channel-support/' tager='_blank'><img src='" . $Config->Host . "/themes/default/roku-logo.png' alt='Roku TV logo' border='0' /></a><br />";
     } else {
-        echo "<br /><a href=\"https://www.microsoft.com/en-us/store/apps/animeftwtv/9nblggh5k288\" target='_blank'><img src=\"" . $Config->Host . "/themes/default/windows-phone-logo.png\" alt=\"\" width=\"225px\" /></a><br />";
-        echo "<br /><a href='http://kodi.tv/' target='_blank'><img src='" . $Config->Host . "/themes/default/kodi-image.png' alt='Kodi Logo' border='0' width=\"225px\" /></a><br />";
+        echo "<br /><a href='https://www.microsoft.com/en-us/store/apps/animeftwtv/9nblggh5k288' target='_blank'><img src='" . $Config->Host . "/themes/default/windows-phone-logo.png' alt='' width='225px' /></a><br />";
+        echo "<br /><a href='//www.animeftw.tv/forums/xbmc-plugin-support/topic-4730/s-0' target='_blank'><img src='" . $Config->Host . "/themes/default/kodi-image.png' alt='Kodi Logo' border='0' width='225px' /></a><br />";
+        echo "<br /><a href='//www.animeftw.tv/forums/roku-channel-support/' tager='_blank'><img src='" . $Config->Host . "/themes/default/roku-logo.png' alt='Roku TV logo' border='0' /></a><br />";
     }
 	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"/images/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
 	echo "</div></div>\n";
