@@ -1420,7 +1420,7 @@ class AFTWUser extends Config{
 					$option_id = substr($key,8);
 					if(substr($key,0,7) == 'setting')
 					{
-						$query = "SELECT `id` FROM `user_setting` WHERE `uid` = " . mysql_real_escape_String($_POST['uid']) . " AND `option_id` = " . mysql_real_escape_string($option_id);
+						$query = "SELECT `id`, `value` FROM `user_setting` WHERE `uid` = " . mysql_real_escape_String($_POST['uid']) . " AND `option_id` = " . mysql_real_escape_string($option_id);
 						$result = mysql_query($query);
 						$count = mysql_num_rows($result);
 						
@@ -1442,7 +1442,15 @@ class AFTWUser extends Config{
 						{
 							if($count >= 1)
 							{
-								echo 'Nothing to add for id ' . substr($key,0,7);
+                                // There is a value for this option, but it's possible we cna have more than one option so compare to what was pulled from the database.
+                                // If it's different we will update it.
+                                $row = mysql_fetch_assoc($result);
+                                if ($row['value'] == $value) {
+                                    echo 'Nothing to add for id ' . substr($key,0,7);
+                                } else {
+                                    $query = "UPDATE `user_setting` SET `value` = '" . mysql_real_escape_string($value) . "' WHERE `id` = " . $row['id'];
+                                    $result = mysql_query($query);
+                                }
 							}
 							else
 							{
