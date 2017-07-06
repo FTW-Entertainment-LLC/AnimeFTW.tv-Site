@@ -35,6 +35,11 @@ class Uploads extends Config {
 			$this->SeriesForm('add');
 			echo '</div>';
 		}
+        else if (isset($_GET['subpage']) && $_GET['subpage'] == 'qc') {
+            echo '<div class="body-container srow">';
+            $this->displayQcList();
+            echo '</div>';
+        }
 		else if(isset($_GET['subpage']) && $_GET['subpage'] == 'action')
 		{
 			// /ajax.php?node=uploads&subpage=action&action=delete&id=
@@ -109,8 +114,6 @@ class Uploads extends Config {
 	{
 		$Statuses = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'upload_tracker_statuses'","value");
 		$StatusArray = preg_split("/\|+/", $Statuses);
-		echo '<div id="uploads-global-wrapper">';
-		echo '<div align="center"><b>Notices</b>:<br />- Encoders may ONLY have five(5) series at any one time under Claimed, Encoding or Uploading. To much claiming and not enough doing has resulted in this restriction.<br />- If you are working on an airing series, it is YOUR job to make sure it is up to date, if you cannot get the encode done a certain week, let management know, so we can cover it.</div>';
 		if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 		{
 			echo $this->encodersListing();
@@ -864,56 +867,76 @@ class Uploads extends Config {
 			exit;
 		}
 		$count = mysql_num_rows($results);
-		
-		echo '
-		<div style="display:inline-block;width:120px;vertical-align:top;">
-		<div align="left">
-			<span style="font-size:9px;">Filter by Encoder:</span><br />
-			<select id="filter-by-encoder" style="color: #000000;">
-				<option value="home">All Encodes</option>
-				<option value="' . $this->UserArray[1] . '"'; if(isset($_GET['showme']) && $_GET['showme'] == $this->UserArray[1]){echo'selected="selected"';} echo '>My Encodes</option>';
-		while($row = mysql_fetch_assoc($results))
-		{
-			if(isset($_GET['showme']) && $_GET['showme'] == $row['ID']){
-				echo '<option value="' . $row['ID'] . '" selected="selected">' . $row['Username'] . '</option>';
-			}
-			else {
-				echo '<option value="' . $row['ID'] . '">' . $row['Username'] . '</option>';
-			}
-		}
-		$seriesSearch = '';
-		$clearMessage = FALSE;
-		if(isset($_GET['search']) && $_GET['search'] == 'series'){
-			$seriesSearch = $_GET['for'];
-			$clearMessage = TRUE;
-		}
-		$encoderSearch = '';
-		if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
-			$encoderSearch = $_GET['for'];
-			$clearMessage = TRUE;
-		}		
-		echo '
-				</select>
-			</div>
-		</div>
+        echo '<div id="uploads-global-wrapper">';
+		echo '<div align="center"><b>Notices</b>:<br />- Encoders may ONLY have five(5) series at any one time under Claimed, Encoding or Uploading. To much claiming and not enough doing has resulted in this restriction.<br />- If you are working on an airing series, it is YOUR job to make sure it is up to date, if you cannot get the encode done a certain week, let management know, so we can cover it.</div>';
+		if (isset($_GET['subpage']) && $_GET['subpage'] == 'qc') {
+            echo'
 		<div style="display:inline-block;width:200px;vertical-align:top;">
 			<div align="left">
-				<span style="font-size:9px;">Search by Series Name:</span>
-				<form id="series-search-form">
-					<input type="text" id="series-search" name="series-search" value="' . $seriesSearch . '" style="width:100px;" class="text-input" />
-					<input type="submit" value="Submit" id="series-form-submit" />
-				</form>
-			</div>
-		</div>
-		<div style="display:inline-block;width:200px;vertical-align:top;">
-			<div align="left">
-				<span style="font-size:9px;">Search by Encoder:</span>
-				<form id="encoder-search-form">
-					<input type="text" id="encoder-search" name="encoder-search" value="' . $encoderSearch . '" style="width:100px;" class="text-input" />
-					<input type="submit" value="Submit" id="encoder-form-submit"  />
-				</form>
+				<span style="font-size:9px;">Launch Main Uploads Interface</span><br />
+                <a href="#" id="uploads-home-button">Click Here</a>
 			</div>
 		</div>';
+        } else {
+            echo '
+            <div style="display:inline-block;width:120px;vertical-align:top;">
+            <div align="left">
+                <span style="font-size:9px;">Filter by Encoder:</span><br />
+                <select id="filter-by-encoder" style="color: #000000;">
+                    <option value="home">All Encodes</option>
+                    <option value="' . $this->UserArray[1] . '"'; if(isset($_GET['showme']) && $_GET['showme'] == $this->UserArray[1]){echo'selected="selected"';} echo '>My Encodes</option>';
+            while($row = mysql_fetch_assoc($results))
+            {
+                if(isset($_GET['showme']) && $_GET['showme'] == $row['ID']){
+                    echo '<option value="' . $row['ID'] . '" selected="selected">' . $row['Username'] . '</option>';
+                }
+                else {
+                    echo '<option value="' . $row['ID'] . '">' . $row['Username'] . '</option>';
+                }
+            }
+            $seriesSearch = '';
+            $clearMessage = FALSE;
+            if(isset($_GET['search']) && $_GET['search'] == 'series'){
+                $seriesSearch = $_GET['for'];
+                $clearMessage = TRUE;
+            }
+            $encoderSearch = '';
+            if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
+                $encoderSearch = $_GET['for'];
+                $clearMessage = TRUE;
+            }		
+            echo '
+                    </select>
+                </div>
+            </div>
+            <div style="display:inline-block;width:200px;vertical-align:top;">
+                <div align="left">
+                    <span style="font-size:9px;">Search by Series Name:</span>
+                    <form id="series-search-form">
+                        <input type="text" id="series-search" name="series-search" value="' . $seriesSearch . '" style="width:100px;" class="text-input" />
+                        <input type="submit" value="Submit" id="series-form-submit" />
+                    </form>
+                </div>
+            </div>
+            <div style="display:inline-block;width:200px;vertical-align:top;">
+                <div align="left">
+                    <span style="font-size:9px;">Search by Encoder:</span>
+                    <form id="encoder-search-form">
+                        <input type="text" id="encoder-search" name="encoder-search" value="' . $encoderSearch . '" style="width:100px;" class="text-input" />
+                        <input type="submit" value="Submit" id="encoder-form-submit"  />
+                    </form>
+                </div>
+            </div>';
+        }
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 5) {
+            echo'
+		<div style="display:inline-block;width:200px;vertical-align:top;">
+			<div align="left">
+				<span style="font-size:9px;">Launch QC Interface</span><br />
+                <a href="#" id="qc-interface-link">Click Here</a>
+			</div>
+		</div><br />';
+        }
 		if($clearMessage == TRUE){
 		echo '
 		<div style="display:inline-block;width:100;vertical-align:top;"><br/>
@@ -956,6 +979,15 @@ class Uploads extends Config {
 				else {
 					$("#right-column").load("ajax.php?node=uploads&subpage=home&search=series&for=" + series_val);
 				}
+				return false;
+			});
+			$("#qc-interface-link").on("click",function(){
+				var encoder_val = $("#encoder-search").val();
+                $("#right-column").load("ajax.php?node=uploads&subpage=qc");
+				return false;
+			});
+			$("#uploads-home-button").on("click",function(){
+                $("#right-column").load("ajax.php?node=uploads");
 				return false;
 			});
 		});
@@ -1009,4 +1041,61 @@ class Uploads extends Config {
 		$EntryStatus = explode("|", $row['value']);
 		return $EntryStatus;
 	}
+    
+    private function displayQcList() {
+        $url = "http://videos.animeftw.tv/users/list-files.php";
+        
+        $ch = curl_init();
+        
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $result=curl_exec($ch);
+        
+        curl_close($ch);
+        
+        $returnArray = json_decode($result, true);
+        
+        echo $this->encodersListing();
+        
+        echo "<table border=\"0\">\n";
+        echo "<thead>\n";
+        echo "<tr><th>Series</th></tr>\n";
+        echo "</thead>\n";
+        echo "<tbody>\n";
+        foreach ($returnArray as $subArray) {
+            if (is_array($subArray)) {
+                foreach ($subArray as $folderName => &$valueArray) {
+                    if ($folderName != 'dev') {
+                        echo "<tr>\n";
+                        echo "<td>\n";
+                        echo "<table>";
+                        echo "<tr><th>${folderName}</th></tr>\n";
+                        foreach ($valueArray as $file) {
+                            echo "<tr><td><div><a id=\"file-" . str_replace('.', '-', $file) . "\" href=\"//videos.animeftw.tv/users/fay/${folderName}/${file}\" target=\"_blank\" class=\"view-file\">${file}<a/></div>
+                            <div id=\"video-" . str_replace('.', '-', $file) . "\" style=\"display:none;\" class=\"video-player-div\"><video controls preload=\"none\" width=\"848\" height=\"480\" poster=\"//img03.animeftw.tv/video-images/noimage.png\"><source src=\"https://videos.animeftw.tv/users/fay/${folderName}/${file}\" type=\"video/mp4\" \></video></div></td></tr>\n";
+                        }
+                        echo "</table>";
+                        echo "</td>\n";
+                        echo "</tr>\n";
+                    }
+                }
+            }
+        }
+        echo "</tbody>\n";
+        echo "</table>\n";
+        echo '
+        <script>
+            $(document).ready(function() {
+                $(".view-file").on("click",function(){
+                    $(".video-player-div").hide();
+                    $(".view-file").css("font-weight", "");
+                    $(this).css("font-weight", "bold");
+                    var this_id = $(this).attr(\'id\').substring(5);
+                    $("#video-" + this_id).show();
+                    return false;
+                });
+            });
+        </script>';
+    }
 }
