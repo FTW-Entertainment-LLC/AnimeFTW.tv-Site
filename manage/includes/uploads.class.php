@@ -114,10 +114,7 @@ class Uploads extends Config {
 	{
 		$Statuses = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'upload_tracker_statuses'","value");
 		$StatusArray = preg_split("/\|+/", $Statuses);
-		if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
-		{
-			echo $this->encodersListing();
-		}
+		echo $this->encodersListing();
 		echo '<div id="UploadsTrackerMain">';
 		echo '<div>';	
 		foreach($StatusArray as &$Status)
@@ -878,55 +875,57 @@ class Uploads extends Config {
 			</div>
 		</div>';
         } else {
-            echo '
+            if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2) {
+                echo '
             <div style="display:inline-block;width:120px;vertical-align:top;">
-            <div align="left">
-                <span style="font-size:9px;">Filter by Encoder:</span><br />
-                <select id="filter-by-encoder" style="color: #000000;">
-                    <option value="home">All Encodes</option>
-                    <option value="' . $this->UserArray[1] . '"'; if(isset($_GET['showme']) && $_GET['showme'] == $this->UserArray[1]){echo'selected="selected"';} echo '>My Encodes</option>';
-            while($row = mysql_fetch_assoc($results))
-            {
-                if(isset($_GET['showme']) && $_GET['showme'] == $row['ID']){
-                    echo '<option value="' . $row['ID'] . '" selected="selected">' . $row['Username'] . '</option>';
-                }
-                else {
-                    echo '<option value="' . $row['ID'] . '">' . $row['Username'] . '</option>';
-                }
-            }
-            $seriesSearch = '';
-            $clearMessage = FALSE;
-            if(isset($_GET['search']) && $_GET['search'] == 'series'){
-                $seriesSearch = $_GET['for'];
-                $clearMessage = TRUE;
-            }
-            $encoderSearch = '';
-            if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
-                $encoderSearch = $_GET['for'];
-                $clearMessage = TRUE;
-            }		
-            echo '
-                    </select>
-                </div>
-            </div>
-            <div style="display:inline-block;width:200px;vertical-align:top;">
                 <div align="left">
-                    <span style="font-size:9px;">Search by Series Name:</span>
-                    <form id="series-search-form">
-                        <input type="text" id="series-search" name="series-search" value="' . $seriesSearch . '" style="width:100px;" class="text-input" />
-                        <input type="submit" value="Submit" id="series-form-submit" />
-                    </form>
+                    <span style="font-size:9px;">Filter by Encoder:</span><br />
+                    <select id="filter-by-encoder" style="color: #000000;">
+                        <option value="home">All Encodes</option>
+                        <option value="' . $this->UserArray[1] . '"'; if(isset($_GET['showme']) && $_GET['showme'] == $this->UserArray[1]){echo'selected="selected"';} echo '>My Encodes</option>';
+                while($row = mysql_fetch_assoc($results))
+                {
+                    if(isset($_GET['showme']) && $_GET['showme'] == $row['ID']){
+                        echo '<option value="' . $row['ID'] . '" selected="selected">' . $row['Username'] . '</option>';
+                    }
+                    else {
+                        echo '<option value="' . $row['ID'] . '">' . $row['Username'] . '</option>';
+                    }
+                }
+                $seriesSearch = '';
+                $clearMessage = FALSE;
+                if(isset($_GET['search']) && $_GET['search'] == 'series'){
+                    $seriesSearch = $_GET['for'];
+                    $clearMessage = TRUE;
+                }
+                $encoderSearch = '';
+                if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
+                    $encoderSearch = $_GET['for'];
+                    $clearMessage = TRUE;
+                }		
+                echo '
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div style="display:inline-block;width:200px;vertical-align:top;">
-                <div align="left">
-                    <span style="font-size:9px;">Search by Encoder:</span>
-                    <form id="encoder-search-form">
-                        <input type="text" id="encoder-search" name="encoder-search" value="' . $encoderSearch . '" style="width:100px;" class="text-input" />
-                        <input type="submit" value="Submit" id="encoder-form-submit"  />
-                    </form>
+                <div style="display:inline-block;width:200px;vertical-align:top;">
+                    <div align="left">
+                        <span style="font-size:9px;">Search by Series Name:</span>
+                        <form id="series-search-form">
+                            <input type="text" id="series-search" name="series-search" value="' . $seriesSearch . '" style="width:100px;" class="text-input" />
+                            <input type="submit" value="Submit" id="series-form-submit" />
+                        </form>
+                    </div>
                 </div>
-            </div>';
+                <div style="display:inline-block;width:200px;vertical-align:top;">
+                    <div align="left">
+                        <span style="font-size:9px;">Search by Encoder:</span>
+                        <form id="encoder-search-form">
+                            <input type="text" id="encoder-search" name="encoder-search" value="' . $encoderSearch . '" style="width:100px;" class="text-input" />
+                            <input type="submit" value="Submit" id="encoder-form-submit"  />
+                        </form>
+                    </div>
+                </div>';
+            }
         }
         if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 5) {
             echo'
