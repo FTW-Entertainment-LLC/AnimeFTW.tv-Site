@@ -82,7 +82,11 @@ class AFTWDonate
         }
         $current = $total;
         $whatsleft = $goal-$current;
-        $percentage = ($current/$goal)*100;
+        if ($current == 0) {
+            $percentage = 0;
+        } else {
+            $percentage = ($current/$goal)*100;
+        }
         if ($percentage < 100) {
             $percentage = substr($percentage, 0, 2);
         } else {
@@ -165,21 +169,21 @@ class AFTWDonate
     {
         // This is basically going to check all the donation records and let us know if it falls under the specifications
         if($dlimit != 0){$limit = ' AND mc_gross <= '.$dlimit;}else{$limit = '';} //if the tier is the top tier theres nothing to compare it with, so don't give it the limit..
-        $query = "SELECT count(id) FROM donation_paypal WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay;
-        $query = mysql_query($query);
-        $total = mysql_result($query, 0); // nom nom nom, counting...
-        if ($total > 0) {
-            $querya = "SELECT first_name FROM donation_paypal WHERE mc_gross >= ".$donate.$limit." AND item_name = '".$this->donation_name."'";
-            $query = mysql_query($querya);
+        $query = "SELECT `first_name` FROM `donation_paypal` WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay;
+        $result = mysql_query($query);
+        $count = mysql_num_rows($result);
+        if ($count > 0) {
             $i = 0; $first_name1 = '';
-            while (list($first_name) = mysql_fetch_array($query)) {
+            while (list($first_name) = mysql_fetch_array($result)) {
                 $first_name1 .= $first_name;
-                if($i < ($total-1)){$first_name1 .= ', ';}
+                if ($i < ($count-1)) {
+                    $first_name1 .= ', ';
+                }
                 $i++;
             }
-            echo '<div class="totaldonors"><b>'.$total.' Donors for this month.</b><div style="font-size:8px;">Thanks to: '.$first_name1.'</div></div>'; // return the variable so it doesnt screw everything up!
+            echo '<div class="totaldonors"><b>'.$count.' Donors for this month.</b><div style="font-size:8px;">Thanks to: '.$first_name1.'</div></div>'; // return the variable so it doesnt screw everything up!
         } else {
-            echo '<div class="totaldonors" align="center"><b>'.$total.' Donors for this month.</b></div>'; // return the variable so it doesnt screw everything up!
+            echo '<div class="totaldonors" align="center"><b>'.$count.' Donors for this month.</b></div>'; // return the variable so it doesnt screw everything up!
         }
     }
     
@@ -188,13 +192,14 @@ class AFTWDonate
     {
         // We check to see if donations are active.
         $query = "SELECT name, value FROM settings WHERE name = 'donation_active'";
-        $results = mysql_query($query);
-        $row = mysql_fetch_assoc($results);
-        if ($row['value'] == '1') {
+        $result = mysql_query($query);
+        $count = mysql_num_rows($result);
+        if ($count == '1') {
             // We confirmed we have an active donation drive.
+            $row = mysql_fetch_assoc($result);
             $query = "SELECT `goal`, `round_name`, `description` FROM `donation_settings` WHERE `active` = 1";
             $results = mysql_query($query);
-            $row = mysql_fetch_array($results);
+            $row = mysql_fetch_array($result);
             
             $this->donation_active = 1;
             $this->donation_name = $row['round_name'];
