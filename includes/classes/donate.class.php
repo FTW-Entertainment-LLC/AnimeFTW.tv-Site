@@ -194,12 +194,12 @@ class AFTWDonate
         $query = "SELECT name, value FROM settings WHERE name = 'donation_active'";
         $result = mysql_query($query);
         $count = mysql_num_rows($result);
-        if ($count == '1') {
+        if ($count == 1) {
             // We confirmed we have an active donation drive.
             $row = mysql_fetch_assoc($result);
             $query = "SELECT `goal`, `round_name`, `description` FROM `donation_settings` WHERE `active` = 1";
-            $results = mysql_query($query);
-            $row = mysql_fetch_array($result);
+            $result = mysql_query($query);
+            $row = mysql_fetch_assoc($result);
             
             $this->donation_active = 1;
             $this->donation_name = $row['round_name'];
