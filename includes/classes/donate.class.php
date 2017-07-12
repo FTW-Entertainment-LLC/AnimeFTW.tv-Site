@@ -21,12 +21,16 @@ class AFTWDonate
     */
     
     //#- Vars -#\\
-    var $profileArray, $donation_round, $donation_name, $donation_active, $donation_goal, $donation_description;
+    var $profileArray, $donation_round, $donation_name, $donation_active, $donation_goal, $donation_description, $firstDay, $lastDay;
     
     //#- Contruct -#\\
     public function __construct()
     {
         $this->BuildGlobalVars(); // we offload the queries to make the construct less messy.. yay
+        
+        $todayDate = date('y-m-d');
+        $this->firstDay = strtotime(date('Y-m-01', strtotime($todayDate)));
+        $this->lastDay = strtotime(date('Y-m-t', strtotime($todayDate)));
     }
     
     //#- Public Functions -#\\
@@ -71,10 +75,7 @@ class AFTWDonate
     private function ProgressBox()
     {
         $goal = $this->donation_goal;
-        $todayDate = date('y-m-d');
-        $firstDay = strtotime(date('Y-m-01', strtotime($todayDate)));
-        $lastDay = strtotime(date('Y-m-t', strtotime($todayDate)));
-        $query = mysql_query("SELECT mc_gross FROM donation_paypal WHERE `date` >= ${firstDay} AND `date` <= ${lastDay}");
+        $query = mysql_query("SELECT mc_gross FROM donation_paypal WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay);
         $total = 0;
         while (list($mc_gross) = mysql_fetch_array($query)) {
             $total = $total+$mc_gross;
@@ -164,7 +165,7 @@ class AFTWDonate
     {
         // This is basically going to check all the donation records and let us know if it falls under the specifications
         if($dlimit != 0){$limit = ' AND mc_gross <= '.$dlimit;}else{$limit = '';} //if the tier is the top tier theres nothing to compare it with, so don't give it the limit..
-        $query = "SELECT count(id) FROM donation_paypal WHERE mc_gross >= ".$donate.$limit." AND item_name = '".$this->donation_name."'";
+        $query = "SELECT count(id) FROM donation_paypal WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay;
         $query = mysql_query($query);
         $total = mysql_result($query, 0); // nom nom nom, counting...
         if ($total > 0) {
