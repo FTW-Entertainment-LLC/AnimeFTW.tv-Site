@@ -119,7 +119,7 @@ class AFTWstats extends Config {
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Today's Birthdays</div>\n";
 		echo "<div class='side-body floatfix'>\n";
-		echo "Today, on ".date("F jS").", AnimeFTW.tv has ".$row['numrows']." Member's Celebrating their Birthday!<br /><br />Visit the <a href=\"/birthdays\">Birthday Zone</a> and See who is having their Birthday Today!!";
+		echo "Today, on ".date("F jS").", AnimeFTW.tv has ".$row['numrows']." Members celebrating their Birthday!<br /><br />Visit the <a href=\"/birthdays\">Birthday Zone</a> and See who is having their Birthday Today!!";
 		echo "</div></div>\n";
 		
 	}
