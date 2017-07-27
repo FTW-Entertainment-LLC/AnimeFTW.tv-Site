@@ -61,7 +61,8 @@
 				   "to gain access to thousands of episodes of Anime, and access to our Android app!<br /><br />".
 				   "<a href=\"http://www.animeftw.tv/m/register/activate/$key\">http://www.animeftw.tv/m/register/activate/$key</a><br /><br />".
 				   "After activation, please visit <a href=\"http://www.animeftw.tv/rules\">our Rules</a> and <a href=\"http://www.animeftw.tv/faq\">our FAQ</a> to familiarize yourself with our site!<br />".
-				   "Once you've familiarized yourself, feel free to take a look at our <a href=\"http://new.animeftw.tv/forums\">forums</a>, and get to know our fantastic community!<br /><br />".
+				   "Once you've familiarized yourself, feel free to take a look at our <a href=\"http://new.animeftw.tv/forums\">forums</a>, and get to know our fantastic community!<br />".
+                   "Or check us out in Discord! <a href=\"https://discord.gg/JCm5b5E\">https://discord.gg/JCm5b5E</a> <br />".
 				   "Happy viewings!<br />".
 				   "- The AnimeFTW.tv staff and Community!";
 			if(mail("$n <$e>","Your Registration with AnimeFTW.tv",$message,$headers)) {
