@@ -1711,7 +1711,7 @@ class AFTWUser extends Config{
 	// supplemental function to get all of the user details into a single variable for the user page.
 	public function array_getUserDetails($Username)
 	{
-		$query = "SELECT `ID`, `Username`, `display_name`, `avatarExtension`, `avatarActivate` FROM `users` WHERE `Username` = '" . mysql_real_escape_string($Username) . "'";
+		$query = "SELECT `ID`, `Username`, `display_name`, `avatarExtension`, `avatarActivate` FROM `users` WHERE `Username` = '" . mysql_real_escape_string($Username) . "' OR `display_name` = '" . mysql_real_escape_string($Username) . "'";
 		
 		$result = mysql_query($query);
 		
