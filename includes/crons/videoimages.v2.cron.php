@@ -88,7 +88,7 @@ class VideoImagesCron extends CronAbstract {
 		foreach ($results as $result) {
 
 //			$url = "http://phpdev/Testing/FetchPictures/fetch-pictures.php"; // Debug purposes ;D
-			$url =	"http://videos.animeftw.tv/scripts/fetch-pictures.php";
+			$url =	"http://192.208.179.204/scripts/fetch-pictures.php";
 			$url .= "?seriesName={$result->seriesName}&seriesId={$result->sid}";
 			$url .= "&epprefix={$result->epprefix}&epnumber={$result->epnumber}";
 			$url .= "&epid={$result->epid}&duration=360";
