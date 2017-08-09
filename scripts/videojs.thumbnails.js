@@ -1,70 +1,70 @@
 (function() {
   var defaults = {
-        0: {
-          src: 'example-thumbnail.png'
-        }
-      },
-      extend = function() {
-        var args, target, i, object, property;
-        args = Array.prototype.slice.call(arguments);
-        target = args.shift() || {};
-        for (i in args) {
-          object = args[i];
-          for (property in object) {
-            if (object.hasOwnProperty(property)) {
-              if (typeof object[property] === 'object') {
-                target[property] = extend(target[property], object[property]);
-              } else {
-                target[property] = object[property];
-              }
+      0: {
+        src: 'example-thumbnail.png'
+      }
+    },
+    extend = function() {
+      var args, target, i, object, property;
+      args = Array.prototype.slice.call(arguments);
+      target = args.shift() || {};
+      for (i in args) {
+        object = args[i];
+        for (property in object) {
+          if (object.hasOwnProperty(property)) {
+            if (typeof object[property] === 'object') {
+              target[property] = extend(target[property], object[property]);
+            } else {
+              target[property] = object[property];
             }
           }
         }
-        return target;
-      },
-      getComputedStyle = function(el, pseudo) {
-        return function(prop) {
-          if (window.getComputedStyle) {
-            return window.getComputedStyle(el, pseudo)[prop];
-          } else {
-            return el.currentStyle[prop];
-          }
-        };
-      },
-      offsetParent = function(el) {
-        if (el.nodeName !== 'HTML' && getComputedStyle(el)('position') === 'static') {
-          return offsetParent(el.offsetParent);
+      }
+      return target;
+    },
+    getComputedStyle = function(el, pseudo) {
+      return function(prop) {
+        if (window.getComputedStyle) {
+          return window.getComputedStyle(el, pseudo)[prop];
+        } else {
+          return el.currentStyle[prop];
         }
-        return el;
-      },
-      getVisibleWidth = function(el, width) {
-        var clip;
-
-        if (width) {
-          return parseFloat(width);
-        }
-
-        clip = getComputedStyle(el)('clip');
-        if (clip !== 'auto' && clip !== 'inherit') {
-          clip = clip.split(/(?:\(|\))/)[1].split(/(?:,| )/);
-          if (clip.length === 4) {
-            return (parseFloat(clip[1]) - parseFloat(clip[3]));
-          }
-        }
-        return 0;
-      },
-      getScrollOffset = function() {
-        if (window.pageXOffset) {
-          return {
-            x: window.pageXOffset,
-            y: window.pageYOffset
-          };
-        }
-        return {
-          x: document.documentElement.scrollLeft,
-          y: document.documentElement.scrollTop
-        };
       };
+    },
+    offsetParent = function(el) {
+      if (el.nodeName !== 'HTML' && getComputedStyle(el)('position') === 'static') {
+        return offsetParent(el.offsetParent);
+      }
+      return el;
+    },
+    getVisibleWidth = function(el, width) {
+      var clip;
+
+      if (width) {
+        return parseFloat(width);
+      }
+
+      clip = getComputedStyle(el)('clip');
+      if (clip !== 'auto' && clip !== 'inherit') {
+        clip = clip.split(/(?:\(|\))/)[1].split(/(?:,| )/);
+        if (clip.length === 4) {
+          return (parseFloat(clip[1]) - parseFloat(clip[3]));
+        }
+      }
+      return 0;
+    },
+    getScrollOffset = function() {
+      if (window.pageXOffset) {
+        return {
+          x: window.pageXOffset,
+          y: window.pageYOffset
+        };
+      }
+      return {
+        x: document.documentElement.scrollLeft,
+        y: document.documentElement.scrollTop
+      };
+    };
 
   /**
    * register the thubmnails plugin
@@ -112,7 +112,7 @@
 
     // keep track of the duration to calculate correct thumbnail to display
     duration = player.duration();
-
+    
     // when the container is MP4
     player.on('durationchange', function(event) {
       duration = player.duration();
@@ -126,15 +126,7 @@
     // add the thumbnail to the player
     progressControl = player.controlBar.progressControl;
     progressControl.el().appendChild(div);
-    // find the proper element to use for time calculations
-    var eleForTime;
-    for( var e in progressControl.el().childNodes ) {
-      var childNode = progressControl.el().childNodes[e];
-      if( childNode.className.indexOf('vjs-progress-holder') >= 0 ) {
-        eleForTime = childNode;
-        break;
-      }
-    }
+
     moveListener = function(event) {
       var mouseTime, time, active, left, setting, pageX, right, width, halfWidth, pageXOffset, clientRect;
       active = 0;
@@ -150,16 +142,16 @@
       // find the page offset of the mouse
       left = pageX || (event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft);
       // subtract the page offset of the positioned offset parent
-      left -= eleForTime.getBoundingClientRect().left + pageXOffset;
+      left -= offsetParent(progressControl.el()).getBoundingClientRect().left + pageXOffset;
 
       // apply updated styles to the thumbnail if necessary
       // mouseTime is the position of the mouse along the progress control bar
       // `left` applies to the mouse position relative to the player so we need
       // to remove the progress control's left offset to know the mouse position
       // relative to the progress control
-      mouseTime = left / eleForTime.getBoundingClientRect().width * duration;
+      mouseTime = Math.floor((left - progressControl.el().offsetLeft) / progressControl.width() * duration);
       for (time in settings) {
-        if (mouseTime >= time) {
+        if (mouseTime > time) {
           active = Math.max(active, time);
         }
       }

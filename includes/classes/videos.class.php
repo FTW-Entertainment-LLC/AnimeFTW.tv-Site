@@ -592,27 +592,27 @@ class AFTWVideos extends Config{
 		// All of the code for the HTML5 player is here.
 		echo '
 			<div id="aftw-video-wrapper"' . $hiddenstyle . ' align="center">
-				<video id="aftw-player" class="video-js vjs-sublime-skin" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . '>';
+				<video id="aftw-player" class="video-js vjs-fluid vsg-player" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . ' data-setup="{}">';
 				
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.				
 		if($EpisodeArray[12] == 1 && $this->UserArray[2] != 3)
 		{
 			// it's equal to 1, which means its just 720p
-			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
-			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
+			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" label="480p" res="480p" />';
+			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" label="720p" res="720p" />';
 		}																						 // swordartonline_720p_10_ns.mkv
 		else if($EpisodeArray[12] == 2 && $this->UserArray[2] != 3)
 		{
 			// its equal to 2, which means its 1080p
-			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="480" />';
-			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="720" />';
-			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_1080p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" data-res="1080" data-default="true" />';
+			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" label="480p" res="480p" />';
+			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_720p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" label="720p" res="720p" />';
+			echo '					<source src="//' . $hdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_1080p_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" label="1080p" res="1080p" />';
 		}
 		else
 		{
 			// nothing else to see here.
-			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" />';
+			echo '					<source src="//' . $sdVideoServer . '.animeftw.tv/' . $FinalSerisName . '/' . $EpisodeArray[4] . '_' . $EpisodeArray[0] . '_ns.mp4' . $vidPosition . '" type="video/mp4" label="480p" res="480p" />';
 		}
 		echo '
 			</video>
@@ -708,12 +708,13 @@ class AFTWVideos extends Config{
 		}
 		echo '
 			},1000);
-		</script>
+		</script>';
+        /*echo '
 		<script>
 		$(document).ready(function(){
 			$(\'.vjs-loading-spinner\').html(\'<img src="' . $this->Host . '/fay-loading-image.gif" alt="Loading...">\');
 		});
-		</script>';
+		</script>';*/
 		if($this->UserArray[2] == 3)
 		{
 			echo '
@@ -761,31 +762,31 @@ class AFTWVideos extends Config{
 				if($this->SettingsArray[15]['value'] == '31' && $EpisodeArray[12] == 2)
 				{
 					// 1080p by default
-					$defaultrez = '1080';
+					$defaultrez = '1080p';
 				}
 				else if($this->SettingsArray[15]['value'] == '30' || ($this->SettingsArray[15]['value'] == '31' && $EpisodeArray[12] == 1))
 				{
 					// 720p by default
-					$defaultrez = '720';
+					$defaultrez = '720p';
 				}
 				else
 				{
 					// 480p by default
-					$defaultrez = '480';
+					$defaultrez = '480p';
 				}
 			}
 			else
 			{
-				$defaultrez = '480';
+				$defaultrez = '480p';
 			}
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
 				var video = videojs(\'#aftw-player\', {
-					plugins : {
-						resolutionSelector: {
+					plugins: {
+						videoJsResolutionSwitcher: {
 							// Pass any options here
-							default_res : \'' . $defaultrez . '\'
+							default: \'' . $defaultrez . '\'
 							// Define an on.ready function
 						},
 						hotkeys: {
