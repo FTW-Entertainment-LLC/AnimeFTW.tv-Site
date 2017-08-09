@@ -750,7 +750,7 @@ class AFTWVideos extends Config{
 			echo '
 			<link href="/css/videojs.progressTips.css" rel="stylesheet" />
 			<script src="/scripts/videojs.progressTips.js" type="text/javascript"></script>';
-			$videoJsFunction = ", function() {\nthis.progressTips();\n}";
+			$videoJsFunction = "video.progressTips({});";
 		}
 			
 		// ADDED 08/31/14 - Robotman321
@@ -782,38 +782,19 @@ class AFTWVideos extends Config{
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
-				var video = videojs(\'#aftw-player\', {
-					plugins: {
-						videoJsResolutionSwitcher: {
-							// Pass any options here
-							default: \'' . $defaultrez . '\'
-							// Define an on.ready function
-						},
-						hotkeys: {
-							volumeStep: 0.1,
-							seekStep: 5,
-							enableMute: true,
-							enableFullscreen: true
-						}
-					}
-					
-				}' . $videoJsFunction . ');
+                var video = videojs(\'#aftw-player\');
+                video.videoJsResolutionSwitcher({default: \'' . $defaultrez . '\'});
+                video.hotkeys({volumeStep: 0.1, seekStep: 5, enableMute: true, enableFullscreen: true});
+				' . $videoJsFunction . '
 			</script>';
 		}
 		else {
 			echo '
 			<script type="text/javascript">
 				// Initialize video.js and activate the resolution selector plugin
-				var video = videojs( \'#aftw-player\', {
-					plugins : {
-						hotkeys: {
-							volumeStep: 0.1,
-							seekStep: 5,
-							enableMute: true,
-							enableFullscreen: true
-						}
-					}
-				}' . $videoJsFunction . ');
+                var video = videojs(\'#aftw-player\');
+                video.hotkeys({volumeStep: 0.1, seekStep: 5, enableMute: true, enableFullscreen: true});
+				' . $videoJsFunction . '
 			</script>';
 		}
 
