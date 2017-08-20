@@ -1071,8 +1071,8 @@ class Uploads extends Config {
                         echo "<table>";
                         echo "<tr><th>${folderName}</th></tr>\n";
                         foreach ($valueArray as $file) {
-                            echo "<tr><td><div><a id=\"file-" . str_replace('.', '-', $file) . "\" href=\"//videos.animeftw.tv/users/fay/${folderName}/${file}\" target=\"_blank\" class=\"view-file\">${file}<a/></div>
-                            <div id=\"video-" . str_replace('.', '-', $file) . "\" style=\"display:none;\" class=\"video-player-div\"><video controls preload=\"none\" width=\"848\" height=\"480\" poster=\"//img03.animeftw.tv/video-images/noimage.png\"><source src=\"https://videos.animeftw.tv/users/fay/${folderName}/${file}\" type=\"video/mp4\" \></video></div></td></tr>\n";
+                            echo "<tr><td><div><a id=\"file-" . str_replace('.', '-', $file) . "\" href=\"//192.208.179.204/users/fay/${folderName}/${file}\" target=\"_blank\" class=\"view-file\">${file}<a/></div>
+                            <div id=\"video-" . str_replace('.', '-', $file) . "\" style=\"display:none;\" class=\"video-player-div\"><video controls preload=\"none\" width=\"848\" height=\"480\" poster=\"//img03.animeftw.tv/video-images/noimage.png\"><source src=\"https://192.208.179.204/users/fay/${folderName}/${file}\" type=\"video/mp4\" \></video></div></td></tr>\n";
                         }
                         echo "</table>";
                         echo "</td>\n";
