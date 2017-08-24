@@ -139,6 +139,7 @@ class AFTWDonate
             echo "<div class='side-body-bg'>";
             echo "<div class='scapmain'>Donate Today!</div>\n";
             echo "<div class='side-body floatfix'>\n";
+            if ($this->profileArray[0] == 1) {
             echo '
                 <div align="center" style="vertical-align:center">
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -153,7 +154,9 @@ class AFTWDonate
                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"><br />
                     <input type="text" name="amount" value="" placeholder="Donation Amount" />
                     </form>
-                </div>
+                </div>';
+            }
+            echo '
                 <div align="center" style="padding-top:5px;">
                     <a href="https://cex.io/#/modal/donation/pid/DP100005408" target="_blank" ><img src="https://cex.io/img/donations/donations_button.svg" alt="Donations"></a>
                 </div>
