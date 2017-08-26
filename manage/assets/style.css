@@ -11,6 +11,15 @@ body{
 a {
 	text-decoration:none;
 }
+input[type="text"], textarea {
+	border:1px solid #CCC;
+	color:#5A5655;
+	font:13px Verdana,Arial,Helvetica,sans-serif;
+	padding:2px;
+}
+input[type="text"]:focus, textarea:focus {
+	border:1px solid #0C90BB;
+}
 #hov-msg {
     width: 40%;
     position: fixed;
@@ -336,4 +345,13 @@ body.loading .modal {
 	bottom:0;
 	margin:10px;
 	padding:2px;
+}
+.table-header {
+	border-bottom:1px solid #dcd9d9;
+}
+.row-odd {
+	background-color:#E5E5E5;
+}
+.row-even {
+	background-color:#B8EAFA;
 }
