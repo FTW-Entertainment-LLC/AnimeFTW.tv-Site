@@ -8,11 +8,10 @@
 ## Version: 1.0
 \****************************************************************/
 
-include_once('smtp.v2.class.php');
 
 class Eblast extends Config
 {
-    private $eblastTypes, $smtpSettings=array(), $mimeBoundary, $cronId;
+    private $eblastTypes, $smtpSettings=array(), $mimeBoundary, $cronId, $includePath;
     
     public function __construct()
     {
@@ -24,6 +23,10 @@ class Eblast extends Config
         $this->smtpSettings['SmtpPass']="Ftw3nt3rtainm3nt";
         $this->mimeBoundary = "----FTW_ENTERTAINMENT_LLC----".md5(time());
         $this->collectEblastTypes();
+        $this->includePath = ($_SERVER['HTTP_HOST'] === "v4.aftw.ftwdevs.com" ||
+                $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com'||
+				$_SERVER['HTTP_HOST'] === "phpdev") ? "/home/devsftw9/public_html/projects/aftw/v4" : "/home/mainaftw/public_html";
+        include_once($this->includePath. '/includes/classes/smtp.v2.class.php');
     }
     
     public function __destruct()
@@ -58,7 +61,8 @@ class Eblast extends Config
                 include_once("template.class.php");
                 
                 foreach ($this->generateUserInformation($row) as $userRow) {
-                    $blastLayout = new Template("../../template/eblast/default.tpl");
+                    
+                    $blastLayout = new Template($this->includePath . "/template/eblast/default.tpl");
                     $blastLayout->set('title',$row['title']);
                     $blastLayout->set('preheader',$row['header']);
                     $blastLayout->set('email-type',$this->eblastTypes[$row['type']]['name']);
