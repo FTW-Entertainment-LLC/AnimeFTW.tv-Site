@@ -105,11 +105,9 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 			$psa .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";
 			$psa .= "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			$psa .= "<td valign='top' class='main-mid'>\n";
-			$psa .= "<div class='side-body-bg' style='min-height:50px;'>\n";	
-			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Calling all Windows Phone users!</div>';
-			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Do you have a Windows 8/8.1/10 Phone? Well, you\'re in luck because today we have released the official AnimeFTW.tv Windows Phone App! Even if you don\'t have a windows phone, stop on by <a href="http://www.animeftw.tv/forums/windows-phone-app-support/topic-4807/s-0">this topic</a>. See the future design of AnimeFTW.tv for our mobile apps!</div>';
-			//$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Keep Track of all the Series you watch.</div>';
-			//$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">The AnimeFTW.tv My WatchList feature extends the Episode Tracker but letting you know just how many episodes of a series you\'ve watched.<br />Write notes about a series and get email updates for that special airing series!</div>';
+			$psa .= "<div class='side-body-bg' style='min-height:50px;border:1px solid red;'>\n";	
+			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Yes, the email and rumors are true!</div>';
+			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Hello Everyone. Yes - The email you got from our systems is correct. On Thursday 8/24/2017 paypal alerted us to our account having been frozen forever. The notice states that there is no way to appeal this however we MIGHT get access to our funds after 180 days.<br>BAH!<br> We\'ve updated the donation page so that it uses one of the Admin\'s personal accounts as September 1st our server bills come due at around 1500.<br> As of this notice we are currently sitting at 500 dollars of the needed 1500, if you have even a few dollars to spare to help keep us afloat, we would be eternally grateful.</div>';
 			$psa .= "</div>\n";
 			$psa .= "</td>";
 			$psa .= "</tr></table>";
