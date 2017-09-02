@@ -1051,7 +1051,7 @@ class Shopping_Cart extends Config {
 					<input type="hidden" name="on0" value="Cart ID" />
 					<input type="hidden" name="os0" value="' . $this->cart_id . '" />
 					<input type="hidden" name="quantity" value="1">
-					<input type="hidden" name="business" value="paypal@ftwentertainment.com" />
+					<input type="hidden" name="business" value="brad@ftwentertainment.com" />
 					<input type="hidden" name="no_note" value="1" />
 					<input type="hidden" name="no_shipping" value="2" />
 					<input type="hidden" name="currency_code" value="USD" />
