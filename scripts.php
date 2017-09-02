@@ -1079,8 +1079,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 						{
 							include_once("includes/classes/ftp.class.php");
 
-							$ftp = new FTP("zeus.ftwentertainment.com");
-							$ftp->login("remote@images.animeftw.tv", "mui(;Qg_5T~+");
+							$ftp = new FTP("ftp.images.animeftw.tv");
+							$ftp->login("ftpimages", "mui(;Qg_5T~+");
 							$ftp->put($target_file, "avatars/" . $filename);
 							$errormsg .= "Upload Successful! <br />Populating the CDN may take some time if the image was the same extension.";
 							mysql_query("UPDATE `users` SET `avatarActivate` = 'yes', `avatarExtension` = '" . mysql_real_escape_string($imageFileType) . "' WHERE `ID` = " . mysql_real_escape_string($_POST['uid']));
