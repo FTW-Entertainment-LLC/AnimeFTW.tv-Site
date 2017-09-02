@@ -1042,7 +1042,7 @@ class Uploads extends Config {
 	}
     
     private function displayQcList() {
-        $url = "http://192.208.179.204/users/list-files.php";
+        $url = "http://videos.animeftw.tv/users/list-files.php";
         
         $ch = curl_init();
         
