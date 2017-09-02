@@ -290,7 +290,7 @@ class AFTWDonate
                 <input type="hidden" name="item_name" value="Zeus 2.0 Server Drive">
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="return" value="https://www.animeftw.tv/donate/thank-you">
-                <input type="hidden" name="business" value="paypal@ftwentertainment.com">
+                <input type="hidden" name="business" value="brad@ftwentertainment.com">
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form>
