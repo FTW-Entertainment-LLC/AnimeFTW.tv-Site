@@ -69,7 +69,7 @@ class Eblast extends Config
                     $blastLayout->set('content',$row['contents']);
                     $blastLayout->set('email',$userRow['Email']);
                     $blastLayout->set('eblast-opt-out-link', 'https://www.animeftw.tv/eblast/settings/' . $this->base64url_encode($userRow['Email']) . '/' . $this->base64url_encode('user' . $userRow['ID']) . '/');
-                    $this->sendEmail('notifications@animeftw.tv', $userRow['Email'], $row['title'], $blastLayout->output());
+                    $this->sendEmail('notifications@animeftw.tv' $userRow, $row['title'], $blastLayout->output(), $this->eblastTypes[$row['type']]['name']));
                 }
             }
         }
@@ -89,7 +89,7 @@ class Eblast extends Config
     
     # private function formatEmailHeaders
     # header information is built in this function.
-    private function formatEmailHeaders($toEmail)
+    private function formatEmailHeaders($userInfo,$emailInfo)
     {
         $headers = "MIME-Version: 1.0\r\n";
 		$headers .= "Content-Type: multipart/alternative; boundary=\"" . $this->mimeBoundary . "\"\r\n"; 
@@ -97,6 +97,7 @@ class Eblast extends Config
 		$headers .= "To: $toEmail\r\n";
 		$headers .= "From: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
 		$headers .= "Reply-To: AnimeFTW.tv Notifications <notifications@animeftw.tv>\r\n";
+        $headers .= "Feedback-ID: " . md5($emailInfo['subject']) . "-" . $userInfo['Email'] . ":" . $userInfo['ID'] . ":" . $emailInfo['mailType'] . ":AnimeFTW.tvMail\r\n";
         return $headers;
     }
     
@@ -129,8 +130,9 @@ class Eblast extends Config
         return $returnResults;
     }
     
-    private function sendEmail($from, $to, $subject, $htmlContent)
+    private function sendEmail($from, $user, $subject, $htmlContent, $mailType)
     {
+        $emailInfo = array('subject' => $subject, 'mailType' => $mailType);
         $body = "--" . $this->mimeBoundary . "\r\n";
         $body .= "Content-Type: text/plain; charset=UTF-8\n";
         $body .= "Content-Transfer-Encoding: 8bit\n\n";
@@ -141,7 +143,7 @@ class Eblast extends Config
         $body .= "Content-Type: text/html; charset=UTF-8\n";
         $body .= "Content-Transfer-Encoding: 8bit\n\n";
         $body .= $htmlContent;
-        $SMTPMail = new SMTPClient ($this->smtpSettings['SmtpServer'], $this->smtpSettings['SmtpPort'], $this->smtpSettings['SmtpUser'], $this->smtpSettings['SmtpPass'], $from, $to, $subject, $this->formatEmailHeaders($to), $body);
+        $SMTPMail = new SMTPClient ($this->smtpSettings['SmtpServer'], $this->smtpSettings['SmtpPort'], $this->smtpSettings['SmtpUser'], $this->smtpSettings['SmtpPass'], $from, $user['Email'], $subject, $this->formatEmailHeaders($user,$emailInfo), $body);
         $SMTPChat = $SMTPMail->SendMail();
     }   
 }
