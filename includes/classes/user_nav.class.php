@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: user_nav.class.php                                     
-## Author: Brad Riemann                                         
+## FileName: user_nav.class.php
+## Author: Brad Riemann
 ## Usage: User Nav UI Class
 ## Copywrite 2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -11,21 +11,21 @@ class AFTWUserNav extends Config {
     # Variables and constructors #
     \****************************/
     var $UserArray;
-    
+
     public function __construct($UserArray){
         parent::__construct();
         // Because this is not taking the information as it is declared outside of the config class.. we need to manually bridge the two here.
         $this->UserArray = $UserArray;
     }
-    
+
     public function Output(){
         $this->BuildUI();
     }
-    
+
     /*******************\
     # Private Functions #
     \*******************/
-    
+
     private function BuildUI(){
         if($this->UserArray[0] == 1) {
             echo '<div class="newnavbar">';
@@ -52,7 +52,7 @@ class AFTWUserNav extends Config {
             echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/pm"><img src="/images/new-icons/pm_new.png" alt="" title="View your Personal Messages" /><span class="JewelNotif'.$display.'" id="requestJewelNotif">'.$this->Messages($this->UserArray[1]).'</span></a>
             </div>';
             echo '<div class="dropdown">';
-            
+
             include('notifications.class.php');
             $N = new AFTWNotifications();
             $N->connectProfile($this->UserArray);
@@ -65,7 +65,7 @@ class AFTWUserNav extends Config {
             echo '</div>';
             if($this->UserArray[2] != 0 && $this->UserArray[2] != 3 && $this->UserArray[2] != 7){
                 if($this->UserArray[2] == 1 || $this->UserArray[2] == 2){
-                    $query = mysql_query("SELECT ID FROM uestatus WHERE `change` = 1"); 
+                    $query = mysql_query("SELECT ID FROM uestatus WHERE `change` = 1");
                     $CountUpdated = mysql_num_rows($query);
                     if($CountUpdated > 0){
                         $display2 = " disBlock";
@@ -77,7 +77,7 @@ class AFTWUserNav extends Config {
                 else {$display2 = "";$CountUpdated = "0";}
                 echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/manage/"><img src="/images/new-icons/uploads_new.png" alt="" /><span class="JewelNotif'.$display2.'" id="requestJewelNotif">'.$CountUpdated.'</span></a></div>';
             }
-            echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/logout"><img src="/images/new-icons/logout_new.png" alt="" title="Log off your AnimeFTW.tv Account" /></a></div>';    
+            echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/logout"><img src="/images/new-icons/logout_new.png" alt="" title="Log off your AnimeFTW.tv Account" /></a></div>';
             echo '
             <div id="user-enhanced-bar" style="display:none;">';
             if ($this->UserArray[2] == 7) {
@@ -85,7 +85,7 @@ class AFTWUserNav extends Config {
                 <div align="center" style="padding:3px;border-bottom:1px solid #1f566f;">Your Advanced Membership is: <br />';
                 if ($this->UserArray[13] == 'yes') {
                     // Advanced Membership is active
-                    echo '<span style="font-size:18px;color:green;font-weight:bold;">Active</span>.<br />If you wish to cancel, please <br /> login to the <br /><a style="font-weight:bold;" href="https://ftwentertainment.com/subscribers" target="blank">FTW Subscribers portal</a>.';
+                    echo '<span style="font-size:18px;color:green;font-weight:bold;">Active</span>.<br />If you wish to cancel, please <br /> login to the <br /><a style="font-weight:bold;" href="https://ftwentertainment.com/supporters" target="blank">FTW Supporters portal</a>.';
                 } else {
                     // Not active.
                     echo '<span style="font-size:18px;color:red;font-weight:bold;">In-Active</span>.<br /> Your account will be <br /> automatically moved back to a <br /> basic member at the conclusion of your stay.';
@@ -130,21 +130,21 @@ class AFTWUserNav extends Config {
                         $("#user-bar-down-arrow").show();
                     }
                     return false;
-                });                    
+                });
             </script>';
             echo '</div>';
         }
         else { //User is not logged in, give them the basics
             echo '<div class="newnavbar"><div class="aftwU"><a href="https://' . $_SERVER['HTTP_HOST'] . '/login">Sign In</a> | <a href="https://' . $_SERVER['HTTP_HOST'] . '/register">Register</a> | <a href="https://' . $_SERVER['HTTP_HOST'] . '/email-resend">Email Resend</a> | <a href="/forgot-password">Forgot Password</a></div></div>'."\n";
-        }        
+        }
     }
-    
-    #-----------------------------------------------------------    
+
+    #-----------------------------------------------------------
     # Function Messages
     # checks messages for a user and
     # returns if they have any or not.
     #-----------------------------------------------------------
-    
+
     private function Messages($uid){
         $query   = "SELECT COUNT(id) AS unreadMsgs FROM messages WHERE rid='".$uid."' AND viewed='1' AND sent = '0'";
         $result  = mysql_query($query) or die('Error, query failed:' . mysql_error());
@@ -152,7 +152,7 @@ class AFTWUserNav extends Config {
         $unreadMsgs = $row['unreadMsgs'];
         return $unreadMsgs;
     }
-    
+
     private function CheckAdvancedStatus(){
         if($this->UserArray[13] == 'yes')
         {
@@ -163,6 +163,6 @@ class AFTWUserNav extends Config {
             return '<img src="//www.animeftw.tv/images/red_x_rounded_40x40.png" alt="" title="Your Advanced Membership is Inactive!" />';
         }
     }
-        
+
 }
 ?>
