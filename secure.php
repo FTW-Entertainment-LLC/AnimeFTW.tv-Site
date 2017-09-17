@@ -781,7 +781,7 @@ else if($_GET['node'] == 'advanced-signup'){
 <br />
 <br />
 <div>
-Since becoming an Advanced Member is a product of being a FTW Subscriber, we are asking everyone to continue over to <a href="https://ftwentertainment.com/supporters">FTW Entertainment\'s Supporters Zone</a> To continue with the signup process, once your account has been updated as a FTW Subscriber you will see the AnimeFTW.TV Advanced Status come to life.</div><br /><div align="center"><h2><a href="https://ftwentertainment.com/subscribers">Continue to FTW Entertainment\'s Subscriber Zone</a></h2></div>';
+Since becoming an Advanced Member is a product of being a FTW Subscriber, we are asking everyone to continue over to <a href="https://ftwentertainment.com/supporters">FTW Entertainment\'s Supporters Zone</a> To continue with the signup process, once your account has been updated as a FTW Supporter you will see the AnimeFTW.TV Advanced Status come to life.</div><br /><div align="center"><h2><a href="https://ftwentertainment.com/supporters">Continue to FTW Entertainment\'s Supporter Zone</a></h2></div>';
 		echo '</div>';
 }
 else if($_GET['node'] == 'reviews'){
