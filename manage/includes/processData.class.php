@@ -314,27 +314,102 @@ class processData extends Config {
 		}
 		else if($_POST['method'] == 'SeriesAnnouncementBuilder' && $this->ValidatePermission(73) == TRUE)
 		{
-			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
+			if(isset($_POST['start-date']) && isset($_POST['end-date']))
 			{
-				$query = "SELECT seoname, fullSeriesName, description FROM series WHERE";
-				$i = 0;
-				foreach($_POST['sid'] as $name => $value)
-				{
-					if($i > 0)
-					{
-						$query .= " OR";
-					}
-					$query .= " id = $value";
-					$i++;
-				}
-				$result = mysql_query($query);
-				echo '<textarea style="height:175px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()">';
-				while($row = mysql_fetch_array($result))
-				{
-					$description = stripslashes($row['description']);
-					echo '<br /><span style="font-size:11px;"><span style="font-family: verdana, geneva, sans-serif; "><a href="http://www.animeftw.tv/anime/' . $row['seoname'] . '/">' . stripslashes($row['fullSeriesName']) . '</a></span></span><br />'."\n";
-					echo '<strong style="font-family: verdana, geneva, sans-serif; font-size: 11px; ">Synopsis:&nbsp;</strong><span style="font-size:11px;"><span style="font-family: verdana, geneva, sans-serif; ">' . $description . '</span><br />'."\n\r";
-				}
+                $startDate = strtotime(urldecode($_POST['start-date']));
+                $endDate = strtotime(urldecode($_POST['end-date']));
+
+                include_once("../includes/classes/template.class.php");
+                $blastLayout = new Template("../template/eblast/anime-update-container.tpl");
+                $blastLayoutContent = '';
+
+                // We work on the Series block first
+                $query = "SELECT `id`, `seoname`, `fullSeriesName`, `stillRelease`, `hd` FROM `series` WHERE `added` >= ${startDate} AND `added` <= ${endDate}";
+                $result = mysql_query($query);
+                $seriesArray = [];
+                while ($row = mysql_fetch_assoc($result)) {
+                    $seriesArray[] = $row;
+                }
+                $numSeriesRows = mysql_num_rows($result);
+                $totalTemplateRows = ceil($numSeriesRows/3);
+
+                $seriesLayout = new Template("../template/eblast/anime-update-block.tpl");
+                $seriesLayout->set('block-name', 'Newly Added Series');
+
+                $allSeriesOutput = '';
+                for ($r=0; $r < $totalTemplateRows; $r++) {
+                    $rowStart = $r*3;
+                    $rowLayout = new Template("../template/eblast/anime-update-row.tpl");
+                    $rowInfo = '';
+                    for ($i=$rowStart; $i<($rowStart+3); $i++) {
+                        if (($i+1) <= $numSeriesRows) {
+                            $seriesTemplate = new Template("../template/eblast/anime-series-update-entry.tpl");
+                            $seriesTemplate->set('series-link','http://www.animeftw.tv/anime/' . $seriesArray[$i]['seoname'] . '/');
+                            $seriesTemplate->set('series-name',stripslashes($seriesArray[$i]['fullSeriesName']));
+                            $seriesTemplate->set('series-image','https://img03.animeftw.tv/seriesimages/' . $seriesArray[$i]['id'] . '.jpg');
+
+                            $seriesDetails = '<br>';
+                            if ($seriesArray[$i]['stillRelease'] == 'yes') {
+                                $seriesDetails .= '<img src="https://img03.animeftw.tv/airing_icon.gif" width="14" alt="This series is still airing!" />';
+                            }
+                            if ($seriesArray[$i]['hd'] == 2) {
+                                $seriesDetails .= '<img src="https://img03.animeftw.tv/series-pages/hd-720p-icon.png" width="25" alt="Watch in 720p" />
+                                <img src="https://img03.animeftw.tv/series-pages/hd-1080p-icon.png" width="25" alt="Watch in 1080p" />';
+                            } else if ($seriesArray[$i]['hd'] == 1) {
+                                $seriesDetails .= '<img src="https://img03.animeftw.tv/series-pages/hd-1080p-icon.png" width="25" alt="Watch in 1080p" />';
+                            }
+
+                            $seriesTemplate->set('series-details',$seriesDetails);
+                            $rowInfo .= $seriesTemplate->output();
+
+                            if (($i+1) % 3 == 0 && $i != 0) {
+                            } else {
+                                $rowInfo .= "    <td width=\"8\" style=\"min-width:8px;\"></td>";
+                            }
+                        }
+                    }
+
+                    $rowLayout->set('update-entry', $rowInfo);
+
+                    $allSeriesOutput .= $rowLayout->output();
+                    unset($rowLayout);
+                }
+                $seriesLayout->set('block-row', $allSeriesOutput);
+                $blastLayoutContent .= $seriesLayout->output();
+
+                // New episodes built here
+                /*$query = "SELECT
+                            `episode`.`id`, `episode`.`epname`, `episode`.`epnumber`, `series`.`fullSeriesName`, `series`.`seoname`
+                        FROM
+                            `episode`
+                        LEFT JOIN
+                            `series` ON `series`.`id` = `episode`.`sid`
+                        WHERE
+                            `episode`.`updated` >= ${startDate} AND
+                            `episode`.`updated` <= ${endDate}";
+                            echo $query;
+                $result = mysql_query($query);
+                $numEpRows = mysql_num_rows($result);
+
+                if ($numEpRows != 0) {
+                    $episodeArray = [];
+                    while ($row = mysql_fetch_assoc($result)) {
+                        $episodeArray[] = $row;
+                    }
+                    $totalTemplateRows = ceil($numEpRows/3);
+
+                    $episodeLayout = new Template("../template/eblast/anime-update-block.tpl");
+                    $episodeLayout->set('block-name', 'Newly Added Episodes');
+                    $allEpisodeOutput = '';
+
+                    $episodeLayout->set('block-row', $allEpisodeOutput);
+                    $blastLayoutContent .= $episodeLayout->output();
+                }*/
+
+                // Fill out the last of the container template.
+                $blastLayout->set('anime-update-block', $blastLayoutContent);
+				echo '<textarea style="height:325px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()">';
+                echo $blastLayout->output();
 				//echo print_r($_POST);
 				echo '</textarea>';
 			}

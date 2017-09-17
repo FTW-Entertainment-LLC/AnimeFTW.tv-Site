@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: series.class.php								 
-## Author: Brad Riemann								 
+## FileName: series.class.php
+## Author: Brad Riemann
 ## Usage: Series sub class
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -24,7 +24,7 @@ class Series extends Config {
 			echo '</div>';
 		}
 	}
-	
+
 	private function deploySeries()
 	{
 		if($this->ValidatePermission(21) == TRUE)
@@ -34,7 +34,7 @@ class Series extends Config {
 			$DivID = 'right-column';
 			if(isset($_GET['page'])){$page = $_GET['page'];}
 			else {$page = 0;}
-			echo '<div align="center" style="padding-top:5px;">';				
+			echo '<div align="center" style="padding-top:5px;">';
 			echo '<a href="#" onClick="$(\'#right-column\').load(\''.$link.'\'); return false;">Home</a> ';
 			if($this->ValidatePermission(22) == TRUE)
 			{
@@ -43,7 +43,7 @@ class Series extends Config {
 			if($this->ValidatePermission(24) == TRUE)
 			{
 				echo '| <a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=search\'); return false;">Series Search</a> ';
-			}	
+			}
 			if($this->ValidatePermission(25) == TRUE)
 			{
 				echo '| <a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=upload\'); return false;">Upload Series Image</a> ';
@@ -64,13 +64,13 @@ class Series extends Config {
 				<div id="ContentStuff" class="ContentStuff">';
 				$TotalSeries = $this->Query('series'); //count all of the series please.
 				$query = "SELECT id, seriesName, fullSeriesName, seoname, romaji, kanji, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category FROM series ORDER BY id DESC LIMIT $page, $limit";
-				mysql_query("SET NAMES 'utf8'"); 
+				mysql_query("SET NAMES 'utf8'");
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
-		
+
 				echo '<div id="seriesg">';
 				echo '<div style="padding:3px;">';
 				$this->pagingV1($DivID,$TotalSeries,$limit,$page,$link);
-				echo '</div>';	
+				echo '</div>';
 				echo '<div>';
 				$i = 0;
 				$fivearray = array(1 => '<br />',2 => '<br /><br />',3 => '<br /><br /><br />',4 => '<br /><br /><br /><br />',5 => '<br /><br /><br /><br /><br />',6 => '<br /><br /><br /><br /><br /><br />',7 => '<br /><br /><br /><br /><br /><br /><br />');
@@ -81,7 +81,7 @@ class Series extends Config {
 				<script type="text/javascript" src="assets/jqplot.pointLabels.min.js"></script>';
 				while(list($id, $seriesName, $fullSeriesName, $seoname, $romaji, $kanji, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteActivate, $noteReason, $category) = mysql_fetch_array($result, MYSQL_NUM))
 				{
-					$query = mysql_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0"); 
+					$query = mysql_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
 					$CountEpisodes = mysql_num_rows($query);
 					if($moviesOnly == 1){$moviesOnly = 'yes';}else {$moviesOnly = 'no';}
 					if($noteActivate == 1){$noteActivate = 'yes';}else {$noteActivate = 'no';}
@@ -95,7 +95,7 @@ class Series extends Config {
 						$gvar = $fivearray[$gvar];
 					}
 					else {$gvar = '';}
-					
+
 					// ADDED 10/11/2014 by Robotman321
 					// explodes the category string so we can look through and make it awesome.
 					$category = split(" , ",$category);
@@ -111,7 +111,7 @@ class Series extends Config {
 							$finalizedCategories .= ', ';
 						}
 					}
-					
+
 					if($i % 2){ $srow = ' class="srow2" style="background-color:#D6D6D6;"';} else {$srow = ' class="srow"';}
 					echo '<div'.$srow.'>
 					<div>
@@ -138,12 +138,12 @@ class Series extends Config {
 						<b>Rating:</b><br /><img src="/images/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
 						'.$gvar.'
 						</div>
-						
+
 						<div class="srightcol">'.nl2br($description).'</div>
 						<div class="sfarrightcol"><img src="' . $this->Host . '/seriesimages/' . $id . '.jpg" alt="" style="height:250px;" /></div>
 					</div>';
 					$today = strtotime(date("Y-m-d"));
-					$sevendaysago = $today-(7*86400);		
+					$sevendaysago = $today-(7*86400);
 					$query1 = "SELECT `date`, `views` FROM  `mainaftw_stats`.`series_stats` WHERE `series_id` = " . $id . " AND `date` >= " . $sevendaysago . " AND `date` <= " . $today;
 					//echo $query1;
 					$result1 = mysql_query($query1);
@@ -172,7 +172,7 @@ class Series extends Config {
 							}
 							echo "
 							<script class=\"code\" type=\"text/javascript\">
-								
+
 								$(document).ready(function(){
 								  var line1=[" . $data . "];
 								  var plot2 = $.jqplot('series-chart-$id', [line1], {
@@ -192,7 +192,7 @@ class Series extends Config {
 									  }
 								  });
 								});
-								
+
 							</script>";
 						}
 					}
@@ -204,7 +204,7 @@ class Series extends Config {
 				echo '</div>';
 				echo '</div>';
 			}
-			else 
+			else
 			{
 				if($_GET['stage'] == 'search' && $this->ValidatePermission(24) == TRUE)
 				{
@@ -242,7 +242,7 @@ class Series extends Config {
 						echo '<script>
 						$(function() {
 							$(\'#SeriesName\').keypress(function(event){
-    
+
 								if (event.keyCode == 10 || event.keyCode == 13)
 								{
 									event.preventDefault();
@@ -275,38 +275,50 @@ class Series extends Config {
 							});
 							return false;
 						});
-						</script>';	
+						</script>';
 				}
 				else if($_GET['stage'] == 'upload' && $this->ValidatePermission(25) == TRUE){
 					echo 'Upload feature coming soon';
 				}
-				else if($_GET['stage'] == 'announce' && $this->ValidatePermission(73) == TRUE){	
-					echo '<br /><div align="center">The announcement Builder is a simple script that facilitates the ability to grab the neccessary data for creating proper announcements when releasing mass updates of Series.</div><br /><b>Choose from Available Series:</b>';
-					echo '<div style="height:125px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;">';
-					$query = "SELECT id, fullSeriesName FROM series ORDER by seriesName ASC";
-					$result = mysql_query($query);
-					echo '<form action="POST" id="SeriesAnnouncementBuilder">
-					<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />
-					<input type="hidden" id="method" class="method" value="SeriesAnnouncementBuilder" name="method" />';
-					while($row = mysql_fetch_array($result))
-					{
-						echo '<div style="float:left;display:inline;width:300px;">
-						<input type="checkbox" name="sid[]" value="' . $row['id'] . '" id="sid-' . $row['id'] . '" />&nbsp;<label for="sid-' . $row['id'] . '" style="display:inline;color:#5A5655;">' . $row['fullSeriesName'] . '</label>
-						</div>';
-					}
-					echo '</form>';
-					echo '</div><br /><b>Output:</b><br />';				
-					echo '<div id="SeriesAnnouncementOutput"><textarea style="height:175px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()"></textarea></div>';	
+				else if($_GET['stage'] == 'announce' && $this->ValidatePermission(73) == TRUE){
+					echo '<br /><div align="center">The announcement builder takes a given date range and returns the series and episodes added within that timeframe.<br> Episodes added are limited to airing series.</div>';
+                    echo '
+                    <form id="SeriesAnnouncementBuilder">
+                    <input type="hidden" id="method" class="method" value="SeriesAnnouncementBuilder" name="method" />
+                    <div id="date-picker-container" align="center" style="padding:10px;">
+                        <div style="display:inline-block;width:15.999%;"></div>
+                        <div style="vertical-align:top;width:30.9999%;display:inline-block;" align="left">
+                            <div>Start Date:</div>
+                            <div>
+                                <input type="text" data-toggle="datepicker" class="text-input" name="start-date" value="09/07/2017">
+                            </div>
+                        </div>
+                        <div style="vertical-align:top;width:30.9999%;display:inline-block;" align="left">
+                            <div>End Date:</div>
+                            <div>
+                                <input type="text" data-toggle="datepicker" class="text-input" name="end-date" value="09/07/2017">
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center">
+                        <input type="submit" name="update-form" id="update-form" value="Update Output">
+                    </div>
+                    </form>
+                    <script>
+                        $(\'[data-toggle="datepicker"]\').datepicker();
+                    </script>';
+					echo '<br /><b>Output:</b><br />';
+					echo '<div id="SeriesAnnouncementOutput"><textarea style="height:325px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()"></textarea></div>';
 						echo '
 						<script>
 						$(document).ready(function() {
-							$(\'#SeriesAnnouncementBuilder input\').change(function() {
+							$(\'#update-form\').click(function() {
 								$.ajax({
 									type: "POST",
 									url: "ajax.php",
 									data: $(\'#SeriesAnnouncementBuilder\').serialize(),
 									success: function(html) {
-										$(\'#SeriesAnnouncementOutput\').show().html(html);	
+										$(\'#SeriesAnnouncementOutput\').show().html(html);
 									}
 								});
 								return false;
@@ -327,7 +339,7 @@ class Series extends Config {
 						echo '<div align="center">The Mass update Tool is used to update a series` episodes from a single interface, since this is technically a series function I have placed it here instead of in the episode section as it makes it easier to just find it and run. -Brad</div>';
 						echo '<div align="center" style="padding-top:5px;">';
 							echo '<select name="AvailableSeries" id="AvailableSeries" style="color: #000000;">';
-						$query2 = "SELECT `id`, `seriesName`, `fullSeriesName` FROM series ORDER BY fullSeriesName ASC";		 
+						$query2 = "SELECT `id`, `seriesName`, `fullSeriesName` FROM series ORDER BY fullSeriesName ASC";
 						echo '<option id="0" value="0">Choose a Series</option> ';
 						$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 						while(list($id, $seriesName, $fullSeriesName) = mysql_fetch_array($result2, MYSQL_NUM))
@@ -337,7 +349,7 @@ class Series extends Config {
 						}
 						echo '</select>';
 						echo '</div><br />';
-						echo '<div id="SeriesOptions">&nbsp;</div>';					
+						echo '<div id="SeriesOptions">&nbsp;</div>';
 						echo '
 						<script>
 						$(document).ready(function() {
@@ -353,7 +365,7 @@ class Series extends Config {
 						$row = mysql_fetch_array($results);
 						echo '<div id="form_results" class="form_results">&nbsp;</div>';
 						echo '<form method="POST" name="MassEpisodeEdit" id="MassEpisodeEdit">';
-						
+
 						echo '
 						<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />
 						<input type="hidden" id="method" class="method" value="MassEpisodeUpdate" name="method" />
@@ -367,7 +379,7 @@ class Series extends Config {
 						<input type="hidden" name="old_hd" value="' . $row['hd'] . '" />
 						<input type="hidden" name="uid" value="' . $this->UserArray[1] . '" />
 						<table width="620px" border="0" cellpadding="2" cellspacing="1" align="center">
-						<tr> 
+						<tr>
 							<td width="130px" style="font:13px Verdana,Arial,Helvetica,sans-serif;color:#5A5655;">Video Width</td>
 							<td>
 								<input name="vidwidth" type="text" id="vidwidth" style="width:50px;" value="' . $row['vidwidth'] . '" class="text-input" />
@@ -385,7 +397,7 @@ class Series extends Config {
 						<tr>
 							<td width="100px" style="font:13px Verdana,Arial,Helvetica,sans-serif;color:#5A5655;">Episode Preffix</td>
 							<td>
-								<input name="epprefix" type="text" class="text-input" style="width:200px;" id="epprefix" value="' . $row['epprefix'] . '" />								
+								<input name="epprefix" type="text" class="text-input" style="width:200px;" id="epprefix" value="' . $row['epprefix'] . '" />
 								<label for="epprefix" id="epprefixError" class="FormError">The Episode Prefix is Required</label>
 							</td>
 						</tr>
@@ -485,7 +497,7 @@ class Series extends Config {
 										data: $(\'#MassEpisodeEdit\').serialize(),
 										success: function(html) {
 											if(html.indexOf("Success") >= 0){
-												//$(\'.form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Episode Mass Update was Successful!</div>");											
+												//$(\'.form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Episode Mass Update was Successful!</div>");
 												$(\'.form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;\'>Errror: " + html + "</div>");
 											$(\'.form_result\').delay(8000).slideUp();
 											}
@@ -499,7 +511,7 @@ class Series extends Config {
 							});
 							return false;
 						});
-						</script>';	
+						</script>';
 					}
 					// The idea behind this feature, is that it will give a list of series, followed by all the options for  the episodes, so you can change the eppisode prefix, width, height, sub group, image status, video type, in bulk. The best way to implement will be to have the system use a GET request back to the same script, to define the seriesname, if the seriesname is defined it will then pull up the first episodes options.. this is dangerous as things down the line could have multiple dimmensions.. possibly a way to show multiples? like a group by... food for later thoughts..
 				}
@@ -508,7 +520,7 @@ class Series extends Config {
 					// ADDED 10/11/2014 by Robotman321
 					// Builds the Category listing
 					$this->buildCategories();
-					
+
 					if($_GET['stage'] == 'edit' && $this->ValidatePermission(23) == TRUE)
 					{
 						$Type = 'edit';
@@ -520,15 +532,15 @@ class Series extends Config {
 							$sid = mysql_real_escape_string($_GET['sid']);
 							$sid = htmlentities($sid);
 							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, hd, `license` FROM series WHERE id='$sid'";
-							mysql_query("SET NAMES 'utf8'"); 
+							mysql_query("SET NAMES 'utf8'");
 							$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $hd, $license) = mysql_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
-								
+
 							$description = stripslashes($description);
 							$noteReason = stripslashes($noteReason);
 							$fullSeriesName = stripslashes($fullSeriesName);
-							
+
 							$HiddenInputs = '<input type="hidden" name="sid" value="' . $id . '" id="sid" />
 							<input type="hidden" id="method" class="method" value="EditSeries" name="method" />';
 							$SubmitTXT = 'Update Series';
@@ -547,7 +559,7 @@ class Series extends Config {
 							$row = mysql_fetch_array($result);
 							$SeriesPrefix = substr($row['series'], 0, 10);
 							$SeriesPrefix = strtolower($SeriesPrefix);
-							
+
 							// UPDATED: 7/17/2014 by Robotman321
 							// Added more options to pull from the beginning of the string.
 							if($SeriesPrefix == '[reencode]')
@@ -572,7 +584,7 @@ class Series extends Config {
 							$seoname = trim($seoname, '-');
 							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$hd = 0; $ueid = $_GET['ueid']; $license = 0;
 						}
-						else 
+						else
 						{
 							$Type = 'add';
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />';
@@ -580,7 +592,7 @@ class Series extends Config {
 							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = ''; $ueid = ''; $hd = 0; $license = 0;
 						}
 					}
-					else 
+					else
 					{
 						$Type = '';
 						$HiddenInputs = '';
@@ -655,7 +667,7 @@ class Series extends Config {
 						<div class="series-form-row">
 							<div class="series-form-left"><b><i>Series Genres</i></b><br /> <i>Take the "categories" from the series on <a href="http://anidb.net">AniDB.net</a> and paste it here, NO Special characters []&lt;&gt; just words and commas.</i></div>
 							<div class="series-form-right">';
-							
+
 								$category = explode(" , ",$category);
 								echo '
 								<select name="category[]" style="width:400px;" id="category" multiple="multiple">';
@@ -744,8 +756,8 @@ class Series extends Config {
 								{
 									echo '<option id="0" value="0">None</option> ';
 								}
-								else 
-								{										
+								else
+								{
 									echo '<option id="0" value="0">None</option> ';
 								}
 								$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
@@ -753,7 +765,7 @@ class Series extends Config {
 								{
 									$fullSeriesName = stripslashes($fullSeriesName);
 									echo '<option id="'.$id2.'" value="'.$id2.'"'; if($id2 == $prequelto){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
-								
+
 								}
 								echo '</select>
 							</div>
@@ -763,7 +775,7 @@ class Series extends Config {
 							<div class="series-form-right">
 								<select name="sequelto" style="color: #000000;" class="text-input">';
 								echo '<!-- '.$sequelto.' -->';
-								$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";		 
+								$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
 								if($sequelto == 0){
 									echo '<option id="0" value="0">None</option> ';
 								}
@@ -822,7 +834,7 @@ class Series extends Config {
 								</select>
 							</div>
 						</div>
-					</div>';						  
+					</div>';
 							echo '<input type="submit" class="SubmitForm" id="submit" name="submit" value="' . $SubmitTXT . '">';
 							if(isset($_GET['ueid']))
 							{
@@ -904,7 +916,7 @@ class Series extends Config {
 											echo '
 											$(".form_results").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Update Successful</div>");';
 										}
-										echo '											
+										echo '
 											$(".form_results").delay(8000).slideUp();
 										}
 										else{
@@ -917,8 +929,8 @@ class Series extends Config {
 							});
 							return false;
 						});
-						</script>';	
-				
+						</script>';
+
 				}
 				else {
 					echo 'WTF Were you doing, were you trying to be cool? Error S-002';
@@ -926,12 +938,12 @@ class Series extends Config {
 			}
 		}
 	}
-	
+
 	private function adminSeriesSearch()
 	{
 		$this->buildCategories();
-		$input = mysql_real_escape_string($_POST['SeriesName']);					
-		mysql_query("SET NAMES 'utf8'"); 
+		$input = mysql_real_escape_string($_POST['SeriesName']);
+		mysql_query("SET NAMES 'utf8'");
 		$query   = "SELECT id, seriesName, fullSeriesName, seoname, romaji, kanji, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category, (SELECT COUNT(id) FROM episode WHERE seriesname=series.seriesName) AS numeps FROM series WHERE ( fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' ) ORDER BY seriesName ASC LIMIT 100";
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$ts = mysql_num_rows($result);
@@ -941,10 +953,10 @@ class Series extends Config {
 		}
 		else
 		{
-			echo '<div align="center">Showing ' . $ts . ' Results for: <b>' . stripslashes($input) . '</b></div>';						
+			echo '<div align="center">Showing ' . $ts . ' Results for: <b>' . stripslashes($input) . '</b></div>';
 			while(list($id, $seriesName, $fullSeriesName, $seoname, $romaji, $kanji, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteActivate, $noteReason, $category, $numeps) = mysql_fetch_array($result, MYSQL_NUM))
 			{
-				//$query = mysql_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0"); 
+				//$query = mysql_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
 				$CountEpisodes = $numeps;
 				if($moviesOnly == 1){$moviesOnly = 'yes';}else {$moviesOnly = 'no';}
 				if($noteActivate == 1){$noteActivate = 'yes';}else {$noteActivate = 'no';}
@@ -957,12 +969,12 @@ class Series extends Config {
 					$gvar = ceil(($dlength-800)/55);
 					$gvar = $fivearray[$gvar];
 				}
-				else 
+				else
 				{
 					$gvar = '';
 				}
 				if($i % 2){ $srow = ' class="srow2" style="background-color:#D6D6D6;"';} else {$srow = ' class="srow"';}
-							
+
 				// ADDED 10/11/2014 by Robotman321
 				// explodes the category string so we can look through and make it awesome.
 				$category = split(" , ",$category);
@@ -978,7 +990,7 @@ class Series extends Config {
 						$finalizedCategories .= ', ';
 					}
 				}
-					
+
 				echo '<div'.$srow.'>
 				<div>
 					<div class="sleftcol">
@@ -1004,12 +1016,12 @@ class Series extends Config {
 					<b>Rating:</b><br /><img src="/images/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
 					'.$gvar.'
 					</div>
-				
+
 					<div class="srightcol">'.$description.'</div>
 					<div class="sfarrightcol"><img src="' . $this->Host . '/seriesimages/' . $id . '.jpg" alt="" style="height:250px;" /></div>
 					</div>';
 					$today = strtotime(date("Y-m-d"));
-					$sevendaysago = $today-(7*86400);		
+					$sevendaysago = $today-(7*86400);
 					$query1 = "SELECT `date`, `views` FROM  `mainaftw_stats`.`series_stats` WHERE `series_id` = " . $id . " AND `date` >= " . $sevendaysago . " AND `date` <= " . $today;
 					$result1 = mysql_query($query1);
 					if(!$result1)
@@ -1037,7 +1049,7 @@ class Series extends Config {
 							}
 							echo "
 							<script class=\"code\" type=\"text/javascript\">
-								
+
 								$(document).ready(function(){
 								  var line1=[" . $data . "];
 								  var plot2 = $.jqplot('series-chart-$id', [line1], {
@@ -1057,16 +1069,16 @@ class Series extends Config {
 									  }
 								  });
 								});
-								
+
 							</script>";
 						}
-					}			
+					}
 				echo '</div>';
 				$i++;
 			}
 		}
 	}
-	
+
 	private function Query($var)
 	{
 		if($var == 'fl')
@@ -1102,7 +1114,7 @@ class Series extends Config {
 			$iquery = "SELECT COUNT(id) FROM series";
 		}
 		else {}
-		$query = mysql_query($iquery); 
+		$query = mysql_query($iquery);
 		$total = mysql_result($query, 0);
 		return $total;
 		//unset $query;
