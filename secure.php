@@ -24,10 +24,10 @@ $PageTitle = 'Login - AnimeFTW.TV';
 		function makeUrlFriendly($postUsername) {
 				// Replace spaces with underscores
 				$output = preg_replace("/\s/e" , "_" , $postUsername);
-	
+
 				// Remove non-word characters
 				$output = preg_replace("/\W/e" , "" , $output);
-	
+
 				return strtolower($output);
 				}
 		function isEmail($email)
@@ -71,8 +71,8 @@ $PageTitle = 'Login - AnimeFTW.TV';
 							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
 							mysql_query($query) or die('Error : ' . mysql_error());
 							$query = "INSERT INTO `" . $Config->MainDB . "`.`logins` (`ip`, `date`, `uid`, `agent`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row['ID']."', '".$_SERVER['HTTP_USER_AGENT']."')";
-							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
-							
+							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+
 							// send an email to the user.
 							$Session->sendEmailToUser($row['Email'],$row['ID']);
 							if ($last_page == '')
@@ -99,15 +99,15 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					$failed = FALSE;
 						}
 					}
-					else {		
+					else {
 						$query = "INSERT INTO `failed_logins` (`name`, `password`, `ip`, `date`) VALUES
 		('" . mysql_real_escape_string($userName) . "', '" . mysql_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
-						mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
+						mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 						$error = 'Login failed! Password or Username is Incorrect.<br />'.$Config->checkFailedLogins($_SERVER['REMOTE_ADDR']);
 					}
 				}
 				else {
-					$error = 'Please use both your username and password to access your account';	
+					$error = 'Please use both your username and password to access your account';
 				}
 			}
 		}
@@ -120,7 +120,7 @@ else if($_GET['node'] == 'register'){
 	$error = $OutputArray['error'];
 	$FailCheck = $OutputArray['FailCheck'];
 	$noReg = $OutputArray['noReg'];
-	
+
 	$PageTitle = 'Account Registration  - AnimeFTW.TV';
 }
 else if($_GET['node'] == 'forgot-password'){
@@ -134,7 +134,7 @@ else if($_GET['node'] == 'forgot-password'){
 				$row = $db->getRow ( $getUser );
 				$query = $db->query ( "UPDATE " . DBPREFIX . "users SET Temp_pass='" . $temp_pass . "', Temp_pass_active=1 WHERE `Email`= " . $db->qstr ( $row->Email ) );
 				$subject = "Password Reset Request";
-				$message = "Dear " . $row->Username . ", Someone (presumably you), has requested a password reset. We have generated a new password for you to access our website:  <b>$temp_pass</b> . To confirm this change and activate your new password please follow this link to our website: <a href=\"https://www.animeftw.tv/confirm-password/$row->ID/$temp_pass\">https://www.animeftw.tv/confirm-password/$row->ID/$temp_pass</a> . Don't forget to update your profile as well after confirming this change and create a new password. If you did not initiate this request, simply disregard this email, and we're sorry for bothering you.";	
+				$message = "Dear " . $row->Username . ", Someone (presumably you), has requested a password reset. We have generated a new password for you to access our website:  <b>$temp_pass</b> . To confirm this change and activate your new password please follow this link to our website: <a href=\"https://www.animeftw.tv/confirm-password/$row->ID/$temp_pass\">https://www.animeftw.tv/confirm-password/$row->ID/$temp_pass</a> . Don't forget to update your profile as well after confirming this change and create a new password. If you did not initiate this request, simply disregard this email, and we're sorry for bothering you.";
 
 				if ( send_email ( $subject, $row->Email, $message ) ) {
 					$error = 'New password sent. Please check your email for more details.';
@@ -161,10 +161,10 @@ else if($_GET['node'] == 'email-resend')
 	if ( array_key_exists ( '_submit_check', $_POST ) ){
 		if ( $_POST['username'] != '' ){
 			$getUser = "SELECT ID, Username, Email, Random_key FROM " . DBPREFIX . "users WHERE Username = " . $db->qstr ( $_POST['username'] ) . "";
-				if ( $db->RecordCount ( $getUser ) == 1 ){			
-					$row = $db->getRow ( $getUser );					
+				if ( $db->RecordCount ( $getUser ) == 1 ){
+					$row = $db->getRow ( $getUser );
 					$subject = "Activation email from AnimeFTW.tv";
-					$message = "Dear ".$row->Username.", this is your activation link to join our website at animeftw.tv. <br /><br /> In order to confirm your membership please click on the following link: <a href=\"http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "\">http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "</a> <br /><br />After you confirm your status with us, please go visit this link: <a href=\"https://www.animeftw.tv/faq\">animeftw FAQ</a> and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place.<br /><br />Thank you for joining, once this has been confirmed another e-mail will be dispached with links on what you can do in our site!<br /<br /> Regards,<br /><br />FTW Entertainment LLC & AnimeFTW Staff.";					
+					$message = "Dear ".$row->Username.", this is your activation link to join our website at animeftw.tv. <br /><br /> In order to confirm your membership please click on the following link: <a href=\"http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "\">http://www.animeftw.tv/confirm?ID=" . $row->ID . "&key=" . $row->Random_key . "</a> <br /><br />After you confirm your status with us, please go visit this link: <a href=\"https://www.animeftw.tv/faq\">animeftw FAQ</a> and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place.<br /><br />Thank you for joining, once this has been confirmed another e-mail will be dispached with links on what you can do in our site!<br /<br /> Regards,<br /><br />FTW Entertainment LLC & AnimeFTW Staff.";
 					if ( send_email ( $subject, $row->Email, $message ) ) {
 						$error = 'Email Re-sent, please check, your spam box incase it is not in your inbox.';
 					}
@@ -190,7 +190,7 @@ else if($_GET['node'] == 'reviews')
 		$ver = $_POST['ver'];
 		$review = $_POST['review'];
 		$rating = $_POST['art_rating'];
-		if(md5($uid) == $ver){		
+		if(md5($uid) == $ver){
 	 		$query = sprintf("INSERT INTO reviews (sid, uid, date, review, stars, approved) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($sid, $conn),
 				mysql_real_escape_string($uid, $conn),
@@ -212,7 +212,7 @@ else if($_GET['node'] == 'password-confirm')
 
 	$query = "SELECT * FROM users WHERE ID = " . mysql_real_escape_string($_GET['ID']);
 	$result = mysql_query($query);
-		
+
 	if(mysql_num_rows($result) == 1)
 	{
 		$row = mysql_fetch_assoc($result);
@@ -249,11 +249,11 @@ else {
 	if($_GET['node'] == 'login' && (isset($error) || isset($msg))){
 		echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 		echo "<td class='note-message' align='center'>";
-		if(isset($error)){ 
-		echo $error;	
+		if(isset($error)){
+		echo $error;
 		}
 		if(isset($msg)){
-			echo $msg;	
+			echo $msg;
 		}
 		else {'Oooops it didnt work try again >.>';}
 		echo "</td>\n";
@@ -280,7 +280,7 @@ else {
 			if(!isset($_SERVER['HTTP_REFERER'])){
 				$referer2 = 'http://www.animeftw.tv/';
 			}
-			else {$referer2 = $_SERVER['HTTP_REFERER'];}	
+			else {$referer2 = $_SERVER['HTTP_REFERER'];}
 			echo '<div align="center"><form id="form1" action="'.$_SERVER['REQUEST_URI'].'" method="post">
 				<input type="hidden" name="_submit_check" value="1" />
 				<input type="hidden" name="issubmit" value="1">
@@ -295,7 +295,7 @@ else {
 					var cookieEnabled = (navigator.cookieEnabled) ? true : false;
 
 					if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
-					{ 
+					{
 						document.cookie="testcookie";
 						cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
 					}
@@ -330,8 +330,8 @@ else {
 				<div class="cb"></div>
 					<div style="margin: 5px 0px 0px 100px;">
 							<div style="margin-left:50px;"><input type="checkbox" name="remember" id="remember" checked="checked" />Keep me logged in</div>
-							<div style="font-size: 9px;">(Not recommended for public or shared computers)</div>								
-							<div style="margin: 10px 0px 0px 50px;"><a href="/forgot-password">Forgot Password?</a></div>								
+							<div style="font-size: 9px;">(Not recommended for public or shared computers)</div>
+							<div style="margin: 10px 0px 0px 50px;"><a href="/forgot-password">Forgot Password?</a></div>
 							<div style="margin: 10px 0px 0px 50px;">Don\'t have an account? <a href="/register">Register Here.</a></div>
 					</td>
 				  </tr>
@@ -358,7 +358,7 @@ else {
 			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
 			echo "</tr>\n</table>\n";
 		}
-		else if ( isset($error) && (isset($noReg) && $noReg == 'yes') ){ 
+		else if ( isset($error) && (isset($noReg) && $noReg == 'yes') ){
 			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			echo "<td class='note-message' align='center'><b>Registration Message: </b>".$error."</td>\n";
 			echo "</tr>\n</table></td></tr></table>\n";
@@ -387,22 +387,22 @@ else {
 					</ul>
 					<div id="step-1"><h2 class="StepTitle">Step 1: Account Details</h2>
 					<table cellspacing="3" cellpadding="3" align="center">
-						<tr><td align="center" colspan="3">&nbsp;</td></tr>        
+						<tr><td align="center" colspan="3">&nbsp;</td></tr>
 						<tr>
 							<td align="right">Username* :</td>
 							<td align="left"><input type="text" id="username" name="username" class="txtBox" onKeyUp="timeoutUsernameCheck()" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['username'].'"';} echo '></td>
 							<td align="left"><span id="msg_username"></span>&nbsp;<div id="username_exists" style="display: inline; margin-right:140px; float:right;"></div></td>
 						</tr>
 						<tr>
-							<td align="right">Password* :</td>	
+							<td align="right">Password* :</td>
 							<td align="left"><input type="password" id="password" name="password" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['password'].'"';} echo '></td>
 							<td align="left"><span id="msg_password"></span>&nbsp;</td>
-						</tr> 
+						</tr>
 						<tr>
 							<td align="right">Confirm Password* :</td>
 							<td align="left"><input type="password" id="cpassword" name="cpassword" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['cpassword'].'"';} echo '></td>
 							<td align="left"><span id="msg_cpassword"></span>&nbsp;</td>
-						</tr>  
+						</tr>
 						<tr>
 							<td align="right">Email* :</td>
 							<td align="left"><input type="text" id="email" name="email" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['email'].'"';} echo '></td>
@@ -413,12 +413,12 @@ else {
 							<td align="left"><input type="text" id="cemail" name="cemail" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['cemail'].'"';} echo '></td>
 							<td align="left"><span id="msg_cemail"></span>&nbsp;</td>
 						</tr>
-					</table>          			
+					</table>
 					</div>
 					<div id="step-2">
-					<h2 class="StepTitle">Step 2: Profile Details</h2>	
+					<h2 class="StepTitle">Step 2: Profile Details</h2>
 					<table cellspacing="3" cellpadding="3" align="center">
-						<tr><td align="center" colspan="3">&nbsp;</td></tr>        
+						<tr><td align="center" colspan="3">&nbsp;</td></tr>
 						<tr>
 							<td align="right">First Name :</td>
 							<td align="left"><input type="text" id="firstname" name="firstname" value="" class="txtBox"></td>
@@ -430,11 +430,11 @@ else {
 								<select id="gender" name="gender" class="txtBox">
 								  <option value="">-select-</option>
 								  <option value="Female">Female</option>
-								  <option value="Male">Male</option>                 
+								  <option value="Male">Male</option>
 								</select>
 							</td>
 							<td align="left"><span id="msg_gender"></span>&nbsp;</td>
-						</tr>     
+						</tr>
 						<tr>
 							<td align="right">Age* :</td>
 							<td align="left">
@@ -444,7 +444,7 @@ else {
 								{
 									$ri = $i<10?('0'.$i):$i;
 									echo '<option value="' . $ri . '">' . $i . '</option>';
-								}						
+								}
 								echo '</select>
 								<select name="ageMonth" class="txtBox2">
 								<option value="00" selected="selected">--Month--</option>';
@@ -453,7 +453,7 @@ else {
 								{
 									$ri = ($i+1)<10?('0'.($i+1)):($i+1);
 									echo '<option value="' . $ri . '">' . $monthsarr[$i] . '</option>';
-								}					 
+								}
 								echo '</select>
 								<select name="ageYear" class="txtBox2">
 								<option value="0000" selected="selected">--Year--</option>';
@@ -466,14 +466,14 @@ else {
 								echo '</select>
 							</td>
 						</tr>
-					</table>        
-					</div>                      
+					</table>
+					</div>
 					<div id="step-3">
-					<h2 class="StepTitle">Step 3: Preferences</h2>	
+					<h2 class="StepTitle">Step 3: Preferences</h2>
 					<table cellspacing="3" cellpadding="3" align="center">
 							<tr>
 								<td align="center" colspan="3">&nbsp;</td>
-							</tr>        
+							</tr>
 							<tr>
 								<td align="right">Timezone* :</td>
 								<td align="left">
@@ -520,7 +520,7 @@ else {
 			</select>
 							  </td>
 								<td align="left"><span id="msg_tz"></span>&nbsp;</td>
-							</tr>          			
+							</tr>
 							<tr>
 								<td align="right">Receive Administrator Notifications :</td>
 								<td align="left">
@@ -530,7 +530,7 @@ else {
 									</select>
 								</td>
 								<td align="left">&nbsp;</td>
-							</tr>    
+							</tr>
 							<tr>
 								<td align="right">Site PM Notifications :</td>
 								<td align="left">
@@ -541,14 +541,14 @@ else {
 								</td>
 								<td align="left">&nbsp;</td>
 							</tr>
-					   </table>               				          
+					   </table>
 				</div>
 					<div id="step-4">
-					<h2 class="StepTitle">Step 4: Validation</h2>	
+					<h2 class="StepTitle">Step 4: Validation</h2>
 					<table cellspacing="3" cellpadding="3" align="center">
 							<tr>
 								<td align="center" colspan="3">&nbsp;</td>
-							</tr>        
+							</tr>
 							<tr>
 								<td align="right" valign="top">Bot Check* :</td>
 								<td align="left">
@@ -556,21 +556,21 @@ else {
 								  <input type="text" maxlength="150" id="google" name="google" class="txtBox" />
 							  </td>
 								<td align="left" valign="bottom"><span id="msg_google"></span>&nbsp;</td>
-							</tr>   
+							</tr>
 							<tr>
 								<td align="right" valign="top">Are you Human?* :</td>
 								<td align="left"><div align="center">
 								<div class="g-recaptcha" data-sitekey="6Lej28MSAAAAAHbSX338LhM9FdQD-RalGgrKSM3Z"></div>
 								<span style="color: red;" id="captchaStatus">&nbsp;</span></div></td>
 								<td align="left"><span id="msg_recaptcha"></span>&nbsp;</td>
-							</tr>   
+							</tr>
 							<tr>
 								<td align="right">Agreement* :</td>
 								<td align="left"><input name="agreement" type="checkbox" value="yes" id="agreement" /> by Submitting your registration you agree to AnimeFTW.tv\'s <a href="/tos" target="_blank">ToS</a> as well as our <a href="/rules" target="_blank">Rules</a></td>
 								<td align="left"><span id="msg_agreement"></span>&nbsp;
 								</td>
 							</tr>
-					   </table> 
+					   </table>
 					   </td>
 					</tr>
 			   </table>
@@ -579,7 +579,7 @@ else {
 	</table>
 				</div>
 				</div>
-		</form> 
+		</form>
 		<div align="center">
 		*= Is required to signup on AnimeFTW.tv, if you have any questions please use the <a href="/contact-us">Contact Us</a> or hop in the <a href="/irc">Chat</a> and leave us a message.</div>';
 		}
@@ -610,7 +610,7 @@ else if($_GET['node'] == 'forgot-password'){
             <td colspan="2">
             <div class="cb"></div>
 				<div style="margin: 5px 0px 0px 50px;">
-						<div align="center" style="font-size: 9px;">When you submit the above form, AnimeFTW.tv will email you with a link to establish a temp password.</div>								
+						<div align="center" style="font-size: 9px;">When you submit the above form, AnimeFTW.tv will email you with a link to establish a temp password.</div>
              	</td>
               </tr>
              </table>
@@ -643,7 +643,7 @@ else if($_GET['node'] == 'email-resend'){
             <td colspan="2">
             <div class="cb"></div>
 				<div style="margin: 5px 0px 0px 50px;">
-						<div align="center" style="font-size: 9px;">When you submit the above form, AnimeFTW.tv will email you the welcome email, allowing you to complete the registration of your account.</div>								
+						<div align="center" style="font-size: 9px;">When you submit the above form, AnimeFTW.tv will email you the welcome email, allowing you to complete the registration of your account.</div>
              	</td>
               </tr>
              </table>
@@ -781,7 +781,7 @@ else if($_GET['node'] == 'advanced-signup'){
 <br />
 <br />
 <div>
-Since becoming an Advanced Member is a product of being a FTW Subscriber, we are asking everyone to continue over to <a href="https://ftwentertainment.com/subscribers">FTW Entertainment\'s Subscriber Zone</a> To continue with the signup process, once your account has been updated as a FTW Subscriber you will see the AnimeFTW.TV Advanced Status come to life.</div><br /><div align="center"><h2><a href="https://ftwentertainment.com/subscribers">Continue to FTW Entertainment\'s Subscriber Zone</a></h2></div>';
+Since becoming an Advanced Member is a product of being a FTW Subscriber, we are asking everyone to continue over to <a href="https://ftwentertainment.com/supporters">FTW Entertainment\'s Supporters Zone</a> To continue with the signup process, once your account has been updated as a FTW Subscriber you will see the AnimeFTW.TV Advanced Status come to life.</div><br /><div align="center"><h2><a href="https://ftwentertainment.com/subscribers">Continue to FTW Entertainment\'s Subscriber Zone</a></h2></div>';
 		echo '</div>';
 }
 else if($_GET['node'] == 'reviews'){
@@ -823,8 +823,8 @@ else if($_GET['node'] == 'reviews'){
 
 					echo '<br /></div>
 				</div>';
-				
-		   
+
+
 		  }
 		   if($_GET['subnode'] == 'review'){
 			   //Pull the respective Series ID number and get the series info and name..
@@ -850,7 +850,7 @@ else if($_GET['node'] == 'reviews'){
 						echo checkSeriesSid($ReviewedSeries).'</a><br />
 							<br /><i>Synopsis</i>:
 							<br />'.$rdescription.'<br /><br />';
-		
+
 							echo "<form id='postingform' action='http://".$siteroot."/reviews/submitted/' method='post' name='REPLIER' enctype='multipart/form-data'>
 					<input type='hidden' name='sid' value='$ReviewedSeries' />
 					<input type='hidden' name='uid' value='$profileArray[1]' />
@@ -879,7 +879,7 @@ else if($_GET['node'] == 'reviews'){
 		   }
 		   if($_GET['subnode'] == 'submit')
 		   {
-	
+
 			   echo '<div class="mpart">
 				<h2>AnimeFTW Series Reviews! - Review submitted!</h2><br />
 					<br />Thank you for submitting a review, our reports team will look over your review and approve/deny accordingly!<br /><br />Please remember that Basic Members are allowed to have 5 submitted reviews, be they pending or approved.<br /><br />  Want to review more series? Become an <a href="/advanced-signup">Advanced Member</a> and get reviewing today!
@@ -890,7 +890,7 @@ else if($_GET['node'] == 'reviews'){
 	}
 }
 else if($_GET['node'] == 'password-confirm'){
-		
+
 	if ( isset ( $error ) ) {
 		echo $error;
 	}
@@ -915,6 +915,6 @@ else {
     echo "&nbsp;</td>\n";
 	echo "</tr>\n</table>\n";
 	// End Main BG
-		
+
 include('footer.php')
 ?>
