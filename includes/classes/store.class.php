@@ -1,38 +1,38 @@
 <?php
 /****************************************************************\
-## FileName: store.class.php									 
-## Author: Brad Riemann										 
+## FileName: store.class.php
+## Author: Brad Riemann
 ## Usage: Store Script
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class Store extends Config {
-	
+
 	private $options, $CatArray, $Item, $OrderStatusArray;
 	var $UserArray;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
 		$this->ParseOptions();
 		$this->BuildStoreCategories();
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	public function StoreInit()
 	{
 		$this->BuildStructure();
 	}
-	
+
 	public function AdminInit()
 	{
 		$this->BuildAdminModule();
 	}
-	
+
 	private function ParseOptions()
 	{
 		if(isset($_GET['options']))
@@ -44,7 +44,7 @@ class Store extends Config {
 			$this->options = NULL;
 		}
 	}
-	
+
 	private function BuildStructure()
 	{
 		$this->Navigation();
@@ -94,12 +94,12 @@ class Store extends Config {
 			$this->FeatureItem();
 		}
 	}
-	
+
 	private function BuildStoreCategories($type = NULL,$var = NULL)
 	{
 		$query = "SELECT * FROM store_category";
 		$result = mysql_query($query);
-		
+
 		// if we want to specifiy something, we change it!
 		if($type == 1)
 		{
@@ -135,7 +135,7 @@ class Store extends Config {
 			$this->CatArray = $CatArray;
 		}
 	}
-	
+
 	private function FeatureItem($SingleCategory = NULL)
 	{
 		if($SingleCategory == 'checkout')
@@ -179,19 +179,19 @@ class Store extends Config {
 					<div align="center">Please Choose what you would like to do.</div>
 					<div align="center">';
 					if($this->ValidatePermission(80) == TRUE)
-					{		
+					{
 						echo '<a href="#" onClick="AdminLoad(\'manage-stock\'); return false;">Manage Stock</a>';
 					}
 					if($this->ValidatePermission(81) == TRUE)
-					{		
+					{
 						echo '| <a href="#" onClick="AdminLoad(\'manage-orders\'); return false;">Manage Orders</a>';
 					}
 					if($this->ValidatePermission(82) == TRUE)
-					{		
+					{
 						echo '| <a href="#" onClick="AdminLoad(\'manage-carts\'); return false;">Manage Carts</a>';
 					}
 					if($this->ValidatePermission(83) == TRUE)
-					{		
+					{
 						echo '| <a href="#" onClick="AdminLoad(\'manage-logs\'); return false;">View Logs</a>';
 					}
 					echo '</div>
@@ -294,12 +294,12 @@ class Store extends Config {
 			echo "<br />\n";
 		}
 	}
-	
+
 	private function Navigation()
 	{
 		echo '<div class="side-body-bg">
 			<div style="padding:5px;">
-			<span>Nav:</span>'; 
+			<span>Nav:</span>';
 		$ender = '';
 		if($this->options[0] == "")
 		{
@@ -334,7 +334,7 @@ class Store extends Config {
 		echo '	</div>
 		</div>';
 	}
-	
+
 	private function ShowItem()
 	{
 		$query = "SELECT id, name, price, availability, description, productnum, pictures, picturetype FROM store_items WHERE name = '" . mysql_real_escape_string($this->options[1]) . "'";
@@ -348,7 +348,7 @@ class Store extends Config {
 			$row = mysql_fetch_array($result);
 			$this->ItemName = $row['name'];
 			$numrows = mysql_num_rows($result);
-			
+
 			if($numrows > 0)
 			{
 				$this->Item = $row;
@@ -393,13 +393,13 @@ class Store extends Config {
 			}
 		}
 	}
-	
+
 	private function BuildAvailability($item_id)
 	{
 		$query = "SELECT `id`, `item_count`, `item_size` FROM store_inventory WHERE item_id='$item_id' AND item_count>0 ORDER BY `order` ASC";
 		$results = mysql_query($query);
 		$numrow = mysql_num_rows($results);
-		
+
 		if($numrow > 0) // if there are active rows, it means it can be bought.
 		{
 			if($this->UserArray[0] == 1)
@@ -434,7 +434,7 @@ class Store extends Config {
 		echo $addtocart;
 		echo '</form>';
 	}
-	
+
 	private function OrderHistory()
 	{
 		$this->OrderStatus();
@@ -450,7 +450,7 @@ class Store extends Config {
 		if($count > 0)
 		{
 			while(list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysql_fetch_array($results))
-			{				
+			{
 				echo '<div class="store-row-container" style="border:1px solid #333;margin:0 0 10px 0;">';
 				echo '<div class="store-order-header" style="padding:5px;background:#e2e2e2;">
 						<div style="display:inline-block;width:150px;">' . date('m/d/Y',$date_submitted) . '</div>
@@ -465,7 +465,7 @@ class Store extends Config {
 					echo '		<div style="padding-top:5px;">Tracking #: ' . $tracking_num . '</div> <!-- tracking number -->';
 				}
 				echo '	</div>';
-				
+
 				$subresults = mysql_query("SELECT store_orders_items.item_id, (SELECT item_size FROM store_inventory WHERE id=store_orders_items.inventory_id) AS item_size, store_orders_items.quantity, store_items.name, store_items.picturetype FROM store_orders_items, store_items WHERE store_orders_items.cart_id=" . $cart_id . " AND store_items.id=store_orders_items.item_id");
 				$i = 0;
 				while(list($item_id,$item_size,$quantity,$name,$picturetype) = mysql_fetch_array($subresults))
@@ -484,19 +484,19 @@ class Store extends Config {
 			echo 'You have never ordered something from the AnimeFTW.tv Store!';
 		}
 	}
-	
+
 	private function OrderStatus()
 	{
 		$Statuses = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'store_order_statuses'","value");
 		$StatusArray = preg_split("/\|+/", $Statuses);
-		$StatArr = array();		
+		$StatArr = array();
 		foreach($StatusArray as &$Status)
 		{
 			$StatArr[] = $Status;
 		}
 		$this->OrderStatusArray = $StatArr;
 	}
-	
+
 	private function BuildAdminModule()
 	{
 		if(isset($_GET['page']))
@@ -545,12 +545,12 @@ class Store extends Config {
 								echo 'This script just hates you.';
 							}
 							else
-							{								
+							{
 								$inv_id = substr($_GET['inv_id'],5);
 								$inv_type = substr($_GET['inv_id'],0,4);
-								
+
 								$this->ModRecord("Update Inventory for Item " . mysql_real_escape_string($_GET['id']));
-								
+
 								if($inv_type == 'size')
 								{
 									// We are going to update the size value
@@ -577,7 +577,7 @@ class Store extends Config {
 				{
 					$query = "SELECT id, name, productnum FROM store_items ORDER BY name ASC";
 					$results = mysql_query($query);
-					
+
 					$rowcount = mysql_num_rows($results);
 					echo '<div style="float:right;padding-right:15px;"><a href="#" onClick="AdminFunction(\'manage-stock\',\'add\',\'0\'); return false;">Add Item</a></div><div align="center" style="margin-top:5px;">Showing a total of ' . $rowcount . ' items available on the store.</div>
 					<div>';
@@ -627,8 +627,8 @@ class Store extends Config {
 		{
 			echo 'The request could not be processed at this time.';
 		}
-	}	
-	
+	}
+
 	private function ItemForm($Type = 'Add')
 	{
 		if($Type == 'Edit')
@@ -641,7 +641,7 @@ class Store extends Config {
 			$FormOptions = '';
 			$FormTitle = '<div style="font-size:16px;width:200px;border-bottom:1px solid #ccc;">Editting an Item</div>';
 		}
-		else 
+		else
 		{
 			$id = '';
 			$category = '';
@@ -718,11 +718,11 @@ class Store extends Config {
 						if(html.substring(4, 11) == "Success")
 						{
 							' . $FormOptions . '
-							$(\'#item-output\').show().html(html);	
+							$(\'#item-output\').show().html(html);
 						}
 						else
 						{
-							$(\'#item-output\').show().html(html);	
+							$(\'#item-output\').show().html(html);
 						}
 					}
 				});
@@ -731,17 +731,17 @@ class Store extends Config {
 		});
 		</script>';
 	}
-	
+
 	private function ListInventory($id)
 	{
 		echo '<div id="inventory-wrapper">';
 		echo '<div style="padding:5px;">';
 		echo '<div style="float:right;"><a href="#" id="inventory-add">Add a New Inventory Item</a></div>';
 		echo '<div style="font-size:16px;width:200px;border-bottom:1px solid #ccc;">Item Inventory</div>';
-		
+
 		$query = "SELECT `id`, `item_count`, `item_size`, `order` FROM store_inventory WHERE item_id = $id ORDER BY `order` ASC";
 		$results = mysql_query($query);
-		
+
 		if(!$results)
 		{
 			echo 'There was an error with the MySQL query; ' . mysql_error();
@@ -780,7 +780,7 @@ class Store extends Config {
 				ShowLoading();
 				var inv_id = $(this).attr("id");
 				var inv_value = $(this).attr("value");
-				
+
 				var request_url = "/scripts.php?view=cart-admin&page=manage-stock&action=update-inventory-row&id=' . $id . '&inv_id="  + inv_id + "&value=" + inv_value;
 				var request = $.ajax({
 					type: "GET",
@@ -819,7 +819,7 @@ class Shopping_Cart extends Config {
 	var $total_items;
 	var $total_weight;
 	var $UserArray;
-	
+
 	/**
 	 * __construct() - Constructor. This assigns the name of the cart
 	 *                 to an instance variable and loads the cart from
@@ -832,12 +832,12 @@ class Shopping_Cart extends Config {
 		$this->cart_name = $name;
 		$this->BuildItemArray();
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	private function BuildItemArray()
 	{
 		$query = "SELECT id, category, name, price, description, productnum, weight FROM store_items";
@@ -853,14 +853,14 @@ class Shopping_Cart extends Config {
 			$this->storeitems[$row['id']][6] = $row['weight'];
 		}
 	}
-	
+
 	/**
 	 * setItemQuantity() - Set the quantity of an item.
 	 *
 	 * @param string $order_code The order code of the item.
 	 * @param int $quantity The quantity.
 	 */
-	function setItemQuantity($order_code, $quantity) 
+	function setItemQuantity($order_code, $quantity)
 	{
 		$query = "SELECT store_cart.uid FROM store_cart, store_orders_items WHERE store_orders_items.id = " . mysql_real_escape_string($order_code) . " AND store_cart.id=store_orders_items.cart_id";
 		$results = mysql_query($query);
@@ -886,10 +886,10 @@ class Shopping_Cart extends Config {
 			}
 		}
 	}
-	
+
 	public function AddItemToCart($inventory_id, $quantity)
 	{
-		// When this function is called, the item is being added to the cart, once the CheckCart function is done, we need to 
+		// When this function is called, the item is being added to the cart, once the CheckCart function is done, we need to
 		$cart_id = $this->CheckCart();
 		$query = "INSERT INTO `store_orders_items` (`id`, `cart_id`, `item_id`, `inventory_id`, `quantity`) VALUES (NULL, '" . $cart_id . "', (SELECT item_id FROM `store_inventory` WHERE id = '" . $inventory_id . "'), '" . $inventory_id . "', '" . $quantity . "');";
 		$results = mysql_query($query);
@@ -898,9 +898,9 @@ class Shopping_Cart extends Config {
 			echo 'Error in mysql query.' . mysql_error();
 			exit;
 		}
-		
+
 	}
-	
+
 	private function CheckCart()
 	{
 		$query = "SELECT id FROM store_cart WHERE uid = '" . $this->UserArray[1] . "' and active = 0";
@@ -916,7 +916,7 @@ class Shopping_Cart extends Config {
 		$row = mysql_fetch_array($results);
 		return $row['id'];
 	}
-	
+
 	/**
 	 * getItems() - Get all items.
 	 *
@@ -949,7 +949,7 @@ class Shopping_Cart extends Config {
 		}
 		echo '<tr><td colspan="4"></td><td id="total_price">$' . $total_price . '</td></tr>';
 	}
-	
+
 	/**
 	 * hasItems() - Checks to see if there are items in the cart.
 	 *
@@ -958,7 +958,7 @@ class Shopping_Cart extends Config {
 	function hasItems() {
 		return (bool) $this->CheckForCart();
 	}
-	
+
 	/**
 	 * clean() - Cleanup the cart contents. If any items have a
 	 *           quantity less than one, remove them.
@@ -969,7 +969,7 @@ class Shopping_Cart extends Config {
 				unset($this->items[$order_code]);
 		}
 	}
-	
+
 	/**
 	 * save() - Saves the cart to a session variable.
 	 */
@@ -977,7 +977,7 @@ class Shopping_Cart extends Config {
 		$this->clean();
 		$_SESSION[$this->cart_name] = $this->items;
 	}
-	
+
 	private function CheckForCart()
 	{
 		$query = "SELECT * FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0";
@@ -995,7 +995,7 @@ class Shopping_Cart extends Config {
 		else
 		{
 			$this->current_cart = mysql_fetch_array($results); // pushes the current cart data into the active slot.
-			
+
 			// now we check to see if there is any data in the cart, aka items.
 			$results = mysql_query("SELECT id FROM store_orders_items WHERE cart_id = " . $this->current_cart[0]);
 			$numrows = mysql_num_rows($results);
@@ -1010,12 +1010,12 @@ class Shopping_Cart extends Config {
 			}
 		}
 	}
-	
+
 	public function CheckoutDetails()
 	{
 		$query = "SELECT store_orders_items.item_id, store_items.price, store_orders_items.quantity, store_orders_items.cart_id FROM store_orders_items, store_items WHERE store_items.id=store_orders_items.item_id AND store_orders_items.cart_id = (SELECT id FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0)";
 		$results = mysql_query($query);
-		
+
 		$start = 0;
 		$items = 0;
 		$weight = 0;
@@ -1035,10 +1035,10 @@ class Shopping_Cart extends Config {
 				<td>$' . $start . '</td>
 			</tr>';
 	}
-	
+
 	public function CheckoutMethods()
 	{
-		
+
 		echo '
 		<div style="font-size:16px;">Checkout Options</div>
 		<div style="background:#e6e6e6;">
@@ -1051,7 +1051,7 @@ class Shopping_Cart extends Config {
 					<input type="hidden" name="on0" value="Cart ID" />
 					<input type="hidden" name="os0" value="' . $this->cart_id . '" />
 					<input type="hidden" name="quantity" value="1">
-					<input type="hidden" name="business" value="brad@ftwentertainment.com" />
+					<input type="hidden" name="business" value="weare@rayandfay.com" />
 					<input type="hidden" name="no_note" value="1" />
 					<input type="hidden" name="no_shipping" value="2" />
 					<input type="hidden" name="currency_code" value="USD" />
@@ -1085,7 +1085,7 @@ class Shopping_Cart extends Config {
 						<input name="item_merchant_id_1" type="hidden" value="8073"/>
 						<input name="continue_url" type="hidden" value="https://www.animeftw.tv/store/account"/>
 						<input name="_charset_" type="hidden" value="utf-8"/>
-						
+
 						<input type="hidden" name="ship_method_name_1" value="USPS Priority Mail" />
 						<input type="hidden" name="ship_method_price_1" value="4.95" />
 						<input type="hidden" name="ship_method_currency_1" value="USD" />
@@ -1101,49 +1101,49 @@ class Shopping_Cart extends Config {
 						<input type="hidden" name="ship_method_name_5" value="FedEx 2Day" />
 						<input type="hidden" name="ship_method_price_5" value="18.00" />
 						<input type="hidden" name="ship_method_currency_5" value="USD" />
-						  
+
 						<!--this says shipping options 1 through 5 are only for US Continental 48 States -->
 						<input type="hidden" name="ship_method_us_area_1" value="CONTINENTAL_48" />
 						<input type="hidden" name="ship_method_us_area_2" value="CONTINENTAL_48" />
 						<input type="hidden" name="ship_method_us_area_3" value="CONTINENTAL_48" />
 						<input type="hidden" name="ship_method_us_area_4" value="CONTINENTAL_48" />
 						<input type="hidden" name="ship_method_us_area_5" value="CONTINENTAL_48" />
-						
+
 						<!--Shipping option 6 is for Alaska and Hawaii rates. AK and HI are not part of Continental 48-->
 						<input type="hidden" name="ship_method_name_6" value="FedEx 2Day - Alaska and Hawaii" />
 						<input type="hidden" name="ship_method_price_6" value="24.00" />
 						<input type="hidden" name="ship_method_currency_6" value="USD" />
-						  
+
 						<!--International Section -->
 						<input type="hidden" name="ship_method_name_7" value="International Flat Rate" />
 						<input type="hidden" name="ship_method_price_7" value="20.00" />
 						<input type="hidden" name="ship_method_currency_7" value="USD" />
-						
+
 						<!-- International: Canada (only) rate, all other countries will use option 7 -->
 						<input type="hidden" name="ship_method_name_8" value="Canada Flat Rate" />
 						<input type="hidden" name="ship_method_price_8" value="25.00" />
 						<input type="hidden" name="ship_method_currency_8" value="USD" />
-						  
+
 						<!-- We now restrict the shipping options above accordingly -->
-						
+
 						<!-- This restricts option 6, Fedex 2Day Alaska and Hawaii, display to customers who have AK and HI delivery addresses -->
 						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-6.shipping-restrictions.allowed-areas.us-state-area-1.state" value="AK" />
 						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-6.shipping-restrictions.allowed-areas.us-state-area-2.state" value="HI" />
-						  
+
 						<!-- All international countries (except Canada, more below) will use this rate -->
 						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-7.shipping-restrictions.allowed-areas.world-area-1" value="true" />
-						  
+
 						<!-- we don\'t want the above rate displayed to US delivery destinations -->
 						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-7.shipping-restrictions.excluded-areas.us-country-area-1.country-area" value="ALL" />
-						  
+
 						<!-- we don\'t want the above rate displayed to Canada delivery destinations either -->
 						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-7.shipping-restrictions.excluded-areas.postal-area-1.country-code" value="CA" />
-						  
+
 						<!-- We now set the rate for Canada -->
 						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-8.shipping-restrictions.allowed-areas.postal-area-1.country-code" value="CA" />
-						
+
 						  <input type="hidden" name="tax_rate" value="0.0705"/>
-						
+
 						  <input type="hidden" name="tax_us_state" value="IL"/>
 						<input type="image" name="Google Checkout" alt="Fast checkout through Google" src="https://www.animeftw.tv/images/storeimages/google-wallet-checkout.png" />
 					</form>
@@ -1159,7 +1159,7 @@ class Shopping_Cart extends Config {
 			</div>
 		</div>';*/
 	}
-	
+
 	public function ShowCart()
 	{
 	$Cart = new Shopping_Cart('shopping_cart');
@@ -1174,60 +1174,60 @@ class Shopping_Cart extends Config {
 				<script src="/scripts/thickbox.js" type="text/javascript"></script>
 				<script type="text/javascript" src="/scripts/cart.js"></script>
 				<style>
-				body {  
-        color: #222;  
-        font: 0.8em Arial, Helvetica, sans-serif;  
-    }  
-      
-    h1 {  
-        font: 2em normal Arial, Helvetica, sans-serif;  
-        margin-bottom: 0.5em;  
-    }  
-      
-    #container {  
-        margin: 0 auto;  
-        width: 90%;  
-    }  
-      
-    table#cart {  
-        border-collapse: collapse;  
-        margin-bottom: 1em;  
-        width: 100%;  
-    }  
-          
-        table#cart th {  
-            background: #11B4E9;  
-            color: #fff;  
-            text-align: left;  
-            whitewhite-space: nowrap;  
-        }  
-          
-        table#cart th,  
-        table#cart td {  
-            padding: 5px 10px;  
-        }  
-          
-        table#cart .item_name {  
-            width: 100%;  
-        }  
-          
-        table#cart .quantity input {  
-            text-align: center;  
-        }  
-          
-        table#cart tr td {  
-            background: #fff;  
-        }  
-          
-        table#cart tr.odd td {  
-            background: #eee;  
-        }  
-          
-        .center {  
-            text-align: center;  
-        } 
+				body {
+        color: #222;
+        font: 0.8em Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+        font: 2em normal Arial, Helvetica, sans-serif;
+        margin-bottom: 0.5em;
+    }
+
+    #container {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    table#cart {
+        border-collapse: collapse;
+        margin-bottom: 1em;
+        width: 100%;
+    }
+
+        table#cart th {
+            background: #11B4E9;
+            color: #fff;
+            text-align: left;
+            whitewhite-space: nowrap;
+        }
+
+        table#cart th,
+        table#cart td {
+            padding: 5px 10px;
+        }
+
+        table#cart .item_name {
+            width: 100%;
+        }
+
+        table#cart .quantity input {
+            text-align: center;
+        }
+
+        table#cart tr td {
+            background: #fff;
+        }
+
+        table#cart tr.odd td {
+            background: #eee;
+        }
+
+        .center {
+            text-align: center;
+        }
 		.right-checkout-button {
-			background:#FFF url(/images/forum_button.png) 105px 9px no-repeat; 
+			background:#FFF url(/images/forum_button.png) 105px 9px no-repeat;
 			border:2px solid #747478;
 			color:#555;
 			display:inline-block;
@@ -1249,7 +1249,7 @@ class Shopping_Cart extends Config {
 			color:#fff;
 		}
 		.left-checkout-button {
-			background:#FFF; 
+			background:#FFF;
 			border:2px solid #747478;
 			color:#555;
 			display:inline-block;
@@ -1277,7 +1277,7 @@ class Shopping_Cart extends Config {
 				// Make sure the user is logged in.
 				if($this->UserArray[0] == 1)
 				{
-					// if we are not trying to check out.. 
+					// if we are not trying to check out..
 					if(!isset($_GET['checkout']))
 					{
 						echo '<h1>Shopping Cart</h1>';
@@ -1317,7 +1317,7 @@ class Shopping_Cart extends Config {
 									<th>Item Count</th>
 									<th>Sub Total</th>
 								</tr>';
-						$Cart->CheckoutDetails();		
+						$Cart->CheckoutDetails();
 						echo '</table>';
 						$Cart->CheckoutMethods();
 					}
@@ -1334,67 +1334,67 @@ class Shopping_Cart extends Config {
 }
 
 class ProcessOrders extends Config {
-	
+
 	var $PostData, $UserArray;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	public function init($PostData)
 	{
 		$this->PostData = $PostData;
 		$this->LogData();
 	}
-	
+
 	private function LogData()
 	{
 		$query = "INSERT INTO `mainaftw_anime`.`store_order_paypallogs` (`id`, `mc_gross`, `protection_eligibility`, `address_status`, `payer_id`, `tax`, `address_street`, `payment_date`, `payment_status`, `address_zip`, `first_name`, `mc_fee`, `address_country_code`, `address_name`, `custom`, `payer_status`, `address_country`, `address_city`, `quantity`, `verify_sign`, `payer_email`, `txn_id`, `payment_type`, `last_name`, `address_state`, `receiver_email`, `payment_fee`, `receiver_id`, `txn_type`, `item_name`, `mc_currency`, `item_number`, `residence_country`, `test_ipn`, `handling_amount`, `transaction_subject`, `payment_gross`, `shipping`, `option_selection1`) VALUES (NULL, '" . mysql_real_escape_string($_POST['mc_gross']) . "', '" . mysql_real_escape_string($_POST['protection_eligibility']) . "', '" . mysql_real_escape_string($_POST['address_status']) . "', '" . mysql_real_escape_string($_POST['payer_id']) . "', '" . mysql_real_escape_string($_POST['tax']) . "', '" . mysql_real_escape_string($_POST['address_street']) . "', '" . mysql_real_escape_string($_POST['payment_date']) . "', '" . mysql_real_escape_string($_POST['payment_status']) . "', '" . mysql_real_escape_string($_POST['address_zip']) . "', '" . mysql_real_escape_string($_POST['first_name']) . "', '" . mysql_real_escape_string($_POST['mc_fee']) . "', '" . mysql_real_escape_string($_POST['address_country_code']) . "', '" . mysql_real_escape_string($_POST['address_name']) . "', '" . mysql_real_escape_string($_POST['custom']) . "', '" . mysql_real_escape_string($_POST['payer_status']) . "', '" . mysql_real_escape_string($_POST['address_country']) . "', '" . mysql_real_escape_string($_POST['address_city']) . "', '" . mysql_real_escape_string($_POST['quantity']) . "', '" . mysql_real_escape_string($_POST['verify_sign']) . "', '" . mysql_real_escape_string($_POST['payer_email']) . "', '" . mysql_real_escape_string($_POST['txn_id']) . "', '" . mysql_real_escape_string($_POST['payment_type']) . "', '" . mysql_real_escape_string($_POST['last_name']) . "', '" . mysql_real_escape_string($_POST['address_state']) . "', '" . mysql_real_escape_string($_POST['receiver_email']) . "', '" . mysql_real_escape_string($_POST['payment_fee']) . "', '" . mysql_real_escape_string($_POST['receiver_id']) . "', '" . mysql_real_escape_string($_POST['txn_type']) . "', '" . mysql_real_escape_string($_POST['item_name']) . "', '" . mysql_real_escape_string($_POST['mc_currency']) . "', '" . mysql_real_escape_string($_POST['item_number']) . "', '" . mysql_real_escape_string($_POST['residence_country']) . "', '" . mysql_real_escape_string($_POST['test_ipn']) . "', '" . mysql_real_escape_string($_POST['handling_amount']) . "', '" . mysql_real_escape_string($_POST['transaction_subject']) . "', '" . mysql_real_escape_string($_POST['payment_gross']) . "', '" . mysql_real_escape_string($_POST['shipping']) . "', '" . mysql_real_escape_string($_POST['option_selection1']) . "');";
 		mysql_query($query);
-		
+
 		// So if the order was accepted, we need to push through things.
 		if((isset($_POST['txn_type']) && $_POST['txn_type'] == 'web_accept') && $_POST['payment_status'] == 'Completed')
 		{
 			$results = mysql_query("SELECT COUNT(id) FROM store_orders WHERE cart_id = " . mysql_real_escape_string($_POST['option_selection1']));
 			$row = mysql_fetch_array($results);
-			
+
 			if($row[0] == 1)
 			{
 				// this order is already outstanding, we need to update it so that it shows that the money went through and we are processing it.
 				mysql_query("UPDATE store_orders SET payment_method = 1, payment_id = " . mysql_real_escape_string($_POST['txn_id']) . " WHERE cart_id = " . mysql_real_escape_string($_POST['option_selection1']));
 			}
 			else
-			{			
+			{
 				// Since this order is a one shot go system, we need to change the cart to inactive, no confusion here.
 				mysql_query("UPDATE store_cart SET active = 1 WHERE id = " . mysql_real_escape_string($_POST['option_selection1']));
-				
+
 				// Add the details to the store_orders, since this is a new order that was instantly processed.
 				mysql_query("INSERT INTO store_orders (`id`, `cart_id`, `total_price`, `date_submitted`, `date_updated`, `status`, `payment_method`, `payment_id`) VALUES (NULL, '" . mysql_real_escape_string($_POST['option_selection1']) . "', '" . mysql_real_escape_string($_POST['payment_gross']) . "', '" . time() . "', '" . time() . "', '0', '1','" . mysql_real_escape_string($_POST['txn_id']) . "')");
-			}			
+			}
 			// We need to run the store items adjustment function so that any ordered items are no longer in queue.
 			$this->adjustInventory($_POST['option_selection1']);
-			
+
 			// We need to send a pm/email stating that the order was received.
 			include("email.class.php");
 			$Email = new Email($_POST['payer_email'],'support@animeftw.tv');
 			$Email->Send(0,$_POST['option_selection1']);
-			
+
 		}
 		// someone might submit an order that uses an eCheck, so it will come up pending, we need to let the user know that we see they have ordered but its pending a payment.
 		else if((isset($_POST['txn_type']) && $_POST['txn_type'] == 'web_accept') && $_POST['payment_status'] == 'Pending')
 		{
 			// The order is set to pending (from an eCheck), so let's set the cart to inactive and update the Orders
 			mysql_query("UPDATE store_cart SET active = 1 WHERE id = " . mysql_real_escape_string($_POST['option_selection1']));
-									
+
 			// Add a row, since we are waiting for it to go through, we will need to worry about finding the data later.
 			mysql_query("INSERT INTO store_orders (`id`, `cart_id`, `total_price`, `date_submitted`, `date_updated`, `status`, `payment_method`, `payment_id`) VALUES (NULL, '" . mysql_real_escape_string($_POST['option_selection1']) . "', '" . mysql_real_escape_string($_POST['payment_gross']) . "', '" . time() . "', '" . time() . "', '0', '3','" . mysql_real_escape_string($_POST['txn_id']) . "')");
-			
+
 			include("email.class.php");
 			$Email = new Email($_POST['payer_email']);
 			$Email->Send(1,$_POST['option_selection1']);
@@ -1403,14 +1403,14 @@ class ProcessOrders extends Config {
 		{
 		}
 	}
-	
+
 	// autonomous process that will adjust inventory and record in the system when it does so.
 	private function adjustInventory($CartID)
 	{
 		// The first thing we need to do is query the cart, get all of the ordered items and quantities so that we can adjust accordingly.
 		$query = "SELECT inventory_id, quantity FROM store_orders_items WHERE cart_id = " . mysql_real_escape_string($CartID);
 		$results = mysql_query($query);
-		
+
 		// we now need to loop through each ordered item and subtract what was ordered from the inventory, making sure to log the autonomous system in case we need to go back through and adjust
 		while($row = mysql_fetch_array($results))
 		{
