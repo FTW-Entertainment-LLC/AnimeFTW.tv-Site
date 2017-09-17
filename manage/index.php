@@ -12,7 +12,7 @@ if($C->UserArray[0] == 0)
 else if($C->UserArray[2] == 3)
 {
 	header("location: http://" . $_SERVER['HTTP_HOST'] . "/");
-	exit;	
+	exit;
 }
 else
 {
@@ -67,7 +67,7 @@ echo '<!doctype html>
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		
+
 		<title>' . $Title . '</title>
 
 		<!-- Meta tags -->
@@ -79,7 +79,8 @@ echo '<!doctype html>
 		<link rel="stylesheet" type="text/css" href="assets/jquery.jqplot.min.css" />
 		<link rel="stylesheet" type="text/css" href="assets/select2.css?v=1" />
 		<link rel="stylesheet" type="text/css" href="assets/tables.css?v=1" />
-		
+		<link rel="stylesheet" type="text/css" href="assets/datepicker.min.css?v=1" />
+
 		<!-- JavaScript -->
 		<!--[if IE]><![endif]-->
 		<!--[if lt IE 9]>
@@ -90,7 +91,8 @@ echo '<!doctype html>
 		<link rel="stylesheet" href="assets/redactor.css?v=1" />
 		<script src="assets/redactor.min.js"></script>
 		' . $ManagementJS . '
-		<script type="text/javascript">//<![CDATA[ 
+		<script src="assets/datepicker.min.js?v=1"></script>
+		<script type="text/javascript">//<![CDATA[
 			$( document ).ajaxStart(function() {
 				$( ".modal" ).show();
 			}).ajaxStop(function(){
