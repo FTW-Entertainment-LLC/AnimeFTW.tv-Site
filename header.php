@@ -13,7 +13,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 			header('location: https://'.$_SERVER['HTTP_HOST'].'/login');
 			exit;
 		}
-		else 
+		else
 		{
 			header('location: https://'.$_SERVER['HTTP_HOST'].'/user/'.$profileArray[5]);
 			exit;
@@ -105,9 +105,11 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 			$psa .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";
 			$psa .= "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 			$psa .= "<td valign='top' class='main-mid'>\n";
-			$psa .= "<div class='side-body-bg' style='min-height:50px;border:1px solid red;'>\n";	
-			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">Yes, the email and rumors are true!</div>';
-			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Hello Everyone. Yes - The email you got from our systems is correct. On Thursday 8/24/2017 paypal alerted us to our account having been frozen forever. The notice states that there is no way to appeal this however we MIGHT get access to our funds after 180 days.<br>BAH!<br> We\'ve updated the donation page so that it uses one of the Admin\'s personal accounts as September 1st our server bills come due at around 1500.<br> As of this notice we are currently sitting at 500 dollars of the needed 1500, if you have even a few dollars to spare to help keep us afloat, we would be eternally grateful.</div>';
+			$psa .= "<div class='side-body-bg' style='min-height:50px;border:1px solid red;'>\n";
+			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">New Paypal account, same issues.</div>';
+			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Well, we didn\'t even make it three weeks before paypal burned us again. This time though we got some progress gaining the funds in our old account, however they have since revoked access to robot\'s personal account.
+            <br> This means that we are back to square one, with the possibility that we might not be able to get a new paypal account. So we\'ve done the next best thing (at the direction of an awesome member), and setup a Patreon account!<br>Check us out here, which bypasses paypal entirely!<br>
+            <a href="https://www.patreon.com/bePatron?u=7723752" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script></div>';
 			$psa .= "</div>\n";
 			$psa .= "</td>";
 			$psa .= "</tr></table>";
@@ -158,7 +160,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 					var quantity = $("input[name=quantity]", this).val();
 					var url = "/scripts.php?view=cart&order_code=" + orderCode + "&quantity=" + quantity + "&TB_iframe=true&height=400&width=780";
 					tb_show(title, url, false);
-					
+
 					return false;
 				});
 			});
@@ -199,20 +201,20 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 		if($_SERVER['PHP_SELF'] == '/users.php') {
 			echo "
 			<script type=\"text/javascript\">
-				$(document).ready(function() { 
-					var options = { 
-							target:   '#avatar-div-wrapper',   // target element(s) to be updated with server response 
-							beforeSubmit:  beforeSubmit,  // pre-submit callback 
-							success:       afterSuccess,  // post-submit callback 
-							resetForm: true        // reset the form after successful submit 
-						}; 
-						
-					 $('#MyUploadForm').submit(function() { 
-							$(this).ajaxSubmit(options);  			
-							// always return false to prevent standard browser submit and page navigation 
-							return false; 
-						}); 
-				}); 
+				$(document).ready(function() {
+					var options = {
+							target:   '#avatar-div-wrapper',   // target element(s) to be updated with server response
+							beforeSubmit:  beforeSubmit,  // pre-submit callback
+							success:       afterSuccess,  // post-submit callback
+							resetForm: true        // reset the form after successful submit
+						};
+
+					 $('#MyUploadForm').submit(function() {
+							$(this).ajaxSubmit(options);
+							// always return false to prevent standard browser submit and page navigation
+							return false;
+						});
+				});
 
 				function afterSuccess()
 				{
@@ -225,18 +227,18 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 					//check whether browser fully supports all File API
 				   if (window.File && window.FileReader && window.FileList && window.Blob)
 					{
-						
+
 						if( !$('#imageInput').val()) //check empty input filed
 						{
 							alert('Are you kidding me?');
 							return false
 						}
-						
+
 						var fsize = $('#imageInput')[0].files[0].size; //get file size
 						var ftype = $('#imageInput')[0].files[0].type; // get file type
-						
 
-						//allow only valid image file types 
+
+						//allow only valid image file types
 						switch(ftype)
 						{
 							case 'image/png': case 'image/gif': case 'image/jpeg': case 'image/pjpeg':
@@ -245,17 +247,17 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 								alert('<b>'+ftype+'</b> Unsupported file type!');
 								return false
 						}
-						
+
 						//Allowed file size is less than 1 MB (1048576)
-						if(fsize>1048576) 
+						if(fsize>1048576)
 						{
 							alert('<b>' + bytesToSize(fsize) + '</b> Too big Image file! <br />Please try smaller filer or reduce the size of your photo using an image editor.');
 							return false
 						}
-								
+
 						$('#submit-btn').hide(); //hide submit button
 						$('#loading-img').show(); //hide submit button
-						$('#output').html(\"\");  
+						$('#output').html(\"\");
 					}
 					else
 					{
@@ -293,11 +295,11 @@ if($_SERVER['PHP_SELF'] == '/request.php')
     <style type="text/css">
 body {
 	background-image: url("/images/uploads/background_user1.png");
-		
+
 			background-position:center;
 			background-attachment: fixed;
 			background-repeat: no-repeat;
-		
+
 }
 </style>
 <?php
@@ -307,15 +309,15 @@ body {
 		echo '<style type="text/css">
 		body {
 			background-image: url("/images/uploads/background_donate.png");
-				
+
 					background-position:center;
 					background-attachment: fixed;
 					background-repeat: no-repeat;
-				
+
 		}
 		</style>';
 	}
-	
+
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 3 && $profileArray[2] != 0))
 	{
 		?>
@@ -347,7 +349,7 @@ if ($_SERVER['PHP_SELF'] == '/index.php') {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.async = true; 
+  js.async = true;
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7&appId=1451417695153600";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, \'script\', \'facebook-jssdk\'));</script>';

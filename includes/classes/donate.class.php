@@ -1,44 +1,44 @@
 <?php
 /****************************************************************\
-## FileName: donate.class.php                                     
-## Author: Brad Riemann                                         
+## FileName: donate.class.php
+## Author: Brad Riemann
 ## Usage: Donate page class
 ## Copyright 2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class AFTWDonate
 {
-    
-    /* The premise of this script is to create a central place where we can push and show users the data they need 
+
+    /* The premise of this script is to create a central place where we can push and show users the data they need
     #  To gain information regarding current donation runs for AnimeFTW.tv
     #  Due to our past issue with paypal, this page MUST be secured through the header for members only.
-    #  Goals: Create a page, that relies on the counts from the paypal_donations table, since everytime a user donates it gets 
+    #  Goals: Create a page, that relies on the counts from the paypal_donations table, since everytime a user donates it gets
     #          added to this table.
     #  Notes: This is to be like kickstarter, two column setup, with possiblity for tabbed content, lets think small and
-    #            go with one page, right nav starts with the goal, then the progress bar, then the levels for donors, that are associated 
-    #          with that specific donation drive. Variables will be taken from the global settings table, then parsed out from the 
+    #            go with one page, right nav starts with the goal, then the progress bar, then the levels for donors, that are associated
+    #          with that specific donation drive. Variables will be taken from the global settings table, then parsed out from the
     #          donation table and the table that handles the donation levels, brought together in this script.
     */
-    
+
     //#- Vars -#\\
     var $profileArray, $donation_round, $donation_name, $donation_active, $donation_goal, $donation_description, $firstDay, $lastDay;
-    
+
     //#- Contruct -#\\
     public function __construct()
     {
         $this->BuildGlobalVars(); // we offload the queries to make the construct less messy.. yay
-        
+
         $todayDate = date('y-m-d');
         $this->firstDay = strtotime(date('Y-m-01', strtotime($todayDate)));
         $this->lastDay = strtotime(date('Y-m-t', strtotime($todayDate)));
     }
-    
+
     //#- Public Functions -#\\
     public function Build($profileArray)
     {
         $this->profileArray = $profileArray;
     }
-    
+
     public function Output()
     {
         $this->LeftColumn();
@@ -47,13 +47,13 @@ class AFTWDonate
         $this->RightColumn(); // Right column data..
         $this->UpdateViews();
     }
-    
+
     public function ScriptsOutput()
     {
         $this->BuildDonatePage();
         $this->DonateJumpPage();
     }
-    
+
     private function LeftColumn()
     {
         echo '<span class="scapmain">Donate to AnimeFTW.tv!</span>
@@ -64,14 +64,14 @@ class AFTWDonate
         echo $this->donation_description;
         echo '</div>';
     }
-    
+
     private function RightColumn()
     {
         $this->ProgressBox();
         $this->DonationTiers();
         $this->donors();
     }
-    
+
     private function ProgressBox()
     {
         $goal = $this->donation_goal;
@@ -105,9 +105,9 @@ class AFTWDonate
         echo '<span class="current" style="margin-left:28px;font-size:22px;">Current: </span><span class="currentamount" style="font-size:20px;font-weight:bold;">$'.$current.'</span><br />';
         echo '<span class="current" style="font-size:22px;">Difference: </span><span class="currentamount" style="font-size:18px;font-weight:bold;">$'.$whatsleft.'</span><br />';
         echo "</div></div></div>\n";
-        
+
     }
-    
+
     private function DonationTiers()
     {
         if (1 ==2) {
@@ -149,12 +149,17 @@ class AFTWDonate
                     <input type="hidden" name="item_name" value="' . $this->donation_name . '">
                     <input type="hidden" name="quantity" value="1">
                     <input type="hidden" name="return" value="https://www.animeftw.tv/donate/thank-you">
-                    <input type="hidden" name="business" value="brad@ftwentertainment.com">
+                    <input type="hidden" name="business" value="weare@rayandfay.com">
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"><br />
                     <input type="text" name="amount" value="" placeholder="Donation Amount" />
                     </form>
                 </div>';
+            echo '
+                <div align="center" style="vertical-align:center">
+                    <a href="https://www.patreon.com/bePatron?u=7723752" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+                </div>
+                ';
             }
             echo '
                 <div align="center" style="padding-top:5px;">
@@ -166,7 +171,7 @@ class AFTWDonate
             echo "</div></div>\n";
         }
     }
-    
+
     # function CalculateDonors
     private function CalculateDonors($donate,$dlimit = 0)
     {
@@ -189,7 +194,7 @@ class AFTWDonate
             echo '<div class="totaldonors" align="center"><b>'.$count.' Donors for this month.</b></div>'; // return the variable so it doesnt screw everything up!
         }
     }
-    
+
     # function BuildGlobalVars
     private function BuildGlobalVars()
     {
@@ -203,7 +208,7 @@ class AFTWDonate
             $query = "SELECT `goal`, `round_name`, `description` FROM `donation_settings` WHERE `active` = 1";
             $result = mysql_query($query);
             $row = mysql_fetch_assoc($result);
-            
+
             $this->donation_active = 1;
             $this->donation_name = $row['round_name'];
             $this->donation_goal = $row['goal'];
@@ -213,9 +218,9 @@ class AFTWDonate
             $this->donation_name = 'None configured';
             $this->donation_goal = '0';
             $this->donation_description = 'There are currently no active donation rounds.';
-        }      
+        }
     }
-    
+
     private function BuildDonatePage()
     {
         if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -245,7 +250,7 @@ class AFTWDonate
             }
         }
     }
-    
+
     private function DonateJumpPage()
     {
         if (!isset($_GET['step']) || $_GET['step'] != 'after') {
@@ -302,12 +307,12 @@ class AFTWDonate
             }
         }
     }
-    
+
     private function UpdateViews()
     {
         mysql_query("UPDATE donation_settings SET views = views+1 WHERE round_id = ".$this->donation_round);
     }
-    
+
     private function donors()
     {
         echo "<div class='side-body-bg'>";
