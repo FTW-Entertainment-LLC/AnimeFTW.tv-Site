@@ -350,13 +350,13 @@ class processData extends Config {
 
                             $seriesDetails = '<br>';
                             if ($seriesArray[$i]['stillRelease'] == 'yes') {
-                                $seriesDetails .= '<img src="https://img03.animeftw.tv/airing_icon.gif" width="14" alt="This series is still airing!" />';
+                                $seriesDetails .= '<img src="https://img03.animeftw.tv/airing_icon.gif" width="14" alt="This series is still airing!" style="font:16px/20px Arial, Helvetica, sans-serif; color:#000; box-shadow:0 1px 2px 0 rgba(0,0,0,0.5); vertical-align:top;"  />';
                             }
                             if ($seriesArray[$i]['hd'] == 2) {
-                                $seriesDetails .= '<img src="https://img03.animeftw.tv/series-pages/hd-720p-icon.png" width="25" alt="Watch in 720p" />
-                                <img src="https://img03.animeftw.tv/series-pages/hd-1080p-icon.png" width="25" alt="Watch in 1080p" />';
+                                $seriesDetails .= '<img src="https://img03.animeftw.tv/series-pages/hd-720p-icon.png" width="25" alt="Watch in 720p" style="font:16px/20px Arial, Helvetica, sans-serif; color:#000; box-shadow:0 1px 2px 0 rgba(0,0,0,0.5); vertical-align:top;"  />
+                                <img src="https://img03.animeftw.tv/series-pages/hd-1080p-icon.png" width="25" alt="Watch in 1080p" style="font:16px/20px Arial, Helvetica, sans-serif; color:#000; box-shadow:0 1px 2px 0 rgba(0,0,0,0.5); vertical-align:top;"  />';
                             } else if ($seriesArray[$i]['hd'] == 1) {
-                                $seriesDetails .= '<img src="https://img03.animeftw.tv/series-pages/hd-1080p-icon.png" width="25" alt="Watch in 1080p" />';
+                                $seriesDetails .= '<img src="https://img03.animeftw.tv/series-pages/hd-720p-icon.png" width="25" alt="Watch in 720p" style="font:16px/20px Arial, Helvetica, sans-serif; color:#000; box-shadow:0 1px 2px 0 rgba(0,0,0,0.5); vertical-align:top;"  />';
                             }
 
                             $seriesTemplate->set('series-details',$seriesDetails);
