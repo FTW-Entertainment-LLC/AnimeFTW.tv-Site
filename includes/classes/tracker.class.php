@@ -1,21 +1,21 @@
 <?php
 /****************************************************************\
-## FileName: tracker.class.php									 
-## Author: Brad Riemann										 
+## FileName: tracker.class.php
+## Author: Brad Riemann
 ## Usage: Tracker Class and subfunctions
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 //include('includes/classes/config.class.php');
 class AFTWTracker extends Config {
-	// Vars	
-	var $pp, $tz, $sigim, $host, $ruid, $UserArray;	
-	
+	// Vars
+	var $pp, $tz, $sigim, $host, $ruid, $UserArray;
+
 	public function __construct()
 	{
 		parent::__construct();
 	}
-	
+
 	/*################*\
 	# public functions #
 	\*################*/
@@ -27,40 +27,46 @@ class AFTWTracker extends Config {
 		$this->host = $_SERVER['HTTP_HOST'];
 		$this->ruid = mysql_real_escape_string(htmlentities($ruid));
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	public function ShowTracker($page)
 	{
-		if($page == 'signatures')
-		{
-			$this->BuildSigs();			
-			echo '<script>
-				$(document).ready(function(){
-					$(".row2").click(function() {
-						$("#" + this.id).select();
-					});
-				});
-			</script>';
-				
-		}
-		else if($page == 'del')
-		{
-			$this->DelEntry();
-		}
-		else
-		{
-			$this->BuildList();
-		}
+        // Restrict all unauthorized users, dmca requests were stemming from the links in them.
+        // Fixes Issue 333
+        if ($this->UserArray[2] != 0) {
+    		if($page == 'signatures')
+    		{
+    			$this->BuildSigs();
+    			echo '<script>
+    				$(document).ready(function(){
+    					$(".row2").click(function() {
+    						$("#" + this.id).select();
+    					});
+    				});
+    			</script>';
+
+    		}
+    		else if($page == 'del')
+    		{
+    			$this->DelEntry();
+    		}
+    		else
+    		{
+    			$this->BuildList();
+    		}
+        } else {
+            echo '<div align="center">WARNING: You must be logged in to view this user\'s tracker.</div>';
+        }
 	}
-		
+
 	/*#################*\
 	# private functions #
 	\*#################*/
-	
+
 	private function SQLQuery($query,$type)
 	{
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -73,29 +79,29 @@ class AFTWTracker extends Config {
 		else {}
 		return $result;
 	}
-	
+
 	private function DelEntry(){
 		if(!$_GET['tid'] || !is_numeric($_GET['tid']))
 		{
 			echo "<div class=\"redmsg\">Error Deleting Tracker Entry, Try again - ER002</div>";
 		}
-		else 
+		else
 		{
 			$tid = mysql_real_escape_string($_GET['tid']);
 			$q = $this->SQLQuery("SELECT id, uid FROM episode_tracker WHERE id='".$tid."'",0);
 			if($q['uid'] == $this->ruid && $this->UserArray[2] != 3)
 			{
-				echo "<div class=\"redmsg\">Tracker Entry was deleted Successfully.</div>";	
+				echo "<div class=\"redmsg\">Tracker Entry was deleted Successfully.</div>";
 				//echo "DELETE FROM episode_tracker WHERE id = '".$q['id']."'";
-				$this->SQLQuery("DELETE FROM episode_tracker WHERE id = '" . mysql_real_escape_string($q['id']) . "'",2);		
+				$this->SQLQuery("DELETE FROM episode_tracker WHERE id = '" . mysql_real_escape_string($q['id']) . "'",2);
 			}
-			else 
+			else
 			{
 				echo "<div class=\"redmsg\">Error Deleting Tracker Entry, Try again - ER001</div>";
 			}
 		}
 	}
-	
+
 	private function BuildList()
 	{
 		$thispage = "/scripts.php?view=tracker&id=".$this->ruid;
@@ -123,7 +129,7 @@ class AFTWTracker extends Config {
 			while(list($id, $eid, $dateViewed) = mysql_fetch_array($q, MYSQL_NUM))
 			{
 				$dateViewed = timeZoneChange($dateViewed,$this->UserArray[3]);
-				$dateViewed = date("l, F jS, Y, h:i a",$dateViewed);				
+				$dateViewed = date("l, F jS, Y, h:i a",$dateViewed);
 				if(($this->ruid == $this->UserArray[1] && $this->UserArray[2] != 3) || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
 				{
 					$delete = '<a href="#" class="delete-entry" id="tracker-entry-' . $id . '"><img src="/images/tinyicons/cancel.png" class="tracker_more" style="float:right;" alt="" title="delete this entry" /></a>';
@@ -132,7 +138,7 @@ class AFTWTracker extends Config {
 				{
 					$delete = '<a href="#" class="null-delete-entry"><img src="/images/tinyicons/cancel.png" class="tracker_more" style="float:right;" alt="" title="delete this entry" /></a>';
 				}
-				echo '<div class="'.$tclass.'" id="entry-' . $id . '" style="margin-bottom:10px;">'.$delete.$this->constructEntryDetails($eid,$dateViewed) . '</div>'."\n"; 
+				echo '<div class="'.$tclass.'" id="entry-' . $id . '" style="margin-bottom:10px;">'.$delete.$this->constructEntryDetails($eid,$dateViewed) . '</div>'."\n";
 			}
 			$this->pagingV1("tracker-wrapper",$rs,$this->pp,$cpage,$thispage);
 			echo '<br />';
@@ -164,7 +170,7 @@ class AFTWTracker extends Config {
 			</script>';
 		}
 	}
-	
+
 	private function BuildSigs()
 	{
 		echo '<div align="center" style="padding-bottom:5px;"><a href="#" rel="#profile" onClick="$(\'#tracker-wrapper\').load(\'/scripts.php?view=tracker&id=' . $this->ruid . '\'); return false;">Main View</a> | <a href="#" rel="#profile" onClick="$(\'#tracker-wrapper\').load(\'/scripts.php?view=tracker&id=' . $this->ruid . '&sub=signatures\'); return false;">Signatures View</a></div>';
@@ -178,17 +184,17 @@ class AFTWTracker extends Config {
 	{
 		return '<div align="center"><img src="https://'.$this->host.'/images/tracker-sig/'.$im.'/'.$u.'.gif" width="350" height="100"><br />Forum Code<br /><textarea id="tracker-' . $im . '" class="row2" rows="1" cols="80" readonly="readonly">[url=https://'.$this->host.'/user/'.$u.'][img]https://'.$this->host.'/images/tracker-sig/'.$im.'/'.$u.'.gif[/img][/url]</textarea></div>';
 	}
-	
+
 	private function constructEntryDetails($epid,$date)
 	{
 		$query = "SELECT `episode`.`epnumber`, `episode`.`epname`, `series`.`seoname`, `series`.`fullSeriesName` FROM `series`, `episode` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
 		$result = mysql_query($query);
 		$row = mysql_fetch_assoc($result);
 		//return checkEpisodeSeriesName($eid).'<br /> Viewed on '.$dateViewed.', Entitled: '.checkEpisode2($eid).'';
-		
+
 		return ' Viewed Series <a href="/anime/' . $row['seoname'] . '/" target="_blank">' . $row['fullSeriesName'] . '</a> Episode #' . $row['epnumber'] . ' <br /> Viewed on ' . $date . ', Entitled: <a href="/anime/' . $row['seoname'] . '/ep-' . $row['epnumber'] . '" target="_blank">' . $row['epname'] . '</a>';
 	}
-	
+
 	public function currentEpisodeAvailability($epid)
 	{
 		$query = "SELECT `round` FROM `watchlist`, `episode` WHERE `watchlist`.`uid` = " . $this->UserArray[1] . " AND `episode`.`id` = '" . mysql_real_escape_string($epid) . "' AND `watchlist`.`sid` = `episode`.`sid`";
@@ -207,7 +213,7 @@ class AFTWTracker extends Config {
         } else {
             $count = 0;
         }
-		
+
 		if ($count == 0) {
 			// There is no count, give them the ability to add this to their Tracker.
 			echo '
@@ -215,10 +221,10 @@ class AFTWTracker extends Config {
 				<img src="' . $this->Host . '/add_tracker.png" alt="" title="Add This video to your Tracker!" style="float:left;padding-top:1px;padding-right:3px;" />&nbsp;<a href="#" onClick="return false;" style="color:black;" id="episode-' . $epid . '" class="add-to-tracker">Add to the Tracker.</a>
 			</div>
 			<div style="padding-top:2px;" class="tracker-added-date">
-				
+
 			</div>';
 		} else {
-			$row = mysql_fetch_assoc($result);            
+			$row = mysql_fetch_assoc($result);
 			echo '
 			<div style="font-size:14px;" class="tracker-button">
 				<img src="' . $this->Host . '/added_tracker.png" alt="" title="This video is already in your Tracker for this Round!" style="float:left;padding-top:1px;padding-right:3px;" />&nbsp;<span>In your Tracker.</span>
@@ -232,7 +238,7 @@ class AFTWTracker extends Config {
 			$(document).ready(function(){
 				$(".add-to-tracker").click(function() {
 					var this_id = $(this).attr("id").substring(8);
-					
+
 					$.ajax({
 						url: "/scripts.php?view=tracker&subview=add-entry&id=" + this_id,
 						cache: false,
@@ -247,13 +253,13 @@ class AFTWTracker extends Config {
 							}
 						}
 					});
-					
+
 				});
 			});
 		</script>
 		';
 	}
-	
+
 	// Records the episode entry.
 	public function addTrackerEntry($epid)
 	{

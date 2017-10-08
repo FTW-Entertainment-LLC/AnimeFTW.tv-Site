@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: management.class.php									 
-## Author: Brad Riemann										 
+## FileName: management.class.php
+## Author: Brad Riemann
 ## Usage: Management Class and Functions
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -9,25 +9,25 @@ include_once('includes/classes/config.class.php');
 
 class AFTWManagement extends Config {
 	var $uid, $appround;
-	
+
 	/******************\
 	# Public Functions #
 	\******************/
-	
+
 	public function __construct(){
 		parent::__construct();
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	public function Con($uid,$appround){
 		$this->uid = $uid;
 		$this->appround = $appround;
 	}
-	
+
 	// This functino is used to process post requests sent to scripts.php, we should only be sending things we understand..
 	public function PostProcess(){
 		if(isset($_POST['method'])){
@@ -37,7 +37,7 @@ class AFTWManagement extends Config {
 			echo 'You did not submit all the details, please try again.';
 		}
 	}
-	
+
 	public function PublicOutput($node){
 		if($node == 'users'){
 			echo $this->TopNav();
@@ -74,7 +74,7 @@ class AFTWManagement extends Config {
 				- Add episode option
 			*/
 		}
-		else if($node == 'series'){	
+		else if($node == 'series'){
 			if($this->ValidatePermission(21) == TRUE){
 				$this->ManageSeries();
 			}
@@ -137,8 +137,8 @@ class AFTWManagement extends Config {
 		else {
 			echo 'ERROR: S-M3';
 		}
-	}	
-	
+	}
+
 	private function TopNav(){
 		if($this->ValidatePermission(1) == TRUE){
 			echo '<div class="management-nav">';
@@ -186,15 +186,15 @@ class AFTWManagement extends Config {
 				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=forums\'); return false;"><img src="/images/management/manage_forum_objects.png" height="25px" alt="" title="Manage Forum Posts and Threads" /></a></div>';
 			}
 			if($this->ValidatePermission(61) == TRUE){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=settings\'); return false;"><img src="/images/management/manage_settings.png" height="25px" alt="" title="Manage Settings" /></a></div>'; 
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=settings\'); return false;"><img src="/images/management/manage_settings.png" height="25px" alt="" title="Manage Settings" /></a></div>';
 			}
 			echo '</div>';
 		}
 	}
 	/*******************\
 	# Private Functions #
-	\*******************/	
-	
+	\*******************/
+
 	private function Query($var){
 		if($var == 'fl'){
 			$iquery = "SELECT COUNT(id) FROM failed_logins";
@@ -221,26 +221,26 @@ class AFTWManagement extends Config {
 			$iquery = "SELECT COUNT(id) FROM series";
 		}
 		else {}
-		$query = mysql_query($iquery); 
+		$query = mysql_query($iquery);
 		$total = mysql_result($query, 0);
 		return $total;
 		//unset $query;
 	}
-	
+
 	private function RemoteBuildEpImage($url){
 		$file = file_get_contents($url);
 		echo $file;
 	}
-	
+
 	private function NewSendMail($subject,$to,$body){
 		ini_set('sendmail_from', 'no-reply@animeftw.tv');
 		$headers = 'From: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
 			'Reply-To: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
 			'X-Mailer: PHP/' . phpversion();
-		
+
 		mail($to, $subject, $body, $headers);
 	}
-		
+
 	private function ManageUsers($stage,$page){
 		$count = $page;
 		//build the info
@@ -282,7 +282,7 @@ class AFTWManagement extends Config {
 			$query = "SELECT ID, Username, registrationDate, staticip, Active FROM users WHERE Level_access = 7 ORDER BY ID DESC LIMIT $count, 30";
 			$link = $ladvanced;
 		}
-		else if($stage == 'failed-logins'){  
+		else if($stage == 'failed-logins'){
 			$go = 2;
 			$rowcount = $qflogins;
 			$query = "SELECT id, name, password, ip, date FROM failed_logins ORDER BY id DESC LIMIT $count, 30";
@@ -356,7 +356,7 @@ class AFTWManagement extends Config {
 				$error = 'Error: You submitted an invalid function, please try again.';
 			}
 		}
-		
+
 		//build the main nav
 		echo '<table width="100%">';
 		echo '<tr>';
@@ -407,7 +407,7 @@ class AFTWManagement extends Config {
 		if(isset($error)){echo $error;}
 		// build our list
 		if($go >= 1 && $go <= 3){
-			echo '<div style="height:395px;overflow-y:scroll;overflow-x:none;">';	
+			echo '<div style="height:395px;overflow-y:scroll;overflow-x:none;">';
 			$result  = mysql_query($query) or die('Error : ' . mysql_error());
 			$paging = $this->InternalPaging($rowcount,30,$count,$link);
 			if($go == 1){
@@ -429,14 +429,14 @@ class AFTWManagement extends Config {
 				}
 			}
 			echo '</div>';
-		} 
+		}
 		else {
 			if($go == 4){}
 			else if($go == 5 && $this->ValidatePermission(5) == TRUE){
-				
+
 				echo '<div class="tbl"><br /><div align="center">
 				<form method="GET" name="usersearch" id="usersearch" onSubmit="ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=findusers&part=after&this=bogus\' + getFormElementValuesAsString(document.forms[\'usersearch\']));">
-<input type="hidden" name="id" value="12356">	
+<input type="hidden" name="id" value="12356">
 				<table width="500px"><tr><td align="right"><label class="left" for="username" style="margin: 0px 0px 0px 0px;color:#555555;">Username:</label></td>
 				<td align="left">
 				<input name="username" id="username" type="text" class="loginForm" style="width:154px;" />
@@ -445,12 +445,12 @@ class AFTWManagement extends Config {
 				<tr><td colspan="2">
 				<div class="cb"></div>
 				<div style="margin: 5px 0px 0px 100px;">
-				<div align="center" style="font-size: 9px;">Use the above form, to find users on the site.</div>								
+				<div align="center" style="font-size: 9px;">Use the above form, to find users on the site.</div>
 				</td></tr></table></form></div></div>';
-				if($_GET['part'] == 'after'){					
+				if($_GET['part'] == 'after'){
 					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysql_real_escape_string($_GET['username'])."%'";
 					$result  = mysql_query($query) or die('Error : ' . mysql_error());
-					echo '<div style="height:340px;overflow-y:scroll;overflow-x:none;">';	
+					echo '<div style="height:340px;overflow-y:scroll;overflow-x:none;">';
 					while(list($ID,$Username,$Email,$lastActivity,$staticip,$Active,$Level_access,$forumBan,$messageBan,$postBan) = mysql_fetch_array($result)){
 						$this->BuildList($ID,$Username,NULL,$staticip,$Active,$go,$link,$Email,$lastActivity,$Level_access,$forumBan,$messageBan,$postBan);
 					}
@@ -462,22 +462,22 @@ class AFTWManagement extends Config {
 			}
 		}
 	}
-	
+
 	private function ManageComments(){
 		if($this->ValidatePermission(10) == TRUE){
 			if(!isset($_GET['do'])){
 				if(!isset($_GET['mode']) && $this->ValidatePermission(11) == TRUE){
 					$query = "SELECT * from page_comments WHERE type = 0 ORDER by id DESC LIMIT 0, 60";
 					$result = mysql_query($query);
-					$count = mysql_num_rows($result); 
+					$count = mysql_num_rows($result);
 					if ($count>0) {
-						echo '<br /><div style="height:443px;overflow-y:scroll;overflow-x:none;">';	
+						echo '<br /><div style="height:443px;overflow-y:scroll;overflow-x:none;">';
 						echo "<table cellpadding='1' cellspacing='0' width='100%'>";
 						echo "<tr class='minortext'><td>Page</td><td>Ep #</td><td>Name</td></td><td>Comment</td><td>Dated</td><td colspan='3' align='center' width='15px'>Actions</td></tr>";
 						while($myrow = mysql_fetch_array($result))
 						{
 							echo "<tr>\n";
-							$series_ID = $myrow['page_id'];   				
+							$series_ID = $myrow['page_id'];
 							echo "<td class='minortext'>".checkSeries($myrow['epid'])."</td>\n";
 							echo "<td class='minortext'>".checkEpisode($myrow['epid']). "</td>\n";
 							echo "<td class='minortext'>". checkUserNameNumber($myrow['uid']). "</td>\n";
@@ -486,12 +486,12 @@ class AFTWManagement extends Config {
 							echo "<td class='minortext'>". $comments. "</td>\n";
 							$when = explode(" ",$myrow['dated']);
 							echo "<td class='minortext'>". $when[0]. "</td>\n";
-					
+
 							// do you want to look - if there's an admin comment or long comment ...
 							$see_me = "";
 							if ( ($myrow['admin_comment']!="") || (strlen($myrow['comments'])>60) ) {$see_me = 1;}
 							if($this->ValidatePermission(11) == TRUE){
-								echo "<td>"; 
+								echo "<td>";
 								if ($see_me == 1) {
 									echo "<a href=\"#\"><img src='http://www.animeftw.tv/images/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
 								} else {
@@ -531,7 +531,7 @@ class AFTWManagement extends Config {
 							echo "</tr>";
 						}
 						echo "</table><br/>\n";
-						echo "</div>";			
+						echo "</div>";
 					}
 				}
 				else {
@@ -551,7 +551,7 @@ class AFTWManagement extends Config {
 						else if($_GET['confirm'] == 'after'){
 							$query  = "DELETE FROM page_comments WHERE id = '".$_GET['id']."'";
 							mysql_query($query) or die('Error : ' . mysql_error());
-							$this->ModRecord('Delete Comment');						
+							$this->ModRecord('Delete Comment');
 							echo "<div class=\"redmsg\">Comment Deleted Successfully.</div><br />";
 							echo '<div align="center"><a href="#" onclick="ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=comments\'); return false;"><h3>Continue</h3></a></div>';
 						}
@@ -566,7 +566,7 @@ class AFTWManagement extends Config {
 			}
 		}
 	}
-	
+
 	private function ManageApplications(){
 		if(!isset($_GET['go'])){
 			if(isset($_GET['action'])){
@@ -618,16 +618,16 @@ class AFTWManagement extends Config {
 			<div style="float:right;width:137px;" align="left"><b>Position Applied for</b></div>
 			<div style="width:122px;" align="center"><b>Username</b></div>';
 			echo '</div>';
-			echo '<div style="height:'.$height.';overflow-y:scroll;overflow-x:none;">';	
+			echo '<div style="height:'.$height.';overflow-y:scroll;overflow-x:none;">';
 			$query = "SELECT a.id, a.positionID, a.username, a.company, a.Age, a.Status, u.ID FROM applications_submissions AS a, users AS u WHERE a.appRound = ".$this->appround." AND u.Username=a.username ORDER BY a.id DESC";
 			$result  = mysql_query($query) or die('Error : ' . mysql_error());
 			while(list($id,$positionID,$username,$company,$Age,$Status,$uid) = mysql_fetch_array($result)){
-				$query = mysql_query("SELECT COUNT(id) FROM applications_sectests WHERE uid=$uid"); 
+				$query = mysql_query("SELECT COUNT(id) FROM applications_sectests WHERE uid=$uid");
 				$total = mysql_result($query, 0);
 				if($Status == 'Pending'){$style = '#009933;color:#fff';}else if($Status == 'Accepted'){$style = '#0E9FCE';}else if($Status == 'Under Review'){$style = '#FFCC00';}else{$style = '#CC3300;color:#fff';}
 				if($Age == ''){$Age = '&nbsp;';}
 				echo '<br /><div style="background-color:'.$style.';padding:5px;">';
-				echo '<div style="float:right;width:130px;background-color:#fff;color:#000;" align="center"><a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=applications&go=view&id='.$id.'\'); return false;">View</a> | 
+				echo '<div style="float:right;width:130px;background-color:#fff;color:#000;" align="center"><a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=applications&go=view&id='.$id.'\'); return false;">View</a> |
 				<a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=applications&go=view&id='.$id.'\'); return false;">Edit</a> | ';
 				if($total > 0){
 					echo '<a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=applications&go=sectest&id='.$uid.'\'); return false;">Sec Test</a>';
@@ -642,7 +642,7 @@ class AFTWManagement extends Config {
 				$q = mysql_fetch_array(mysql_query("SELECT ID, Email FROM users WHERE Username = '".$username."'"));
 				echo '<div style="width:122px;background-color:#fff;color:#000;" align="center"><a href="#" title="'.$q['Email'].'" onclick="ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=findusers&part=after&username='.$username.'\');">'.$username.'</a></div>';
 				echo '</div>';
-					
+
 			}
 			echo '</div>';
 		}
@@ -655,7 +655,7 @@ class AFTWManagement extends Config {
 					echo '<div><h3>Showing application details</h3>';
 					$query  = "SELECT * FROM applications_submissions WHERE id= '{$_GET['id']}'";
 				  	$result = mysql_query($query) or die('Error : ' . mysql_error());
-				   	list($id, $positionID, $username, $company, $reqInformation, $Age, $Status) = mysql_fetch_array($result, MYSQL_NUM);	
+				   	list($id, $positionID, $username, $company, $reqInformation, $Age, $Status) = mysql_fetch_array($result, MYSQL_NUM);
 					$reqInformation = stripslashes($reqInformation);
 					$reqInformation = nl2br($reqInformation);
 					if($Age == ''){$Age = '--/--/---';}
@@ -672,14 +672,14 @@ class AFTWManagement extends Config {
 					echo '<input name="submit" type="button" class="button_2" value="Pending" onclick="ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=applications&id='.$id.'&action=status&status=pending\'); return false;" />';
 					echo '<input name="submit" type="button" class="button_2" value="Under Review" onclick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=applications&id='.$id.'&action=status&status=underreview\'); return false;" />';
 					echo '<input name="submit" type="button" class="button_2" value="Accepted" onclick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=applications&id='.$id.'&action=status&status=accepted\'); return false;" />';
-					echo '<input name="submit" type="button" class="button_2" value="Denied" onclick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=applications&id='.$id.'&action=status&status=denied\'); return false;" />';				
+					echo '<input name="submit" type="button" class="button_2" value="Denied" onclick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=applications&id='.$id.'&action=status&status=denied\'); return false;" />';
 					echo '</div>';
 					echo '</div>';
 				}
 				else if($_GET['go'] == 'sectest'){
 					$q = mysql_fetch_array(mysql_query("SELECT s.date, s.q1, s.q2, s.q3, s.q4, s.q5, s.q6, s.q7, s.q8, s.q9, s.q10, s.q11, s.q12, s.q13, s.q14, s.q15, s.q16, s.q17, u.Username FROM applications_sectests AS s, users AS u WHERE u.ID=s.uid AND s.uid = '".mysql_real_escape_string($_GET['id'])."'"));
 					echo '<div>Viewing the Security test for '.$q['Username'].'<br /><br />';
-					echo '<div style="height:435px;overflow-y:scroll;overflow-x:none;">';	
+					echo '<div style="height:435px;overflow-y:scroll;overflow-x:none;">';
 					$qarray = array($q['q1'],$q['q2'],$q['q3'],$q['q4'],$q['q5'],$q['q6'],$q['q7'],$q['q8'],$q['q9'],$q['q10'],$q['q11'],$q['q12'],$q['q13'],$q['q14'],$q['q15'],$q['q16'],$q['q17']);
 					$i = 1;
 					foreach ($qarray as &$value) {
@@ -694,10 +694,10 @@ class AFTWManagement extends Config {
 				else {
 				}
 			}
-					
+
 		}
 	}
-	
+
 	private function ManageEpisodes(){
 		// set the global variables to this function
 		$limit = 60; //limit to 30 rows
@@ -706,7 +706,7 @@ class AFTWManagement extends Config {
 			$link .= "&sname=".$_GET['sname'];
 			$_SERVER['HTTP_REFERER'] = $link;
 		}
-		
+
 		if(!isset($_GET['eid']) && !isset($_GET['edit'])){
 			//some small variable sets for this part of the function
 			$rowcount = $this->Query('episodes'); //grab the total amount of episodes!
@@ -719,7 +719,7 @@ class AFTWManagement extends Config {
 				$query = "SELECT id, epnumber, epname, seriesname, image FROM episode ORDER BY id DESC LIMIT ".$start.", ".$limit;
 			}
 			$result = mysql_query($query);
-			$count = mysql_num_rows($result); 
+			$count = mysql_num_rows($result);
 			echo '<div style="padding-top:5px;">';
 			echo '<div style="float:right;padding-right:80px;"><a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\''.$link.'&edit=add&step=before\'); return false;"><b>Add Episode</b></a></div>';
 			$this->InternalPaging($rowcount,$limit,$start,$link); //($count,$perpage,$start,$link)
@@ -727,7 +727,7 @@ class AFTWManagement extends Config {
 			//begin!
 			echo '<div class="Results" id="Results" style="display:none;"></div>';
 			echo '<div class="erow"><div class="eleftcol" align="center"><b>Episode Title</b></div><div class="eepcol" align="center"><b>Ep#</b></div><div class="eseriescol" align="center"><b>Series</b></div><div><b>Functions</b></div></div>';
-			echo '<div style="height:435px;overflow-y:scroll;overflow-x:none;">';	
+			echo '<div style="height:435px;overflow-y:scroll;overflow-x:none;">';
 			$i = 0;$style1 = 'style="background-color:#E5E5E5;"';$style2 = 'style="background-color:#B8EAFA;"';
 			while($r = mysql_fetch_array($result)){
 				if($i % 2){$style = $style1;}else {$style = $style2;}
@@ -761,7 +761,7 @@ class AFTWManagement extends Config {
 				$seriesName    = stripslashes($seriesName);
 				$epname = stripslashes($epname);
 				$epprefix    = stripslashes($epprefix);
-							echo '<form method="GET" name="editep" id="editep">	
+							echo '<form method="GET" name="editep" id="editep">
 				<input type="hidden" name="id" value="' . $id . '">
 				<table width="620px" border="0" cellpadding="2" cellspacing="1" class="box" align="center">
 				<tr><td width="200" class="fontcolor">Episode #</td><td><input name="epnumber" type="text" class="input3" id="epnumber" size="25" value="' . $epnumber . '"></td></tr>
@@ -783,7 +783,7 @@ class AFTWManagement extends Config {
 					while(list($seriesName2, $fullSeriesName) = mysql_fetch_array($result2, MYSQL_NUM)){
 					$fullSeriesName = stripslashes($fullSeriesName);
 				echo '<option id="'.$seriesName2.'" value="'.$seriesName2.'"'; if($seriesName == $seriesName2){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
-					}	
+					}
 					 echo '</select>
 					</td></tr>
 					<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
@@ -794,7 +794,7 @@ class AFTWManagement extends Config {
 							<option value="mp4" '; if($videotype == 'mp4'){echo 'selected="selected"';} echo '>MP4</option>
 						</select></td></tr>
 					<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Movie?</td>
 					  <td><select name="Movie" style="color: #000000;">
 							<option value="0" '; if($Movie == '0'){echo 'selected="selected"';} echo '>No</option>
@@ -823,7 +823,7 @@ class AFTWManagement extends Config {
 					$videotype = $_GET['videotype'];
 					$seriesName  = stripslashes($seriesName);
 					$epname = stripslashes($epname);
-					$epprefix    = stripslashes($epprefix);				  
+					$epprefix    = stripslashes($epprefix);
 				   // update the item in the database
 				   $query = 'UPDATE episode SET epnumber=\'' . mysql_real_escape_string($epnumber) . '\', seriesname=\'' . mysql_real_escape_string($seriesName) .'\', epname=\'' . mysql_real_escape_string($epname) . '\', vidheight=\'' . mysql_real_escape_string($vidheight) . '\', vidwidth=\'' . mysql_real_escape_string($vidwidth) . '\', epprefix=\'' . mysql_real_escape_string($epprefix) . '\', subGroup=\'' . mysql_real_escape_string($subGroup) . '\', Movie=\'' . mysql_real_escape_string($Movie) . '\', videotype=\'' . mysql_real_escape_string($videotype) . '\' WHERE id=' . $_GET['eid'] . '';
 					mysql_query($query) or die('Error : ' . mysql_error());
@@ -837,9 +837,9 @@ class AFTWManagement extends Config {
 					$msg .= "<dl><dt>Video Type:</dt><dd> $videotype</dd></dl>";
 					$msg .= '<div align="center"><input type="button" value="Continue" name="back" id="back" onClick="javascript:ajax_loadContent(\'manageedit\',\''.$link.'\');">
 	<input type="button" value="Update Episode" name="edit" id="edit" onclick="ajax_loadContent(\'manageedit\',\''.$link.'&eid='.$id.'&stage=before\');"></div>';
-					
+
 					echo $msg;
-					
+
 				}
 				else {
 					echo 'Error. NO FOOD FOR YOU!@#';
@@ -877,74 +877,74 @@ class AFTWManagement extends Config {
 							$ar = mysql_fetch_array($airingCheck);
 							if($ar['stillRelease'] == 'yes'){
 								$this->RecordNotification($ar['sid'],$ar['epid']);
-							}							
+							}
 							$this->ModRecord('Add Episode #'.$epnumber.' to series '.$seriesName1);
-							
+
 						}
 						echo '
 						<br /><div style="height:470px;overflow-y:scroll;overflow-x:none;">
 						'.$msg.'
-						<form method="GET" name="addep" id="addep">		
+						<form method="GET" name="addep" id="addep">
 						<input type="hidden" name="id" value="bradrocks">
 						 <table width="620px" border="0" cellpadding="1" cellspacing="1" align="center">
-					<tr> 
+					<tr>
 					  <td width="200" class="fontcolor">Episode #</td>
 					  <td><input name="epnumber" type="text" class="input3" id="epnumber" size="25"'; if($Remember == TRUE){echo ' value="'.$NextEp.'"';} echo' /></td>
 					</tr>
 					<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Episode Name</td>
 					  <td><input name="epname" type="text" class="input3" id="epname" size="25"></td>
 					</tr>
 					<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-				  <tr> 
+				  <tr>
 					  <td width="150" class="fontcolor">Video Width</td>
 					  <td><input name="vidwidth" type="text" class="input3" id="vidwidth" size="5"'; if($Remember == TRUE){echo ' value="'.$vidwidth.'"';} echo' /></td>
 					</tr>
 					<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Video Height</td>
 					  <td><input name="vidheight" type="text" class="input3" id="vidheight" size="5"'; if($Remember == TRUE){echo ' value="'.$vidheight.'"';} echo' /></td>
 					</tr>
 					<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Fansub Group</td>
 					  <td><input name="subGroup" type="text" class="input3" id="subGroup" size="25"'; if($Remember == TRUE){echo ' value="'.$subGroup.'"';} echo' ></td>
 					</tr>
-					<tr><td colspan="2" class="fontcolor">&nbsp;</td> </tr>	
-					<tr> 
+					<tr><td colspan="2" class="fontcolor">&nbsp;</td> </tr>
+					<tr>
 					  <td width="150" class="fontcolor">Episode Prefix</td>
 					  <td><input name="epprefix" type="text" class="input3" id="epprefix" size="25"'; if($Remember == TRUE){echo ' value="'.$epprefix.'"';} echo' /></td>
 					</tr>
 					<tr>
 					  <td colspan="2" class="fontcolor">i.e. <b>samcham</b>_1_ns.divx, if these are not all the same the episode wont work.</td>
 				  </tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Series Name</td>
 					  <td>
 					  <select name="seriesName" style="color: #000000;">
 				  <option>-Choose Series-</option>';
-				  
+
 					  $query2 = "SELECT seriesName, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
 					$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 					while(list($seriesName, $fullSeriesName) = mysql_fetch_array($result2, MYSQL_NUM)){
 						$fullSeriesName = stripslashes($fullSeriesName);
 						if(($seriesName1 == $seriesName && $Remember == TRUE) || isset($_GET['preseriesname']) && $_GET['preseriesname'] == $seriesName)
-						{ 
+						{
 							echo '<option value="'.$seriesName.'" selected="selected">'.$fullSeriesName.'</option> ';
 						}
 						else {
 						}
 						echo '<option value="'.$seriesName.'">'.$fullSeriesName.'</option> ';
 					}
-						
+
 					 echo '</select>
 					  </td>
 					</tr>
 					<tr>
 					  <td colspan="2" class="fontcolor">&nbsp;</td>
 				  </tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Movie? <i> is this a movie?</i></td>
 					  <td><select name="Movie" style="color: #000000;">
 							<option value="0" selected="selected">No</option>
@@ -954,7 +954,7 @@ class AFTWManagement extends Config {
 					<tr>
 					  <td colspan="2" class="fontcolor">&nbsp;</td>
 				  </tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">MKV, DIVX or MP4<i>is this the new MKV, DivX or MP4 style videos?</i></td>
 					  <td><select name="videotype" style="color: #000000;">
 							<option value="divx"'; if($videotype == 'divx' && $Remember == TRUE){echo ' selected="selected"';} echo'>DivX</option>
@@ -965,7 +965,7 @@ class AFTWManagement extends Config {
 					<tr>
 					  <td colspan="2" class="fontcolor">&nbsp;</td>
 				  </tr>
-					<tr> 
+					<tr>
 					  <td width="150" class="fontcolor">Silent Episode? <i> Should this not be put on the latest episode listing?</i></td>
 					  <td><select name="date" style="color: #000000;">
 							<option value="1"'; if($addtime == '1'){echo ' selected="selected"';} echo'>No</option>
@@ -980,7 +980,7 @@ class AFTWManagement extends Config {
 				</tr>
 				  </table>
 						</form>';
-					
+
 					}
 					else {
 						echo 'WHY AM I GETTING THESE ERRORS';
@@ -1025,13 +1025,13 @@ class AFTWManagement extends Config {
 			}
 		}
 	}
-		
+
 	// function here
-	
+
 	private function RecordNotification($sid,$eid){
 		mysql_query("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES (NULL, '".time()."', '0', '".$sid."', '".$eid."', 'NULL')");
 	}
-						
+
 	private function BuildList($id,$username,$regDate = NULL,$ip,$active,$type,$link,$Email = NULL,$lastActivity = NULL,$Level_access = NULL,$forumBan = NULL,$messageBan = NULL,$postBan = NULL){
 		echo '<div style="padding:5px;">';
 		if($type == 1){
@@ -1067,17 +1067,17 @@ class AFTWManagement extends Config {
 			echo '<div style="float:right;">';
 			echo '<select name="change">';
 			echo '<option>----------</option>';
-			if($active == 1){echo '<option onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=suspend&id='.$id.'\'); return false;">Suspend</option>';}else if($active == 0 || $active == 2){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=unsuspend&id='.$id.'\'); return false;">Activate</option>';}else {}			
-			echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=delete&id='.$id.'\'); return false;">Delete</option>';			
-			if($forumBan == 1){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=unfban&id='.$id.'\'); return false;">Forum Unban</option>';}else {echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=fban&id='.$id.'\'); return false;">Forum Ban</option>';}			
-			if($messageBan == 1){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=uncban&id='.$id.'\'); return false;">Comment Unban</option>';}else {echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=cban&id='.$id.'\'); return false;">Comment Ban</option>';}			
-			if($postBan == 1){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=unpmban&id='.$id.'\'); return false;">Site PM Unban</option>';}else {echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=pmban&id='.$id.'\'); return false;">Site PM Ban</option>';}				
+			if($active == 1){echo '<option onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=suspend&id='.$id.'\'); return false;">Suspend</option>';}else if($active == 0 || $active == 2){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=unsuspend&id='.$id.'\'); return false;">Activate</option>';}else {}
+			echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=delete&id='.$id.'\'); return false;">Delete</option>';
+			if($forumBan == 1){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=unfban&id='.$id.'\'); return false;">Forum Unban</option>';}else {echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=fban&id='.$id.'\'); return false;">Forum Ban</option>';}
+			if($messageBan == 1){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=uncban&id='.$id.'\'); return false;">Comment Unban</option>';}else {echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=cban&id='.$id.'\'); return false;">Comment Ban</option>';}
+			if($postBan == 1){echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=unpmban&id='.$id.'\'); return false;">Site PM Unban</option>';}else {echo '<option value="#" onClick="javascript:ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=modedit&modaction=pmban&id='.$id.'\'); return false;">Site PM Ban</option>';}
 			echo '</select>';
 			echo '</div>';
 		}
 		echo '</div>';
 	}
-	
+
 	//Paging function for the management pages
 	private function InternalPaging($count,$perpage,$start,$link){
 		$num = $count;
@@ -1119,10 +1119,10 @@ class AFTWManagement extends Config {
 			$enddots = "... ";
 		}
 		else {$enddots = '';}
-		
+
 		echo '<div class="fontcolor">'.$front.$startpage.$frontdots.$middlepage.$enddots.$endpage.'</div>';
 	}
-	
+
 	//Paging function for the management pages, version two
 	private function InternalPagingV2($DivID,$count,$perpage,$start,$link)
 	{
@@ -1165,10 +1165,10 @@ class AFTWManagement extends Config {
 			$enddots = "... ";
 		}
 		else {$enddots = '';}
-		
+
 		echo '<div class="fontcolor">'.$front.$startpage.$frontdots.$middlepage.$enddots.$endpage.'</div>';
 	}
-	
+
 	private function ManageSeries(){
 		if($this->ValidatePermission(21) == TRUE){
 			$link = '/scripts.php?view=management&u='.$this->uid.'&node=series'; // base url
@@ -1180,14 +1180,14 @@ class AFTWManagement extends Config {
 			if(!isset($_GET['stage'])){
 				if(!isset($_GET['nonav']) || $_GET['nonav'] != 'true'){
 					echo $this->TopNav();
-					echo '<div align="center" style="padding-top:5px;">';				
+					echo '<div align="center" style="padding-top:5px;">';
 					echo '<a href="#" onClick="$(\'#ContentStuff\').load(\''.$link.'&nonav=true\'); return false;">Home</a> ';
 					if($this->ValidatePermission(22) == TRUE){
 						echo '| <a href="#" onClick="$(\'#ContentStuff\').load(\''.$link.'&stage=addseries&step=before\'); return false;">Add Series</a> ';
 					}
 					if($this->ValidatePermission(24) == TRUE){
 						echo '| <a href="#" onClick="$(\'#ContentStuff\').load(\''.$link.'&stage=search\'); return false;">Series Search</a> ';
-					}	
+					}
 					if($this->ValidatePermission(25) == TRUE){
 						echo '| <a href="#" onClick="$(\'#ContentStuff\').load(\''.$link.'&stage=upload\'); return false;">Upload Series Image</a> ';
 					}
@@ -1202,19 +1202,19 @@ class AFTWManagement extends Config {
 				<div id="ContentStuff" class="ContentStuff">';
 				$TotalSeries = $this->Query('series'); //count all of the series please.
 				$query = "SELECT id, seriesName, fullSeriesName, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category FROM series ORDER BY id DESC LIMIT $page, $limit";
-				mysql_query("SET NAMES 'utf8'"); 
+				mysql_query("SET NAMES 'utf8'");
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
-		
-				echo '<div id="seriesg">';		
+
+				echo '<div id="seriesg">';
 				echo '<div style="padding:3px;">';
 				//$this->InternalPaging($TotalSeries,$limit,$page,$link); //($count,$perpage,$start,$link)
 				$this->InternalPagingV2($DivID,$TotalSeries,$limit,$page,($link.'&nonav=true'));
-				echo '</div>';	
+				echo '</div>';
 				echo '<div style="height:435px;overflow-y:scroll;overflow-x:none;">';
 				$i = 0;
 				$fivearray = array(1 => '<br />',2 => '<br /><br />',3 => '<br /><br /><br />',4 => '<br /><br /><br /><br />',5 => '<br /><br /><br /><br /><br />',6 => '<br /><br /><br /><br /><br /><br />',7 => '<br /><br /><br /><br /><br /><br /><br />');
 				while(list($id, $seriesName, $fullSeriesName, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteActivate, $noteReason, $category) = mysql_fetch_array($result, MYSQL_NUM)){
-					$query = mysql_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0"); 
+					$query = mysql_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
 					$CountEpisodes = mysql_num_rows($query);
 					if($moviesOnly == 1){$moviesOnly = 'yes';}else {$moviesOnly = 'no';}
 					if($noteActivate == 1){$noteActivate = 'yes';}else {$noteActivate = 'no';}
@@ -1249,7 +1249,7 @@ class AFTWManagement extends Config {
 					<b>Rating:</b><br /><img src="/images/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
 					'.$gvar.'
 					</div>
-					</div>';				
+					</div>';
 					$i++;
 				}
 				echo '</div>';
@@ -1287,7 +1287,7 @@ class AFTWManagement extends Config {
 						echo '<script>
 						$(function() {
 							$(\'#SeriesName\').keypress(function(event){
-    
+
 								if (event.keyCode == 10 || event.keyCode == 13)
 								{
 									event.preventDefault();
@@ -1320,12 +1320,12 @@ class AFTWManagement extends Config {
 							});
 							return false;
 						});
-						</script>';	
+						</script>';
 				}
 				else if($_GET['stage'] == 'upload' && $this->ValidatePermission(25) == TRUE){
 					echo 'Upload feature coming soon';
 				}
-				else if($_GET['stage'] == 'announce' && $this->ValidatePermission(73) == TRUE){	
+				else if($_GET['stage'] == 'announce' && $this->ValidatePermission(73) == TRUE){
 					echo '<br /><div align="center">The announcement Builder is a simple script that facilitates the ability to grab the neccessary data for creating proper announcements when releasing mass updates of Series.</div><br /><b>Choose from Available Series:</b>';
 					echo '<div style="height:125px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;">';
 					$query = "SELECT id, fullSeriesName FROM series ORDER by seriesName ASC";
@@ -1340,8 +1340,8 @@ class AFTWManagement extends Config {
 						</div>';
 					}
 					echo '</form>';
-					echo '</div><br /><b>Output:</b><br />';				
-					echo '<div id="SeriesAnnouncementOutput"><textarea style="height:175px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()"></textarea></div>';	
+					echo '</div><br /><b>Output:</b><br />';
+					echo '<div id="SeriesAnnouncementOutput"><textarea style="height:175px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()"></textarea></div>';
 						echo '
 						<script>
 						$(document).ready(function() {
@@ -1351,7 +1351,7 @@ class AFTWManagement extends Config {
 									url: "/scripts.php",
 									data: $(\'#SeriesAnnouncementBuilder\').serialize(),
 									success: function(html) {
-										$(\'#SeriesAnnouncementOutput\').show().html(html);	
+										$(\'#SeriesAnnouncementOutput\').show().html(html);
 									}
 								});
 								return false;
@@ -1367,7 +1367,7 @@ class AFTWManagement extends Config {
 						echo '<div align="center">The Mass update Tool is used to update a series` episodes from a single interface, since this is technically a series function I have placed it here instead of in the episode section as it makes it easier to just find it and run. -Brad</div>';
 						echo '<div align="center" style="padding-top:5px;">';
 							echo '<select name="AvailableSeries" id="AvailableSeries" style="color: #000000;">';
-						$query2 = "SELECT seriesName, fullSeriesName FROM series ORDER BY fullSeriesName ASC";		 
+						$query2 = "SELECT seriesName, fullSeriesName FROM series ORDER BY fullSeriesName ASC";
 						echo '<option id="0" value="0">Choose a Series</option> ';
 						$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 						while(list($seriesName, $fullSeriesName) = mysql_fetch_array($result2, MYSQL_NUM)){
@@ -1376,7 +1376,7 @@ class AFTWManagement extends Config {
 						}
 						echo '</select>';
 						echo '</div><br />';
-						echo '<div id="SeriesOptions">&nbsp;</div>';					
+						echo '<div id="SeriesOptions">&nbsp;</div>';
 						echo '
 						<script>
 						$(document).ready(function() {
@@ -1386,7 +1386,7 @@ class AFTWManagement extends Config {
 						});
 						</script>';
 					}
-					else 
+					else
 					{
 						$query = "SELECT episode.vidheight, episode.vidwidth, episode.epprefix, episode.subGroup, episode.videotype, series.fullSeriesName FROM episode, series WHERE episode.seriesname = '" . mysql_real_escape_string($_GET['seriesname']) . "' AND series.seriesName=episode.seriesname LIMIT 0, 1";
 						$results = mysql_query($query);
@@ -1406,7 +1406,7 @@ class AFTWManagement extends Config {
 						<input type="hidden" name="old_videotype" value="' . $row['videotype'] . '" />
 						<input type="hidden" name="uid" value="'.$this->uid.'" />
 						<table width="620px" border="0" cellpadding="2" cellspacing="1" align="center">
-						<tr> 
+						<tr>
 							<td width="130px" style="font:13px Verdana,Arial,Helvetica,sans-serif;color:#5A5655;">Video Width</td>
 							<td>
 								<input name="vidwidth" type="text" id="vidwidth" style="width:50px;" value="' . $row['vidwidth'] . '" class="text-input" />
@@ -1424,7 +1424,7 @@ class AFTWManagement extends Config {
 						<tr>
 							<td width="100px" style="font:13px Verdana,Arial,Helvetica,sans-serif;color:#5A5655;">Episode Preffix</td>
 							<td>
-								<input name="epprefix" type="text" class="text-input" style="width:200px;" id="epprefix" value="' . $row['epprefix'] . '" />								
+								<input name="epprefix" type="text" class="text-input" style="width:200px;" id="epprefix" value="' . $row['epprefix'] . '" />
 								<label for="epprefix" id="epprefixError" class="FormError">The Episode Prefix is Required</label>
 							</td>
 						</tr>
@@ -1513,7 +1513,7 @@ class AFTWManagement extends Config {
 										data: $(\'#MassEpisodeEdit\').serialize(),
 										success: function(html) {
 											if(html == \'Success\'){
-												$(\'.form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Episode Mass Update was Successful!</div>");											
+												$(\'.form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Episode Mass Update was Successful!</div>");
 												$(\'.form_result\').delay(8000).slideUp();
 											}
 											else{
@@ -1526,7 +1526,7 @@ class AFTWManagement extends Config {
 							});
 							return false;
 						});
-						</script>';	
+						</script>';
 					}
 					// The idea behind this feature, is that it will give a list of series, followed by all the options for  the episodes, so you can change the eppisode prefix, width, height, sub group, image status, video type, in bulk. The best way to implement will be to have the system use a GET request back to the same script, to define the seriesname, if the seriesname is defined it will then pull up the first episodes options.. this is dangerous as things down the line could have multiple dimmensions.. possibly a way to show multiples? like a group by... food for later thoughts..
 				}
@@ -1543,15 +1543,15 @@ class AFTWManagement extends Config {
 							$sid = mysql_real_escape_string($_GET['sid']);
 							$sid = htmlentities($sid);
 							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList FROM series WHERE id='$sid'";
-							mysql_query("SET NAMES 'utf8'"); 
+							mysql_query("SET NAMES 'utf8'");
 							$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList) = mysql_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
-								
+
 							$description = stripslashes($description);
 							$noteReason = stripslashes($noteReason);
 							$fullSeriesName = stripslashes($fullSeriesName);
-							
+
 							$HiddenInputs = '<input type="hidden" name="sid" value="' . $id . '" id="sid" />
 							<input type="hidden" id="method" class="method" value="EditSeries" name="method" />';
 							$SubmitTXT = 'Update Series';
@@ -1578,10 +1578,10 @@ class AFTWManagement extends Config {
 								$FixedName = $row['series'];
 							}
 							$seoname = strtolower($FixedName);
-							$seoname = str_replace(" ", "-", $seoname); 
+							$seoname = str_replace(" ", "-", $seoname);
 							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '1'; $seriesList = '';
 						}
-						else 
+						else
 						{
 							$Type = 'add';
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />';
@@ -1589,7 +1589,7 @@ class AFTWManagement extends Config {
 							$id = ''; $seriesName = ''; $fullSeriesName = ''; $romaji = ''; $kanji = ''; $synonym = ''; $seoname = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '1'; $seriesList = '';
 						}
 					}
-					else 
+					else
 					{
 						$Type = '';
 						$HiddenInputs = '';
@@ -1613,40 +1613,40 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Full Series Name</i></b><br /> <i>This should be the fullname of the series WITH proper capitilization and spaces, I.E:</i><br /> <b>Air Gear</b></td>
 							<td><input name="fullSeriesName" type="text" class="text-input" id="fullSeriesName" size="25" value="'.$fullSeriesName.'" />
 								<label for="fullSeriesName" id="fullSeriesNameError" class="FormError">A Full Series Name is Required.</label>
 							</td>
-						</tr> 
+						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Romaji</i></b><br /> </td>
 							<td><input name="romaji" type="text" class="text-input" id="romaji" size="25" value="'.$romaji.'" />
 								<label for="romaji" id="romajiError" class="FormError">The Romaji Name is Required.</label>
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Kanji</i></b><br /></td>
 							<td><input name="kanji" type="text" class="text-input" id="kanji" size="25" value="'.$kanji.'" />
 								<label for="kanji" id="kanjiError" class="FormError">The Kanji Name is Required.</label>
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Synonym</i></b><br /> <i>Sometimes a series is known by more than the official title, those go here, use commas to separate each name.</i></td>
 							<td><textarea name="synonym" id="synonym" cols="55" rows="5" class="text-input">'.$synonym.'</textarea></td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>SEO Name</i></b><br /> <i>This should be the fullname of the series without Capitals, Spaces should be replaced with hyphens (-). I.E:</i><br /> <b>air-gear</b></td>
 							<td><input name="seoname" type="text" class="text-input" id="seoname" size="25" value="'.$seoname.'" />
 								<label for="seoname" id="seonameError" class="FormError">A SEO Name is Required.</label>
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Site Active?</i></b><br /> <i>Is this series site active? No is the Default</i></td>
 							<td>
 								<select name="active" style="color: #000000;">
@@ -1656,17 +1656,17 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Series Synopsis/description</i></b><br /> <i>Take the description from the series on <a href="http://anidb.net">AniDB.net</a> and paste it here, NO html required</i></td>
 							<td><textarea name="description2" id="description2" cols="55" rows="5" class="text-input">'.$description.'</textarea></td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Series Genres</i></b><br /> <i>Take the "categories" from the series on <a href="http://anidb.net">AniDB.net</a> and paste it here, NO Special characters []&lt;&gt; just words and commas.</i></td>
 							<td><textarea name="category" id="category" cols="55" rows="5" class="text-input">'.$category.'</textarea></td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Series Rating</i></b><br /><i>Choose the rating that goes with the series.</i></td>
 							<td>
 								<table>
@@ -1679,7 +1679,7 @@ class AFTWManagement extends Config {
 							</table>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Still Releasing?</i></b><br /> <i>Is this Series still releasing? Default is No</i></td>
 							<td><select name="stillRelease" style="color: #000000;">
 								<option value="no" '; if($stillRelease == 'no'){echo 'selected="selected"';} echo ' >No</option>
@@ -1688,7 +1688,7 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Movies:</i></b><br /> <i>Does this Series Have any movies?</i></td>
 							<td><select name="Movies" style="color: #000000;">
 								<option value="0" '; if($Movies == '0'){echo 'selected="selected"';} echo '>0</option>
@@ -1703,7 +1703,7 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Movie Only Series?</i></b><br /> <i>Is this Series Movies only? No is Default</i></td>
 							<td>
 								<select name="moviesOnly" style="color: #000000;">
@@ -1713,7 +1713,7 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>OVA Only Series?</i></b><br /> <i>Is this Series OVA only? No is Default</i></td>
 							<td>
 								<select name="OVA" style="color: #000000;">
@@ -1723,12 +1723,12 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Note Reason</i></b><br /> <i>Only if Yes is above, fill this out and the reason will be placed on the site, NO HTML is needed</i></td>
 							<td><textarea name="noteReason" id="noteReason" cols="55" rows="5" class="text-input">' . $noteReason . '</textarea></td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Series Type</i></b><br /> <i>Is this series an MKV, DIVX or MP4 based series?</i></td>
 							<td>
 								<select name="seriesType" style="color: #000000;">
@@ -1748,7 +1748,7 @@ class AFTWManagement extends Config {
 									if($prequelto == 0){
 										echo '<option id="0" value="0">None</option> ';
 									}
-									else {										
+									else {
 										echo '<option id="0" value="0">None</option> ';
 									}
 									$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
@@ -1756,7 +1756,7 @@ class AFTWManagement extends Config {
 									{
 										$fullSeriesName = stripslashes($fullSeriesName);
 										echo '<option id="'.$id2.'" value="'.$id2.'"'; if($id2 == $prequelto){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
-									
+
 									}
 									echo '</select>
 							</td>
@@ -1767,7 +1767,7 @@ class AFTWManagement extends Config {
 							<td>
 								<select name="sequelto" style="color: #000000;">';
 									echo '<!-- '.$sequelto.' -->';
-									$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";		 
+									$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
 									if($sequelto == 0){
 										echo '<option id="0" value="0">None</option> ';
 									}
@@ -1783,7 +1783,7 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Member Level?</i></b><br /> <i>What Level of Membership should be required to view this series?</i></td>
 							<td>
 								<select name="aonly" style="color: #000000;">
@@ -1793,7 +1793,7 @@ class AFTWManagement extends Config {
 								</select></td>
 							</tr>
 						<tr><td colspan="2" class="fontcolor">&nbsp;</td></tr>
-						<tr> 
+						<tr>
 							<td width="150" class="fontcolor"><b><i>Series Type?</i></b><br /> <i>Is it Anime, is it a Drama?</i> ** do not use **</td>
 							<td>
 								<select name="seriesList" style="color: #000000;">
@@ -1808,7 +1808,7 @@ class AFTWManagement extends Config {
 							</td>
 						</tr>
 					</table>
-					</div>';						  
+					</div>';
 							echo '<input type="submit" class="SubmitForm" id="submit" name="submit" value="' . $SubmitTXT . '">';
 							if(isset($_GET['ueid']))
 							{
@@ -1888,7 +1888,7 @@ class AFTWManagement extends Config {
 											echo '
 											$(".form_results").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Update Successful</div>");';
 										}
-										echo '											
+										echo '
 											$(".form_results").delay(8000).slideUp();
 										}
 										else{
@@ -1901,8 +1901,8 @@ class AFTWManagement extends Config {
 							});
 							return false;
 						});
-						</script>';	
-				
+						</script>';
+
 				}
 				else {
 					echo 'WTF Were you doing, were you trying to be cool? Error S-002';
@@ -1910,10 +1910,10 @@ class AFTWManagement extends Config {
 			}
 		}
 	}
-	
+
 	/*private function ManageComments(){
 	}*/
-	
+
 	private function ManageSettings(){
 		if(!isset($_GET['subnode'])){
 			echo $this->TopNav();
@@ -1922,10 +1922,10 @@ class AFTWManagement extends Config {
 		}
 		if(isset($_GET['subnode']) && $_GET['subnode'] == 'permissions'){
 			$query = mysql_query("SELECT * FROM permissions");
-			$count = mysql_num_rows($query); 
+			$count = mysql_num_rows($query);
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
-			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
+			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';
 			echo '<table>';
 			$i = 1;
 			while($row = mysql_fetch_assoc($query)){
@@ -1953,17 +1953,17 @@ class AFTWManagement extends Config {
 				$i++;
 			}
 			echo '</table>';
-			echo '</div>';	
+			echo '</div>';
 			echo '
 			<input type="hidden" id="method" class="method" value="SettingsSubmit" name="method" /><input type="submit" class="SubmitForm" id="submit" name="submit" value="Submit">';
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-settings'){
 			$query = mysql_query("SELECT * FROM settings");
-			$count = mysql_num_rows($query); 
+			$count = mysql_num_rows($query);
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
-			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
+			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';
 			echo '<table>';
 			echo '<tr><td><b>Setting</b></td><td><b>Value</b></td></tr>';
 			while($row = mysql_fetch_assoc($query)){
@@ -1979,10 +1979,10 @@ class AFTWManagement extends Config {
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-groups'){
 			$query = mysql_query("SELECT * FROM site_groups");
-			$count = mysql_num_rows($query); 
+			$count = mysql_num_rows($query);
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
-			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
+			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';
 			echo '<table>';
 			echo '<tr><td><b>ID Number</b></td><td><b>Group ID#</b></td></tr>';
 			while($row = mysql_fetch_assoc($query)){
@@ -2001,7 +2001,7 @@ class AFTWManagement extends Config {
 			echo '<script>
 						$(function() {
 							$(\'.form_results\').hide();
-							
+
 							$(".SubmitForm").click(function() {
 								$.ajax({
 									type: "POST",
@@ -2021,17 +2021,17 @@ class AFTWManagement extends Config {
 							});
 							return false;
 						});
-						</script>';	
+						</script>';
 	}
-	
-	private function ManageForums(){		
+
+	private function ManageForums(){
 		if(!isset($_GET['subnode'])){
 			echo $this->TopNav();
 			echo '<br />
-			<div align="center">Manage: 
-			<a href="#" onclick="$(\'#ContentStuff\').load(\'/scripts.php?view=management&u='.$this->uid.'&node=forums&subnode=forums\'); return false;">Forums</a> 
-			| <a href="#" onclick="$(\'#ContentStuff\').load(\'/scripts.php?view=management&u='.$this->uid.'&node=forums&subnode=threads\'); return false;">Threads</a> 
-			| <a href="#" onclick="$(\'#ContentStuff\').load(\'/scripts.php?view=management&u='.$this->uid.'&node=forums&subnode=posts\'); return false;">Posts</a> 
+			<div align="center">Manage:
+			<a href="#" onclick="$(\'#ContentStuff\').load(\'/scripts.php?view=management&u='.$this->uid.'&node=forums&subnode=forums\'); return false;">Forums</a>
+			| <a href="#" onclick="$(\'#ContentStuff\').load(\'/scripts.php?view=management&u='.$this->uid.'&node=forums&subnode=threads\'); return false;">Threads</a>
+			| <a href="#" onclick="$(\'#ContentStuff\').load(\'/scripts.php?view=management&u='.$this->uid.'&node=forums&subnode=posts\'); return false;">Posts</a>
 			</div>
 			<div id="ContentStuff" class="ContentStuff" style="display:hidden;"><div align="center">Choose From the Above Options.</div></div>';
 		}
@@ -2047,18 +2047,18 @@ class AFTWManagement extends Config {
 			}
 		}
 	}
-	
+
 	/*
 	Function of the following code is to hook into manage settings and provide a user friendly look to the permissions window
 	*/
-	
+
 	private function BuildGroupPermissionObjects($pid = NULL){
 		$return = '';
 		// first step is to get the list of groups available.
 		$query = "SELECT groupID, groupName FROM site_groups";
 		$results = mysql_query($query);
 		$i = 0;
-		while($group_array = mysql_fetch_array($results)){	
+		while($group_array = mysql_fetch_array($results)){
 			$subquery = "SELECT id FROM permissions_objects WHERE permission_id = $pid AND oid = ".$group_array[0];
 			$query = mysql_query($subquery);
 			$count = mysql_num_rows($query);
@@ -2076,7 +2076,7 @@ class AFTWManagement extends Config {
 		}
 		return $return;
 	}
-	
+
 	//The following is used to process posted data..
 	private function PrcessPostedData(){
 		if($_POST['method'] == 'SettingsSubmit' && $this->ValidatePermission(61) == TRUE){
@@ -2143,43 +2143,43 @@ class AFTWManagement extends Config {
 				$category = mysql_real_escape_string($_POST['category']);
 				$seriesType = mysql_real_escape_string($_POST['seriesType']);
 				$seriesList = mysql_real_escape_string($_POST['seriesList']);
-											
+
 				$fullSeriesName = htmlspecialchars($fullSeriesName);
 				$kanji = htmlspecialchars($kanji);
 				$description = nl2br($description);
 				$noteReason = nl2br($noteReason);
 				//echo $description;
-				mysql_query("SET NAMES 'utf8'"); 
+				mysql_query("SET NAMES 'utf8'");
 				$query = 'UPDATE series
-					SET seriesName=\'' . mysql_real_escape_string($seriesName) .'\', 
-					fullSeriesName=\'' . $fullSeriesName . '\', 
-					romaji=\'' . mysql_real_escape_string($romaji) . '\', 
+					SET seriesName=\'' . mysql_real_escape_string($seriesName) .'\',
+					fullSeriesName=\'' . $fullSeriesName . '\',
+					romaji=\'' . mysql_real_escape_string($romaji) . '\',
 					kanji=\'' . mysql_real_escape_string($kanji) . '\',
 					synonym=\'' . $synonym . '\',
-					seoname=\'' . mysql_real_escape_string($seoname) . '\', 
-					videoServer=\'' . mysql_real_escape_string($videoServer) . '\', 
-					active=\'' . mysql_real_escape_string($active) . '\', 
-					description=\'' . $description . '\', 
-					ratingLink=\'' . mysql_real_escape_string($ratingLink) . '\', 
-					stillRelease=\'' . mysql_real_escape_string($stillRelease) . '\', 
-					Movies=\'' . mysql_real_escape_string($Movies) . '\', 
-					moviesOnly=\'' . mysql_real_escape_string($moviesOnly) . '\', 
-					OVA=\'' . mysql_real_escape_string($OVA) . '\', 
-					noteReason=\'' . $noteReason . '\', 
-					aonly=\'' . mysql_real_escape_string($aonly) . '\', 
-					prequelto=\'' . mysql_real_escape_string($prequelto) . '\', 
-					sequelto=\'' . mysql_real_escape_string($sequelto) . '\', 
-					category=\'' . $category . '\', 
-					seriesType=\'' . mysql_real_escape_string($seriesType) . '\', 
+					seoname=\'' . mysql_real_escape_string($seoname) . '\',
+					videoServer=\'' . mysql_real_escape_string($videoServer) . '\',
+					active=\'' . mysql_real_escape_string($active) . '\',
+					description=\'' . $description . '\',
+					ratingLink=\'' . mysql_real_escape_string($ratingLink) . '\',
+					stillRelease=\'' . mysql_real_escape_string($stillRelease) . '\',
+					Movies=\'' . mysql_real_escape_string($Movies) . '\',
+					moviesOnly=\'' . mysql_real_escape_string($moviesOnly) . '\',
+					OVA=\'' . mysql_real_escape_string($OVA) . '\',
+					noteReason=\'' . $noteReason . '\',
+					aonly=\'' . mysql_real_escape_string($aonly) . '\',
+					prequelto=\'' . mysql_real_escape_string($prequelto) . '\',
+					sequelto=\'' . mysql_real_escape_string($sequelto) . '\',
+					category=\'' . $category . '\',
+					seriesType=\'' . mysql_real_escape_string($seriesType) . '\',
 					seriesList=\'' . mysql_real_escape_string($seriesList) . '\'
 					WHERE id=' . $sid . '';
-				mysql_query($query) or die('Error : ' . mysql_error());	
+				mysql_query($query) or die('Error : ' . mysql_error());
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
-					
+
 				$this->ModRecord('Edit series, ' . $fullSeriesName);
 				echo 'Success';
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
@@ -2210,17 +2210,17 @@ class AFTWManagement extends Config {
 				$category = mysql_real_escape_string($_POST['category']);
 				$seriesType = mysql_real_escape_string($_POST['seriesType']);
 				$seriesList = mysql_real_escape_string($_POST['seriesList']);
-							
+
 				mysql_query("SET NAMES 'utf8'");
 				$query = "INSERT INTO series (seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, prequelto, sequelto, category, seriesType, seriesList) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList')";
 				mysql_query($query) or die('Could not connect, way to go retard: ' . mysql_error());
-				
+
 				$sid = $this->SingleVarQuery("SELECT id FROM series WHERE seriesName = '" . $seriesName . "'",'id'); //Get the Series ID through seriesName
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
 				$this->ModRecord('Add Series, ' . $FullSeriesName);
 				echo 'Success';
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
@@ -2243,16 +2243,16 @@ class AFTWManagement extends Config {
 				$subGroup = mysql_real_escape_string($_POST['subGroup']);
 				$videotype = mysql_real_escape_string($_POST['videotype']);
 				$UpdateType = $_POST['UpdateType'];
-				
+
 				if($old_epprefix != $epprefix) // if the episode prefix changed, then it nullifies the episodes images..
 				{
 					$QuerySet = ", image = '0'";
 				}
-				else 
+				else
 				{
 					$QuerySet = "";
 				}
-				
+
 				if($UpdateType == 0) // Update ONLY episodes
 				{
 					$QueryAddon = " AND Movie = 0";
@@ -2265,30 +2265,30 @@ class AFTWManagement extends Config {
 				{
 					$QueryAddon = "";
 				}
-				else // default to ONLY episodes.. best and safest practice.. 
+				else // default to ONLY episodes.. best and safest practice..
 				{
 					$QueryAddon = " AND Movie = 0";
 				}
-				
+
 				$fullSeriesName = stripslashes($fullSeriesName);
 				//echo $description;
-				mysql_query("SET NAMES 'utf8'"); 
+				mysql_query("SET NAMES 'utf8'");
 				$query = 'UPDATE episode
-					SET vidwidth=\'' . $vidwidth .'\', 
-					vidheight=\'' . $vidheight . '\', 
-					epprefix=\'' . $epprefix . '\', 
-					subGroup=\'' . $subGroup . '\', 
+					SET vidwidth=\'' . $vidwidth .'\',
+					vidheight=\'' . $vidheight . '\',
+					epprefix=\'' . $epprefix . '\',
+					subGroup=\'' . $subGroup . '\',
 					videotype=\'' . $videotype . '\''.$QuerySet.'
 					WHERE seriesname=\'' . $seriesname . '\'' . $QueryAddon;
 				mysql_query($query) or die('Error : ' . mysql_error());
 				$this->ModRecord('Mass Episode Edit for Series ' . $fullSeriesName . ', old -vh:' . $old_vidheight . ', -vw:' . $old_vidwidth . ', -pref:' . $old_epprefix . ', -sg:' . $old_subGroup . ', -vt:' . $old_videotype . '');
 				echo 'Success';
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
-		}		
+		}
 		else if($_POST['method'] == 'AdminSeriesSearch' && $this->ValidatePermission(24) == TRUE)
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
@@ -2299,8 +2299,8 @@ class AFTWManagement extends Config {
 				}
 				else
 				{
-					$input = mysql_real_escape_string($_POST['SeriesName']);					
-					mysql_query("SET NAMES 'utf8'"); 
+					$input = mysql_real_escape_string($_POST['SeriesName']);
+					mysql_query("SET NAMES 'utf8'");
 					$query   = "SELECT id, seriesName, fullSeriesName, seoname, kanji, romaji, ratingLink, category FROM series WHERE ( fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' ) ORDER BY seriesName ASC LIMIT 100";
 					$result  = mysql_query($query) or die('Error : ' . mysql_error());
 					$ts = mysql_num_rows($result);
@@ -2311,7 +2311,7 @@ class AFTWManagement extends Config {
 					else
 					{
 						echo '<div align="center">Showing ' . $ts . ' Results for: <b>' . stripslashes($input) . '</b></div>';
-						echo '<div style="height:360px;overflow-y:scroll;overflow-x:none;">';						
+						echo '<div style="height:360px;overflow-y:scroll;overflow-x:none;">';
 						while($row = mysql_fetch_array($result))
 						{
 							echo '<div style="padding:5px 0px 5px 0px;height:210px;">
@@ -2330,18 +2330,18 @@ class AFTWManagement extends Config {
 					}
 				}
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
-		}	
+		}
 		else if($_POST['method'] == 'SeriesAnnouncementBuilder' && $this->ValidatePermission(73) == TRUE)
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$query = "SELECT seoname, fullSeriesName, description FROM series WHERE";
 				$i = 0;
-				foreach($_POST['sid'] as $name => $value) 
+				foreach($_POST['sid'] as $name => $value)
 				{
 					if($i > 0)
 					{
@@ -2361,7 +2361,7 @@ class AFTWManagement extends Config {
 				//echo print_r($_POST);
 				echo '</textarea>';
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
@@ -2377,7 +2377,7 @@ class AFTWManagement extends Config {
 				echo 'Success';
 				//echo $query;
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
@@ -2388,23 +2388,23 @@ class AFTWManagement extends Config {
 			{
 				$episodes = mysql_real_escape_string($_POST['episodesdoing'])."/".mysql_real_escape_string($_POST['episodetotal']);
 				$dimmensions = mysql_real_escape_string($_POST['width'])."x".mysql_real_escape_string($_POST['height']);
-				$query = "UPDATE `uestatus` SET 
-				`series` = '" . mysql_real_escape_string($_POST['Series']) . "', 
-				`prefix` = '" . mysql_real_escape_string($_POST['Prefix']) . "', 
-				`episodes` = '" . $episodes . "', 
-				`type` = '" . mysql_real_escape_string($_POST['Type']) . "', 
-				`resolution` = '" . $dimmensions . "', 
-				`status` = '" . mysql_real_escape_string($_POST['Status']) . "', 
+				$query = "UPDATE `uestatus` SET
+				`series` = '" . mysql_real_escape_string($_POST['Series']) . "',
+				`prefix` = '" . mysql_real_escape_string($_POST['Prefix']) . "',
+				`episodes` = '" . $episodes . "',
+				`type` = '" . mysql_real_escape_string($_POST['Type']) . "',
+				`resolution` = '" . $dimmensions . "',
+				`status` = '" . mysql_real_escape_string($_POST['Status']) . "',
 				`user` = '" . mysql_real_escape_string($_POST['uploader']) . "',
-				`updated` = NOW(), 
-				`anidbsid` = '" . mysql_real_escape_string($_POST['anidb']) . "', 
+				`updated` = NOW(),
+				`anidbsid` = '" . mysql_real_escape_string($_POST['anidb']) . "',
 				`fansub` = '" . mysql_real_escape_string($_POST['fansub']) . "'
 				WHERE `uestatus`.`ID` = " . mysql_real_escape_string($_POST['ueid']);
 				mysql_query($query) or die(mysql_error());
 				echo 'Success';
 				//echo $query;
 			}
-			else 
+			else
 			{
 				echo 'Failed: Authorization was wrong.';
 			}
@@ -2426,6 +2426,26 @@ class AFTWManagement extends Config {
 				{
 					// #1, if the user is the same as the submitted data, then they can pass
 					// #2, if the user posting the data is an admin or a manager, allow them through
+
+                    // Check if the user has the ability to change their display_name.
+                    // We will allow managers to change them as well as admins.
+                    if (($this->UserArray[1] != $_POST['id'] && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)) || ($_POST['id'] == $this->UserArray[1] && ($this->UserArray[2] != 3))) {
+                        // We need to check to make sure this display name is not in existance.
+                        $query = "SELECT COUNT(ID) AS userNameCount FROM `users` WHERE '" . mysql_real_escape_string(@$_POST['displayName']) . "' IN(`Username`,`display_name`);";
+                        $result = mysql_query($query);
+                        $usercount = mysql_fetch_object($result);
+                        if ($usercount->userNameCount == 0) {
+                            $display_name = ' `display_name`=\'' . mysql_real_escape_string(@$_POST['displayName']) . '\',';
+                        } else if ($_POST['displayName'] == $this->UserArray[5]) {
+                            // Display Name equals the username, thus nothing to change.
+                            $display_name = '';
+                        } else {
+        					echo 'Failed: Display Name is already taken, please try another.';
+                            exit;
+                        }
+                    } else {
+                        $display_name = '';
+                    }
 					$rid = @$_POST['id'];
 					$sid = $_POST['s'];
 					$active = @$_POST['Active'];
@@ -2438,7 +2458,7 @@ class AFTWManagement extends Config {
 					$ageday = urldecode(@$_POST['ageDate']);
 					$agemonth = urldecode(@$_POST['ageMonth']);
 					$ageyear = urldecode(@$_POST['ageYear']);
-					$country = urldecode(@$_POST['country']); 
+					$country = urldecode(@$_POST['country']);
 					$msn = urldecode(@$_POST['msnAddress']);
 					$aim = urldecode(@$_POST['aimName']);
 					$yim = urldecode(@$_POST['yahooName']);
@@ -2458,7 +2478,7 @@ class AFTWManagement extends Config {
 					$theme = urldecode(@$_POST['theme']);
 					$notes = urldecode(@$_POST['notes']);
 					$preffix = urldecode(@$_POST['preffix']);
-					
+
 					if($Alias == '')
 					{
 						$EmailAlias = '`Alias`=NULL,';
@@ -2467,11 +2487,12 @@ class AFTWManagement extends Config {
 					{
 						$EmailAlias = ' `Alias`=\'' . mysql_real_escape_string($Alias) . '\',';
 					}
-					
-					// if the users access level is an admin or manager, give them the ability to edit everything				
+
+					// if the users access level is an admin or manager, give them the ability to edit everything
 					if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 					{
-						$additional = ',' . $EmailAlias . ' `canDownload`=\'' . mysql_real_escape_string($candownload) . '\', `Level_access`=\'' . mysql_real_escape_string($level_access) . '\', `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `avatarActivate`=\'' . mysql_real_escape_string($avataractive) . '\', `avatarExtension`=\'' . mysql_real_escape_string($avatarextension) . '\', `personalMsg`=\'' . mysql_real_escape_string($personalmsg) . '\', `memberTitle`=\'' . mysql_real_escape_string($membertitle) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `signatureActive`=\'' . mysql_real_escape_string($sigactive) . '\', `Signature`=\'' . mysql_real_escape_string($Signature) . '\', `notes`=\'' . mysql_real_escape_string($notes) . '\'';
+						$additional = ',' . $EmailAlias . $display_name . ' `canDownload`=\'' . mysql_real_escape_string($candownload) . '\', `Level_access`=\'' . mysql_real_escape_string($level_access) . '\', `advanceImage`=\'' . mysql_real_escape_string($preffix) . '\', `avatarActivate`=\'' . mysql_real_escape_string($avataractive) . '\', `avatarExtension`=\'' . mysql_real_escape_string($avatarextension) . '\',' .
+                        ' `personalMsg`=\'' . mysql_real_escape_string($personalmsg) . '\', `memberTitle`=\'' . mysql_real_escape_string($membertitle) . '\', `aboutMe`=\'' . mysql_real_escape_string($aboutme) . '\', `interests`=\'' . mysql_real_escape_string($interests) . '\', `signatureActive`=\'' . mysql_real_escape_string($sigactive) . '\', `Signature`=\'' . mysql_real_escape_string($Signature) . '\', `notes`=\'' . mysql_real_escape_string($notes) . '\'';
 					}
 					else if($this->UserArray[2] == 4 || $this->UserArray[2] == 5 || $this->UserArray[2] == 6 || $this->UserArray[2] == 7)
 					{
@@ -2489,20 +2510,20 @@ class AFTWManagement extends Config {
 					// basic members can change these..
 						$additional = '';
 					}
-					$query = 'UPDATE users SET 
-					`firstName`=\'' . mysql_real_escape_string($firstname) . '\', 
-					`lastName`=\'' . mysql_real_escape_string($lastname) . '\', 
-					`gender`=\'' . mysql_real_escape_string($gender) . '\', 
-					`ageDate`=\'' . mysql_real_escape_string($ageday) . '\', 
-					`ageMonth`=\'' . mysql_real_escape_string($agemonth) . '\', 
-					`ageYear`=\'' . mysql_real_escape_string($ageyear) . '\', 
-					`country`=\'' . mysql_real_escape_string($country) . '\', 
-					`msnAddress`=\'' . mysql_real_escape_string($msn) . '\', 
-					`aimName`=\'' . mysql_real_escape_string($aim) . '\', 
-					`yahooName`=\'' . mysql_real_escape_string($yim) . '\', 
-					`skypeName`=\'' . mysql_real_escape_string($skype) . '\', 
-					`icqNumber`=\'' . mysql_real_escape_string($icq) . '\', 
-					`showEmail`=\'' . mysql_real_escape_string($showemail) . '\', 
+					$query = 'UPDATE users SET
+					`firstName`=\'' . mysql_real_escape_string($firstname) . '\',
+					`lastName`=\'' . mysql_real_escape_string($lastname) . '\',
+					`gender`=\'' . mysql_real_escape_string($gender) . '\',
+					`ageDate`=\'' . mysql_real_escape_string($ageday) . '\',
+					`ageMonth`=\'' . mysql_real_escape_string($agemonth) . '\',
+					`ageYear`=\'' . mysql_real_escape_string($ageyear) . '\',
+					`country`=\'' . mysql_real_escape_string($country) . '\',
+					`msnAddress`=\'' . mysql_real_escape_string($msn) . '\',
+					`aimName`=\'' . mysql_real_escape_string($aim) . '\',
+					`yahooName`=\'' . mysql_real_escape_string($yim) . '\',
+					`skypeName`=\'' . mysql_real_escape_string($skype) . '\',
+					`icqNumber`=\'' . mysql_real_escape_string($icq) . '\',
+					`showEmail`=\'' . mysql_real_escape_string($showemail) . '\',
 					`theme`=\'' . mysql_real_escape_string($theme) . '\'
 					'.$additional.'
 					WHERE `ID`=\'' . mysql_real_escape_string($rid) . '\'';
@@ -2511,7 +2532,6 @@ class AFTWManagement extends Config {
    					mysql_query($query) or die('Error : ' . mysql_error());
 					echo 'Success';
 					$this->ModRecord("Account id " . $rid . " edited by " . $row['Username']);
-
 				}
 				else
 				{
@@ -2608,7 +2628,7 @@ class AFTWManagement extends Config {
 				print_r($this->UserArray);
 			}
 		}
-		
+
 		else if($_POST['method'] == 'EditPassword')
 		{
 			if((isset($_POST['id']) && ($_POST['id'] == $this->UserArray[1])) || (isset($_POST['id']) && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)))
@@ -2647,18 +2667,18 @@ class AFTWManagement extends Config {
 			echo 'You posted a method of: '.$_POST['method'].' And it has not been setup yet.';
 		}
 	}
-	
+
 	private function updatePreSequel($sid, $prequelto, $sequelto)
 	{
 		if($prequelto != 0)//If the prequel is updated, we update that series sequel to this one.
 		{
 			$query = 'UPDATE series SET sequelto=\'' . mysql_real_escape_string($sid) . '\' WHERE id=' . mysql_real_escape_string($prequelto) . '';
-			mysql_query($query) or die('Error : ' . mysql_error());	
+			mysql_query($query) or die('Error : ' . mysql_error());
 		}
 		if($sequelto != 0)//If the sequel is, or also was updated with the prequel, we update that series prequel to this one.
 		{
 			$query = 'UPDATE series SET prequelto=\'' . mysql_real_escape_string($sid) . '\' WHERE id=' . mysql_real_escape_string($sequelto) . '';
-			mysql_query($query) or die('Error : ' . mysql_error());	
+			mysql_query($query) or die('Error : ' . mysql_error());
 		}
 	}
 }

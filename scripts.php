@@ -60,7 +60,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 		$row = mysql_fetch_array($result);
 		$description = stripslashes($row['description']);
 		echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
-	}	
+	}
 	if($_GET['show'] == 'user-tips'){
 		$id = $_GET['id'];
 		$query  = "SELECT Username, gender, ageMonth, ageYear, country, avatarActivate, avatarExtension, personalMsg FROM users WHERE ID='".$id."'";
@@ -84,7 +84,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 		}
 		echo '<table><tr><td valign="top"><img src="'.$imgUrl.'" alt="Episode: '.$row['epnumber'].'" width="395px" /></td></tr></table>';
 		//echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
-	}	
+	}
 }
 if(isset($_GET['view']) && $_GET['view'] == 'user')
 {
@@ -129,7 +129,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					$con = mysql_real_escape_string($con); //more scrubbing!
 					mysql_query("UPDATE users SET personalMsg = '$con' WHERE ID = '".mysql_real_escape_string($id)."'");
 					echo $con;
-				}					
+				}
 			}
 			if($_GET['fieldname'] == 'aboutme'){
 				//First thing is first, check the DB for what we needs!
@@ -147,7 +147,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					mysql_query("UPDATE users SET aboutMe = '$con' WHERE ID = '$id'");
 					$a = mysql_fetch_array(mysql_query("SELECT aboutMe AS am FROM users WHERE ID='".mysql_real_escape_string($id)."'"));
 					$con2 = stripslashes($a['am']);
-					echo $con2;					
+					echo $con2;
 				}
 			}
 			if($_GET['fieldname'] == 'interests'){
@@ -166,7 +166,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					mysql_query("UPDATE users SET interests = '$con' WHERE ID = '".mysql_real_escape_string($id)."'");
 					$a = mysql_fetch_array(mysql_query("SELECT interests FROM users WHERE ID='".mysql_real_escape_string($id)."'"));
 					$con2 = stripslashes($a['interests']);
-					echo $con2;	
+					echo $con2;
 				}
 			}
 			if($_GET['fieldname'] == 'msnAddress' || $_GET['fieldname'] == 'aimName' || $_GET['fieldname'] == 'yahooName' || $_GET['fieldname'] == 'skypeName' || $_GET['fieldname'] == 'icqNumber'){
@@ -186,7 +186,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					mysql_query("UPDATE users SET $fn = '$con' WHERE ID = '".mysql_real_escape_string($id)."'");
 					$a = mysql_fetch_array(mysql_query("SELECT $fn FROM users WHERE ID='".mysql_real_escape_string($id)."'"));
 					$con2 = stripslashes($a[$fn]);
-					echo $con2;	
+					echo $con2;
 				}
 			}
 			//echo nl2br($_GET['content'])."&nbsp;".$_GET['fieldname'];
@@ -208,7 +208,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'comments')
 		$query1   = "SELECT `page_comments`.`comments`, `page_comments`.`dated`, `series`.`seoname`, `series`.`fullSeriesName`, `episode`.`epnumber`, `episode`.`Movie` FROM `page_comments`, `series`, `episode` WHERE `page_comments`.`uid`='".$person."' AND `page_comments`.`type` = 0 AND `episode`.`id`=`page_comments`.`epid` AND `series`.`id`=`episode`.`sid` ORDER BY dated DESC LIMIT 0,10";
 		$result1  = mysql_query($query1) or die(mysql_error().$query1);
 		$total_comments = mysql_num_rows($result1);
-		$finalUsername = ''; 
+		$finalUsername = '';
 		$numba = 1;
 		if ($total_comments == 0)
 		{
@@ -234,7 +234,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'comments')
 				$finalName .= "<div class=\"side-body\">Posted on: ".$postedDate."<br />Posted in: <a href=\"/anime/" . $seoname . "/\" target=\"_blank\" title=\"Opens in a new window\">" . stripslashes($fullSeriesName) . "</a>, Episode #<a href=\"/anime/" . $seoname . "/" . $videotype . $epnumber . "\" target=\"_blank\" title=\"Opens in a new window\">" . $epnumber . "</a><br />Comment:<br />" . stripslashes($comments) . "</div><br />"."\n";
 				$numba++;
 			}
-		}			
+		}
 	}
 	echo '<div align="center" style="padding:4px 5px 5px 5px;">Showing the latest 10 comments for '.checkUserNameNumberNoLink($person).'</div>';
 	echo $finalName."\n";
@@ -254,10 +254,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 	}
 	if(isset($_GET['id'])){
 		$aid = $_GET['id']; //requested user's ID
-			$query = mysql_query("SELECT id FROM friends WHERE Asker='".mysql_real_escape_string($aid)."'"); 
+			$query = mysql_query("SELECT id FROM friends WHERE Asker='".mysql_real_escape_string($aid)."'");
 			$u = mysql_fetch_array(mysql_query("SELECT Username FROM users WHERE ID='".mysql_real_escape_string($aid)."'"));
 			$CountFriends = mysql_num_rows($query);
-			if($CountFriends == 0){				
+			if($CountFriends == 0){
 				echo '<br />'.$u['Username'].' Does not have any friends Added!';
 			}
 			else {
@@ -286,7 +286,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 							else {
 								$fpn = "";
 							}
-							
+
 						}
 						else {
 						}
@@ -334,7 +334,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
 	$Config = new Config();
 	$Config->buildUserInformation(FALSE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	include_once('includes/classes/users.class.php');
 	$u = new AFTWUser();
 	$u->connectProfile($profileArray);
@@ -356,7 +356,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'settings'){
         $s = new Settings(true);
 		$s->processSiteSettingsUpdate();
 	}
-	else 
+	else
 	{
 		echo '
 		<div class="fds">
@@ -421,7 +421,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	if(isset($_GET['subview'])){
 		if(!isset($_GET['id']) || (!is_numeric($_GET['id']) && (!is_numeric($_GET['id']) && $_GET['subview'] != 'manage-session')))
 		{
@@ -463,7 +463,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 					*/
 					echo 'Oh snap!';
 				}
-				else 
+				else
 				{
 					echo "Error";
 				}
@@ -529,7 +529,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'management')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	if(isset($_GET['u'])){
 		if($_GET['u'] != $profileArray[1] && !isset($_GET['phpcli-auth'])){
 			echo 'ERROR: S-M3';
@@ -651,13 +651,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'tracker')
 		}
 	}
 	/* Things to do
-	# - Basic Model, latest adds 
+	# - Basic Model, latest adds
 	# - Signatures (tab?), straight forward
 	# - [Feature] ability for advanced members to have commenting on entries
 	# - [Feature] ability to delete for Advanced Members
 	*/
-	
-	
+
+
 }
 if(isset($_GET['view']) && $_GET['view'] == 'notifications')
 {
@@ -671,7 +671,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'notifications')
 		include_once('includes/classes/notifications.class.php');
 		$N = new AFTWNotifications();
 		$N->connectProfile($profileArray);
-		
+
 		if(!isset($_GET['show'])){
 			$N->Output();
 		}
@@ -695,7 +695,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	include_once('includes/classes/watchlist.class.php');
 	if(isset($_GET['function']) && $_GET['function'] == 'submit-form')
 	{
@@ -706,7 +706,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'watchlist')
 	{
 		if($profileArray[0] == 0){
 		}
-		else 
+		else
 		{
 			$W = new AFTWWatchlist($profileArray);
 			$W->Output();
@@ -719,7 +719,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'donate')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	if($profileArray[0] == 0){
 	}
 	else {
@@ -735,7 +735,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile-comments')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	if(!isset($_GET['uid']) || !is_numeric($_GET['uid']))
 	{
 	}
@@ -760,7 +760,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'toplist')
 {
 	include_once('includes/classes/config.v2.class.php');
 	include_once('includes/classes/toplist.v2.class.php');
-	
+
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$TopList = new toplist();
@@ -773,10 +773,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'cart')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	include_once('includes/classes/store.class.php');
-	
+
 	if(isset($_POST) && isset($_POST['verify_sign']))
 	{
-		$ProcessOrder = new ProcessOrders(); 
+		$ProcessOrder = new ProcessOrders();
 		$ProcessOrder->connectProfile($Config->outputUserInformation());
 		$ProcessOrder->init($_POST);
 	}
@@ -784,22 +784,22 @@ if(isset($_GET['view']) && $_GET['view'] == 'cart')
 	{
 		$Cart = new Shopping_Cart('aftw_cart');
 		$Cart->connectProfile($Config->outputUserInformation());
-		
-		if ( !empty($_GET['order_code']) && !empty($_GET['quantity']) ) 
+
+		if ( !empty($_GET['order_code']) && !empty($_GET['quantity']) )
 		{
 			//$quantity = $Cart->getItemQuantity($_GET['order_code'])+$_GET['quantity'];
 			$Cart->AddItemToCart($_GET['order_code'], $_GET['quantity']);
-			
+
 		}
-		
-		if ( !empty($_GET['quantity']) ) 
+
+		if ( !empty($_GET['quantity']) )
 		{
 			foreach ( $_GET['quantity'] as $order_code=>$quantity ) {
 				$Cart->setItemQuantity($order_code, $quantity);
 			}
 		}
-		
-		if ( !empty($_GET['remove']) ) 
+
+		if ( !empty($_GET['remove']) )
 		{
 			foreach ( $_GET['remove'] as $order_code ) {
 				$Cart->setItemQuantity($order_code, 0);
@@ -863,7 +863,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'check-episode')
 }
 if(isset($_GET['view']) && $_GET['view'] == 'commentsv2')
 {
-	
+
 	include_once("includes/classes/config.v2.class.php");
 	include_once("includes/classes/comments.v2.class.php");
 	$Config = new Config();
@@ -909,7 +909,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'tooltip')
 			$Config->buildUserInformation(TRUE);
 			$V = new AFTWVideos();
 			$V->connectProfile($Config->outputUserInformation());
-			
+
 			if(isset($_GET['image']))
 			{
 				$V->showEpisodeTooltip($_GET['id'],1);
@@ -934,14 +934,14 @@ if(isset($_GET['view']) && $_GET['view'] == 'dynamic-load')
 	include_once('includes/classes/config.class.php');
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
-	
+
 	if(isset($_GET['page']) && isset($_GET['id']))
 	{
 		if(isset($_GET['show']) && $_GET['show'] == 'episodes')
 		{
 			include_once('includes/classes/videos.class.php');
 			$V = new AFTWVideos();
-			
+
 			$V->connectProfile($Config->outputUserInformation());
 			$V->showAvailableVideos(0,$_GET['id'],1,TRUE);
 		}
@@ -973,7 +973,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 	$Config = new Config();
 	$Config->buildUserInformation(TRUE);
 	$profileArray = $Config->outputUserInformation();
-	
+
 	############ Configuration ##############
 	$thumb_square_size      = 200; //Thumbnails will be cropped to 200x200 pixels
 	$max_image_size         = 500; //Maximum image size (height and width)
@@ -981,7 +981,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 	$destination_folder     = '/home/mainaftw/public_html/images/avatars/'; //upload directory ends with / (slash)
 	$jpeg_quality           = 90; //jpeg quality
 	##########################################
-	
+
 	//continue only if $_POST is set and it is a Ajax request
 	if(isset($_POST) && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
 
@@ -989,14 +989,14 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 		if(!isset($_FILES['image_file']) || !is_uploaded_file($_FILES['image_file']['tmp_name'])){
 				die('Image file is Missing!'); // output error when above checks fail.
 		}
-	   
+
 		//get uploaded file info before we proceed
 		$image_name = $_FILES['image_file']['name']; //file name
 		$image_size = $_FILES['image_file']['size']; //file size
 		$image_temp = $_FILES['image_file']['tmp_name']; //file temp
 
 		$image_size_info    = getimagesize($image_temp); //gets image size info from valid image file
-	   
+
 		if($image_size_info){
 			$image_width        = $image_size_info[0]; //image width
 			$image_height       = $image_size_info[1]; //image height
@@ -1011,7 +1011,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 			case 'image/png':
 				$image_res =  imagecreatefrompng($image_temp); break;
 			case 'image/gif':
-				$image_res =  imagecreatefromgif($image_temp); break;          
+				$image_res =  imagecreatefromgif($image_temp); break;
 			case 'image/jpeg': case 'image/pjpeg':
 				$image_res = imagecreatefromjpeg($image_temp); break;
 			default:
@@ -1029,7 +1029,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 			else
 			{
 				if($profileArray[1] == $_POST['uid'] || $profileArray[2] == 1 || $profileArray[2] == 2)
-				{				
+				{
 					$target_dir = "/home/mainaftw/public_html/images/avatars/";
 					$uploadOk = 1;
 					$imageFileType = pathinfo($_FILES["image_file"]["name"],PATHINFO_EXTENSION);
@@ -1113,7 +1113,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 				break;
 			case 'image/gif':
 				imagegif($source, $destination); return true; //save gif file
-				break;          
+				break;
 			case 'image/jpeg': case 'image/pjpeg':
 				imagejpeg($source, $destination, $quality); return true; //save jpeg file
 				break;

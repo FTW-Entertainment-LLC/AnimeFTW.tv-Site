@@ -1,13 +1,13 @@
 <?php
 /****************************************************************\
-## FileName: config.v2.class.php                                     
-## Author: Brad Riemann                                         
+## FileName: config.v2.class.php
+## Author: Brad Riemann
 ## Usage: Version 2.0 of the configuration class
 ## Copywrite 2014 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class Config {
-    
+
     public $UserArray = array(), $PermArray, $ImageHost, $StatsDB, $MainDB, $DevTable, $TokenTable, $MessageCodes, $SettingsArray, $DefaultSettingsArray, $RecentEps=array();
 
     public function __construct($autoBuildUser = FALSE)
@@ -20,10 +20,10 @@ class Config {
         {
             $this->MainDB = 'devadmin_anime'; // Main DB for everything else
         }
-        
+
         // Initialize the Database connection!
         $this->DB_Con();
-        
+
         // this is for the usage of the CDN, all images will be there and if its secure we want to use it.
         if(isset($_SERVER['HTTP_CF_VISITOR'])){
             $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
@@ -46,45 +46,45 @@ class Config {
             //$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
             $this->ImageHost = 'https://img03.animeftw.tv';
         }
-        
+
         // build the site default settings..
         $this->array_buildDefaultSiteSettings();
         // we want to build the user info by default so it can be usable by all subclassess.. sometimes...
         if($autoBuildUser == TRUE){
             // build our user array
-            $this->array_constructUser(TRUE); 
-            
+            $this->array_constructUser(TRUE);
+
             // construct the site settings for the user, if they are logged in..
             $this->array_buildSiteSettings();
         }
     }
-    
+
     #----------------------------------------------------------------
     # function buildUserInformation
     # Builds all user details, settings and Watched Episodes on Demand
     # @public
     #----------------------------------------------------------------
-    
+
     public function buildUserInformation($remote = FALSE)
     {
         // build our user array
-        $this->array_constructUser($remote); 
-        
+        $this->array_constructUser($remote);
+
         // construct the site settings for the user, if they are logged in..
         $this->array_buildSiteSettings();
     }
-    
+
     #----------------------------------------------------------------
     # function outputUserInformation
     # Gateway function when subclasses dont link properly.
     # @public
     #----------------------------------------------------------------
-    
+
     public function outputUserInformation()
     {
         return $this->UserArray;
     }
-    
+
     #----------------------------------------------------------------
     # function DB_Con
     # Builds the database connection for use ONLY in the class
@@ -111,10 +111,10 @@ class Config {
             echo "Failed to connect to MySQL: (" . $this->mysqli->connect_errno . ") " . $this->mysqli->connect_error;
         }
     }
-    
+
     #----------------------------------------------------------------
     # @function array_constructUser
-    # @usage: to build all of the configurable options for the users 
+    # @usage: to build all of the configurable options for the users
     # on the website.
     # @private
     #----------------------------------------------------------------
@@ -129,13 +129,13 @@ class Config {
             $result = $this->mysqli->query($query) or die('Error : ' . $this->mysqli->error);
             $row = $result->fetch_assoc();
             $UserID = $row['uid'];
-            
+
             $query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($UserID) . "'";
             $result = $this->mysqli->query($query) or die('Error : ' . $this->mysqli->error);
             $row = $result->fetch_assoc();
         }
         else
-        {            
+        {
             // we need to check if the token and authentication are setup correctly. (site token)
             if(!isset($_COOKIE['0ii']) || !isset($_COOKIE['0au']) || !isset($_COOKIE['0st'])) {
                 $count = 0;
@@ -144,11 +144,11 @@ class Config {
                 $authorizationId = $_COOKIE['0au'];
                 $sessionId = $_COOKIE['0st'];
                 $userCookieId = $_COOKIE['0ii'];
-                
+
                 // initial count query
                 $query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . $this->mysqli->real_escape_string($sessionId) . "' AND `uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
                 $result = $this->mysqli->query($query);
-                $count = $result->fetch_assoc();            
+                $count = $result->fetch_assoc();
             }
             // There is an active token for this user, lets proceed.
             if($count > 0)
@@ -159,22 +159,22 @@ class Config {
                 // First thing we will do is validate the authorization token, there must be one prior to moving forward.
                 $query = "SELECT * FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . $this->mysqli->real_escape_string($authorizationId) . "' AND `uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
                 $result = $this->mysqli->query($query);
-                
+
                 if(!$result) {
                     echo "There was an error selecting the authorization token.";
                     exit;
                 }
                 $row = $result->fetch_assoc();
-                
+
                 // we need to perform a few items to make sure this is a clean session.
                 // Ensure the auth settings match, if they do not, compare what the changes are.
                 // If the changes are no substantial, then we will let them proceed while updating their profile.
                 // This ensures that users can take laptops to different networks without too many issues.
                 // it also helps us to avoid constantly changing auth hashes which cause issues down the line.
-                
+
                 // pull down the user's information.
                 $userDetails = $this->detectUserAgent();
-                
+
                 // contant to default open.
                 $continue = FALSE;
                 $changed = 0;
@@ -192,7 +192,7 @@ class Config {
                 } else {
                     // We do not allow any other security changes to be made, so they will be kicked out.
                 }
-                
+
                 // Check if the continue option has been changed to true.
                 if($continue == TRUE) {
                     // They have access, first, update the authorization token so we don't keep having to see the same changes.
@@ -207,13 +207,13 @@ class Config {
                     } else {
                         // no other changes are to be made.
                     }
-  
-                    // update the token and user profile, so that the user knows the last time this session was used.              
+
+                    // update the token and user profile, so that the user knows the last time this session was used.
                     $query = "UPDATE `" . $this->MainDB . "`.`user_session` INNER JOIN `" . $this->MainDB . "`.`users` ON (`users`.`ID`=`user_session`.`uid`) SET `user_session`.`updated` = '" . time() . "', `users`.`lastActivity`='" . time() . "' WHERE `user_session`.`id` = '" . $this->mysqli->real_escape_string($sessionId) . "' AND `user_session`.`uid` = '" . $this->mysqli->real_escape_string($userCookieId) . "'";
                     $result = $this->mysqli->query($query);
                     unset($query);
                     unset($result);
-                    
+
                     // start building the user details
                     $query = "SELECT * FROM users WHERE ID='" . $this->mysqli->real_escape_string($userCookieId) . "'";
                     $result = $this->mysqli->query($query);
@@ -228,7 +228,7 @@ class Config {
             }
         }
         if($UserID != NULL) {
-            
+
             $this->UserArray['logged-in'] .= 1;
             foreach($row AS $key => $value)
             {
@@ -240,17 +240,17 @@ class Config {
                 $this->UserArray['logged-in'] .= 0;
         }
     }
-    
+
     private function array_buildSiteSettings()
     {
         $this->SettingsArray = array();
-        
+
         if($this->UserArray[0] == 1)
         {
             // the user is logged in, book em dan-o
             $query = "SELECT * FROM `user_setting` WHERE `uid` = " . $this->UserArray[1];
             $result = $this->mysqli->query($query);
-            
+
             $count = mysqli_num_rows($result);
             if($count > 0)
             {
@@ -264,20 +264,20 @@ class Config {
         {
         }
     }
-    
+
     private function array_buildDefaultSiteSettings()
     {
         $this->DefaultSettingsArray = array();
-        
+
         $query = "SELECT * FROM `user_setting_option`";
         $result = $this->mysqli->query($query);
-            
+
         while($row = $result->fetch_assoc())
         {
             $this->DefaultSettingsArray[$row['id']] = $row;
         }
     }
-    
+
     public function bool_validatePermission($pid)
     {
         // first, check to make sure the permission is numeric.
@@ -288,10 +288,10 @@ class Config {
             # OID of 2, means it is a single user Request
             */
             $query = "SELECT `id`, `deny` FROM `" . $this->MainDB . "`.`permissions_objects` WHERE `permission_id` = " . $pid . " AND ((`type` = 1 AND `oid` = ".$this->UserArray['ID'].") OR (`type` = 2 AND `oid` = ".$this->UserArray['Level_access']."))";
-            $results = $this->mysqli->query($query);   
+            $results = $this->mysqli->query($query);
             $count = mysqli_num_rows($results);
             if($count > 0)
-            {    
+            {
                 $Deny = 0;
                 while($row = $result->fetch_assoc())
                 {
@@ -311,7 +311,7 @@ class Config {
                     return TRUE;
                 }
             }
-            else 
+            else
             {
                 return FALSE;
             }
@@ -321,7 +321,7 @@ class Config {
             return FALSE;
         }
     }
-    
+
     public function string_fancyUsername($ID,$Username = NULL,$Active = NULL, $Level_access = NULL, $advancePreffix = NULL,$advanceImage = NULL,$UsernameOnly = NULL,$ArrayOutput = FALSE)
     {
         if($ID == 0)
@@ -351,7 +351,7 @@ class Config {
                 $avatar = $this->ImageHost . '/avatars/default.jpg';
             }
         }
-        
+
         // Added 8/10/2014 - robotman321
         // If the user has a custom Display_name, we make that the primary username
         if($display_name != $Username && $display_name != NULL)
@@ -362,7 +362,7 @@ class Config {
         {
             $display_name = $Username;
         }
-        
+
         // Added 8/5/2014 - robotman321
         // Enables the use of non link username construction.
         if($UsernameOnly != NULL)
@@ -382,7 +382,7 @@ class Config {
                 $link = '<a href="/user/' . $Username . '">';
             }
             if($Active == 1)
-            { 
+            {
                 if ($Level_access != 3)
                 {
                     if($advancePreffix != NULL || $advancePreffix != '')
@@ -433,51 +433,51 @@ class Config {
         }
         return $fixedUsername;
     }
-    
-    // takes a query and a var and retunrs 
+
+    // takes a query and a var and retunrs
     public function SingleVarQuery($query,$var)
     {
         $result = $this->mysqli->query($query) or die('Error : ' . mysql_error());
         $row = $result->fetch_assoc();
         return $row[$var];
     }
-    
+
     // records the mod function right into the database.
     public function ModRecord($type)
     {
         $this->mysqli->query("INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysql_real_escape_string($_SERVER['REQUEST_URI'])."')");
     }
-    
+
     // we dont know what it does.. it just looks cool.
     public function Build($var1,$var2,$Type = NULL){
-        $sarray = array( 
+        $sarray = array(
             'a' => '$2a$10$m5eebjaxijtnafbhqt863n$',
-            'b' => '$2a$10$1rdche03z0y65yuirbx9j2$', 
-            'c' => '$2a$10$w58kxl7rgj4h47rujjkgw2$', 
-            'd' => '$2a$10$1mwo8ykqm89s4mgbq6eftg$', 
-            'e' => '$2a$10$7opxsns435g60bitirv5g2$', 
+            'b' => '$2a$10$1rdche03z0y65yuirbx9j2$',
+            'c' => '$2a$10$w58kxl7rgj4h47rujjkgw2$',
+            'd' => '$2a$10$1mwo8ykqm89s4mgbq6eftg$',
+            'e' => '$2a$10$7opxsns435g60bitirv5g2$',
             'f' => '$2a$10$i6qmrb5bd2j2y2evs8v4xr$',
-            'g' => '$2a$10$tbzoqkirdj267u7lw6t64m$', 
+            'g' => '$2a$10$tbzoqkirdj267u7lw6t64m$',
             'h' => '$2a$10$dy40suy5eeg7rforo8b4bg$',
-            'i' => '$2a$10$6fwfgsg30neqin81jzbs4a$', 
-            'j' => '$2a$10$ac0y5ebdgt82v0hwzomdyr$', 
-            'k' => '$2a$10$dn7xhvqunhv89wtxhfucpp$', 
-            'l' => '$2a$10$2yaocsfe83lhva9hq132zp$', 
-            'm' => '$2a$10$u2uxxmb0vujcd0w04dgyrv$', 
-            'n' => '$2a$10$j7dh66ex6a2cu4v34jtdv7$', 
-            'o' => '$2a$10$809qcxw7df2ror8355hwby$', 
-            'p' => '$2a$10$wowii9akv7q5pee3eqtsiq$', 
-            'q' => '$2a$10$aqhfns3hvo94hdsd6rd8xb$', 
-            'r' => '$2a$10$chjsfo8w0k3pahal5jjukl$', 
-            's' => '$2a$10$xhromb9gw55u84mew26iqm$', 
-            't' => '$2a$10$zend8794gsmihxnvn4hr89$', 
-            'u' => '$2a$10$83q8psnll2orz8gjibphqy$', 
-            'v' => '$2a$10$8exwykcd97v3fbp26gqe3b$', 
-            'w' => '$2a$10$cmueo47hk4rdpdozx6sb3r$', 
+            'i' => '$2a$10$6fwfgsg30neqin81jzbs4a$',
+            'j' => '$2a$10$ac0y5ebdgt82v0hwzomdyr$',
+            'k' => '$2a$10$dn7xhvqunhv89wtxhfucpp$',
+            'l' => '$2a$10$2yaocsfe83lhva9hq132zp$',
+            'm' => '$2a$10$u2uxxmb0vujcd0w04dgyrv$',
+            'n' => '$2a$10$j7dh66ex6a2cu4v34jtdv7$',
+            'o' => '$2a$10$809qcxw7df2ror8355hwby$',
+            'p' => '$2a$10$wowii9akv7q5pee3eqtsiq$',
+            'q' => '$2a$10$aqhfns3hvo94hdsd6rd8xb$',
+            'r' => '$2a$10$chjsfo8w0k3pahal5jjukl$',
+            's' => '$2a$10$xhromb9gw55u84mew26iqm$',
+            't' => '$2a$10$zend8794gsmihxnvn4hr89$',
+            'u' => '$2a$10$83q8psnll2orz8gjibphqy$',
+            'v' => '$2a$10$8exwykcd97v3fbp26gqe3b$',
+            'w' => '$2a$10$cmueo47hk4rdpdozx6sb3r$',
             'x' => '$2a$10$wqjavr92fq7kn1kh8tb27x$',
             'y' => '$2a$10$6rzgtbmuxpodbnfmgs3gk9$',
             'z' => '$2a$10$1kvphqm78zdqoeqmfuf6g3$',
-            '0' => '$2a$10$xtjha3kw75l05y53kli9rc$', 
+            '0' => '$2a$10$xtjha3kw75l05y53kli9rc$',
             '1' => '$2a$10$iloqaoeqpu4o47nmvv4cj6$',
             '2' => '$2a$10$ngiv7kq9nbro9xxqdwedup$',
             '3' => '$2a$10$5ikgle3duc5su9jk78j108$',
@@ -492,14 +492,14 @@ class Config {
         {
             $final = md5($var1);
         }
-        else            
+        else
         {
             $var2 = substr(strtolower($var2), 0, 1);
             $final = crypt($var1, $sarray[$var2]);
         }
         return $final;
     }
-    
+
     //Paging function for the management pages, version two
     public function pagingV1($DivID,$count,$perpage,$start,$link)
     {
@@ -542,10 +542,10 @@ class Config {
             $enddots = "... ";
         }
         else {$enddots = '';}
-        
+
         echo '<div class="fontcolor">'.$front.$startpage.$frontdots.$middlepage.$enddots.$endpage.'</div>';
     }
-    
+
     public function array_validateAPIUser($username,$password)
     {
         if((filter_var($username, FILTER_VALIDATE_EMAIL) && preg_match('/@.+\./', $username)) == TRUE)
@@ -554,12 +554,14 @@ class Config {
         }
         else
         {
-            $query = "SELECT `ID`, `Active` FROM `users` WHERE `Username` = '" . $this->mysqli->real_escape_string($username) . "' AND Password = '" . md5($password) . "'";
+            $query = "SELECT `ID`, `Active` FROM `users` WHERE '" . $this->mysqli->real_escape_string($username) . "' IN(`Username`, `display_name`) AND Password = '" . md5($password) . "'";
         }
+        echo $query;
+        exit;
         $result = $this->mysqli->query($query);
-        
+
         $count = mysqli_num_rows($result);
-        
+
         if($count > 0)
         {
             // we found a row
@@ -569,10 +571,10 @@ class Config {
         else
         {
             $returnArray = array(FALSE,"0","0");
-        }        
+        }
         return $returnArray;
     }
-    
+
     public function stringRandomizer($type = 'alnum',$count = 10)
     {
         switch($type)
@@ -580,7 +582,7 @@ class Config {
             case 'alnum'    :
             case 'numeric'    :
             case 'nozero'    :
-            
+
                     switch($type)
                     {
                         case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -590,7 +592,7 @@ class Config {
                         case 'nozero'    :    $pool = '123456789';
                             break;
                     }
-    
+
                     $str = '';
                     for($i=0;$i<$count;$i++)
                     {
@@ -602,7 +604,7 @@ class Config {
             break;
         }
     }
-    
+
     private function array_buildRecentlyWatchedEpisodes()
     {
         // let's only load this when it's a video page..
@@ -610,7 +612,7 @@ class Config {
         {
             $query = "SELECT `eid`, `time`, `updated`, `max` FROM `episode_timer` WHERE `uid` = " . $this->UserArray['ID'];
             $result = $this->mysqli->query($query);
-            
+
             if(!$result)
             {
                 //echo 'There was an issue with the communications.';
@@ -625,7 +627,7 @@ class Config {
                     {
                         $this->RecentEps[$row['eid']]['time'] = $row['time'];
                         $this->RecentEps[$row['eid']]['updated'] = $row['updated'];
-                        $this->RecentEps[$row['eid']]['max'] = $row['max'];                
+                        $this->RecentEps[$row['eid']]['max'] = $row['max'];
                         $i++;
                     }
                 }
@@ -636,7 +638,7 @@ class Config {
             }
         }
     }
-    
+
     public function buildCategories()
     {
         $query = "SELECT * FROM `categories`";
@@ -648,34 +650,34 @@ class Config {
             $this->Categories[$row['id']]['description'] = $row['description'];
         }
     }
-    
+
     public function generateRandomString($length = 10)
     {
         $randomString = substr(str_shuffle(MD5(microtime())), 0, $length);
         return $randomString;
     }
-    
-    public function detectUserAgent() { 
+
+    public function detectUserAgent() {
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
-        
-        // What version? 
-        if (preg_match('/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/', $userAgent, $matches)) { 
-            $version = $matches[1]; 
-        } else { 
-            $version = 'unknown'; 
-        } 
+
+        // What version?
+        if (preg_match('/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/', $userAgent, $matches)) {
+            $version = $matches[1];
+        } else {
+            $version = 'unknown';
+        }
 
         $browser = $this->getBrowser($userAgent);
         $platform = $this->getOS($userAgent);
-        
-        return array ( 
-            'browser'   => $browser, 
-            'version'   => $version, 
-            'platform'  => $platform, 
-            'userAgent' => $userAgent 
+
+        return array (
+            'browser'   => $browser,
+            'version'   => $version,
+            'platform'  => $platform,
+            'userAgent' => $userAgent
         );
     }
-    
+
     public function getOS($agent)
     {
         $os_platform    =   "Unknown OS Platform";
@@ -753,12 +755,12 @@ class Config {
 
         return $browser;
     }
-    
+
     public function array_buildAPICodes()
     {
         $this->MessageCodes = array (
             'About' => 'These are the available status codes for the API.',
-            'Result Codes' => array(            
+            'Result Codes' => array(
                 '200' => array(
                     'Status' => '200',
                     'Message' => '[Has Data]',
@@ -907,7 +909,7 @@ class Config {
             )
         );
     }
-    
+
     # Function to post alerts to Slack.
     public function postToSlack($sendingText,$type=null){
         if($type == null || $type == 0) {
@@ -917,33 +919,33 @@ class Config {
             // Post to #managers
             $url = 'https://discordapp.com/api/webhooks/278872024724537344/jsvA94duEkd0Sor3zZbzQ0zfRPwhFeX74Mg41cS6n3XRuGqbjQV2XOlHYj5pi3k3DxtT';
         }
-        
+
         $data = array(
             "content" => $sendingText,
         );
-        
+
         $data_string = json_encode($data);
         //echo $data_string;
-        $ch = curl_init($url);                                                                      
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($data_string))                                                                       
-        );                                                                                                                   
-                                                                                                                             
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string))
+        );
+
         $result = curl_exec($ch);
     }
-    
+
     // creates the token, and prints it back to the screen.
     public function createToken($Data,$DevArray,$UserID,$foreverToken = FALSE)
     {
         // the hash is a mix of the developer id, the username, the login server and the date, it will give
         // a unique value that can be input into the database for later use.
         $hash = $this->generateUUIDV4(openssl_random_pseudo_bytes(16));
-                        
-        // If the developer gives us the remember option and it is yes, then we need to add a sticky session for this token. 
+
+        // If the developer gives us the remember option and it is yes, then we need to add a sticky session for this token.
         // TODO: Either make the developer in charge of the duration of the hash or assign it to the developer account within the database.
         if(isset($Data['remember']))
         {
@@ -957,8 +959,8 @@ class Config {
         if($foreverToken == TRUE) {
             $sticky = 2;
         }
-        
-        // The following will check the table, if the user was disconnected or the server crashed their token is still on the server and we need to delete before we can 
+
+        // The following will check the table, if the user was disconnected or the server crashed their token is still on the server and we need to delete before we can
         // setup a new one.
         $query = "SELECT `id` FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `did` = '" . $DevArray['id'] . "' AND `uid` = '" . $UserID . "'";
         $results = $this->mysqli->query($query); // do the query
@@ -968,10 +970,10 @@ class Config {
             return array('status' => '500', 'message' => 'There was an error with the Query.');
         }
         else
-        { 
+        {
             $count = mysqli_num_rows($results); // count the rows
             if($rows > 0)
-            {    
+            {
                 // There were rows found, we need to remove them all.
                 $results = $this->mysqli->query("DELETE FROM `" . $this->MainDB . "`.`" . $this->TokenTable . "` WHERE `did` = '" . $DevArray['id'] . "' AND `uid` = '" . $UserID . "'");
                 if(!$results)
@@ -999,7 +1001,7 @@ class Config {
             }
         }
     }
-    
+
     # Function replaces dashes in array keys IF we are required to do so.
     public function replaceArrayKeyDashes($array) {
         $returnData = '';
@@ -1013,7 +1015,7 @@ class Config {
         }
         return $returnData;
     }
-    
+
     public static function generateUUIDV4($data) {
         assert(strlen($data) == 16);
 
@@ -1022,7 +1024,7 @@ class Config {
 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
-    
+
     public function base64url_encode($data) {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
