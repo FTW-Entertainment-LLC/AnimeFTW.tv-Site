@@ -554,7 +554,7 @@ class Config {
         }
         else
         {
-            $query = "SELECT `ID`, `Active` FROM `users` WHERE " . $this->mysqli->real_escape_string($username) . "' IN(`Username`, `display_name`) AND Password = '" . md5($password) . "'";
+            $query = "SELECT `ID`, `Active` FROM `users` WHERE '" . $this->mysqli->real_escape_string($username) . "' IN(`Username`, `display_name`) AND Password = '" . md5($password) . "'";
         }
         echo $query;
         exit;
