@@ -571,7 +571,7 @@ class AFTWVideos extends Config{
 		}
 		// Autoplay functionality.
 		$autoplay = "";
-		if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
+		if((isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1) && $this->UserArray[2] != 3)
 		{
 			if($this->SettingsArray[16]['value'] == 33)
 			{
@@ -1009,7 +1009,7 @@ HDOC;
 
 										$autoplaytext = '
 											<div class="video-episodes">AutoPlay is <span style="color:red;cursor:pointer;" title="Enable this Advanced Member feature in your Profile Settings!">Disabled</span></div>';
-										if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
+										if((isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1) && $this->UserArray[2] != 3)
 										{
 											if($this->SettingsArray[16]['value'] == 33)
 											{
