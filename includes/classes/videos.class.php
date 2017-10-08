@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: videos.class.php									 
-## Author: Brad Riemann										 
+## FileName: videos.class.php
+## Author: Brad Riemann
 ## Usage: Displays Series information and Episode information.
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -13,26 +13,26 @@ class AFTWVideos extends Config{
 	var $RecentEps; //added 3/21/2015 by robotman321
 	var $watchListSelection;
 	var $Categories = array(); // added 10/10/2014 by robotman321
-	
+
 	public function __construct()
 	{
 		parent::__construct();
 		$this->buildCategories();
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 		$this->array_buildSiteSettings(); // ADDED 8/23/2015 by Robotman321, connects the settings so we can use them.
-		
+
 		$this->array_buildRecentlyWatchedEpisodes();
 	}
-	
+
 	//Lets get the ID number.. Whatever it is..
 	public function get_id($id){
 		$this->id = $id;
 	}
-	
+
 	// Using a SSL? We need to know!
 	public function get_ssl($ssl_port){
 		if($ssl_port == 80){
@@ -42,14 +42,14 @@ class AFTWVideos extends Config{
 			$this->ssl = 'https';
 		}
 	}
-	
+
 	public function PageTitle($seo = NULL,$eid = NULL,$oid = NULL,$mid = NULL,$type){
 		if($seo == NULL){
 			if($type == 'anime')
 			{
 				$pt = "Anime Library - AnimeFTW.TV";
 			}
-			else 
+			else
 			{
 				$pt = "Video Library - AnimeFTW.TV";
 			}
@@ -82,7 +82,7 @@ class AFTWVideos extends Config{
 		}
 		return $pt;
 	}
-	
+
 	public function tagCloud($list){
 		include_once('wordcloud.class.php');
 		$cloud = new wordcloud();
@@ -111,13 +111,13 @@ class AFTWVideos extends Config{
 			}
 		}
 	}
-	
+
 	#-------------------------------------------------------------
 	# Function showListing
 	# Shows in 3 cloumn tier of series listings
 	# --
 	#-------------------------------------------------------------
-	
+
 	public function showListing ($listType,$sort,$alevel,$stype,$url = NULL){
 		if($alevel == 0){$aonly = "AND aonly='0'";}
 		else if ($alevel == 3){$aonly = "AND aonly<='1'";}
@@ -133,7 +133,7 @@ class AFTWVideos extends Config{
 			{
 				$sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."AND category LIKE '% ".$catsort." %' ORDER BY seriesName";
 			}
-			
+
 		}
 		else if($stype == 1)
 		{
@@ -168,7 +168,7 @@ class AFTWVideos extends Config{
 				$sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."AND ratingLink LIKE '%".mysql_real_escape_string($sort)."%' ORDER BY seriesName";
 			}
 		}
-		
+
 		if($url == NULL){
 				echo '<div align="center"><a href="/anime/age/e"><img src="/images/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="/images/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="/images/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="/images/ratings/18+.jpg" alt="" /></a></div><br />';
 		}
@@ -182,16 +182,16 @@ class AFTWVideos extends Config{
 		}
 		echo '
 		<div align="center">
-			Series Types: 
-			<a href="/anime/type/airing">Airing Series <img src="' . $this->Host . '/airing_icon.gif" alt="Airing" style="vertical-align:middle;" border="0" /></a> | 
-			<a href="/anime/type/completed">Completed Series</a> | 
-			<a href="/anime/type/movies">Series with Movies <img src="' . $this->Host . '/movie_blue.png" alt="Movie" style="vertical-align:middle;" border="0" /></a> | 
+			Series Types:
+			<a href="/anime/type/airing">Airing Series <img src="' . $this->Host . '/airing_icon.gif" alt="Airing" style="vertical-align:middle;" border="0" /></a> |
+			<a href="/anime/type/completed">Completed Series</a> |
+			<a href="/anime/type/movies">Series with Movies <img src="' . $this->Host . '/movie_blue.png" alt="Movie" style="vertical-align:middle;" border="0" /></a> |
 			<a href="/anime/type/divx">DivX Based</a>
 		</div>
 		<div align="center">
 			My WatchList Legend:
-			<img src="' . $this->Host . '/flag_red.png" alt="planning to watch icon" style="vertical-align:middle;" border="0" /> Planning to Watch | 
-			<img src="' . $this->Host . '/flag_yellow.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Currently Watching | 
+			<img src="' . $this->Host . '/flag_red.png" alt="planning to watch icon" style="vertical-align:middle;" border="0" /> Planning to Watch |
+			<img src="' . $this->Host . '/flag_yellow.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Currently Watching |
 			<img src="' . $this->Host . '/flag_green.png" alt="currently watching" style="vertical-align:middle;" border="0" /> Finished Watching
 		</div>
 		<br />';
@@ -203,7 +203,7 @@ class AFTWVideos extends Config{
 		echo '</div><br />';
 		// Create Data Listing
 		$countup = 1;
-		$columncount = 1; 
+		$columncount = 1;
 		$col = 2;
 		$itemCount = 0;
 		$letterArray = array('0','1','2','3','4','5','6','7','8','9','.','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
@@ -217,12 +217,12 @@ class AFTWVideos extends Config{
 		}
 		else
 		{
-		}		
-		
+		}
+
 		foreach($letterArray as $i)
 		{
 			if (array_key_exists ("$i", $alpha))
-			{	
+			{
 				echo '		<a name="'.$i.'"></a><h2>'.$i."</h2>\n";
 				foreach ($$i as $key=>$value)
 				{
@@ -230,7 +230,7 @@ class AFTWVideos extends Config{
 					{
 						echo "		<div>".$this->DisplayLinks($key,1,$alevel)."</div>\n";
 					}
-					else 
+					else
 					{
 						echo "		<div>".$this->DisplayLinks($key,0,$alevel)."</div>\n";
 					}
@@ -257,14 +257,14 @@ class AFTWVideos extends Config{
 				});;
 			</script>';
 	}
-	
+
 	#------------------------------------------------------------
 	# Function showEpisodeInfo
 	# Give an episode
 	# @Param: $seriesname, $epnumber
 	# IMG tag for an avatar
 	#------------------------------------------------------------
-				
+
 	private function showEpisodeInfo($sid,$epnum,$mov){
 		if($mov == 'ep'){$movvar = "AND Movie='0' AND ova='0'";}
 		else if($mov == 'movie'){$movvar = "AND Movie='1' AND ova='0'";}
@@ -282,26 +282,26 @@ class AFTWVideos extends Config{
 		}
 		return $episodeArray;
 	}
-				
+
 	#------------------------------------------------------------
 	# Function showSeriesInfo
 	# Give a seoname and it will give info on the series
 	# @Param: $seoname
 	#------------------------------------------------------------
-				
+
 	private function showSeriesInfo($seoname)
 	{
 		mysql_query("SET NAMES 'utf8'");
 		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
-		$result  = mysql_query($query) or die('Error : ' . mysql_error()); 
+		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$numSeries = mysql_num_rows($result);
-		
+
 		if($numSeries == 0)
 		{
 			$seriesArray = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		}
 		else {
-			$row     = mysql_fetch_array($result, MYSQL_ASSOC);				
+			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
 			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],1,$row['hd'],$row['kanji'],$row['romaji']);
 		}
 		return $seriesArray;
@@ -326,13 +326,13 @@ class AFTWVideos extends Config{
 
 		return mysql_fetch_array($query); // TODO: Switch to mysql_fetch_assoc and use Integer based indexing? -Nikey
 	}
-	
+
 	#-------------------------------------------------------------
 	# Function recordEpisodeTopseries
 	# Each page refresh makes a new pageview for a given topic
 	# if the user's ip is not in the database already
 	#-------------------------------------------------------------
-	
+
 	private function recordEpisodeTopseries($epid,$seriesId,$ip,$epNumber) {
 		//Get the Date for today, all 24 hours
 		$currentDay = date('d-m-Y',time());
@@ -347,13 +347,13 @@ class AFTWVideos extends Config{
 			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 		}
 	}
-	
+
 	private function DisplayLinks($SeriesId,$type,$alevel)
 	{
 		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
-		$fullSeriesName = $row['fullSeriesName']; 
+		$fullSeriesName = $row['fullSeriesName'];
 		$fullSeriesName = stripslashes($fullSeriesName);
 		$seoname = $row['seoname'];
 		$stillRelease = $row['stillRelease'];
@@ -371,7 +371,7 @@ class AFTWVideos extends Config{
 		else {
 			$seriesList = 'amv';
 		}
-		
+
 		if($this->UserArray[0] == 1)
 		{
 			//  user is logged in
@@ -409,7 +409,7 @@ class AFTWVideos extends Config{
 		{
 			$status = '';
 		}
-				
+
 		if($row['seriesType'] == 0){
 			$Type = '';
 		}
@@ -419,14 +419,14 @@ class AFTWVideos extends Config{
 		else {
 			$Type = '';
 		}
-		
+
 		if($stillRelease == 'yes'){
 			$airing = '&nbsp;<img src="' . $this->Host . '/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
 		}
 		else {
 			$airing = '&nbsp;';
 		}
-		
+
 		if($moviesOnly == 1){
 			$Type .= '&nbsp;<img src="' . $this->Host . '/movie_blue.png" alt="Movie" title="This is a Movie"  style="vertical-align:middle;" border="0" />';
 		}
@@ -439,12 +439,12 @@ class AFTWVideos extends Config{
 			$FinalLink = '<a href="'.$url.'" class="tooltip-overlay" data-node="/scripts.php?view=profiles&show=tooltips&id=' . $row['id'] . '">'.$fullSeriesName.'</a>' . $status . $airing . $Type;
 			return $FinalLink;
 	}
-	
+
 	private function array_buildWatchListEntries()
 	{
 		$query = 'SELECT `id`, `sid`, `status` FROM `watchlist` WHERE `uid` = ' . $this->UserArray[1];
 		$result = mysql_query($query);
-		
+
 		$dataarray = array();
 		while($row = mysql_fetch_assoc($result))
 		{
@@ -452,16 +452,16 @@ class AFTWVideos extends Config{
 			$dataarray[$row['sid']]['sid'] = $row['sid'];
 			$dataarray[$row['sid']]['status'] = $row['status'];
 		}
-		
+
 		$this->watchListSelection = $dataarray;
 	}
-	
+
 	#-------------------------------------------------------------
 	# Function Episode_Display
 	# Builds the viewer.
 	# if the user's ip is not in the database already
 	#-------------------------------------------------------------
-	
+
 	private function Episode_Display($SeriesArray,$EpisodeArray,$SpriteArray,$moevar)
 	{
 		function getUrl()
@@ -482,14 +482,14 @@ class AFTWVideos extends Config{
 			$url .= $_SERVER["REQUEST_URI"];
 			return $url;
 		}
-		
+
 		$FinalSerisName = $SeriesArray[1];
 
 		// ADDED 08/31/14 - Robotman321
 		// The following will enable us to directly allow for selective links to a video.
 		// This will allow members to link directly to good parts of a video.
 		$parsedURL = parse_url(getUrl());
-			
+
 		if(isset($parsedURL['query']) && stristr($parsedURL['query'], 't='))
 		{
 			// The Anchor tag is set
@@ -559,7 +559,7 @@ class AFTWVideos extends Config{
 		{
 			$hiddenstyle = '';
 		}
-		
+
 		// check the image.
 		if($EpisodeArray[15] == 0)
 		{
@@ -578,7 +578,7 @@ class AFTWVideos extends Config{
 				$autoplay = " autoplay";
 			}
 		}
-        
+
         $sdVideoServer = 'videos';
         $hdVideoServer = 'videos2';
         // CDN Override
@@ -588,14 +588,14 @@ class AFTWVideos extends Config{
                 $hdVideoServer = 'video-cdn';
             }
         }
-			
+
 		// All of the code for the HTML5 player is here.
 		echo '
 			<div id="aftw-video-wrapper"' . $hiddenstyle . ' align="center">
 				<video id="aftw-player" class="video-js vjs-fluid vsg-player" controls preload="none" width="' . $EpisodeArray[3] . '" height="' . $EpisodeArray[2] . '" poster="' . $epimage . '"' . $autoplay . ' data-setup="{}">';
-				
+
 		// ADDED 08/31/14 - Robotman321
-		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.				
+		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.
 		if($EpisodeArray[12] == 1 && $this->UserArray[2] != 3)
 		{
 			// it's equal to 1, which means its just 720p
@@ -627,7 +627,7 @@ class AFTWVideos extends Config{
 			var timerCheck = setInterval(function(){
 				var current_time = $(\'#aftw-player\').find(\'video\').get(0).currentTime;
 				var durration = $(\'#aftw-player\').find(\'video\').get(0).duration;
-				
+
 				if((Math.round(current_time) % 60 == 0 && Math.round(current_time) != 0 && int_val != Math.round(current_time)) || Math.round(current_time) == Math.round(durration-1))
 				{
 					$.ajax({
@@ -636,7 +636,7 @@ class AFTWVideos extends Config{
 					});
 					int_val = Math.round(current_time);
 				}
-				
+
 				if(((current_time/durration)*100) >= 65 && submit_check == "FALSE")
 				{
 					submit_check = "TRUE";
@@ -669,10 +669,10 @@ class AFTWVideos extends Config{
 		echo '
 					return;
 				}
-				';				
+				';
 		// Auto Play feature
 		// Will auto move to the next page at the completion of video. We will want to
-		// add some sort of pause option down the line, technically pausing a video would 
+		// add some sort of pause option down the line, technically pausing a video would
 		// do what we need, but it could be useful.
 		if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
 		{
@@ -718,31 +718,31 @@ class AFTWVideos extends Config{
 		if($this->UserArray[2] == 3)
 		{
 			echo '
-			<script> 
-			<!-- 
+			<script>
+			<!--
 			//
-			var milisec=0 
+			var milisec=0
 			var seconds=31
-			document.counter.d2.value=\'31\'      
-			function display(){ 
-				if (milisec<=0){ 
-					milisec=9 
-					seconds-=1 
-				} 
-				if (seconds<=-1){ 
-					milisec=0 
-					seconds+=1 
+			document.counter.d2.value=\'31\'
+			function display(){
+				if (milisec<=0){
+					milisec=9
+					seconds-=1
+				}
+				if (seconds<=-1){
+					milisec=0
+					seconds+=1
 					$("#am-container").hide();
 					$("#aftw-video-wrapper").show();
-				} 
+				}
 				else {
-					milisec-=1 
+					milisec-=1
 					document.counter.d2.value=seconds
 					setTimeout("display()",100)
 				}
 			}
 			display()
-			--> 
+			-->
 			</script>';
 		}
 		$videoJsFunction = "";
@@ -752,7 +752,7 @@ class AFTWVideos extends Config{
 			<script src="/scripts/videojs.progressTips.js" type="text/javascript"></script>';
 			$videoJsFunction = "video.progressTips({});";
 		}
-			
+
 		// ADDED 08/31/14 - Robotman321
 		// With native support in the HTML5 player for different resolutions, we can support higher resolutions inline.
 		if($EpisodeArray[12] > 0)
@@ -856,20 +856,20 @@ HDOC;
 		}
 	}
 
-	
+
 	#------------------------------------------------------------
 	# Function DisplaySeries
 	# Main function to display content on the videos page
 	# @private function
 	#------------------------------------------------------------
-	
+
 	public function DisplaySeries($SeoN,$seo = NULL,$eid = NULL,$oid = NULL,$mid = NULL) {
-		
+
 		if($seo == NULL){ //No seo, NO FOOD FOR YOU!
 			echo 'ERROR: No series was chosen. ERROR: NL0001.';
 		}
 		else { //Ok, your Seo is accepted here... lets check that series..
-			include("includes/rating_functions.php"); 
+			include("includes/rating_functions.php");
 			$SeriesArray = $this->showSeriesInfo($SeoN); //Grab the info for the series
 			if($SeriesArray[16] == 0)
 			{
@@ -892,9 +892,9 @@ HDOC;
 						echo 'ERROR: No Episode was chosen. ERROR: NL0003 '.$moe;
 					}
 					else
-					{ //This is an episode, you can move to the next stage..					
+					{ //This is an episode, you can move to the next stage..
 						$EpisodeArray = $this->showEpisodeInfo($SeriesArray[0],$moe,$moevar); //build the array, NAOW
-						
+
 						if($EpisodeArray[11] == 1)
 						{ //Just to be SUPER sure, we need to check to make sure this episode is valid for this series.. 1 = awesomesauce
 
@@ -908,11 +908,11 @@ HDOC;
 
 								echo "<div id='va'><br /><br /><br />";
 								echo "<span class='head'><a href='/anime/".$SeriesArray[2]."/' style='color:#000;'>".$SeriesArray[3]."</a></span><span class='headend'>, ".$type1." #".$EpisodeArray[0]."</span>";
-								echo "</div>";	
+								echo "</div>";
 								include_once('includes/classes/pages.class.php');
 								$p = new AFTWpage();
 								echo $p->bodyTopInfo($index_global_message,NULL,$this->UserArray,$this->SettingsArray);
-								
+
 								if($this->UserArray[2] == 3)
 								{
 									$views = '<span title="Become an Advanced Member and see real numbers!">1 Views</span>';
@@ -1005,8 +1005,8 @@ HDOC;
 									</div>
 									<div id="video-right-column">
 										<div style="border-bottom:1px solid #D1D1D1;">
-										'; 
-										
+										';
+
 										$autoplaytext = '
 											<div class="video-episodes">AutoPlay is <span style="color:red;cursor:pointer;" title="Enable this Advanced Member feature in your Profile Settings!">Disabled</span></div>';
 										if(isset($this->SettingsArray[16]) && $this->SettingsArray[16]['disabled'] != 1)
@@ -1031,15 +1031,15 @@ HDOC;
 										</div>
 									</div>
 								</div>';
-						
+
 							}
 						}
 						else {
 							echo 'ERROR: There is no episode by that number. ERROR: NL0005';
 						}
-					}						
+					}
 				}
-				else 
+				else
 				{ //none of the episode stuff was presented, we need to make them see the series page..
 					if($SeriesArray[11] == 1 && $this->UserArray[2] == 0)
 					{
@@ -1076,7 +1076,7 @@ HDOC;
 						$p = new AFTWpage();
 						echo $p->bodyTopInfo($index_global_message,NULL,$this->UserArray,$this->SettingsArray);
 						echo '<div style="width:100%;">';
-												
+
 						echo '
 						<div class="series-top-wrapper" style="border-bottom:1px solid #d8d8d8;padding-bottom:5px;">
 							<div class="series-image-column" style="display:inline-block;padding:0 5px 5px 5px;vertical-align:top;">
@@ -1091,7 +1091,7 @@ HDOC;
 									<div style="display:inline-block;width:48%;">
 										<div>
 									';
-										
+
 									if($html5tag == '' && $quality == '')
 									{
 										// Don't do anything, nothing to see here.
@@ -1173,14 +1173,14 @@ HDOC;
 									<div style="display:inline-block;width:48%;vertical-align:top;">';
 									if($this->UserArray[0] == 1)
 									{
-										echo '									
+										echo '
 										<div>
 											<div style="font-size:10px;color:#c0c0c0;vertical-align:top;">My WatchList:</div>
 											<div style="font-size:12px;color:#242424;" id="my-watchlist-container">';
 												include_once("watchlist.class.php");
 												$W = new AFTWWatchlist($this->UserArray);
 												$W->checkSeriesEntry($SeriesArray[0]); // Checks the watchlist for this series.
-											echo '	
+											echo '
 											</div>
 										</div>';
 									}
@@ -1226,10 +1226,10 @@ HDOC;
 					}
 				}
 			}
-			
+
 		}
 	}
-	
+
 	public function NextEpisodesV2($SeriesArray = NULL,$EpisodeArray = NULL)
 	{
 		$ajax = 0;
@@ -1245,7 +1245,7 @@ HDOC;
 			$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
 			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
-			
+
 		}
 		else
 		{
@@ -1266,9 +1266,9 @@ HDOC;
 			$query = "SELECT `id`, `epnumber`, `epname`, `epprefix`, `image`, `hd`, `views`, `Movie` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` >= " . $EpisodeArray[0] . " AND `Movie` = $Movie ORDER BY `epnumber` ASC LIMIT 0, $AvailableRows";
 
 		}
-		
+
 		// 18
-		
+
 		$result = mysql_query($query);
 		$count = mysql_num_rows($result);
 		if($ajax == 0)
@@ -1287,7 +1287,7 @@ HDOC;
 		{
 			// it's an ajax function, we need to check to see if there are any sequels to this series.
 		}
-		
+
 		// ADDED 10/14/2014
 		// To ensure that we can see the previous information.. We need to be able to stop it..
 		if(isset($_GET['epnumber']) && $_GET['epnumber'] > 20)
@@ -1396,7 +1396,7 @@ HDOC;
 			echo '</div>';
 			echo '
 			<script>
-				var nextpage = 1;			
+				var nextpage = 1;
 				jQuery(
 				  function($)
 				  {
@@ -1422,7 +1422,7 @@ HDOC;
 			</script>';
 		}
 	}
-	
+
 	private function suggestedAnime($SeriesArray)
 	{
 		$Categories = explode(" , ",$SeriesArray[14]);
@@ -1486,13 +1486,13 @@ HDOC;
 			unset($exploded);
 		}
 	}
-	
+
 	private function checkBanned()
 	{
 		$query = "SELECT id FROM `banned` WHERE `ip` = '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "'";
 		$result = mysql_query($query);
 		$count = mysql_num_rows($result);
-		
+
 		if($count > 0)
 		{
 			return FALSE;
@@ -1502,13 +1502,13 @@ HDOC;
 			return TRUE;
 		}
 	}
-	
+
 	public function showAvailableVideos($listingtype = 0,$sid,$type,$ajaxed = FALSE)
 	{
 		// variables
 		$ajax = 0;
 		$AvailableRows = 13;
-	
+
 		// listingtype of 0 is for episodes, 1 is for movies, 2 is for ovas
 		if($listingtype == 0)
 		{
@@ -1533,7 +1533,7 @@ HDOC;
 			$VideoTitle = '';
 			$MovieAllowed = 0;
 			$OvaAllowed = 0;
-		}		
+		}
 		if($ajaxed == TRUE)
 		{
 			$page = ($_GET['page']*$AvailableRows);
@@ -1551,13 +1551,13 @@ HDOC;
 				$LimitBy = ' LIMIT 0, ' . $AvailableRows;
 			}
 		}
-	
+
 		$query  = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`videotype`, `episode`.`image`, `episode`.`Movie`, `series`.`seriesname`, `series`.`seoname` FROM `episode`, `series` WHERE  `episode`.`sid`='$sid' AND `episode`.`Movie`='$MovieAllowed' AND `episode`.`ova`='$OvaAllowed' AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` ASC" . $LimitBy;
-		
+
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
-		
+
 		$count = mysql_num_rows($result);
-		
+
 		if($count > 0)
 		{
 			if($ajax == 0)
@@ -1581,12 +1581,12 @@ HDOC;
 				{
 						$episodepreview = $this->Host . '/video-images/noimage.png';
 				}
-				else 
+				else
 				{
 					$episodepreview = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";
 				}
 				$epname    = stripslashes($epname);
-				
+
 				if($this->UserArray[0] == 0 || $this->checkBanned() == FALSE)
 				{
 					$LoggedInData = '';
@@ -1612,7 +1612,7 @@ HDOC;
 					$videostyle = 'movie';
 					$videotype = 'Movie';
 				}
-				
+
 				// There are currently two types, one is the type available to the mobile site, and one available to the main site.
 				if($type == 0)
 				{
@@ -1633,7 +1633,7 @@ HDOC;
 					{
 						$CanDownload = FALSE;
 					}
-		
+
 					if($this->UserArray[0] == 1)
 					{
 						$beginlink = '<a href="/anime/' . $seoname . '/' . $videostyle . '-' . $epnumber . '"' . $LoggedInData . '>';
@@ -1656,7 +1656,7 @@ HDOC;
 					</div>';
 				}
 				else
-				{					
+				{
 					if($this->UserArray[0] == 1)
 					{
 						$beginlink = '<a style="text-decoration:none;color:white;" href="/anime/' . $seoname . '/' . $videostyle . '-' . $epnumber . '" class="image-overlay">';
@@ -1677,7 +1677,7 @@ HDOC;
 							</div>
 							<div class="image-backdrop" style="float: left;">
 								<img src="' . $episodepreview . '" alt="' . $VideoTitle . ': ' . $epnumber . '" style="width:225px;" />
-							</div>							
+							</div>
 						' . $endlink . '
 					</div>';
 				}
@@ -1737,7 +1737,7 @@ HDOC;
 					})(window.jQuery);
 				</script>';
 		}
-		else 
+		else
 		{
 		}
 	}
@@ -1745,17 +1745,17 @@ HDOC;
 	# Function searchSeries2
 	# Searches through Series and gives back information.
 	#------------------------------------------------------------
-	
+
 	public function searchSeries2($input)
-	{		
+	{
 		$input = mysql_real_escape_string($input);
 		$dualarray = array('2','5','8','11','14','17','20','23','26','29','32','35','38','41','44','47','50','53','56','59','62','65','68','71','74','77','80','83','86','89','92','95','98','101');
 		if($this->UserArray[1] == 0){$aonly = " AND aonly='0'";}
 		else if ($this->UserArray[1] == 3){$aonly = " AND aonly<='1'";}
 		else{$aonly = '';}
-		
+
 		$ExplodedInput = explode(',',str_replace(' ', '', $input));
-		
+
 		if(count($ExplodedInput) > 1)
 		{
 			$subsearch = "";
@@ -1784,10 +1784,10 @@ HDOC;
 			}
 			$subsearch = "fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%'" . $cat;
 		}
-		
+
 		$query   = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews`, `romaji`, `kanji` FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
-		
-		mysql_query("SET NAMES 'utf8'"); 
+
+		mysql_query("SET NAMES 'utf8'");
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$ts = mysql_num_rows($result);
 		if($ts > 0)
@@ -1802,7 +1802,7 @@ HDOC;
 				echo '		<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.$romaji.'<br />Kanji: '.$kanji.'<br />Categories: '."\n";
 				//$episodes = split(" , ",$category);
 				//foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/" . $this->Categories[$value]['name'] . "\">" . $this->Categories[$value]['name'] . "</a>, ";}
-				
+
 				$exploded = explode(" , ",$category);
 				$category = '';
 				$i = 0;
@@ -1823,7 +1823,7 @@ HDOC;
 						$i++;
 					}
 				}
-				echo $category;				
+				echo $category;
 				echo '<br />Reviews: <a href="/anime/'.$seoname.'/#series-reviews">'.$total_reviews.'</a> | <a href="/anime/'.$seoname.'/#series-reviews">Write a review!</a></div>'."\n";
 				echo '		</div>
 						</div><hr color="#E4E4E4" />'."\n";
@@ -1833,7 +1833,7 @@ HDOC;
 				}
 		}
 	}
-	
+
 	private function parseNestedArray($products, $field, $value)
 	{
 	   foreach($products as $key => $product)
@@ -1845,7 +1845,7 @@ HDOC;
 		}
 		return false;
 	}
-	
+
 	private function seriesTopSeriesRank($SeriesArray)
 	{
 		$query = "SELECT lastPosition, currentPosition FROM site_topseries WHERE seriesId='".$SeriesArray[0]."' ORDER BY currentPosition ASC ";
@@ -1855,7 +1855,7 @@ HDOC;
 		$lastPosition = $row['lastPosition'];
 		$currentPosition = $row['currentPosition'];
 		$singleRank = '';
-		
+
 		if($currentPosition < $lastPosition)
 		{
 			$Rank = $currentPosition.'&nbsp;<img src="' . $this->Host . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
@@ -1873,7 +1873,7 @@ HDOC;
 		{
 			$singleRank .= 'This Series is not Ranked on the Top list.';
 		}
-		else 
+		else
 		{
 			if($currentPosition == '')
 			{
@@ -1883,19 +1883,19 @@ HDOC;
 			{
 				$singleRank .= '<a href="/anime/' . $SeriesArray[2] . '/">' . stripslashes($SeriesArray[3]) . '</a> is ranked #<b>'.$Rank."</b> on AnimeFTW.tv\n";
 			}
-		}		
+		}
 		return $singleRank;
 	}
-	
+
 	private function checkSeriesSid($sid)
 	{
 		$query = "SELECT `seoname`, `fullSeriesName`, `active`, `aonly` FROM `series` WHERE `id` = '$sid'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
 		$seoname = $row['seoname'];
-		$fullSeriesName = $row['fullSeriesName']; 
+		$fullSeriesName = $row['fullSeriesName'];
 		$fullSeriesName = stripslashes($fullSeriesName);
-		
+
 		// First we check to make sure the series is active and if its not we allow staff to see the series.
 		if($row['active'] == 'yes' || ($this->UserArray[2] != 0 && $this->UserArray[2] != 3 && $this->UserArray[2] != 7)){
 			if($row['aonly'] == 0) {
@@ -1917,18 +1917,18 @@ HDOC;
 		}
 		else {
 			$FinalLink = $fullSeriesName;
-		}		
+		}
 		return $FinalLink;
 	}
-	
+
 	public function showEpisodeTooltip($id,$type = 0)
 	{
 		$id = mysql_real_escape_string($id);
 		$query = "SELECT `id`, `sid`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
 		$result = mysql_query($query);
-		
+
 		$row = mysql_fetch_assoc($result);
-		
+
 		if($row['Movie'] == 0)
 		{
 			$MovieOrNot = 'Episode';
@@ -1937,7 +1937,7 @@ HDOC;
 		{
 			$MovieOrNot = 'Movie';
 		}
-		
+
 		if($row['tracker_entry'] == 1)
 		{
 			$TrackerStatus = $MovieOrNot . ' is in your Episode Tracker.';
@@ -1946,7 +1946,7 @@ HDOC;
 		{
 			$TrackerStatus = $MovieOrNot . ' is NOT in your Episode Tracker.';
 		}
-		
+
 		if($row['hd'] == 1)
 		{
 			// 720p only series
@@ -1962,7 +1962,7 @@ HDOC;
 			// SD only series..
 			$quality = '';
 		}
-		if($this->UserArray[1] == 3 || $this->UserArray[1] == 0)
+		if($this->UserArray[2] == 3 || $this->UserArray[2] == 0)
 		{
 			$views = '
 				<div style="padding-bottom:4px;">
@@ -1986,7 +1986,7 @@ HDOC;
 		{
 			$CanDownload = FALSE;
 		}
-		
+
 		// ADDED 11/28/2014
 		// will add an image to the bottom of the listing so people can see the images
 		if($type == 1)
@@ -1995,7 +1995,7 @@ HDOC;
 			{
 					$episodepreview = $this->Host . '/video-images/noimage.png';
 			}
-			else 
+			else
 			{
 				$episodepreview = "{$this->Host}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";
 			}
@@ -2034,7 +2034,7 @@ HDOC;
 				<div>
 					Episode Info:<br />
 					<img src="' . $this->Host . '/html5.png" alt="HTML5 Series" style="vertical-align:middle;height:18px;" border="0" title="Watch this video on the AnimeFTW.tv HTML5 Player!" />
-					' . $quality . $this->showDownloadOption($row['id'],$CanDownload) . ' 
+					' . $quality . $this->showDownloadOption($row['id'],$CanDownload) . '
 				</div>
 			</div>
 			' . $DisplayImage . '
@@ -2047,14 +2047,14 @@ HDOC;
 					})(window.jQuery);
 				</script>';
 	}
-	
+
 	private function showDownloadOption($epid,$CanDownload,$disk = FALSE)
 	{
 		if($CanDownload == TRUE)
 		{
 			$query = "SELECT `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`id`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`videotype`, `episode`.`hd` FROM `episode`,`series` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
 			$result = mysql_query($query);
-			
+
 			$row = mysql_fetch_assoc($result);
 			if($disk == TRUE)
 			{
@@ -2083,7 +2083,7 @@ HDOC;
 					}
 					else {
 					}
-					$i++;					
+					$i++;
 				}
 				$data .= '
 						</ul>
