@@ -432,7 +432,7 @@ class processData extends Config {
 				{
 					$Change = 0;
 				}
-				$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`) VALUES ('" . mysql_real_escape_string($_POST['Series']) . "', '" . mysql_real_escape_string($_POST['Prefix']) . "', '" . $episodes . "', '" . mysql_real_escape_string($_POST['Type']) . "', '" . $dimmensions . "', '" . mysql_real_escape_string($_POST['Status']) . "', '" . mysql_real_escape_string($_POST['user']) . "', NOW(), '" . mysql_real_escape_string($_POST['anidb']) . "', '" . mysql_real_escape_string($_POST['fansub']) . "', '" . mysql_real_escape_string($_POST['sid']) . "', " . $Change . ")";
+				$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`, `hd`, `airing`) VALUES ('" . mysql_real_escape_string($_POST['Series']) . "', '" . mysql_real_escape_string($_POST['Prefix']) . "', '" . $episodes . "', '" . mysql_real_escape_string($_POST['Type']) . "', '" . $dimmensions . "', '" . mysql_real_escape_string($_POST['Status']) . "', '" . mysql_real_escape_string($_POST['user']) . "', NOW(), '" . mysql_real_escape_string($_POST['anidb']) . "', '" . mysql_real_escape_string($_POST['fansub']) . "', '" . mysql_real_escape_string($_POST['sid']) . "', " . $Change . ", '" . mysql_real_escape_string($_POST['hdresolution']) . "', '" . mysql_real_escape_string($_POST['seriesstatus']) . "')";
 				mysql_query($query) or die(mysql_error());
 
 				$this->ModRecord('Added a Series to the Tracker, ' . mysql_real_escape_string($_POST['Series']));
@@ -475,7 +475,9 @@ class processData extends Config {
 				`anidbsid` = '" . mysql_real_escape_string($_POST['anidb']) . "',
 				`fansub` = '" . mysql_real_escape_string($_POST['fansub']) . "',
 				`sid` = '" . mysql_real_escape_string($_POST['sid']) . "',
-				`change` = " . $Change. "
+				`change` = " . $Change. ",
+				`hd` = '" . mysql_real_escape_string($_POST['hdresolution']) . "',
+				`airing` = '" . mysql_real_escape_string($_POST['seriesstatus']) . "'
 				WHERE `uestatus`.`ID` = " . mysql_real_escape_string($_POST['ueid']);
 				mysql_query($query) or die(mysql_error());
 
