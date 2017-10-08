@@ -554,7 +554,7 @@ class Series extends Config {
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />
 							<input type="hidden" id="uploaderid" name="uploaderid" value="' . $_GET['ueid'] . '" />';
 							$SubmitTXT = 'Add Series';
-							$query = "SELECT series, prefix, anidbsid FROM uestatus WHERE id = " . mysql_real_escape_string($_GET['ueid']);
+							$query = "SELECT `series`, `prefix`, `anidbsid`, `hd`, `airing` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']);
 							$result = mysql_query($query);
 							$row = mysql_fetch_array($result);
 							$SeriesPrefix = substr($row['series'], 0, 10);
@@ -582,7 +582,12 @@ class Series extends Config {
 							$seoname = preg_replace('/[^a-z0-9 -]+/', '', $seoname);
 							$seoname = str_replace(' ', '-', $seoname);
 							$seoname = trim($seoname, '-');
-							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $stillRelease = ''; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$hd = 0; $ueid = $_GET['ueid']; $license = 0;
+
+                            $stillRelease = 'no';
+                            if ($row['airing'] == 1) {
+                                $stillRelease = 'yes';
+                            }
+							$id = ''; $seriesName = $row['prefix']; $fullSeriesName = $FixedName; $romaji = ''; $kanji = ''; $synonym = ''; $videoServer = ''; $active = 'no'; $description = ''; $ratingLink = '15+.jpg'; $Movies = 0; $moviesOnly = ''; $OVA = ''; $noteReason = ''; $aonly = ''; $sequelto = ''; $prequelto = ''; $category = ''; $seriesType = '2'; $seriesList = '';$hd = $row['hd']; $ueid = $_GET['ueid']; $license = 0;
 						}
 						else
 						{
