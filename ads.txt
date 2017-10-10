@@ -1,0 +1,21 @@
+Insticator.com, 33cc9dfa-9d2d-47b2-aab9-e8ac92dc37a7, DIRECT
+openx.com, 537117488, RESELLER, a698e2ec38604c6
+openx.com, 537102524, RESELLER, a698e2ec38604c6
+pubmatic.com, 95054, RESELLER
+pulsepoint.com, 560854, RESELLER
+appnexus.com, 1940, RESELLER
+appnexus.com, 1613, RESELLER
+appnexus.com, 1908, RESELLER
+appnexus.com, 1026081, RESELLER
+appnexus.com, 3695, RESELLER
+appnexus.com, 4052, RESELLER
+appnexus.com, 1356, DIRECT, f5ab79cb980f11d1
+sonobi.com, e315a43aa9, RESELLER
+sovrn.com, 240735, RESELLER, fafdf38b16bf6b2b
+lijit.com, 240735, RESELLER, fafdf38b16bf6b2b
+rhythmone.com, 136898039, RESELLER, a670c89d4a324e47
+1rx.io, 136898039, RESELLER, a670c89d4a324e47
+sekindo.com, 22683, DIRECT
+districtm.io, 100683, DIRECT
+EMXDGT.com, 22, DIRECT, 1e1d41537f7cad7f
+google.com, pub-7630961163643137, RESELLER, f08c47fec0942fa0
