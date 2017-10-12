@@ -556,8 +556,6 @@ class Config {
         {
             $query = "SELECT `ID`, `Active` FROM `users` WHERE '" . $this->mysqli->real_escape_string($username) . "' IN(`Username`, `display_name`) AND Password = '" . md5($password) . "'";
         }
-        echo $query;
-        exit;
         $result = $this->mysqli->query($query);
 
         $count = mysqli_num_rows($result);
