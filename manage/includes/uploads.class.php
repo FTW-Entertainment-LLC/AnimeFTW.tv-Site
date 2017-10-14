@@ -40,6 +40,9 @@ class Uploads extends Config {
             $this->displayQcList();
             echo '</div>';
         }
+        else if (isset($_GET['subpage']) && $_GET['subpage'] == 'mass-update') {
+            $this->displayMassUpdates();
+        }
 		else if(isset($_GET['subpage']) && $_GET['subpage'] == 'action')
 		{
 			// /ajax.php?node=uploads&subpage=action&action=delete&id=
@@ -117,6 +120,7 @@ class Uploads extends Config {
 		echo $this->encodersListing();
 		echo '<div id="UploadsTrackerMain">';
 		echo '<div>';
+        echo '<input type="hidden" class="uploadsCheckbox" name="method" value="MassUploadUpdate">';
 		foreach($StatusArray as &$Status)
 		{
 			if($Status == 'Live' && ($this->UserArray[2] != 1 && $this->UserArray[2] != 2))
@@ -249,6 +253,16 @@ class Uploads extends Config {
 			}
 			return false;
 		}
+        $(".checkAllCheckboxes").click(function () {
+            $(".uploadsCheckbox").prop(\'checked\', $(this).prop(\'checked\'));
+        });
+        $(".uploadsCheckbox").click(function() {
+            if($(this).is(":checked")) {
+                $(".answer").show(300);
+            } else {
+                $(".answer").hide(200);
+            }
+        });
 		</script>';
 		echo '</div>';
 		unset($Status);
@@ -267,11 +281,19 @@ class Uploads extends Config {
 		else {
 			$LimitedText = '<a href="#" onClick="alert(\'You have 5 entries in Encoding, Uploading or Claimed, finish a series before adding another.\'); return false;" title="Add a series to the ' . $Status . ' Section">Add</a>';
 		}
+        $manageButton = '';
+        $mainHeaderWidth = '820px';
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2) {
+            $LimitedText .= '&nbsp; <input type="checkbox" class="checkAllCheckboxes">';
+            $manageButton = '<div style="display:inline-block;width:70px;"><input type="button" class="massManageButton" value="Manage"></div>';
+            $mainHeaderWidth = '720px';
+        }
 
 		echo '<div class="section-wrapper" style="width:870px;">';
 		echo '<div class="section-header-wrapper" style="width:860px;padding-top:7px;border-bottom:1px solid #e8e8e8;">
-				<div align="left" style="display:inline;width:820px;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:16px;">' . ucwords($Status) . '</div>
-				<div class="add-button" style="float:right;display:inline;width:40px;">
+				<div align="left" style="display:inline-block;width:' . $mainHeaderWidth . ';font-family:Verdana,Arial,Helvetica,sans-serif;font-size:16px;">' . ucwords($Status) . '</div>
+                ' . $manageButton . '
+				<div class="add-button" style="float:right;display:inline-block;width:50px;">
 					' . $LimitedText . '
 				</div>
 			</div>';
@@ -398,15 +420,16 @@ class Uploads extends Config {
 				{
 					$overdue = '';
 				}
-				if($row[11] == 1 && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
+                // Mod actions checkbox.
+				$ChangedEntry = '';
+				$ModActionChange = '&nbsp;';
+				if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 				{
-					$ChangedEntry = 'background-color:#2ed51c';
-					$ModActionChange = '<a href="#" class="remove-notification" onClick="RemoveNotification(' . $row[0] . '); return false;" title="Click here to remove the notification for this entry."><img src="/images/management/accept.png" alt="" style="padding-left:9px;width:13px;padding-top:1px;" /></a>'; //the settings for the mod action, this allows for a mod to mark a series as having been addressed.
-				}
-				else
-				{
-					$ChangedEntry = '';
-					$ModActionChange = '&nbsp;'; //the settings for the mod action, this allows for a mod to mark a series as having been addressed.
+                    if ($row[11] == 1) {
+				        $ChangedEntry = 'background-color:#2ed51c';
+                    }
+                    $ModActionChange = '<input type="checkbox" name="uploads-entry-checkbox[]" class="uploadsCheckbox" value="' . $row[0] . '">';
+					//$ModActionChange = '<a href="#" class="remove-notification" onClick="RemoveNotification(' . $row[0] . '); return false;" title="Click here to remove the notification for this entry."><img src="/images/management/accept.png" alt="" style="padding-left:9px;width:13px;padding-top:1px;" /></a>'; //the settings for the mod action, this allows for a mod to mark a series as having been addressed.
 				}
 				if($i % 2)
 				{
@@ -1007,6 +1030,17 @@ class Uploads extends Config {
                 $("#right-column").load("ajax.php?node=uploads");
 				return false;
 			});
+            $(".massManageButton").click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "ajax.php?node=uploads&subpage=mass-update",
+                    data: $(\'input.uploadsCheckbox\').serialize(),
+                    success: function(html) {
+                        $(\'#UploadsTrackerMain\').show().html(html);
+                    }
+                });
+                return false;
+            });
 		});
 		</script>';
 	}
@@ -1114,5 +1148,218 @@ class Uploads extends Config {
                 });
             });
         </script>';
+    }
+
+    private function displayMassUpdates() {
+        if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2) {
+            if (!isset($_GET['action'])) {
+                // Array ( [method] => MassUploadUpdate [uploads-entry-checkbox] => Array ( [0] => 10 [1] => 9 [2] => 7 [3] => 4 [4] => 5 [5] => 3 [6] => 2 [7] => 6 [8] => 8 [9] => 1 ) )
+                // Parse throuugh uploads entries that we will be updating
+                // List out the entries for them to understand that will be updated.
+
+                $query = "SELECT `ID`, `series`, `status`, `hd`, `airing` FROM `uestatus` WHERE `ID` in (";
+                $entryIds = '';
+                foreach ($_POST['uploads-entry-checkbox'] as $key => &$value) {
+                    $entryIds .= "$value,";
+                }
+                $entryIds = rtrim($entryIds,',');
+                $query .= $entryIds . ")";
+
+                $result = mysql_query($query);
+
+                if (!$result) {
+                    echo '<div align="center">ERROR: There was a problem executing the requested query.</div>';
+                    exit;
+                }
+
+                // 1. List series in a table.
+                echo '<div class="mass-updates-container">';
+
+                echo '<div class="uploads-row-top" style="width:860px;height:14px;padding-bottom:5px;border-bottom:1px solid #99e6ff;">';
+                echo '  <div style="display:inline-block;width:35.99998%;">Entry Name</div>';
+                echo '  <div style="display:inline-block;width:15.99998%;">Status</div>';
+                echo '  <div style="display:inline-block;width:15.99998%;">Quality Level</div>';
+                echo '  <div style="display:inline-block;width:15.99998%;">Video State</div>';
+                echo '</div>';
+                $i = 0;
+                while ($row = mysql_fetch_assoc($result)) {
+                    $hd = '480p';
+                    if ($row['hd'] == 1) {
+                        $hd = '720p';
+                    } else if ($row['hd'] == 2){
+                        $hd = '1080p';
+                    }
+                    $airing = 'Completed';
+                    if ($row['airing'] == 1) {
+                        $airing = 'Airing';
+                    }
+
+    				if ($i % 2) {
+    					echo '<div style="background-color:#99e6ff;">';
+    				} else {
+    					echo '<div style="background-color:#e8e8e8;">';
+    				}
+    				echo '<div class="uploads-row-wrapper" style="min-width:870px;padding:2px 0 2px 0;" id="sub-uploads-' . $row['ID'] . '">';
+    				echo '<div class="uploads-row-top" style="width:860px;min-height:14px;padding-bottom:5px;">';
+                    echo '  <div style="display:inline-block;width:35.99998%;">' . $row['series'] . '</div>';
+                    echo '  <div style="display:inline-block;width:15.99998%;">' . $row['status'] . '</div>';
+                    echo '  <div style="display:inline-block;width:15.99998%;">' . $hd . '</div>';
+                    echo '  <div style="display:inline-block;width:15.99998%;">' . $airing . '</div>';
+                    echo '</div>
+                    </div>
+                    </div>';
+                    $i++;
+                }
+                echo '</div>';
+                echo '<div align="center" style="padding-top:10px;">Choose an option below to update the above entries.</div>';
+                echo '<div class="option-selection-container" style="width:100%">';
+                echo '  <div align="center" style="padding-top:5px;">';
+                echo '      <input type="hidden" id="entry-ids" value="' . $entryIds . '">';
+                echo '      <div style="display:inline-block;width:30.33332%;background-color:#99e6ff;vertical-align:top;height:100%;padding:5px;">';
+                echo '          <span>Move to a different Status</span>';
+                echo '          <select id="status-change">';
+                echo '              <option>Choose a new Status</option>';
+                foreach ($this->displayUploadsStatus() as $status) {
+                    echo '              <option value="' . $status . '">' . $status . '</option>';
+                }
+                echo '          </select>';
+                echo '      </div>';
+                echo '      <div style="display:inline-block;width:30.33332%;background-color:#e8e8e8;vertical-align:top;height:100%;padding:5px;">';
+                echo '          <span>Change Quality Level</span><br>';
+                echo '          <select id="quality-selector">';
+                echo '              <option>Quality level</option>';
+                echo '              <option value="0">480p</option>';
+                echo '              <option value="1">720p</option>';
+                echo '              <option value="2">1080p</option>';
+                echo '          </select>';
+                echo '      </div>';
+                echo '      <div style="display:inline-block;width:30.33332%;background-color:#99e6ff;vertical-align:top;height:100%;padding:5px;">';
+                echo '          <input type="button" id="generate-json-data" value="Generate Ray JSON data"><br>(Verify data prior to using.)';
+                echo '      </div>';
+                echo '  </div>';
+                echo '</div>';
+                echo '<div align="center" style="padding-top:10px;">Result output will be displayed below.</div>';
+                echo '  <div id="output-container" style="width:100%">';
+                echo '  </div>';
+                echo '</div>';
+                echo '
+                <script>
+                    var uploads_ids = $("#entry-ids").val();
+                    $("#generate-json-data").on("click", function() {
+                        $.get("ajax.php?node=uploads&subpage=mass-update&action=generate-json-data&entries=" + uploads_ids, function(data) {
+                            $("#output-container").html(data);
+                        });
+                    });
+                    $("#quality-selector").on("change", function() {
+                        var selectedOption = $("#quality-selector option:selected").val();
+                        $.get("ajax.php?node=uploads&subpage=mass-update&action=change-quality-level&entries=" + uploads_ids + "&option=" + selectedOption, function(data) {
+                            $("#output-container").html(data);
+                        });
+                    });
+                    $("#status-change").on("change", function() {
+                        var selectedOption = $("#status-change option:selected").val();
+                        $.get("ajax.php?node=uploads&subpage=mass-update&action=change-status&entries=" + uploads_ids + "&option=" + selectedOption, function(data) {
+                            $("#output-container").html(data);
+                        });
+                    });
+                </script>';
+            } else {
+                if (isset($_GET['entries'])) {
+                    if (isset($_GET['action']) && $_GET['action'] == 'generate-json-data') {
+                        $query = "SELECT `ID`, `series`, `prefix`, `fansub`, `hd` FROM `uestatus` WHERE `ID` in (" . mysql_real_escape_string($_GET['entries']) . ")";
+                        $result = mysql_query($query);
+
+                        if (!$result) {
+                            echo 'Error querying for entries.';
+                            exit;
+                        }
+                        echo '<textarea style="width:98.999%;min-height:250px;">';
+                        $count = count(explode(',', $_GET['entries']));
+                        $i=0;
+                        while ($row = mysql_fetch_assoc($result)) {
+                            echo $this->generateJsonEntry($row);
+                            $i++;
+                            if ($i < $count) {
+                                echo ',';
+                            }
+                        }
+                        echo '</textarea>';
+                    } else if (isset($_GET['action']) && $_GET['action'] == 'change-quality-level') {
+                        if (isset($_GET['option'])) {
+                            $query = "UPDATE `uestatus` SET `hd` = '" . mysql_real_escape_string($_GET['option']) . "' WHERE `ID` in (" . mysql_real_escape_string($_GET['entries']) . ")";
+                            $result = mysql_query($query);
+
+                            if (!$result) {
+                                echo 'There was an error executing the query.';
+                                exit;
+                            }
+                            echo '<div style="padding:10px;font-size:16px;" align="center">All Entries were updated successfully.</div>';
+                        } else {
+                            echo 'Ensure an option is properly selected and try again.';
+                        }
+                    } else if (isset($_GET['action']) && $_GET['action'] == 'change-status') {
+                        if (isset($_GET['option'])) {
+                            $option = urldecode($_GET['option']);
+                            $query = "UPDATE `uestatus` SET `status` = '" . mysql_real_escape_string($option) . "' WHERE `ID` in (" . mysql_real_escape_string($_GET['entries']) . ")";
+                            $result = mysql_query($query);
+
+                            if (!$result) {
+                                echo 'There was an error executing the update query.';
+                                exit;
+                            }
+                            echo '<div style="padding:10px;font-size:16px;" align="center">All Entries were updated successfully.</div>';
+                        } else {
+                            echo 'Ensure an option is properly selected and try again.';
+                        }
+                    } else {
+                        echo 'Warning: Action not defined.';
+                    }
+                } else {
+                    echo 'Entries were not defined, try again.';
+                }
+            }
+        } else {
+            echo 'You are not authorized for this function.';
+        }
+    }
+
+    private function displayUploadsStatus() {
+        $query = "SELECT `value` FROM `settings` WHERE `name` = 'all_upload_statuses'";
+        $result = mysql_query($query);
+
+        if (!$result) {
+            echo "ERROR processing request for UploadsStatus.";
+            exit;
+        }
+
+        $row = mysql_fetch_assoc($result);
+
+        $statuses = explode('|', $row['value']);
+        return $statuses;
+    }
+
+    private function generateJsonEntry($entryArray) {
+        if ($entryArray['hd'] == 2) {
+            $quality = '1080p';
+        } else if ($entryArray['hd'] == 1) {
+            $quality = '720p';
+        } else {
+            $quality = '480p';
+        }
+        return '
+        {
+            "title": "' . $entryArray['series'] . '",
+            "prefix": "' . $entryArray['prefix'] . '",
+            "regex": ".*' . $entryArray['series'] . ' - (\\\\d\\\\d)(?:v2)?.*.mkv",
+            "uploadsID": ' . $entryArray['ID'] . ',
+            "quality": ' . $quality . ',
+            "finished_episodes": [],
+            "finished_encodes": [],
+            "notification": "batch",
+            "feed": "nyaasi",
+            "feeduser": "' . $entryArray['fansub'] . '",
+            "feedsearch": "' . $entryArray['series'] . ' ' . $quality . '",
+            "transcoding": []
+        }';
     }
 }
