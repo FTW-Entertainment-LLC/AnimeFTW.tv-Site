@@ -730,6 +730,8 @@ class processData extends Config {
 				echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">Failed: Authorization was wrong.</div>';
 			}
 		}
+        else if ($_POST['method'] == 'MassUploadUpdate' && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)) {
+        }
 		else {
 			echo 'You posted a method of: '.$_POST['method'].' And it has not been setup yet.';
 			print_r($this->ValidatePermission);
