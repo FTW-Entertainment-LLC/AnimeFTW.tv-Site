@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: episodes.class.php								 
-## Author: Brad Riemann								 
+## FileName: episodes.class.php
+## Author: Brad Riemann
 ## Usage: Episodes sub class
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -15,7 +15,7 @@ class Episodes extends Config {
 		$this->deployEpisodes();
 		echo '</div>';
 	}
-	
+
 	private function deployEpisodes()
 	{
 		// set the global variables to this function
@@ -69,12 +69,12 @@ class Episodes extends Config {
 				$sname = htmlentities($_GET['sname']);
 				$query = "SELECT episode.id, episode.epnumber, episode.epname, episode.image, series.fullSeriesName, series.seoname FROM episode, series WHERE series.id = '" . mysql_real_escape_string($sname) . "' AND episode.sid = '" . mysql_real_escape_string($sname) . "' ORDER BY id DESC LIMIT ".$start.", ".$limit;
 			}
-			else 
+			else
 			{
 				$query = "SELECT episode.id, episode.epnumber, episode.epname, episode.image, series.fullSeriesName, series.seoname FROM episode, series WHERE series.id=episode.sid ORDER BY id DESC LIMIT ".$start.", ".$limit;
 			}
 			$result = mysql_query($query);
-			$count = mysql_num_rows($result); 
+			$count = mysql_num_rows($result);
 			echo '<div style="padding-top:5px;">';
 			echo '<div style="float:right;padding-right:80px;"><a href="#" onClick="$(\'#right-column\').load(\''.$link.'&page=add\'); return false;"><b>Add Episode</b></a></div>';
 			$this->pagingV1('right-column',$rowcount,$limit,$start,$link); //($count,$perpage,$start,$link)
@@ -108,7 +108,7 @@ class Episodes extends Config {
 				{
 					$style = $style2;
 				}
-								
+
 				echo '<div class="erow" ' . $style . ' id="episode-entry-' . $r['id'] . '">';
 				echo '<div class="eleftcol"  style="display:inline-block;width:400px;">'.$r['epname'].'</div>';
 				echo '<div class="eepcol" align="center"  style="display:inline-block;width:40px;">'.$r['epnumber'].'</div>';
@@ -118,7 +118,7 @@ class Episodes extends Config {
 						<img src="' . $this->Host . '/management/settings-icon.png" height="11px" alt="" />
 					</a>
 					&nbsp; <a href="#" onClick="$(\'#Results\').load(\''.$link.'&page=image-add&epid='.$r['id'].'&point=after\'); return false;"><img src="' . $this->Host . '/management/redo-image-icon.png" title="Redo the episode Image" alt="IC" height="11px" /></a>
-					&nbsp; 
+					&nbsp;
 					<a href="#" class="episode-delete" id="episode-' . $r['id'] . '">
 						<img src="' . $this->Host . '/management/delete-icon.png" alt="" title="Delete this episode" height="11px" />
 					</a>
@@ -151,7 +151,7 @@ class Episodes extends Config {
 			</script>';
 		}
 	}
-	
+
 	private function episodeForm($link,$Type = NULL)
 	{
 		if($Type == 'edit')
@@ -172,50 +172,51 @@ class Episodes extends Config {
 				$options = '<input type="hidden" name="id" value="' . $id . '" />';
 				$SubmitTXT = " Edit Episode ";
 				$uesid = '';
-			}	
+			}
 			// we override the default as an edit.
 		}
 		else
 		{
 			if(isset($_GET['ueid']))
 			{
-				$query = mysql_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix`, `anidbsid` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']));
+				$query = mysql_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix`, `anidbsid`, `hd` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']));
 				$row = mysql_fetch_assoc($query);
 				$query = mysql_query("SELECT `episode`.`sid`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`videotype`, `episode`.`vidwidth`, `episode`.`hd`, series.seriesname FROM episode, series WHERE episode.sid=series.id AND series.id = " . $row['sid'] . " ORDER BY epnumber DESC LIMIT 0, 1");
 				$row2 = mysql_fetch_assoc($query);
-				$id = ''; 
-				$epnumber = $row2['epnumber']+1; 
-				
+				$id = '';
+				$epnumber = $row2['epnumber']+1;
+
 				// ADDED: 7/16/2014
 				// Allows for first episodes to be populated correctly.
 				if($epnumber == 1)
-				{ 
+				{
 					$epname = '';
 					$dimmensions = explode("x",$row['resolution']);
-					$vidheight = $dimmensions[1]; 
+					$vidheight = $dimmensions[1];
 					$vidwidth = $dimmensions[0];
-					$epprefix = $row['prefix']; 
+					$epprefix = $row['prefix'];
 				}
 				else
 				{
 					// normal episode.. carry on.
-					$epname = ''; 
-					$vidheight = $row2['vidheight']; 
+					$epname = '';
+					$vidheight = $row2['vidheight'];
 					$vidwidth = $row2['vidwidth'];
-					$epprefix = $row2['epprefix']; 
+					$epprefix = $row2['epprefix'];
 				}
-				$sid = $row2['sid']; 
-				$seriesName = $row2['seriesname']; 
-				$subGroup = $row['fansub']; 
-				$aniDBid = $row['anidbsid']; 
-				$Movie = ''; 
+				$sid = $row2['sid'];
+				$seriesName = $row2['seriesname'];
+				$subGroup = $row['fansub'];
+				$aniDBid = $row['anidbsid'];
+				$Movie = '';
 				$videotype = $row2['videotype'];
 				$uesid = $row['sid'];
-				$hd = $row2['hd'];
+				$hd = $row['hd'];
+                $inputRemember = 'checked="checked"';
 			}
 			else
 			{
-				$id = ''; $sid = ''; $epnumber = ''; $seriesName = ''; $epname = ''; $vidheight = ''; $vidwidth = ''; $epprefix = ''; $subGroup = ''; $Movie = ''; $videotype = 'mp4'; $uesid = ''; $hd = 0;
+				$id = ''; $sid = ''; $epnumber = ''; $seriesName = ''; $epname = ''; $vidheight = ''; $vidwidth = ''; $epprefix = ''; $subGroup = ''; $Movie = ''; $videotype = 'mp4'; $uesid = ''; $hd = 0; $inputRemember = '';
 			}
 			// default to adding an episode
 			$FormMethod = '<input type="hidden" value="AddEpisode" name="method" />';
@@ -227,7 +228,7 @@ class Episodes extends Config {
 		Keep in mind that this does not add the special episodes on AniDB.<br></div>
 		<div id="form_results" class="form_results">&nbsp;</div>';
 		echo '
-		
+
 		<form method="POST" action="#" id="EpisodeForm">
 		' . $FormMethod . '
 		' . $options . '
@@ -333,7 +334,7 @@ class Episodes extends Config {
 			<div class="series-form-right">
 				<input name="epprefix" id="epprefix" type="text" size="25" value="' . $epprefix . '" class="text-input2" />
 				<label for="epprefix" id="epprefixError" class="form-labels FormError">An Episode Prefix is required.</label>
-				
+
 			</div>
 		</div>
 		<div class="series-form-row">
@@ -377,7 +378,7 @@ class Episodes extends Config {
 			</div>
 			<div class="series-form-right">
 				<select name="date" class="text-input2">';
-					
+
 					//These $addtime variables doesn't seem to exist, so they always return a underfined variable notice. Doesn't seem to be needed anyway but I'm not sure if I should remove them. /Hani
 					echo '
 					<option value="1"'; if($addtime == '1'){echo ' selected="selected"';} echo'>No</option>
@@ -402,7 +403,7 @@ class Episodes extends Config {
 			</div>
 			<div class="series-form-right">
 				<div>
-					<input type="checkbox" name="Remember" id="Remember" class="text-input2" />
+					<input type="checkbox" name="Remember" id="Remember" class="text-input2"' . $inputRemember . ' />
 					<label for="Remember">Remember certain fields?</label>&nbsp;&nbsp;
 				</div>';
 				if(isset($_GET['ueid']))
@@ -420,7 +421,7 @@ class Episodes extends Config {
 		<div class="series-form-row">
 			<div class="series-form-left">
 			</div>
-			<div class="series-form-right">';			
+			<div class="series-form-right">';
 				echo '<input type="submit" class="SubmitForm" id="submit" name="submit" value="' . $SubmitTXT . '">&nbsp;';
 				if(isset($_GET['ueid']))
 				{
@@ -436,7 +437,7 @@ class Episodes extends Config {
 		</form>';
 		echo '
 		<script>
-			$(function() {				
+			$(function() {
 				$(".entry-selection").on("click", function() {
 					var this_id = $(this).attr("id").substring(6);
 					$(".entry-details-row").hide();
@@ -498,7 +499,7 @@ class Episodes extends Config {
 							$("input#epname").focus();
 							return false;
 						}
-					}					
+					}
 					var vidwidth = $("input#vidwidth").val();
 					if (vidwidth == "") {
 						$("label#vidwidthError").show();
@@ -527,7 +528,7 @@ class Episodes extends Config {
 						type: "POST",
 						url: "ajax.php",';
 						echo 'data: $(\'#EpisodeForm\').serialize(),';
-						
+
 						echo '
 						success: function(html) {
 							if(html.indexOf("Success") >= 0){
@@ -539,11 +540,11 @@ class Episodes extends Config {
 								{
 									var epnum = parseInt($("#epnumber").val());
 									var epnum2 = epnum+1;
-									$("#epnumber").val(epnum2);	
-									$("#epname").val("");									
+									$("#epnumber").val(epnum2);
+									$("#epname").val("");
 								}
 								else if($(\'#Remember\').is(":checked")){
-									
+
 								}
 								else
 								{
@@ -553,7 +554,7 @@ class Episodes extends Config {
 						';
 					}
 						echo '
-								$(\'.form_results\').slideDown().html(html);											
+								$(\'.form_results\').slideDown().html(html);
 								$(\'.form_results\').delay(8000).slideUp();
 							}
 							else{
@@ -562,7 +563,7 @@ class Episodes extends Config {
 						}
 					});
 					return false;
-				
+
 				});
 			});
 		</script>';
@@ -574,7 +575,7 @@ class Episodes extends Config {
 		{
 			$fullSeriesName = stripslashes($fullSeriesName);
 			if(($id == $sid) || (isset($_GET['preseriesname']) && $_GET['preseriesname'] == $id) || ($uesid == $id))
-			{ 
+			{
 				echo '<option value="'.$id.'" selected="selected">'.$fullSeriesName.'</option> ';
 			}
 			else {
@@ -594,7 +595,7 @@ class Episodes extends Config {
 			$query = "SELECT * FROM `modlogs` WHERE `script` LIKE 'Delete Episode%' AND `date` >= " . (time()-(60*15));
 			$result = mysql_query($query);
 			$count = mysql_num_rows($result);
-			
+
 			// we need to count the rows, if there are more than 15 deletions in 15 minutes we need to send an email..
 			if($count > 15)
 			{
@@ -604,13 +605,13 @@ class Episodes extends Config {
 			{
 				// continue on..
 			}
-			
+
 			$query = "DELETE FROM `episode` WHERE `id` = " . mysql_real_escape_string($_GET['id']);
 			mysql_query($query);
 			$this->ModRecord('Delete Episode id ' . $_GET['id']);
 		}
 	}
-	
+
 	private function addVideoImage()
 	{
 		// /scripts.php?view=management&u=1&node=episodes&edit=image-add
@@ -641,7 +642,7 @@ class Episodes extends Config {
 			}
 		}
 	}
-	
+
 	private function RemoteBuildEpImage($url)
 	{
 		$file = file_get_contents($url);
