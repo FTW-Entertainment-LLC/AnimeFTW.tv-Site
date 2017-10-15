@@ -832,7 +832,8 @@ class processData extends Config {
 			if($Changed == 'on')
 			{
 				// changed entry is on, we need to update the uploads board
-				mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_POST['ueid']));
+                $query = "UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_POST['ueid']);
+				mysql_query($query);
 				$this->ModRecord("Removed Notifications for Entry " . $_POST['ueid'] . ' in the Uploads Board');
 			}
 		}

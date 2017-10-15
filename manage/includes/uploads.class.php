@@ -299,14 +299,14 @@ class Uploads extends Config {
 			</div>';
 
 		echo '<div class="uploads-row-top" style="width:860px;height:14px;padding-bottom:5px;border-bottom:1px solid #99e6ff;">
-				<div style="display:inline-block;width:10px;">&nbsp;</div>
-				<div style="display:inline-block;width:16px;">&nbsp;</div>
-				<div style="display:inline-block;width:480px;font-size:13px;" align="left">Entry Name</div>
-				<div style="display:inline-block;width:80px;font-size:13px;" align="center">Eps.</div>
-				<div style="display:inline-block;width:80px;font-size:13px;" align="center">Res.</div>
-				<div style="display:inline-block;min-width:115px;font-size:13px;" align="center">Encoder</div>
-				<div style="display:inline-block;width:30px;font-size:13px;" align="center">AniDB</div>
-				<div id="change-' . $row[0] . '" style="display:inline-block;width:20px;" align="center">&nbsp;</div>
+				<div style="display:inline-block;width:1.860465%">&nbsp;</div>
+				<div style="display:inline-block;width:1.860465%">&nbsp;</div>
+				<div style="display:inline-block;width:55.9997%;font-size:13px;" align="left">Entry Name</div>
+				<div style="display:inline-block;width:7.3023255%;font-size:13px;" align="center">Eps.</div>
+				<div style="display:inline-block;width:7.3023255%;font-size:13px;" align="center">Res.</div>
+				<div style="display:inline-block;width:13.37209302%;font-size:13px;" align="center">Encoder</div>
+				<div style="display:inline-block;width:3.488372%;font-size:13px;" align="center">AniDB</div>
+				<div id="change-' . $row[0] . '" style="display:inline-block;width:4.3255813%;" align="center">&nbsp;</div>
 			</div>';
 		if($Status == 'Done')
 		{
@@ -386,10 +386,6 @@ class Uploads extends Config {
 			{
 				$Project = stripslashes($row[1]);
 				$Preffix = $row[2];
-				if(strlen($Project) >= 78)
-				{
-					$Project = substr($Project,0,75).'&hellip;';
-				}
 				if(strtolower($Status) == 'ongoing' && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
 				{
 					$oneweekago = time()-604800;
@@ -425,49 +421,33 @@ class Uploads extends Config {
 				$ModActionChange = '&nbsp;';
 				if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 				{
+                    $ModActionChange = '<div style="display:inline-block;width:48.99995%;" align="center"><input type="checkbox" name="uploads-entry-checkbox[]" class="uploadsCheckbox" value="' . $row[0] . '"></div><div align="center" style="display:inline-block;width:48.99995%;">';
                     if ($row[11] == 1) {
 				        $ChangedEntry = 'background-color:#2ed51c';
+                        //the settings for the mod action, this allows for a mod to mark a series as having been addressed.
+                        $ModActionChange .= '<a href="#" class="remove-notification" onClick="RemoveNotification(' . $row[0] . '); return false;" title="Click here to remove the notification for this entry."><img src="/images/management/accept.png" alt="" style="padding-left:9px;width:13px;padding-top:1px;" /></a>';
                     }
-                    $ModActionChange = '<input type="checkbox" name="uploads-entry-checkbox[]" class="uploadsCheckbox" value="' . $row[0] . '">';
-					//$ModActionChange = '<a href="#" class="remove-notification" onClick="RemoveNotification(' . $row[0] . '); return false;" title="Click here to remove the notification for this entry."><img src="/images/management/accept.png" alt="" style="padding-left:9px;width:13px;padding-top:1px;" /></a>'; //the settings for the mod action, this allows for a mod to mark a series as having been addressed.
+                    $ModActionChange .= '</div>';
+
 				}
-				if($i % 2)
-				{
-					$extrastyle = 'background-color:#99e6ff;';
-				}
-				else
-				{
-					$extrastyle = 'background-color:#e8e8e8;';
-				}
-				if($row[9] == 0)
-				{
-					$AniDBLink = '<span style="color:#dddbdb;" title="No AniDB Link at this time">AniDB</span>';
-				}
-				else
-				{
-					$AniDBLink = '<a title="Clicking this link will open a new Tab/Window" href="http://anidb.net/perl-bin/animedb.pl?show=anime&aid=' . $row[9] . '" target="_blank">AniDB</a>';
-				}
-				if($row[7] == $this->UserArray[1])
-				{
-					$MyEntry = '<img src="/images/myentry-star.png" alt="" style="height:14px;" />';
-				}
-				else
-				{
-					$MyEntry = '&nbsp;';
-				}
+
+                $extrastyle = $i % 2 ? 'background-color:#99e6ff;' : 'background-color:#e8e8e8;';
+                $AniDBLink = $row[9] == 0 ? '<span style="color:#dddbdb;" title="No AniDB Link at this time">AniDB</span>' : '<a title="Clicking this link will open a new Tab/Window" href="http://anidb.net/perl-bin/animedb.pl?show=anime&aid=' . $row[9] . '" target="_blank">AniDB</a>';
+			    $MyEntry = $row[7] == $this->UserArray[1] ? '<img src="/images/myentry-star.png" alt="" style="height:14px;" />' : '';
+
 				echo '<div style="' . $extrastyle . '" id="uploads-' . $row[0] . '">';
-				echo '<div class="uploads-row-wrapper" style="width:870px;padding:2px 0 2px 0;' . $ChangedEntry . '" id="sub-uploads-' . $row[0] . '">';
-				echo '<div class="uploads-row-top" style="width:860px;height:14px;padding-bottom:5px;">
-						<div style="display:inline-block;width:10px;"><a href="#" onClick="ToggleRows(' . $row[0] . '); return false;">+</a></div>
-						<div style="display:inline-block;width:16px;">' . $MyEntry . '</div>
-						<div style="display:inline-block;width:480px;" align="left">' . $overdue . '<span title="' . stripslashes($row[1]) .'">' . $Project . '</span></div>
-						<div style="display:inline-block;width:80px;" align="center">' . stripslashes($row[3]) . '</div>
-						<div style="display:inline-block;width:80px;" align="center">' . stripslashes($row[5]) . '</div>
-						<div style="display:inline-block;min-width:115px;" align="center">' . $this->formatUsername($row[7],'blank') . '</div>
-						<div style="display:inline-block;width:30px;" align="center">' . $AniDBLink . '</div>
-						<div id="change-' . $row[0] . '" style="display:inline-block;width:20px;" align="center">' . $ModActionChange . '</div>
+				echo '<div class="uploads-row-wrapper" style="width:870px;padding:5px 0 0 0;' . $ChangedEntry . '" id="sub-uploads-' . $row[0] . '">';
+				echo '<div class="uploads-row-top" style="width:100%;min-height:12px;padding-bottom:5px;">
+						<div style="display:inline-block;width:1.860465%;vertical-align:top;"><a href="#" onClick="ToggleRows(' . $row[0] . '); return false;">+</a></div>
+						<div style="display:inline-block;width:1.860465%;vertical-align:top;">' . $MyEntry . '</div>
+						<div style="display:inline-block;width:54.9997%;vertical-align:top;" align="left">' . $overdue . '<span title="' . stripslashes($row[1]) .'">' . $Project . '</span></div>
+						<div style="display:inline-block;width:7.3023255%;vertical-align:top;" align="center">' . stripslashes($row[3]) . '</div>
+						<div style="display:inline-block;width:7.3023255%;vertical-align:top;" align="center">' . stripslashes($row[5]) . '</div>
+						<div style="display:inline-block;width:13.37209302%;vertical-align:top;" align="center">' . $this->formatUsername($row[7],'blank') . '</div>
+						<div style="display:inline-block;width::3.488372%;vertical-align:top;" align="center">' . $AniDBLink . '</div>
+						<div id="change-' . $row[0] . '" style="display:inline-block;width:5.3255813%;vertical-align:top;" align="center"><div style="width:100%;">' . $ModActionChange . '</div></div>
 					</div>';
-				echo '<div id="uploads-row-' . $row[0] . '" class="uploads-row-bottom" style="display:none;width:860px;20px;" align="left">&nbsp;
+				echo '<div id="uploads-row-' . $row[0] . '" class="uploads-row-bottom" style="display:none;width:100%;padding-bottom:5px;" align="left">&nbsp;
 				<div style="display:inline-block;width:540px;" align="left"><span title="' . $row[2] .'">Preffix: ' . $Preffix . '</span>, Updated: ' . date("Y-m-d",strtotime($row[8])) . '</div>
 				<div style="display:inline-block;width:300px;" align="right">';
 				if(($row[7] == $this->UserArray[1]) || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
@@ -1340,26 +1320,25 @@ class Uploads extends Config {
 
     private function generateJsonEntry($entryArray) {
         if ($entryArray['hd'] == 2) {
-            $quality = '1080p';
+            $quality = '1080';
         } else if ($entryArray['hd'] == 1) {
-            $quality = '720p';
+            $quality = '720';
         } else {
-            $quality = '480p';
+            $quality = '480';
         }
         return '
-        {
-            "title": "' . $entryArray['series'] . '",
-            "prefix": "' . $entryArray['prefix'] . '",
-            "regex": ".*' . $entryArray['series'] . ' - (\\\\d\\\\d)(?:v2)?.*.mkv",
-            "uploadsID": ' . $entryArray['ID'] . ',
-            "quality": ' . $quality . ',
-            "finished_episodes": [],
-            "finished_encodes": [],
-            "notification": "batch",
-            "feed": "nyaasi",
-            "feeduser": "' . $entryArray['fansub'] . '",
-            "feedsearch": "' . $entryArray['series'] . ' ' . $quality . '",
-            "transcoding": []
-        }';
+    {
+        "title": "' . $entryArray['series'] . '",
+        "prefix": "' . $entryArray['prefix'] . '",
+        "regex": ".*' . $entryArray['series'] . ' - (\\\\d\\\\d)(?:v2)?.*.mkv",
+        "uploadsID": ' . $entryArray['ID'] . ',
+        "quality": ' . $quality . ',
+        "finished_episodes": [],
+        "finished_encodes": [],
+        "notification": "batch",
+        "feed": "nyaasi",
+        "feeduser": "' . $entryArray['fansub'] . '",
+        "feedsearch": "' . $entryArray['series'] . ' ' . $quality . '"
+    }';
     }
 }
