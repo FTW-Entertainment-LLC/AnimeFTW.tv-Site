@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: users.class.php			 
-## Author: Brad Riemann				 
+## FileName: users.class.php
+## Author: Brad Riemann
 ## Usage: User Class implementation system.
 ## Copywrite 2011 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -15,7 +15,7 @@ class AFTWUser extends Config{
 	var $SiteSettings = array();
 	var $SiteUserSettings = array();
 	var $ImageHost;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -41,20 +41,20 @@ class AFTWUser extends Config{
 			$this->ImageHost = 'http://img03.animeftw.tv';
 		}
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	//grab our username
 	function get_username($username){
 		$this->username = $username;
-	}	
+	}
 	//grab our api password
 	function get_password($password){
 		$this->password = $password;
-	}	
+	}
 	// Let's set our ID
 	function get_id($user_id){
 		$this->id = $user_id;
@@ -77,16 +77,16 @@ class AFTWUser extends Config{
 			return $var;
 			}
 	}
-	
+
 	private function NewSendMail($subject,$to,$body){
 		ini_set('sendmail_from', 'no-reply@animeftw.tv');
 		$headers = 'From: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
 			'Reply-To: AnimeFTW.tv <no-reply@animeftw.tv>' . "\r\n" .
 			'X-Mailer: PHP/' . phpversion();
-		
+
 		mail($to, $subject, $body, $headers);
 	}
-	
+
 	// Get the basic User information
 	function checkUserName($type) {
 		//0=full-link,1=full-no link,2=Username-no link
@@ -94,7 +94,7 @@ class AFTWUser extends Config{
 		{
 			$query = "SELECT `Username`, `display_name` FROM users WHERE ID='".$this->id."'";
 		}
-		else 
+		else
 		{
 			$query = "SELECT `Username`, `display_name`, `Level_access`, `advanceImage`, `Active` FROM `users` WHERE `ID`='".$this->id."'";
 		}
@@ -105,7 +105,7 @@ class AFTWUser extends Config{
 			$frontUser = '<a href="'.$this->ssl.'://'.$_SERVER['HTTP_HOST'].'/profile/' . $row['Username'] . '">';
 			$endUser = '</a>';
 		}
-		else 
+		else
 		{
 			$frontUser = '';
 			$endUser = '';
@@ -159,14 +159,14 @@ class AFTWUser extends Config{
 		$result = mysql_query($query);
 		$ApiReturn = mysql_num_rows($result);
 		return $ApiReturn;
-	}	
+	}
 	//account activeness so they can access everything..
 	public function apiActiveCheck(){
 		$query = "SELECT id FROM users WHERE Username='".$this->username."' AND Active = 1";
 		$result = mysql_query($query);
 		$ApiReturn = mysql_num_rows($result);
 		return $ApiReturn;
-	}	
+	}
 	//return variable from the Username
 	function vUser(){
 		$query = "SELECT ID FROM users WHERE Username='".$this->username."'";
@@ -201,7 +201,7 @@ class AFTWUser extends Config{
 		$query = "SELECT ID, Level_access AS la, personalMsg AS pm, gender, country, stateRegion, registrationDate AS rd, ageDate AS ad, ageYear AS ay, ageMonth AS am FROM users WHERE ID='".$this->UserArray['ID']."'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$r = mysql_fetch_array($result);
-		$countries = $this->array_buildCountries();			
+		$countries = $this->array_buildCountries();
 		if(is_numeric($r['country'])){
 			$country = $countries[$r['country']];
 		}
@@ -234,7 +234,7 @@ class AFTWUser extends Config{
 			}
 			//Gender bender!
 			if($r['gender'] == ''){$gn = 'Unknown';}else{$gn = $r['gender'];}
-			echo "<div><div class='fds'>".$pm."</div><br /><table><tr><td align=\"right\">Member ID:</td><td>".$r['ID']."</td></tr><tr><td align=\"right\">Account Type:</td><td>".$g['gn']."</td></tr><tr><td align=\"right\">Age:</td><td>".$this->Birthday($r['am'],$r['ad'],$r['ay'])."</td></tr><tr><td align=\"right\">Gender:</td><td>".$gn."</td></tr><tr><td align=\"right\">Location:</td><td>".$loc."</td></tr><tr><td align=\"right\">Joined:</td><td>".$rd."</td></tr></table></div><br />";
+			echo "<div><div class='fds'>".$pm."</div><br /><table><tr><td align=\"right\">Member ID: </td><td>".$r['ID']."</td></tr><tr><td align=\"right\">Account Type: </td><td>".$g['gn']."</td></tr><tr><td align=\"right\">Age: </td><td>".$this->Birthday($r['am'],$r['ad'],$r['ay'])."</td></tr><tr><td align=\"right\">Gender: </td><td>".$gn."</td></tr><tr><td align=\"right\">Location: </td><td>".$loc."</td></tr><tr><td align=\"right\">Joined: </td><td>".$rd."</td></tr></table></div><br />";
 	}
 	function About($uid){
 		$query = "SELECT Level_access AS la, aboutMe AS am FROM users WHERE ID='".$this->UserArray['ID']."'";
@@ -344,30 +344,30 @@ class AFTWUser extends Config{
 		{
 			$se = $row['Alias'];
 		}
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/mail.png" alt="" title="Email" /><div>&nbsp;'.$se.'</div></div></div>';		
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/mail.png" alt="" title="Email" /><div>&nbsp;'.$se.'</div></div></div>';
 		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/msn_butterfly.png" alt="" title="MSN Address" /><div>&nbsp;'.$sm.'</div></div></div>';
 		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/aim.png" alt="" title="AIM" /><div>&nbsp;'.$sa.'</div></div></div>';
 		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/yahoo.png" alt="" title="YIM" /><div>&nbsp;'.$sy.'</div></div></div>';
 		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/skype.png" alt="" title="Skype" /><div>&nbsp;'.$ss.'</div></div></div>';
 		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="/images/profile-images/15_icq.png" alt="" title="ICQ" /><div>&nbsp;'.$si.'</div></div></div>';
-		
+
 	}
-	
+
 	public function UserProfileSettings($profileArray,$ruid)
 	{
 		$la = $profileArray[2];
 		$yuid = $profileArray[1];
 		$timeZone = $profileArray[3];
-		
+
 		if(($la != 1 && $la != 2) && ($ruid != $yuid))
 		{
 			echo 'There was an error in your request.';
 			//echo '<br />'.$_SERVER['REQUEST_URI'];
-			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2,
 		}
 		else
 		{
-			echo '<form method="POST" name="ProfileEdit" id="ProfileEdit">';	
+			echo '<form method="POST" name="ProfileEdit" id="ProfileEdit">';
 			$query = "SELECT * FROM users WHERE ID='" . mysql_real_escape_string($ruid) . "'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
@@ -426,7 +426,7 @@ class AFTWUser extends Config{
 			{
 				echo '<input type="hidden" name="Authorization" value="'.$_COOKIE['authenticate'].'" id="Authorization" />';
 			}
-			
+
 			if($la == 1 || $la == 2){
 				echo '
 			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Admin Information</div>
@@ -452,7 +452,7 @@ class AFTWUser extends Config{
 				</dl>
 				<dl>
 					<dt>Account Status:</dt>
-					<dd>';					
+					<dd>';
 					if($la == 1 && $ruid != 1){
 						echo '<select name="Active" style="color: #000000;" class="loginForm">';
 					}
@@ -648,7 +648,7 @@ class AFTWUser extends Config{
 						<div style="display:inline-block;width:30px;">
 							<div><label for="advanced-yellow-img" style="padding-left:6px;"><img src="/images/advancedimages/advanced-yellow.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-yellow" id="advanced-yellow-img"'; if($advanceImage == 'advanced-yellow'){echo ' checked="checked"';} echo ' /></div>
-						</div>						
+						</div>
 						<div style="display:inline-block;width:30px;">
 							<div><label for="green-img" style="padding-left:6px;"><img src="/images/advancedimages/green.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="green" id="green-img"'; if($advanceImage == 'green'){echo ' checked="checked"';} echo ' /></div>
@@ -695,7 +695,7 @@ class AFTWUser extends Config{
 			}
 			echo '
 			<br />';
-			echo '			
+			echo '
 			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Personal Information</div>
 			<dl>
 				<dt>First Name:</dt>
@@ -734,7 +734,7 @@ class AFTWUser extends Config{
 					{
 						$ri = $i<10?('0'.$i):$i;
 						echo '<option value="' . $ri . '"'; if($ageDate == $ri){echo' selected';} echo '>' . $i . '</option>';
-					}						
+					}
 					echo '</select>
 					<select name="ageMonth" class="loginForm">
 						<option value="00" selected="selected">--Month--</option>';
@@ -743,7 +743,7 @@ class AFTWUser extends Config{
 						{
 							$ri = ($i+1)<10?('0'.($i+1)):($i+1);
 							echo '<option value="' . $ri . '"'; if($ageMonth == $ri){echo' selected ';} echo '>' . $monthsarr[$i] . '</option>';
-						}					 
+						}
 						echo '</select>
 					<select name="ageYear" class="loginForm">
 						<option value="0000" selected="selected">--Year--</option>';
@@ -820,7 +820,7 @@ class AFTWUser extends Config{
 					<option value="no"'; if($row['showEmail'] == 'no'){echo ' selected="selected"';} echo '>No</option>
 				</select></dd>
 			</dl>';
-			
+
 			if($la == 1 || $la == 2){
 				echo '
 				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Misc Information</div>
@@ -852,7 +852,7 @@ class AFTWUser extends Config{
 					</select></dd>
 				</dl>';
 			}
-			
+
 			if($row['Level_access'] != 3 || ($la == 1 || $la == 2)){
 				echo '
 				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Advanced Member Features</div>';
@@ -898,7 +898,7 @@ class AFTWUser extends Config{
 					<dt>My Interests:</dt>
 					<dd>&nbsp;</dd>
 				</dl>';
-				echo '<textarea id="Interests" name="Interests" style="width:550px;height:150px;" class="loginForm">'.$interests.'</textarea>';	
+				echo '<textarea id="Interests" name="Interests" style="width:550px;height:150px;" class="loginForm">'.$interests.'</textarea>';
 				if($la == 1 || $la == 2){
 					echo '<dl>
 						<dt>Signature Active:</dt>
@@ -914,30 +914,30 @@ class AFTWUser extends Config{
 					<dd>&nbsp;</dd>
 				</dl>
 				<textarea id="Signature" name="Signature" style="width:550px;height:150px;" class="loginForm">'.$Signature.'</textarea>';
-				
+
 			}
 			echo '
 			<br /><br />
 				</div>';
 			echo '<div id="form_results" class="form_results" style="height:20px;">&nbsp;</div>';
-				
+
 				echo '
 			<input name="method" type="hidden" class="method" value="UserEdit" />
 			<input name="submit" type="button" class="SubmitFormUser" value="Submit Changes" />
 				</form>';
 		}
 	}
-	
+
 	public function UserLogs($profileArray,$ruid)
 	{
 		$this->UserArray = $profileArray;
-		
-		// This will show the 
+
+		// This will show the
 		if($this->UserArray[2] != 1 && $this->UserArray[2] != 2)
 		{
 			echo 'There was an error in your request.';
 			//echo '<br />'.$_SERVER['REQUEST_URI'];
-			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2,
 		}
 		else
 		{
@@ -945,7 +945,7 @@ class AFTWUser extends Config{
 			<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Site Logins</div>';
 			$query = "SELECT * FROM `logins` WHERE uid = " . mysql_real_escape_string($ruid) . " ORDER BY `logins`.`date` DESC LIMIT 0, 40";
 			$result = mysql_query($query);
-			
+
 			if(mysql_num_rows($result) < 1)
 			{
 				echo '<div align="center">No logins were detected for this user.</div>';
@@ -964,17 +964,17 @@ class AFTWUser extends Config{
 			}
 		}
 	}
-	
+
 	public function UserSessions($profileArray,$ruid)
 	{
 		$this->UserArray = $profileArray;
-		
-		// This will show the 
+
+		// This will show the
 		if(($this->UserArray[2] != 1 && $this->UserArray[2] != 2) && ($ruid != $this->UserArray[1]))
 		{
 			echo 'There was an error in your request.';
 			//echo '<br />'.$_SERVER['REQUEST_URI'];
-			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2,
 		}
 		else
 		{
@@ -1042,7 +1042,7 @@ class AFTWUser extends Config{
 							if(isset($currentSession) && $currentSession == $row['id'])
 							{
 								echo '
-								<span title="You cannot remove your current session. Sorry.">Current Session</span>';								
+								<span title="You cannot remove your current session. Sorry.">Current Session</span>';
 							}
 							else
 							{
@@ -1064,12 +1064,12 @@ class AFTWUser extends Config{
 			<div class="desktop-sessions-wrapper" style="margin-top:10px;">
 				<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;border-bottom:solid 1px #D1D1D1">Active API Sessions</div>';
 			$query = "
-			SELECT 
-				`developers_api_sessions`.`id`, 
-				`developers_api_sessions`.`date`, 
-				`developers_api_sessions`.`ip`, 
-				`developers`.`name` FROM `developers_api_sessions`, `developers` 
-			WHERE 
+			SELECT
+				`developers_api_sessions`.`id`,
+				`developers_api_sessions`.`date`,
+				`developers_api_sessions`.`ip`,
+				`developers`.`name` FROM `developers_api_sessions`, `developers`
+			WHERE
 				`developers_api_sessions`.`uid` = " . mysql_real_escape_string($ruid) . "
 				AND `developers`.`id`=`developers_api_sessions`.`did`
 				ORDER BY `date` DESC LIMIT 0, 30";
@@ -1161,17 +1161,17 @@ class AFTWUser extends Config{
 			</script>';
 		}
 	}
-	
+
 	public function UserSiteSettings($profileArray,$ruid)
 	{
 		$this->UserArray = $profileArray;
-		
-		// This will show the 
+
+		// This will show the
 		if(($this->UserArray[2] != 1 && $this->UserArray[2] != 2) && ($ruid != $this->UserArray[1]))
 		{
 			echo 'There was an error in your request.';
 			//echo '<br />'.$_SERVER['REQUEST_URI'];
-			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2,
 		}
 		else
 		{
@@ -1181,7 +1181,7 @@ class AFTWUser extends Config{
 			//build constants first..
 			$Settings->array_userSiteSettings($ruid); //builds the list of user specific settings.
 			$Settings->array_availableSiteSettings(); //builds the list of options for each option.
-			
+
 			// then we build the rest of the data..
 			echo '
 			<form id="SiteSettings">
@@ -1193,7 +1193,7 @@ class AFTWUser extends Config{
 			<br />';
 			$query = "SELECT * FROM `user_setting_type` ORDER BY `name`";
 			$result = mysql_query($query);
-			
+
 			while($row = mysql_fetch_assoc($result))
 			{
 				echo '
@@ -1221,7 +1221,7 @@ class AFTWUser extends Config{
 						{
 							if(html.indexOf("Success") >= 0)
 							{
-								$(".form_results").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Profile Update completed successfully.</div>");											
+								$(".form_results").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Profile Update completed successfully.</div>");
 								$(".form_results").delay(8000).slideUp();
 							}
 							else{
@@ -1234,7 +1234,7 @@ class AFTWUser extends Config{
 			</script>';
 		}
 	}
-	
+
 	private function returnSiteSettings($SettingCatId = NULL)
 	{
 		if($SettingCatId == NULL)
@@ -1251,10 +1251,10 @@ class AFTWUser extends Config{
 		}
 		$query = "SELECT * FROM `user_setting_option`$SQLAddon";
 		$result = mysql_query($query);
-		// id, name, description, parent, type, group, added, default_option 
-		
+		// id, name, description, parent, type, group, added, default_option
+
 		$count = mysql_num_rows($result);
-		
+
 		if($count == 0)
 		{
 			$returndata = 'There are no entries for this option yet.';
@@ -1263,7 +1263,7 @@ class AFTWUser extends Config{
 		{
 			$i = 0;
 			while($row = mysql_fetch_assoc($result))
-			{				
+			{
 				if($SettingCatId == NULL)
 				{
 					$returndata[$row['id']] = $row;
@@ -1279,7 +1279,7 @@ class AFTWUser extends Config{
 					{
 						$Style = 'background:#dadada;';
 					}
-					
+
 					if(in_array($this->UserArray[2],$groups))
 					{
 						// are they allowed to select the option.
@@ -1308,7 +1308,7 @@ class AFTWUser extends Config{
 		}
 		return $returndata;
 	}
-	
+
 	private function settingFormType($id,$type,$default_option,$disabled)
 	{
 		$returndata = '';
@@ -1338,7 +1338,7 @@ class AFTWUser extends Config{
 						if($this->SiteUserSettings[$id]['disabled'] == 1)
 						{
 							// we use this option and disable the ability to select anything else..
-							$Disabled = TRUE;					
+							$Disabled = TRUE;
 						}
 						else
 						{
@@ -1369,20 +1369,20 @@ class AFTWUser extends Config{
 		}
 		return $returndata;
 	}
-	
+
 	private function array_userSiteSettings($ruid)
 	{
 		//builds the list of user specific settings.
 		$query = "SELECT * FROM `user_setting` WHERE `uid` = " . mysql_real_escape_string($ruid);
 		$result = mysql_query($query);
 		$this->SiteUserSettings = array();
-		
+
 		$count = mysql_num_rows($result);
 		if($count > 0)
 		{
 			while($row = mysql_fetch_assoc($result))
 			{
-				$this->SiteUserSettings[$row['option_id']] = $row; 
+				$this->SiteUserSettings[$row['option_id']] = $row;
 			}
 		}
 	}
@@ -1390,18 +1390,18 @@ class AFTWUser extends Config{
 	{
 		//builds the list of options for each option.
 		$query = "SELECT * FROM `user_setting_option_values`";
-		// id 	name 	option_id 
+		// id 	name 	option_id
 		$result = mysql_query($query);
 		$this->SiteSettings = array();
-		
+
 		while($row = mysql_fetch_assoc($result))
 		{
 			$this->SiteSettings[$row['option_id']][$row['id']]['id'] = $row['id'];
 			$this->SiteSettings[$row['option_id']][$row['id']]['name'] = $row['name'];
 			$this->SiteSettings[$row['option_id']][$row['id']]['option_id'] = $row['option_id'];
-		} 
-	}	
-	
+		}
+	}
+
 	public function processSiteSettingsUpdate($profileArray)
 	{
 		//$this->UserArray = $profileArray;
@@ -1426,7 +1426,7 @@ class AFTWUser extends Config{
 						$query = "SELECT `id`, `value` FROM `user_setting` WHERE `uid` = " . mysql_real_escape_String($_POST['uid']) . " AND `option_id` = " . mysql_real_escape_string($option_id);
 						$result = mysql_query($query);
 						$count = mysql_num_rows($result);
-						
+
 						// this is a setting.. check to see if its a default or not.
 						if($SiteSettings[$option_id]['default_option'] == $value)
 						{
@@ -1470,7 +1470,7 @@ class AFTWUser extends Config{
 			}
 		}
 	}
-	
+
 	// public function to show profile comments on the right side. bool:uid, for the current user viewing the site.
 	public function ShowProfileComments($uid,$page = NULL)
 	{
@@ -1486,7 +1486,7 @@ class AFTWUser extends Config{
 		$numrows = "SELECT u.ID, u.Username, u.avatarActivate, u.avatarExtension, c.id, c.comments, c.ip, c.dated FROM page_comments AS c, users AS u WHERE page_id = 'u".$this->id."' AND c.uid=u.ID AND c.is_approved = 1";
 		$numrows = mysql_query($numrows);
 		$numrows = mysql_num_rows($numrows);
-		
+
 		/* Comment paging method */
 		if($numrows > 15){
 			$totalpages = ceil($numrows/15);
@@ -1508,7 +1508,7 @@ class AFTWUser extends Config{
 			}
 			//if($totalpages > 4
 			$ProfileCommentsFull = '<div class="comment-paging" align="right" style="padding:5px 0 5px 0;">Nav: ' . $FirstPage . ' ';
-			
+
 			// Pages BEFORE the curent page
 			for($i=($page-2); $i<$page; $i++)
 			{
@@ -1519,16 +1519,16 @@ class AFTWUser extends Config{
 				{
 					if($page == $i)
 					{
-						$commentstyle = 'padding:0 5px 0 5px;width:10px;font-size:14px;color:#777;background-color:#e1dedd;border:1px solid #aaaaaa;display:inline;';	
+						$commentstyle = 'padding:0 5px 0 5px;width:10px;font-size:14px;color:#777;background-color:#e1dedd;border:1px solid #aaaaaa;display:inline;';
 					}
-					else 
+					else
 					{
 						$commentstyle = 'padding:0 5px 0 5px;width:10px;font-size:14px;color:#777;background-color:#fff;border:1px solid #e1dedd;display:inline;';
 					}
 					$ProfileCommentsFull .= '<div style="'.$commentstyle.'"><a href="#" onClick="$(\'#ProfileComments\').load(\'/scripts.php?view=profile-comments&uid=' . $this->id . '&page=' . $i . '\'); return false;">' . ($i+1) . '</a></div>&nbsp;';
 				}
 			}
-			
+
 			// Pages AFTER the curent page
 			for($i=$page; $i<($page+3); $i++)
 			{
@@ -1539,9 +1539,9 @@ class AFTWUser extends Config{
 				{
 					if($page == $i)
 					{
-						$commentstyle = 'padding:0 5px 0 5px;width:10px;font-size:14px;color:#777;background-color:#e1dedd;border:1px solid #aaaaaa;display:inline;';	
+						$commentstyle = 'padding:0 5px 0 5px;width:10px;font-size:14px;color:#777;background-color:#e1dedd;border:1px solid #aaaaaa;display:inline;';
 					}
-					else 
+					else
 					{
 						$commentstyle = 'padding:0 5px 0 5px;width:10px;font-size:14px;color:#777;background-color:#fff;border:1px solid #e1dedd;display:inline;';
 					}
@@ -1552,17 +1552,17 @@ class AFTWUser extends Config{
 		}
 		else {
 		}
-		echo $ProfileCommentsFull;	
+		echo $ProfileCommentsFull;
 		echo '<div id="dynm">
 		<div id="flash"></div>
-		</div>';	
+		</div>';
 		/* Comment Loop */
 		if($numrows == 0){
 			echo '<div id="errmsg" align="center">No comments on this profile..</div>';
 		}
 		else {
 			$query = "SELECT u.ID, u.Username, u.avatarActivate, u.avatarExtension, c.id, c.comments, c.ip, c.dated FROM page_comments AS c, users AS u WHERE page_id = 'u".$this->id."' AND c.uid=u.ID AND c.is_approved = 1 ORDER BY c.dated DESC LIMIT $CurrentCount, 15";
-			$result = mysql_query($query);	
+			$result = mysql_query($query);
 			while(list($ID,$Username,$avatarActivate,$avatarExtension,$cid,$comments,$ip,$dated) = mysql_fetch_array($result)){
 				if($uid == $this->id){
 					$topd = '<div id="pcommod"><div class="pcommodtxt"><a href="#" id="dico'.$cid.'" onClick="javascript:moddel(\''.$cid.'\',\''.$this->id.'\',\''.md5($this->id).'\'); return false;" title="Delete Comment"><img src="/images/tinyicons/cancel.png" alt="" border="0"></a>&nbsp;<a id="uico'.$cid.'" href="/user/'.$Username.'" title="Reply to Comment"><img src="/images/tinyicons/reply_go.png" alt="" border="0"></a></div><div id="c-'.$cid.'" style="display:none;" align="center"><a href="#" onClick="javascript:modundel(\''.$cid.'\',\''.$this->id.'\',\''.md5($this->id).'\'); return false;">Click Here to un-delete this comment.</a></div>';
@@ -1614,16 +1614,16 @@ class AFTWUser extends Config{
 		{
 			echo 'There was an error in your request.';
 			echo '<br />'.$_SERVER['REQUEST_URI'];
-			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2,
 		}
-		else 
+		else
 		{
 			$query = "SELECT ID, Username, Email FROM users WHERE ID='".$ruid."'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
 			$ID = $row['ID'];$Username = $row['Username'];$Email = $row['Email'];
-			
-			echo'	
+
+			echo'
 			<div align="left" style="width:310px;">
 				<div style="font-size:16px;padding-left:10px;border-bottom:1px solid #E3E3E3;">Change Email</div>
 				<form method="GET" action="#" name="emailupdate" id="emailupdate">
@@ -1661,14 +1661,14 @@ class AFTWUser extends Config{
 			</div>';
 		}
 	}
-	
+
 	public function PasswordSettings($la,$ruid,$yuid,$timeZone){
 		if(($la != 1 && $la != 2) && ($ruid != $yuid)){
 			echo 'There was an error in your request.';
 			echo '<br />'.$_SERVER['REQUEST_URI'];
-			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2, 
+			// if the request id equals the submitter id, then let them pass, compare as well, if the access level is not equyal to 1 or 2,
 		}
-		else 
+		else
 		{
 			$query = "SELECT ID, Username, Email FROM users WHERE ID='".$ruid."'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -1676,7 +1676,7 @@ class AFTWUser extends Config{
 			$ID = $row['ID'];
 			$Username = $row['Username'];
 			$Email = $row['Email'];
-			echo'	
+			echo'
 			<div align="left" style="width:310px;">
 				<div style="font-size:16px;padding-left:10px;border-bottom:1px solid #E3E3E3;">Change Password</div>
 				<form method="GET" action="#" name="passwordupdate" id="passwordupdate">
@@ -1709,17 +1709,17 @@ class AFTWUser extends Config{
 			</div>';
 		}
 	}
-	
+
 	// Added 08/10/2014 - robotman321
 	// supplemental function to get all of the user details into a single variable for the user page.
 	public function array_getUserDetails($Username)
 	{
 		$query = "SELECT `ID`, `Username`, `display_name`, `avatarExtension`, `avatarActivate` FROM `users` WHERE `Username` = '" . mysql_real_escape_string($Username) . "' OR `display_name` = '" . mysql_real_escape_string($Username) . "'";
-		
+
 		$result = mysql_query($query);
-		
+
 		$count = mysql_num_rows($result);
-		
+
 		if($count > 0)
 		{
 			// count is greater than 0, whch means the user exists!
@@ -1744,7 +1744,7 @@ class AFTWUser extends Config{
 			return 0;
 		}
 	}
-	
+
 	public function showFriendProfileButton($uid,$profileArray)
 	{
 		if($profileArray[0] == 0)
@@ -1826,7 +1826,7 @@ class AFTWUser extends Config{
 			}
 		}
 	}
-	
+
 	private function array_buildCountries(){
 		$query = "SELECT `id`, `name`, `value` FROM `site_variables` WHERE `type` = 1 ORDER BY `name` ASC";
 		$result = mysql_query($query);
