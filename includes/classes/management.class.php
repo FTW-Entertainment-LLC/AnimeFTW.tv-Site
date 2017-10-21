@@ -2419,7 +2419,7 @@ class AFTWManagement extends Config {
 			else
 			{
 				// query the database, we need the basic information of the user we are editing
-				$query = "SELECT Username, Password, Level_access FROM users WHERE ID = " . mysql_real_escape_string($_POST['id']);
+				$query = "SELECT `Username`, `display_name`, `Password`, `Level_access` FROM users WHERE ID = " . mysql_real_escape_string($_POST['id']);
 				$result = mysql_query($query);
 				$row = mysql_fetch_array($result);
 				if(($_POST['id'] == $this->UserArray[1]) || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
@@ -2429,18 +2429,15 @@ class AFTWManagement extends Config {
 
                     // Check if the user has the ability to change their display_name.
                     // We will allow managers to change them as well as admins.
-                    if (($this->UserArray[1] != $_POST['id'] && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)) || ($_POST['id'] == $this->UserArray[1] && ($this->UserArray[2] != 3))) {
+                    if ((($this->UserArray[1] != $_POST['id'] && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)) || ($_POST['id'] == $this->UserArray[1] && ($this->UserArray[2] != 3))) && (($_POST['displayName'] != $row['display_name'] && $_POST['displayName'] != $row['Username']) || ($_POST['displayName'] == $row['Username'] && $_POST['displayName'] != $row['display_name']))) {
                         // We need to check to make sure this display name is not in existance.
                         $query = "SELECT COUNT(ID) AS userNameCount FROM `users` WHERE '" . mysql_real_escape_string(@$_POST['displayName']) . "' IN(`Username`,`display_name`);";
                         $result = mysql_query($query);
                         $usercount = mysql_fetch_object($result);
-                        if ($usercount->userNameCount == 0) {
+                        if ($usercount->userNameCount == 0 || ($usercount->userNameCount > 0 && $_POST['displayName'] == $row['Username']) || ($_POST['displayName'] == $this->UserArray[5] && $_POST['id'] == $this->UserArray[1])) {
                             $display_name = ' `display_name`=\'' . mysql_real_escape_string(@$_POST['displayName']) . '\',';
-                        } else if ($_POST['displayName'] == $this->UserArray[5]) {
-                            // Display Name equals the username, thus nothing to change.
-                            $display_name = '';
                         } else {
-        					echo 'Failed: Display Name is already taken, please try another.';
+        					echo 'Display Name is already taken, please try another.';
                             exit;
                         }
                     } else {
