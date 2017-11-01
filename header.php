@@ -90,55 +90,40 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	}
 	function psa($profileArray,$type = NULL){
 		if($type == 1){ // 1 is the users page stype..
-			$style = "style='margin-top:-40px;padding-bottom:35px;'";
+			$style = "style='margin-top:-40px;padding-bottom:35px;margin-bottom:15px;'";
 		}
 		else if($type == 2){ // 2 is the videos pages
 			$style = "style='padding-top:50px;margin-bottom:-50px;'";
 		}
 		else {
-			$style = "style='margin-top:-40px;'";
+			$style = "style='margin-top:-40px;margin-bottom:30px;'";
 		}
-		if($profileArray[0] == 1)
-		{
-			$psa = '';
-			$psa .= "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."' ".$style.">\n<tr>\n";
-			$psa .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";
-			$psa .= "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-			$psa .= "<td valign='top' class='main-mid'>\n";
-			$psa .= "<div class='side-body-bg' style='min-height:50px;border:1px solid red;'>\n";
-			$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">New Paypal account, same issues.</div>';
-			$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Well, we didn\'t even make it three weeks before paypal burned us again. This time though we got some progress gaining the funds in our old account, however they have since revoked access to robot\'s personal account.
-            <br> This means that we are back to square one, with the possibility that we might not be able to get a new paypal account. So we\'ve done the next best thing (at the direction of an awesome member), and setup a Patreon account!<br>Check us out here, which bypasses paypal entirely!<br>
-            <a href="https://www.patreon.com/bePatron?u=7723752" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script></div>';
-			$psa .= "</div><br>\n";
-			$psa .= "</td>";
-			$psa .= "</tr></table>";
-			$psa .= "</td>";
-			$psa .= "</tr></table><br />";
-            if (strpos($profileArray[15], 'gmail.com') !== false) {
-                if (!isset($_COOKIE['gmailannouncement'])) {
-                    $psa .= '<div style="border:1px solid #ff4747;background-color:#ff4747;width:100%;margin-bottom:10px;" align="center" id="gmail-announcement-container">
-                    <div style="color:white;font-size:14px;padding:5px;">
-                        Alert: Your email on file was marked as a gmail account. <a href="#" onClick="createCookie(\'gmailannouncement\',\'hidden\',9999); $(\'#gmail-announcement-container\').slideUp(); return false;" title="close this alert"><img src=" data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0id2luZG93cy0xMjUyIj8+DQo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNjEycHgiIGhlaWdodD0iNjEycHgiIHZpZXdCb3g9IjAgMCA2MTIgNjEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA2MTIgNjEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Zz4NCgkJPGcgaWQ9IkNyb3NzIj4NCgkJCTxnPg0KCQkJCTxwYXRoIGQ9Ik0zMDYsMEMxMzcuMDEyLDAsMCwxMzYuOTkyLDAsMzA2czEzNy4wMTIsMzA2LDMwNiwzMDZjMTY4Ljk4OCwwLDMwNi0xMzYuOTkyLDMwNi0zMDZTNDc0Ljk4OCwwLDMwNiwweiBNMzA2LDUzNS41ICAgICAgQzE3OS40NSw1MzUuNSw3Ni41LDQzMi41NSw3Ni41LDMwNlMxNzkuNDUsNzYuNSwzMDYsNzYuNVM1MzUuNSwxNzkuNDUsNTM1LjUsMzA2UzQzMi41NSw1MzUuNSwzMDYsNTM1LjV6IE00MTAuMDk4LDIwMi40MTkgICAgICBsLTAuNTE3LTAuNTE3Yy0xNC4xOS0xNC4xOS0zNy4yMTgtMTQuMTktNTEuNDA4LDBMMzA2LDI1NC4wNzZsLTUyLjE5Mi01Mi4xNzNjLTE0LjE5MS0xNC4xOTEtMzcuMTk4LTE0LjE5MS01MS40MDgsMCAgICAgIGwtMC41MTcsMC41MTZjLTE0LjE5LDE0LjE5MS0xNC4xOSwzNy4xOTgsMCw1MS40MDhMMjU0LjA3NiwzMDZsLTUyLjE5Miw1Mi4xOTJjLTE0LjE5LDE0LjE4OS0xNC4xOSwzNy4xOTcsMCw1MS40MDcgICAgICBsMC41MTcsMC41MTdjMTQuMTkxLDE0LjE5LDM3LjIxNywxNC4xOSw1MS40MDgsMEwzMDYsMzU3LjkyNWw1Mi4xNzMsNTIuMTkxYzE0LjE5LDE0LjE5LDM3LjE5OCwxNC4xOSw1MS40MDgsMGwwLjUxNy0wLjUxNyAgICAgIGMxNC4xOS0xNC4xOSwxNC4xOS0zNy4yMTgsMC01MS40MDdMMzU3LjkyNSwzMDZsNTIuMTkxLTUyLjE5MkM0MjQuMzA4LDIzOS42MTcsNDI0LjMwOCwyMTYuNjEsNDEwLjA5OCwyMDIuNDE5eiIvPg0KCQkJPC9nPg0KCQk8L2c+DQoJPC9nPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+" alt="x out" style="width:14px;" /></a><br>
-                        If you want to ensure that notifications are sent to your email, please whitelist notifications@animeftw.tv, thank you!
-                    </div>
-                </div>
-                <script>
-                    function createCookie(name,value,days) {
-                        var expires = "";
-                        if (days) {
-                            var date = new Date();
-                            date.setTime(date.getTime() + (days*24*60*60*1000));
-                            expires = "; expires=" + date.toUTCString();
-                        }
-                        document.cookie = name + "=" + value + expires + "; path=/";
-                    }
-                </script>';
-                }
-            }
-			//$psa = "";
-			return $psa;
-		}
+        $psa = '
+        <div ' . $style . '>
+            <div style="background-color:#ff5656;border:1px solid #df0606;width:100%;min-height:40px;font-size:18px;color:white;padding:10px;" align="center">
+                This is the end for AnimeFTW.tv.<br>
+                <br>
+                The road to today has been an adventure for us, but it is one that must come to an end.<br>Check out <a href="#" style="color:#4ce340">this</a> topic for more information about AnimeFTW.tv closing at the end of November.<br>
+                <br>
+                - The AnimeFTW.tv Staff.
+            </div>
+        </div>';
+		/*$psa = '';
+		$psa .= "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."' ".$style.">\n<tr>\n";
+		$psa .= "<td width='".THEME_WIDTH."' class='main-bg'>\n";
+		$psa .= "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+		$psa .= "<td valign='top' class='main-mid'>\n";
+		$psa .= "<div class='side-body-bg' style='min-height:50px;border:1px solid red;'>\n";
+		$psa .= '<div style="font-size:24px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#666;" align="center">New Paypal account, same issues.</div>';
+		$psa .= '<div style="padding:5px;font-size:14px;font-family:Verdana,Arial,Helvetica,sans-serif;" align="center">Well, we didn\'t even make it three weeks before paypal burned us again. This time though we got some progress gaining the funds in our old account, however they have since revoked access to robot\'s personal account.
+        <br> This means that we are back to square one, with the possibility that we might not be able to get a new paypal account. So we\'ve done the next best thing (at the direction of an awesome member), and setup a Patreon account!<br>Check us out here, which bypasses paypal entirely!<br>
+        <a href="https://www.patreon.com/bePatron?u=7723752" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script></div>';
+		$psa .= "</div><br>\n";
+		$psa .= "</td>";
+		$psa .= "</tr></table>";
+		$psa .= "</td>";
+		$psa .= "</tr></table><br />";*/
+		return $psa;
 	}
 	 ?>
 	<link rel="icon" href="/favicon.ico" />
