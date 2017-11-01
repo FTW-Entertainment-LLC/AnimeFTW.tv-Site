@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: api.class.php									 
-## Author: Brad Riemann										 
+## FileName: api.class.php
+## Author: Brad Riemann
 ## Usage: API Implementation Script.
 ## Copywrite 2011 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -14,14 +14,14 @@
 
 class AFTWDev{
 	var $did, $ssl, $series, $eid, $ads, $UserName, $Categories;
-		
+
 	var $Host = 'https://d206m0dw9i4jjv.cloudfront.net';
-	
+
 	public function __construct()
 	{
 		$this->buildCategories();
 	}
-	
+
 	//grab the did
 	function get_did($did){
 		$this->did = $did;
@@ -30,11 +30,11 @@ class AFTWDev{
 	function get_ssl($ssl){
 		$this->ssl = $ssl;
 	}
-	
+
 	public function RecordUsername($username){
 		$this->UserName = $username;
 	}
-	
+
 	//get Validate DID info
 	function ValDID(){
 		$query = "SELECT id FROM developers WHERE devkey='".$this->did."'";
@@ -58,19 +58,19 @@ class AFTWDev{
 	//show </results>
 	function showbtmresult(){
 		echo "</results>\n";
-	}	
+	}
 	private function Query($q){
-		$query = mysql_query($q); 
+		$query = mysql_query($q);
 		$query = mysql_result($query, 0);
 		return $query;
 	}
-	
+
 	private function ArrQuery($query){
 		$query = mysql_query($query);
 		$query = mysql_fetch_array($query);
 		return $query;
 	}
-	
+
 	private function buildCategories()
 	{
 		$query = "SELECT * FROM `categories`";
@@ -81,8 +81,8 @@ class AFTWDev{
 			$this->Categories[$row['id']]['name'] = $row['name'];
 			$this->Categories[$row['id']]['description'] = $row['description'];
 		}
-	}	
-	
+	}
+
 	private function parseNestedArray($products, $field, $value)
 	{
 	   foreach($products as $key => $product)
@@ -94,16 +94,16 @@ class AFTWDev{
 		}
 		return false;
 	}
-	
+
 	//show anime, paged
 	function ShowAnime($sort,$count,$start,$username,$password,$gsort,$alpha = NULL,$SortNum = 0){
-		mysql_query("SET NAMES 'utf8'"); 
-		
+		mysql_query("SET NAMES 'utf8'");
+
 		$client = (isset($_GET['client'])) ? $_GET['client'] : "browser";
 		$version = (isset($_GET['version'])) ? $_GET['version'] : 0;
-		
+
 		$UserArr = $this->ArrQuery("SELECT Level_access FROM users WHERE Username = '" . $username . "'");
-		
+
 		//Alphabetical limitation
 		//Zigbigidorlu was here :B
 		$alphalimit = "";
@@ -116,12 +116,12 @@ class AFTWDev{
 			}
 		}
 		if($UserArr[0] == 3) {
-			$aonly = 'AND `aonly` <= 1 AND Movies = 0 AND (id != 6 OR id != 35 OR id != 138 OR id != 194 OR id != 238 OR id != 364 OR id != 403 OR id != 446 OR id != 456 OR id != 735 OR id != 818 OR id != 1006)';	
+			$aonly = 'AND `aonly` <= 1 AND Movies = 0 AND (id != 6 OR id != 35 OR id != 138 OR id != 194 OR id != 238 OR id != 364 OR id != 403 OR id != 446 OR id != 456 OR id != 735 OR id != 818 OR id != 1006)';
 		}
 		else {
 			$aonly = '';
 		}
-		
+
 		if($SortNum == 1) {
 			$query = "SELECT id, seriesName, fullSeriesName, romaji, kanji, seoname, description, ratingLink, stillRelease, Movies, OVA, category, total_reviews FROM series WHERE active = 'yes' $aonly ORDER BY `id` ASC LIMIT 25";
 		}
@@ -146,7 +146,7 @@ class AFTWDev{
 		echo '<results start="'.$start.'" count="'.$count.'" next="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=anime'.$g_s.'&amp;start='.($start+$count).'&amp;count='.$count.'"';
 		if($start == 0){echo "\n";}
 		else {
-			echo ' previous="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=anime'.$g_s.'&amp;start='.($start-$count).'&amp;count='.$count.'"';	
+			echo ' previous="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=anime'.$g_s.'&amp;start='.($start-$count).'&amp;count='.$count.'"';
 		}
 		echo '>'."\n";
 		while(list($id,$seriesName,$fullSeriesName,$romaji,$kanji,$seoname,$description,$ratingLink,$stillRelease,$Movies,$OVA,$category,$total_reviews) = mysql_fetch_array($result))
@@ -154,7 +154,7 @@ class AFTWDev{
 			$fullSeriesName = stripslashes($fullSeriesName);
 			$description = stripslashes($description);
 			//$description = preg_replace("/\`/"," ",$description);
-			$description = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$description); 
+			$description = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$description);
 			//$description = htmlspecialchars($description);
   echo '	<series href="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=series&amp;title='.$seriesName.'">
 		<seriesName><![CDATA['.$fullSeriesName.']]></seriesName>
@@ -167,7 +167,7 @@ class AFTWDev{
   echo '		<airing>'.$stillRelease.'</airing>
 		<episodes>'.$this->Query("SELECT COUNT(id) FROM episode WHERE sid='$id'").'</episodes>
 		<movies>'.$Movies.'</movies>';
-		
+
 		$exploded = explode(" , ",$category);
 		$category = '';
 		$i = 0;
@@ -181,7 +181,7 @@ class AFTWDev{
 				$category .= ', ';
 			}
 		}
-		
+
 		echo '
 		<category>' . $category.'</category>';
 		echo '
@@ -218,7 +218,7 @@ class AFTWDev{
 			echo "		<episode href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=0\">\n";
 			echo "			<id>0</id>\n";
 			echo "			<epnumber>0</epnumber>\n";
-			echo "			<name><![CDATA[ERROR: Regular Members are only allowed to watch the first 2 episodes of a series.]]></name>\n";
+			echo "			<name><![CDATA[WARNING: AnimeFTW.tv will be closing November 30th, 2017, see site for details.]]></name>\n";
 			echo "			<height>0</height>\n";
 			echo "			<fansub><![CDATA[Unknown]]></fansub>\n";
 			echo "			<added format=\"gmt -6\">0</added>\n";
@@ -232,7 +232,7 @@ class AFTWDev{
 			if($image == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
 			else {$imvarb = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";}
 			$epname = stripslashes($epname);
-			$epname = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$epname); 
+			$epname = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$epname);
 			echo "		<episode href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=".$id."\">\n";
 			echo "			<id>".$id."</id>\n";
 			echo "			<epnumber>".$epnumber."</epnumber>\n";
@@ -285,7 +285,7 @@ class AFTWDev{
 		else {$rv = FALSE;}
 		return $rv;
 	}
-	//show movie listings for a series 
+	//show movie listings for a series
 	function ShowAnimeMovies($sort,$username,$password,$limit,$showad,$appkey=array()){
 		$appver = (isset($appkey[1])) ? $appkey[1] : 0;
 		if($limit == TRUE && $showad == TRUE && $appver < 3){$limitfunc = " LIMIT 0, 2";} else{$limitfunc = "";}
@@ -297,7 +297,7 @@ class AFTWDev{
 			echo "		<movie href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=0\">\n";
 			echo "			<id>0</id>\n";
 			echo "			<epnumber>0</epnumber>\n";
-			echo "			<name><![CDATA[ERROR: Regular Members are only allowed to watch the first 2 episodes of a series, NOT including Movies.]]></name>\n";
+			echo "			<name><![CDATA[WARNING: AnimeFTW.tv will be closing November 30th, 2017, see site for details.]]></name>\n";
 			echo "			<height>0</height>\n";
 			echo "			<fansub><![CDATA[Unknown]]></fansub>\n";
 			echo "			<type>mkv</type>\n";
@@ -310,7 +310,7 @@ class AFTWDev{
 			while(list($id,$sid,$epnumber,$epname,$seriesname,$vidheight,$vidwidth,$epprefix,$subGroup,$Movie,$doubleEp,$date,$videotype,$image) = mysql_fetch_array($result))
 			{
 				$epname = stripslashes($epname);
-				$epname = preg_replace('/[^0-9a-z\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$epname); 
+				$epname = preg_replace('/[^0-9a-z\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$epname);
 				if($image == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
 				else {$imvarb = "{$this->Host}/video-images/{$sid}/{$id}_screen.jpeg";}
 				echo "		<movie href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=".$id."\">\n";
@@ -329,11 +329,11 @@ class AFTWDev{
 		}
 		echo "</movies>\n";
 	}
-	//show latest episodes 
+	//show latest episodes
 	function ShowLatestEpisodes($sort,$count,$start,$username,$password,$limit,$showad){
 		if($limit == TRUE && $showad == TRUE){
 			echo "	<results>\n";
-			echo "		<episode href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=0\">\n";			
+			echo "		<episode href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=0\">\n";
 			echo "			<id>0</id>\n";
 			echo "			<name><![CDATA[ERROR: Regular Members are not allowed to view the latest episodes listing.]]></name>\n";
 			echo "			<epnumber>0</epnumber>\n";
@@ -350,13 +350,13 @@ class AFTWDev{
 		}
 		else {
 			$query = "SELECT id, sid, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, videotype, image FROM episode ORDER BY id ".$sort." LIMIT ".$start.", ".$count;
-			mysql_query("SET NAMES 'utf8'"); 
+			mysql_query("SET NAMES 'utf8'");
 			$result = mysql_query($query);
 			$TheResults = '<results start="'.$start.'" count="'.$count.'" next="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=latest&amp;start='.($start+$count).'&amp;count='.$count.'"';
 			if($start == 0){echo "\n";}
-			else 
+			else
 			{
-				$TheResults .= ' previous="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=latest&amp;start='.($start-$count).'&amp;count='.$count.'"';	
+				$TheResults .= ' previous="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=latest&amp;start='.($start-$count).'&amp;count='.$count.'"';
 			}
 			$TheResults .= ">\n";
 			echo $TheResults;
@@ -388,7 +388,7 @@ class AFTWDev{
 	function ShowTagCloud($username,$password){
 		include('wordcloud.class.php');
 		$cloud = new wordcloud();
-		mysql_query("SET NAMES 'utf8'"); 			
+		mysql_query("SET NAMES 'utf8'");
 		$query = mysql_query("SELECT name FROM categories ORDER BY name DESC");
 		if ($query)
 		{
@@ -413,11 +413,11 @@ class AFTWDev{
 			}
 		}
 	}
-	
+
 	function checkdbversion() {
 		$alphalist = array("1","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 		$returnlist = "";
-		
+
 		$returnlist .= "<signatures>";
 		foreach($alphalist as $alpha) {
 			if($alpha == "1") {
@@ -426,7 +426,7 @@ class AFTWDev{
 				$alpha = substr($alpha,0,1);
 				$alphalimit = "AND `fullSeriesName` LIKE '$alpha%'";
 			}
-			mysql_query("SET NAMES 'utf8'"); 	
+			mysql_query("SET NAMES 'utf8'");
 			if($query = mysql_query("SELECT `fullSeriesName` FROM series WHERE active='yes' $alphalimit")) {
 				if(mysql_num_rows($query)) {
 					$temp = array();
@@ -446,14 +446,14 @@ class AFTWDev{
 			}
 		}
 		$returnlist .= "</signatures>";
-		
+
 		if(isset($error)) {
 			echo '<result code="301" title="Erronious API GET" />';
 		} else {
 			echo trim($returnlist);
 		}
 	}
-	
+
 	//record our logs
 	function RecordDevLogs($username,$url,$agent,$ip){
 		$query = "SELECT id FROM developers WHERE devkey='".$this->did."'";
@@ -465,23 +465,23 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 		$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\''.GetUID($username).'\'';
 		mysql_query($query) or die('Error : ' . mysql_error());
 	}
-	
+
 	public function Search($sort,$count,$start,$username,$password,$SearchInput,$alpha = NULL){
-		mysql_query("SET NAMES 'utf8'"); 
-		
+		mysql_query("SET NAMES 'utf8'");
+
 		$client = (isset($_GET['client'])) ? $_GET['client'] : "browser";
 		$version = (isset($_GET['version'])) ? $_GET['version'] : 0;
-		
+
 		$UserArr = $this->ArrQuery("SELECT Level_access FROM users WHERE Username = '" . $username . "'");
-		
+
 		if($UserArr[0] == 3) {
-			$aonly = 'AND `aonly` <= 1 AND Movies = 0 AND (id != 6 OR id != 35 OR id != 138 OR id != 194 OR id != 238 OR id != 364 OR id != 403 OR id != 446 OR id != 456 OR id != 735 OR id != 818 OR id != 1006) ';	
+			$aonly = 'AND `aonly` <= 1 AND Movies = 0 AND (id != 6 OR id != 35 OR id != 138 OR id != 194 OR id != 238 OR id != 364 OR id != 403 OR id != 446 OR id != 456 OR id != 735 OR id != 818 OR id != 1006) ';
 		}
 		else {
 			$aonly = '';
 		}
-		
-		
+
+
 		//Alphabetical limitation
 		//Zigbigidorlu was here :B
 		$alphalimit = "";
@@ -496,14 +496,14 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 		//santize!
 		$SearchInput = htmlentities($SearchInput);
 		$SearchInput = mysql_real_escape_string($SearchInput);
-		
+
 		$query = "SELECT id, seriesName, fullSeriesName, romaji, kanji, seoname,description, ratingLink, stillRelease, Movies, OVA, category, total_reviews FROM series WHERE active='yes' AND ( fullSeriesName LIKE '%".$SearchInput."%' OR romaji LIKE '%".$SearchInput."%' OR kanji LIKE '%".$SearchInput."%' ) " . $aonly . "ORDER BY fullSeriesName LIMIT ".$start.",".$count;
 		mysql_query("SET NAMES 'utf8'");
 		$result = mysql_query($query);
 		echo '<results start="'.$start.'" count="'.$count.'" next="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=search&amp;for='.$SearchInput.'&amp;start='.($start+$count).'&amp;count='.$count.'"';
 		if($start == 0){echo "\n";}
 		else {
-			echo ' previous="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=search&amp;for='.$SearchInput.'&amp;start='.($start-$count).'&amp;count='.$count.'"';	
+			echo ' previous="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=search&amp;for='.$SearchInput.'&amp;start='.($start-$count).'&amp;count='.$count.'"';
 		}
 		echo '>'."\n";
 		while(list($id,$seriesName,$fullSeriesName,$romaji,$kanji,$seoname,$description,$ratingLink,$stillRelease,$Movies,$OVA,$category,$total_reviews) = mysql_fetch_array($result))
@@ -511,7 +511,7 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 			$fullSeriesName = stripslashes($fullSeriesName);
 			$description = stripslashes($description);
 			//$description = preg_replace("/\`/"," ",$description);
-			$description = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$description); 
+			$description = preg_replace('/[^0-9a-z?-????\`\~\!\@\#\$\%\^\*\(\)\; \,\.\'\/\_\-]/i', ' ',$description);
 			//$description = htmlspecialchars($description);
   echo '	<series href="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=series&amp;title='.$seriesName.'">
 		<seriesName><![CDATA['.$fullSeriesName.']]></seriesName>
@@ -523,7 +523,7 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
   echo '		<airing>'.$stillRelease.'</airing>
 		<episodes>'.$this->Query("SELECT COUNT(id) FROM episode WHERE sid='$id'").'</episodes>
 		<movies>'.$Movies.'</movies>';
-		
+
 		$exploded = explode(" , ",$category);
 		$category = '';
 		$i = 0;
@@ -537,7 +537,7 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 				$category .= ', ';
 			}
 		}
-		
+
 		echo '
 		<category>'.$category.'</category> ';
 		echo '
@@ -549,7 +549,7 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 		}
 		echo "</results>\n";
 	}
-	
+
 	/*private function GrabEpisodeData($epid,$type){
 		if($type == 1){ //1 = total rating votes
 			$query = "SELECT COUNT(rating_num), rating_num FROM ratings WHERE rating_id = 'v".$epid."' GROUP BY rating_num";
@@ -561,7 +561,7 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 		else {
 		}
 	}*/
-	
+
 	public function RecordAnalytics(){
 		$ga_uid = 'UA-6243691-1'; // Enter your unique GA Urchin ID (utmac)
 		$ga_domain = 'animeftw.tv'; // Enter your domain name/host name (utmhn)
@@ -573,7 +573,7 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 
 		$ga_userVar=''; // Enter any variable data you want to pass to GA or leave blank
 		$ga_hitPage = @$_SERVER['REQUEST_URI']; // Enter the page address you want to track
-		 
+
 		$gaURL = 'http://www.google-analytics.com/__utm.gif?utmwv=1&utmn='.$ga_randNum.'&utmsr=-&utmsc=-&utmul=-&utmje=0&utmfl=-&utmdt=-&utmhn='.$ga_domain.'&utmr='.$ga_referrer.'&utmp='.$ga_hitPage.'&utmac='.$ga_uid.'&utmcc=__utma%3D'.$ga_cookie.'.'.$ga_rand.'.'.$ga_today.'.'.$ga_today.'.'.$ga_today.'.2%3B%2B__utmb%3D'.$ga_cookie.'%3B%2B__utmc%3D'.$ga_cookie.'%3B%2B__utmz%3D'.$ga_cookie.'.'.$ga_today.'.2.2.utmccn%3D(direct)%7Cutmcsr%3D(direct)%7Cutmcmd%3D(none)%3B%2B__utmv%3D'.$ga_cookie.'.'.$ga_userVar.'%3B';
 
 		$handle = @fopen($gaURL, "r"); // open the xml file
