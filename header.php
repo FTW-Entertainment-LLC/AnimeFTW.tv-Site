@@ -103,7 +103,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
             <div style="background-color:#ff5656;border:1px solid #df0606;width:100%;min-height:40px;font-size:18px;color:white;padding:10px;" align="center">
                 This is the end for AnimeFTW.tv.<br>
                 <br>
-                The road to today has been an adventure for us, but it is one that must come to an end.<br>Check out <a href="#" style="color:#4ce340">this</a> topic for more information about AnimeFTW.tv closing at the end of November.<br>
+                The road to today has been an adventure for us, but it is one that must come to an end.<br>Check out <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0" style="color:#4ce340">this</a> topic for more information about AnimeFTW.tv closing at the end of November.<br>
                 <br>
                 - The AnimeFTW.tv Staff.
             </div>
