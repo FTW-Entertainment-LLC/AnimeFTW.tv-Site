@@ -1,5 +1,5 @@
 <?php
-$AppsOpen = 1;
+$AppsOpen = 0;
 define("THEME_WIDTH", "990");
 if(!isset($PageTitle)){$PageTitle = '';}
 
@@ -15,7 +15,7 @@ else {
 	echo "		<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n	<tr>\n";
 	echo "			<td class='header-logo' style='padding-top: 9px;'>\n".$logo."</td>\n";
 	echo "			<td align='right'>\n";
-	echo "				<div class='header-log'>";	
+	echo "				<div class='header-log'>";
 	include_once("includes/classes/user_nav.class.php");
 	$uin = new AFTWUserNav($profileArray);
 	$uin->Output();
@@ -41,7 +41,7 @@ else {
 	}
 	if($AppsOpen == 1 && $profileArray[0] == 1 && ($profileArray[2] == 3 || $profileArray[2] == 7 || $profileArray[2] == 1)){
 		echo "<a id=\"tab-8\" class=\"aftw-main-nav\" href='/staff/applications'"; if(strstr($_SERVER['REQUEST_URI'],'/staff/applications')){echo ' class="current"';$currentTab=6;} echo ">Staff</a>\n";
-	
+
 		if($profileArray[2] == 1)
 		{
 			echo "<a id=\"tab-7\" class=\"aftw-main-nav\" target=\"_blank\" href=\"https://discord.gg/JCm5b5E\">Chat</a>";
@@ -56,7 +56,7 @@ else {
 	}
 	echo '<script>
 		$(document).ready(function(){
-			var active_tab = $(".header-nav-left").find(".current").attr("id"); 
+			var active_tab = $(".header-nav-left").find(".current").attr("id");
 			$("#hover-" + active_tab).show();
 			$(".aftw-main-nav").mouseenter(function() {
 				var menuid = $(this).attr("id");
@@ -120,7 +120,7 @@ else {
 										</div>
 									</div>
 								</div>
-								
+
 							</div>';
 							echo "
 							<div style=\"display:inline-block;\" class=\"pane-subnav-subdiv\">
@@ -139,9 +139,9 @@ else {
 						echo "</div>
 						<div id=\"hover-tab-4\" class=\"pane-subnav\" align=\"center\">Love AnimeFTW.tv? Check out the Store for awesome Goodies, AFTW Style.</div>
 						<div id=\"hover-tab-5\" class=\"pane-subnav\" align=\"center\"><a href='/forums/global-announcements/'>Announcements</a> | <a href='/forums/releases/'>Releases</a> | <a href='/requests'>Anime Requests</a> | <a href='/forums/bug-reports/'>Bug Reports</a> | <a href='/forums/active-topics'>Active Topics</a></div>
-						<div id=\"hover-tab-6\" class=\"pane-subnav\" align=\"center\">Get the Perks of Advanced Membership Today!</div> 
-						<div id=\"hover-tab-7\" class=\"pane-subnav\" align=\"center\">Join the Staff and other Members in Chat!</div> 
-						<div id=\"hover-tab-8\" class=\"pane-subnav\" align=\"center\">Want to help AnimeFTW.tv Spread Anime Love? Apply Within!</div> 
+						<div id=\"hover-tab-6\" class=\"pane-subnav\" align=\"center\">Get the Perks of Advanced Membership Today!</div>
+						<div id=\"hover-tab-7\" class=\"pane-subnav\" align=\"center\">Join the Staff and other Members in Chat!</div>
+						<div id=\"hover-tab-8\" class=\"pane-subnav\" align=\"center\">Want to help AnimeFTW.tv Spread Anime Love? Apply Within!</div>
 						<div></div>
 					</div>";
 
