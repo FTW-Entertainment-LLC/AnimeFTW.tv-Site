@@ -148,7 +148,7 @@ class Episode extends Config {
             // no reason to worry, we just need to filter by latest episode now..
         }
         $addonEpisode = [];
-        $addonEpisode[] = array('id' => '0','sid' => '0','epname' => 'AnimeFTW.tv is closing 11/30/17.','epnumber' => '0','vidheight' => '0','vidwidth' => '0','epprefix' => '0','subGroup' => '0','Movie' => '0','videotype' => 'mp4','image' => '','video' => '','views' => '0','spriteWidth' => 'null','spriteHeight' => 'null','spriteTotalWidth' => 'null','spriteRate' => '0','spriteCount' => '0','total-comments' => '0','average-rating' => '0','user-rated' => '0');
+        $addonEpisode = array('id' => '0','sid' => '0','epname' => 'AnimeFTW.tv is closing 11/30/17.','epnumber' => '0','vidheight' => '0','vidwidth' => '0','epprefix' => '0','subGroup' => '0','Movie' => '0','videotype' => 'mp4','image' => '','video' => '','views' => '0','spriteWidth' => 'null','spriteHeight' => 'null','spriteTotalWidth' => 'null','spriteRate' => '0','spriteCount' => '0','total-comments' => '0','average-rating' => '0','user-rated' => '0');
 
         // Add support for viewing the last X videos added.
         if (isset($this->Data['latest']) && strtolower($this->Data['latest']) == 'true') {
@@ -218,7 +218,7 @@ class Episode extends Config {
                 $i = 0;
                 if (((isset($this->DevArray['ads']) && $this->DevArray['ads'] == 0) && $this->UserArray['Level_access'] == 3 && !isset($this->Data['latest'])) || 1 == 1) {
                     $i = 1;
-                    $finalresults['results'][] = $addonEpisode;
+                    $finalresults['results'][0] = $addonEpisode;
                 }
                 while ($row = $result->fetch_assoc()) {
                     // a result was found, build the array for return.
