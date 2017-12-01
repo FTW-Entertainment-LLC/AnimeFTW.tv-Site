@@ -60,7 +60,7 @@ if (isset($_GET['rf'])){
 	echo psa($profileArray);
     echo "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	echo "<td width='".THEME_WIDTH."' class='main-bg'>\n";
-	if(!isset($Config->SettingsArray[17])){
+/*	if(!isset($Config->SettingsArray[17])){
 		echo '
 		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 			<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
@@ -80,9 +80,9 @@ if (isset($_GET['rf'])){
 			<!-- End Insticator API Embed Code -->';
 		echo "</div>\n";
 		echo "</div>\n";
-	}
+	}*/
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo "<div class='side-body-bg'>";
+	/*	echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Advertisement</div>\n";
 		echo "<div class='side-body floatfix'>\n";
 		if($profileArray[2] == 3){
@@ -94,7 +94,7 @@ if (isset($_GET['rf'])){
 				</div>
 				<!-- End Insticator API Embed Code -->';
 		echo "</div>\n";
-		echo "</div>\n";
+		echo "</div>\n";*/
 	}
 	echo '
 	</div>
@@ -526,7 +526,7 @@ if (isset($_GET['rf'])){
 	echo "</td>\n";
 	echo "<td style='padding-left:10px; width:250px;  vertical-align:top;' class='main-right'>\n";
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo '
+		/*echo '
 		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 			<div id="ad-sidebar" style="width:220px;float:right;margin:0 0 0 270px;position:absolute;z-index:0;">';
 		echo "<div class='side-body-bg'>";
@@ -544,7 +544,7 @@ if (isset($_GET['rf'])){
 		echo "</div>\n";
 		echo '
 		</div>
-		</div>';
+		</div>';*/
 	}
 	$stats->get_la($profileArray[2]);
 	if(strpos($_SERVER['REQUEST_URI'], 'store'))
