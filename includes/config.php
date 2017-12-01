@@ -2,7 +2,7 @@
 
 // NewSystem DB connect
 //$newsdbhost = 'localhost';
-$newsdbhost = '10.150.14.10';
+$newsdbhost = 'localhost';
 $newsdbuser = 'mainaftw_anime';
 $newsdbpass = '26V)YPh:|IJG';
 $newsdbname = 'mainaftw_anime';

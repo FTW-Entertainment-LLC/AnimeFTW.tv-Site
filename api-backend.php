@@ -1,4 +1,6 @@
 <?php
+echo 'AnimeFTW.tv has closed down as of November 30th, 2017. Please see the site for details.';
+exit;
 if(isset($_SERVER['HTTP_CF_VISITOR'])){
     $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);
     if($decoded['scheme'] == 'http'){
@@ -25,7 +27,7 @@ include('includes/classes/config.class.php');
 include('includes/classes/users.class.php');
 include('includes/classes/api.class.php');
 
-# The idea of this script is to create a working REST API, REST APIs revolve around GET based HTTP authentication, 
+# The idea of this script is to create a working REST API, REST APIs revolve around GET based HTTP authentication,
 # So what better of a way to implement than via the URL!?
 # the basic concept is putting forth the username and the Dev id, without either one,
 # We can't have a valid API transaction!
@@ -78,7 +80,7 @@ else {
 		$dev->get_did($DevID);
 		$dev->RecordAnalytics();
 		//Check Dev id
-		
+
 		if($dev->ValDID() == 1){
 			$devClear = TRUE;
 			if($Dbver == TRUE) {
@@ -112,7 +114,7 @@ else {
 					else {
 						echo '<result code="202b" title="Invalid User ID/Password" />';
 						$userClear = FALSE;
-					}	
+					}
 				}
 			}
 		}
@@ -120,7 +122,7 @@ else {
 			echo '<result code="202" title="Invalid Development ID" />'."\n";
 			$devClear = FALSE;
 		}
-	}		
+	}
 }
 if($devClear == TRUE && $userClear == TRUE){
 	$Start = @$_GET['start'];

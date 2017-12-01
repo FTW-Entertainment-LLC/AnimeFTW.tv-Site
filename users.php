@@ -8,7 +8,8 @@ if(isset($_GET['username'])){$uname = $_GET['username'];}
 else {$uname = 0;}
 
 $u = new AFTWUser();
-$IsThereAUser = $u->array_getUserDetails($uname);
+//$IsThereAUser = $u->array_getUserDetails($uname);
+$IsThereAUser = 0;
 if($IsThereAUser == 1)
 {
 	$u->get_id($u->UserArray['ID']);
@@ -102,131 +103,135 @@ echo psa($profileArray,1);
 	// Start Mid and Right Content
 	echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 	echo "<td valign='top' class='main-mid'>\n";
-	if($IsThereAUser == 1){
-		//start internal table for users                        $u->nVar('')
-		echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-		echo "<td valign='top' width='20%'><div class='ucleft'>";
-		echo '<div class="feature02" align="center">
-		<div id="avatar-div-wrapper">';
-		if($u->UserArray['avatarActivate'] == 'yes')
-		{
-			echo '<img src="' . $ImageHost . '/avatars/user'.$u->UserArray['ID'].'.'.$u->UserArray['avatarExtension'].'" alt="'.$u->UserArray['display_name'].'\'s Avatar" style="padding-right:10px;" id="user-avatar" class="avatardiv" />';
-		}
-		else
-		{
-			echo '<img src="' . $ImageHost . '/avatars/default.gif" alt="" border="0" width="100px" id="user-avatar" class="avatardiv" />';
-		}
-		echo '</div>';
-		if($profileArray[1] == $u->UserArray['ID'] || $profileArray[2] == 1 || $profileArray[2] == 2)
-		{
-			echo '
-			<br />
-			<div id="avatar-form-wrapper" style="display:none;">
-				<span class="label label-default">Image Type allowed: Jpeg, Jpg, Png and Gif. | Maximum Size 150KB</span>
-				<form action="/scripts.php?view=avatar-upload" method="post" enctype="multipart/form-data" id="MyUploadForm">
-					<input type="hidden" name="uid" id="uid" value="' . $u->UserArray['ID'] . '" />
-					<input type="hidden" name="extension" id="extension" value="' . $u->UserArray['avatarExtension'] . '" />
-					<input name="image_file" id="imageInput" type="file" />
-					<input type="submit" id="submit-btn" value="Upload" />
-					<img src="images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
-				</form>
-			</div>
-			<script>
-			$("#user-avatar").on("click", function() {
-				$(\'#avatar-form-wrapper\').toggle();
-			});
-			</script>';
-		}
-		echo "</div><br />";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent1').slideDown();return false;\"  title=\"\"><img src='//i.animeftw.tv/userv2.png' alt='' /><span class=''>My Profile</span></a></div>\n";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent2').slideDown();return false;\"  title=\"\"><img src='//i.animeftw.tv/usercontactv2.png' alt='' /><span class=''>Contact Details</span></a></div>\n";
-		if($profileArray[0] == 1){
-			echo "<div class='linfo'>";
-			echo $u->showFriendProfileButton($u->UserArray['ID'],$profileArray);
-			echo "</div>\n";
-			echo "<div class='linfo'><a href=\"/pm/compose/".$u->UserArray['ID']."\" title=\"\"><img src='//i.animeftw.tv/pmuserv2.png' alt='' /><span>Send a Site PM</span></a></div>\n";
-		}
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent3').slideDown(); $('#comments1').load('/scripts.php?view=comments&id=".$u->UserArray['ID']."&zone=-6'); return false;\"  title=\"\" id=\"tablink3\"><img src='//i.animeftw.tv/usercommentsv2.png' alt='' /><span>View My Comments</span></a></div>\n";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='//i.animeftw.tv/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>\n";
-		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='//i.animeftw.tv/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>\n";
-		if($u->UserArray['ID'] == $profileArray[1]){
-			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='//i.animeftw.tv/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>\n";
-			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>\n";
-		}
-		else if($profileArray[2] == 1 || $profileArray[2] == 2){
-			echo "<div class='linfo'><a href=\"#\" onclick=\"$('.tab-content').slideUp(); $('#tabcontent5').slideDown(); $('#profilesettings').load('/scripts.php?view=settings&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/usersetv2.png' alt='' /><span>Edit Their Settings</span></a></div>";
-		}
-		echo '<script type="text/javascript">
-				$(function() {
-					$("a[rel]").overlay({mask: \'#000\', effect: \'apple\'});
-				});
-			</script>';
-		echo "<div id='subfriends'><div class='fds'>Friends</div>";
-		//put the friends here.
-		echo "<div class=\"fb\" id=\"fb1\">Loading Friend Bar...</div>";
-		echo "</div>";
-		echo "</div>";
-		echo "<div id='subfriends'><div class='fds'>Profile Stats</div>";
-		$u->ProfileStats($profileArray[1]);
-		echo "<br />";
-		echo "</div>";
-		echo "</div></td>";
-		echo "<td valign='top'>
-			<div id=\"tabcontent1\" class=\"tab-content\">";
-		$u->Profile($profileArray[1]);
-		$u->About($profileArray[1]);
-		$u->Interests($profileArray[1]);
-		$u->Signature($profileArray[1]);
-		echo"	</div>
-			<div id=\"tabcontent2\" class=\"tab-content\" style=\"display:none;\"><div class='fds'>Contact Information</div><br />";
-		$u->ContactInfo($profileArray[1]);
-			echo "</div>
-			<div id=\"tabcontent3\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"comments1\">Loading User Comments. Please Wait...</div></div>
-			<div id=\"tabcontent4\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"watchlistprofile\">Loading WatchList...</div></div>
-			<div id=\"tabcontent5\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"profilesettings\">Loading Settings...</div></div>
-			<div id=\"tabcontent6\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"episodetracker\">Loading Tracker Data...</div></div>
-			<div id=\"tabcontent7\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"usernotifications\">Loading Notification information..</div></div>";
-		echo "</td>";
-		echo "</tr></table>";
-		//echo "- <a href=\"/management/manage-episodes?episode=add&amp;series=".$sa1."\" rel=\"#profile\">Add Episode</a><br />\n";
-		echo '<div class="apple_overlay" id="profile">
-			<h2 style="margin:0px">Profile Functions</h2>
-			<div class="comments" id="profileedit">Loading. Please Wait...</div>
-		</div>';
-		echo "
-				<script type='text/javascript'>
-				$('#fb1').load('/scripts.php?view=friendbar&id=".$u->UserArray['ID']."&zone=-6');
-				</script>
-				<script type=\"text/javascript\" src=\"/scripts/instantedit.js\"></script>
-				<script>
-					setVarsForm(\"view=user&edit=profile&uid=".$u->UserArray['ID']."\");
-				</script>";
-	}
-	echo "<td>";
-	echo "</td>\n";
-	echo "<td style='padding-left:10px; width:250px;  vertical-align:top;' class='main-right'>\n";
-	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo '
-		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
-			<div id="ad-sidebar" style="width:220px;float:right;margin:0 0 0 270px;position:absolute;z-index:0;">';
-		echo "<div class='side-body-bg'>";
-		echo "<div class='scapmain'>Advertisement</div>\n";
-		echo "<div class='side-body floatfix'>\n";
-		echo '<div align="center"><a href="/advanced-signup" target="blank">Get rid of Ads by becoming an Advanced Member today!</a></div>';
-		echo '<!-- Insticator API Embed Code -->
-				<div id="insticator-container">
-				<div id="div-insticator-ad-2"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-2");</script></div>
-			</div>
-			<!-- End Insticator API Embed Code -->';
-		echo "</div>\n";
-		echo "</div>\n";
-		echo '
-		</div>
-		</div>';
-	}
-	echo "<div class='fds'>Profile Comments</div><br />";
-	// dynamic one for the good st00f
-	$u->ShowProfileComments($profileArray[1]);
+    if (1 == 2) {
+    	if($IsThereAUser == 1){
+    		//start internal table for users                        $u->nVar('')
+    		echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+    		echo "<td valign='top' width='20%'><div class='ucleft'>";
+    		echo '<div class="feature02" align="center">
+    		<div id="avatar-div-wrapper">';
+    		if($u->UserArray['avatarActivate'] == 'yes')
+    		{
+    			echo '<img src="' . $ImageHost . '/avatars/user'.$u->UserArray['ID'].'.'.$u->UserArray['avatarExtension'].'" alt="'.$u->UserArray['display_name'].'\'s Avatar" style="padding-right:10px;" id="user-avatar" class="avatardiv" />';
+    		}
+    		else
+    		{
+    			echo '<img src="' . $ImageHost . '/avatars/default.gif" alt="" border="0" width="100px" id="user-avatar" class="avatardiv" />';
+    		}
+    		echo '</div>';
+    		if($profileArray[1] == $u->UserArray['ID'] || $profileArray[2] == 1 || $profileArray[2] == 2)
+    		{
+    			echo '
+    			<br />
+    			<div id="avatar-form-wrapper" style="display:none;">
+    				<span class="label label-default">Image Type allowed: Jpeg, Jpg, Png and Gif. | Maximum Size 150KB</span>
+    				<form action="/scripts.php?view=avatar-upload" method="post" enctype="multipart/form-data" id="MyUploadForm">
+    					<input type="hidden" name="uid" id="uid" value="' . $u->UserArray['ID'] . '" />
+    					<input type="hidden" name="extension" id="extension" value="' . $u->UserArray['avatarExtension'] . '" />
+    					<input name="image_file" id="imageInput" type="file" />
+    					<input type="submit" id="submit-btn" value="Upload" />
+    					<img src="images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
+    				</form>
+    			</div>
+    			<script>
+    			$("#user-avatar").on("click", function() {
+    				$(\'#avatar-form-wrapper\').toggle();
+    			});
+    			</script>';
+    		}
+    		echo "</div><br />";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent1').slideDown();return false;\"  title=\"\"><img src='//i.animeftw.tv/userv2.png' alt='' /><span class=''>My Profile</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent2').slideDown();return false;\"  title=\"\"><img src='//i.animeftw.tv/usercontactv2.png' alt='' /><span class=''>Contact Details</span></a></div>\n";
+    		if($profileArray[0] == 1){
+    			echo "<div class='linfo'>";
+    			echo $u->showFriendProfileButton($u->UserArray['ID'],$profileArray);
+    			echo "</div>\n";
+    			echo "<div class='linfo'><a href=\"/pm/compose/".$u->UserArray['ID']."\" title=\"\"><img src='//i.animeftw.tv/pmuserv2.png' alt='' /><span>Send a Site PM</span></a></div>\n";
+    		}
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent3').slideDown(); $('#comments1').load('/scripts.php?view=comments&id=".$u->UserArray['ID']."&zone=-6'); return false;\"  title=\"\" id=\"tablink3\"><img src='//i.animeftw.tv/usercommentsv2.png' alt='' /><span>View My Comments</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='//i.animeftw.tv/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='//i.animeftw.tv/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>\n";
+    		if($u->UserArray['ID'] == $profileArray[1]){
+    			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='//i.animeftw.tv/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>\n";
+    			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>\n";
+    		}
+    		else if($profileArray[2] == 1 || $profileArray[2] == 2){
+    			echo "<div class='linfo'><a href=\"#\" onclick=\"$('.tab-content').slideUp(); $('#tabcontent5').slideDown(); $('#profilesettings').load('/scripts.php?view=settings&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/usersetv2.png' alt='' /><span>Edit Their Settings</span></a></div>";
+    		}
+    		echo '<script type="text/javascript">
+    				$(function() {
+    					$("a[rel]").overlay({mask: \'#000\', effect: \'apple\'});
+    				});
+    			</script>';
+    		echo "<div id='subfriends'><div class='fds'>Friends</div>";
+    		//put the friends here.
+    		echo "<div class=\"fb\" id=\"fb1\">Loading Friend Bar...</div>";
+    		echo "</div>";
+    		echo "</div>";
+    		echo "<div id='subfriends'><div class='fds'>Profile Stats</div>";
+    		$u->ProfileStats($profileArray[1]);
+    		echo "<br />";
+    		echo "</div>";
+    		echo "</div></td>";
+    		echo "<td valign='top'>
+    			<div id=\"tabcontent1\" class=\"tab-content\">";
+    		$u->Profile($profileArray[1]);
+    		$u->About($profileArray[1]);
+    		$u->Interests($profileArray[1]);
+    		$u->Signature($profileArray[1]);
+    		echo"	</div>
+    			<div id=\"tabcontent2\" class=\"tab-content\" style=\"display:none;\"><div class='fds'>Contact Information</div><br />";
+    		$u->ContactInfo($profileArray[1]);
+    			echo "</div>
+    			<div id=\"tabcontent3\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"comments1\">Loading User Comments. Please Wait...</div></div>
+    			<div id=\"tabcontent4\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"watchlistprofile\">Loading WatchList...</div></div>
+    			<div id=\"tabcontent5\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"profilesettings\">Loading Settings...</div></div>
+    			<div id=\"tabcontent6\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"episodetracker\">Loading Tracker Data...</div></div>
+    			<div id=\"tabcontent7\" class=\"tab-content\" style=\"display:none;\"><div class=\"comments\" id=\"usernotifications\">Loading Notification information..</div></div>";
+    		echo "</td>";
+    		echo "</tr></table>";
+    		//echo "- <a href=\"/management/manage-episodes?episode=add&amp;series=".$sa1."\" rel=\"#profile\">Add Episode</a><br />\n";
+    		echo '<div class="apple_overlay" id="profile">
+    			<h2 style="margin:0px">Profile Functions</h2>
+    			<div class="comments" id="profileedit">Loading. Please Wait...</div>
+    		</div>';
+    		echo "
+    				<script type='text/javascript'>
+    				$('#fb1').load('/scripts.php?view=friendbar&id=".$u->UserArray['ID']."&zone=-6');
+    				</script>
+    				<script type=\"text/javascript\" src=\"/scripts/instantedit.js\"></script>
+    				<script>
+    					setVarsForm(\"view=user&edit=profile&uid=".$u->UserArray['ID']."\");
+    				</script>";
+    	}
+    	echo "<td>";
+    	echo "</td>\n";
+    	echo "<td style='padding-left:10px; width:250px;  vertical-align:top;' class='main-right'>\n";
+    	if($profileArray[2] == 0 || $profileArray[2] == 3){
+    		echo '
+    		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
+    			<div id="ad-sidebar" style="width:220px;float:right;margin:0 0 0 270px;position:absolute;z-index:0;">';
+    		echo "<div class='side-body-bg'>";
+    		echo "<div class='scapmain'>Advertisement</div>\n";
+    		echo "<div class='side-body floatfix'>\n";
+    		echo '<div align="center"><a href="/advanced-signup" target="blank">Get rid of Ads by becoming an Advanced Member today!</a></div>';
+    		echo '<!-- Insticator API Embed Code -->
+    				<div id="insticator-container">
+    				<div id="div-insticator-ad-2"><script type="text/javascript">Insticator.ad.loadAd("div-insticator-ad-2");</script></div>
+    			</div>
+    			<!-- End Insticator API Embed Code -->';
+    		echo "</div>\n";
+    		echo "</div>\n";
+    		echo '
+    		</div>
+    		</div>';
+    	}
+    	echo "<div class='fds'>Profile Comments</div><br />";
+    	// dynamic one for the good st00f
+    	$u->ShowProfileComments($profileArray[1]);
+    } else {
+        echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+    }
 	echo "</td>\n";
 	echo "</tr>\n</table>\n";
 

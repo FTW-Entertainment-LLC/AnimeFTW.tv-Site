@@ -119,6 +119,7 @@ class AFTWVideos extends Config{
 	#-------------------------------------------------------------
 
 	public function showListing ($listType,$sort,$alevel,$stype,$url = NULL){
+        $alevel = 1;
 		if($alevel == 0){$aonly = "AND aonly='0'";}
 		else if ($alevel == 3){$aonly = "AND aonly<='1'";}
 		else{$aonly = '';}

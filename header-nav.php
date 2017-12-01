@@ -31,8 +31,8 @@ else {
 	echo "			<td class='header-nav-left'>\n";
 	echo "<a id=\"tab-1\" class=\"aftw-main-nav"; if(($_SERVER['PHP_SELF'] == '/index.php' || $_SERVER['PHP_SELF'] == '/register.php' || $_SERVER['PHP_SELF'] == '/secure.php') && (!strstr($_SERVER['REQUEST_URI'],'/staff/applications') && !strstr($_SERVER['REQUEST_URI'],'store'))){echo ' current';} echo "\" href='/'>Home</a>
 <a id=\"tab-2\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/videos.php' || $_SERVER['PHP_SELF'] == '/videos2.php' || $_SERVER['PHP_SELF'] == '/search.php'){echo ' current';} echo "\" href=\"/anime\">Anime</a>
-<a id=\"tab-3\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/messages.php'){echo ' current';} echo "\" href=\"/user\">Profile</a>
-<a id=\"tab-4\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'store')){echo ' current';} echo "\" href=\"/store\">Store</a>
+<!-- <a id=\"tab-3\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/users.php' || $_SERVER['PHP_SELF'] == '/messages.php'){echo ' current';} echo "\" href=\"/user\">Profile</a> -->
+<!-- <a id=\"tab-4\" class=\"aftw-main-nav"; if(strpos($_SERVER['REQUEST_URI'], 'store')){echo ' current';} echo "\" href=\"/store\">Store</a> -->
 <a id=\"tab-5\" class=\"aftw-main-nav"; if($_SERVER['PHP_SELF'] == '/forums.php'|| $_SERVER['PHP_SELF'] == '/request.php'){echo ' current';} echo "\" href=\"/forums\">Forum</a>";
 	if($profileArray[2] == 3)
 	{
@@ -53,6 +53,7 @@ else {
 			echo "<a id=\"tab-7\" class=\"aftw-main-nav\" href=\"#\" onClick=\"window.open('/irc','winname','directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0,scrollbars=no,resizable=no,width=650,height=550'); return false;\">Chat</a>";
 		}
 	}
+    echo "<a id=\"tab-7\" class=\"aftw-main-nav\" target=\"_blank\" href=\"https://discord.gg/JCm5b5E\">Chat</a>";
 	echo '<script>
 		$(document).ready(function(){
 			var active_tab = $(".header-nav-left").find(".current").attr("id");
