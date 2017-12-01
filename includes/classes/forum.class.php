@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: forum.class.php									 
-## Author: Brad Riemann										 
+## FileName: forum.class.php
+## Author: Brad Riemann
 ## Usage: Forum Class
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -14,14 +14,14 @@ class Forum extends Config {
 	{
 		parent::__construct();
 	}
-	
+
 	// small constructor for my vars..
 	public function buildVars($action,$UserArray){
 		$this->action = $action;
 		$this->profileArray = $UserArray;
 	}
-	
-	// Small Copyright function, cause i can..	
+
+	// Small Copyright function, cause i can..
 	public function Copyright(){
 		return 'For The Win forums version 2.5 <br /> copyright &copy; FTW Entertainment LLC, 2008-'.date("Y").', all rights reserved.';
 	}
@@ -32,10 +32,10 @@ class Forum extends Config {
 		}
 		else {
 			if($this->action == 'activetopics'){
-				echo $this->showActiveTopics($this->profileArray[2],$this->profileArray[3]); 
+				echo $this->showActiveTopics($this->profileArray[2],$this->profileArray[3]);
 			}
 			else if($this->action == 'post'){
-				include_once('includes/postview.function.php'); 
+				include_once('includes/postview.function.php');
 			}
 			else if($this->action == 'modaction'){
 				//echo $_POST['modcheck'];
@@ -46,7 +46,7 @@ class Forum extends Config {
 			}
 			else {
 				if(isset($_GET['thread'])){
-					//include('includes/threadview.function.php'); 
+					//include('includes/threadview.function.php');
 					$tv = new AFTWThreadView();
 					$tv->Con(@$_GET['s'],@$_GET['thread'],@$_GET['forum'],$this->profileArray); //$start,$tid,$fseo,$profileArray
 					$tv->DisplayThread();
@@ -67,29 +67,29 @@ class Forum extends Config {
 		/*if(!isset($_REQUEST['forum']) && !isset($_REQUEST['action']) && !isset($_GET['s'])) {
 		echo  forumMainView($profileArray[2],$profileArray[3]);
 		}
-		
+
 		if(isset($_REQUEST['forum']) && !isset($_REQUEST['thread'])) {
 			echo forumForumView ($_REQUEST['forum'],$profileArray[2],$_GET['s'],$profileArray[0]);
 		}
 		if(isset($_REQUEST['thread'])) {
 		///echo 'Threads View.';
-			include('includes/threadview.function.php'); 
+			include('includes/threadview.function.php');
 		}
 		if(@$_REQUEST['action'] == 'post') {
 		//echo 'Post View';
 		}
 		if(@$_REQUEST['action'] == 'activetopics') {
-			echo showActiveTopics($profileArray[2],$profileArray[3]); 
+			echo showActiveTopics($profileArray[2],$profileArray[3]);
 		}	*/
 	}
 
 	private function showActiveTopics ($PLA,$timeZone){
-		echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;Today's Active Topics</div>
+		echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;Today's Active Topics</div>
 <!-- Bgin subforums?! -->";
 		//END TOPIC START BUTTON
 		//START FORUM STUFFS! (header)
 		echo "<div class=\"borderwrap\"><br /><br /> <table class='ipbtable' cellspacing=\"0\"><tr><td colspan='8' class='darkrow1'><div><div style='float: left;'>Active Topics for the past 24 Hours</div></div></td></tr><tr class='foruminfo3'><th width=\"37%\" nowrap=\"nowrap\">&nbsp;&nbsp;Thread Title</th><th width=\"13%\" style=\"text-align:center\" nowrap=\"nowrap\">Forum</th><th width=\"13%\" style=\"text-align:center\" nowrap=\"nowrap\">Thread Starter</th><th width=\"4%\" style=\"text-align:center\" nowrap=\"nowrap\">Replies</th><th width=\"4%\" style=\"text-align:center\" nowrap=\"nowrap\">Views</th><th width=\"19%\" style=\"text-align:center\" nowrap=\"nowrap\">Last Action</th></tr>";
-					
+
 		$FinalDate3 = time()-86400;
 		// ADDED 27/03/15 by robotman321
                 $hiddenLimit = "";
@@ -98,7 +98,7 @@ class Forum extends Config {
                         $hiddenLimit = " AND `t1`.`hidden` = 0";
                 }
 		$query4 = "SELECT t1.tid, t1.ttitle, t1.tpid, t1.tfid, `t1`.`hidden`, t1.tviews, t2.ftitle, t2.fseo FROM forums_threads AS t1 LEFT JOIN forums_forum AS t2 ON t1.tfid = t2.fid WHERE (t2.fpermission LIKE '%".$PLA."%' AND t1.tupdated>='".$FinalDate3."' AND t1.tclosed=0" . $hiddenLimit  . ") ORDER BY t1.tupdated DESC";
-		mysql_query("SET NAMES 'utf8'"); 
+		mysql_query("SET NAMES 'utf8'");
 		$result4 = mysql_query($query4) or die('Error : ' . mysql_error());
 		$numcount = mysql_num_rows($result4);
 		if($numcount == 0){
@@ -106,12 +106,12 @@ class Forum extends Config {
 		}
 		while(list($tid,$ttitle,$tpid,$tfid,$thidden,$tviews,$ftitle,$fseo) = mysql_fetch_array($result4)){
 			$ttitle = stripslashes($ttitle);
-							
+
 			//HTML exploit fix
 			//Zigbigidorlu was here =D
 			$ttitle = htmlentities($ttitle);
-							
-			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid' AND pistopic='0'"); 
+
+			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid' AND pistopic='0'");
 			$total_thread_posts = mysql_result($query3, 0);
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 0, 1";
 			$result02 = mysql_query($query02) or die('Error : ' . mysql_error());
@@ -132,10 +132,10 @@ class Forum extends Config {
 		echo "</table></td></tr>";
 		echo "</table></div><br /><br /><br />";
 	}
-	
+
 	public function addTopicView($tid) {
 		$query = "UPDATE forums_threads SET tviews = tviews+1 WHERE tid = $tid";
-		$result = mysql_query($query);		
+		$result = mysql_query($query);
 	}
 }
 

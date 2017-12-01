@@ -23,7 +23,7 @@ else {
 		$tfid = $fid;
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
-	echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
+	echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
 	}
 	if (is_numeric($treply))
 	{
@@ -43,7 +43,7 @@ else {
 		$fid = $row9['fid'];
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
-	echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
+	echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
 	echo "&gt;&nbsp;Replying to <a href='/forums/".$fseo."/topic-$treply/s-0'>$ttitle</a></div>";
 	}
 	else if (is_numeric($pedit))
@@ -66,9 +66,9 @@ else {
 		$fid = $row9['fid'];
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
-	echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
+	echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
 	echo "&gt;&nbsp;Editing post from <a href='/forums/find/post-$pid2'>$ptitle</a></div>";
-	
+
 	}
 	else if ($CODE == 4)
 	{
@@ -83,23 +83,23 @@ else {
 	}
 	echo "
 		<div id='ipbwrapper'>";
-		echo "<form id='postingform' action='/forums?' method='post' name='REPLIER' enctype='multipart/form-data'>	
+		echo "<form id='postingform' action='/forums?' method='post' name='REPLIER' enctype='multipart/form-data'>
 		<input type='hidden' name='fid' value='$tfid' />
 		<input type='hidden' name='tid' value='".@$tid."' />
 		<input type='hidden' name='pid' value='".@$pid2."' />
 		<input type='hidden' name='submittitle' value='".@$ttitle."' />
 		<input type='hidden' name='pdate' value='".time()."' />
 		<input type='hidden' name='puid' value='".$this->profileArray[1]."' />\n";
-		echo "<input type='hidden' name='CODE' value='".$CODE."' /><br />		
+		echo "<input type='hidden' name='CODE' value='".$CODE."' /><br />
 		<div style='display:none;'>
 			<textarea name='text-description' id='text-description'></textarea>
 		</div>
 		<table border='0' width='100%' cellspacing='0' cellpadding='0'>
-		  
+
 		</table><div class='borderwrap'>
-			
+
 			<div style='padding:0px 1px 0px 1px' class='bg1'>
-		
+
 		<table cellspacing='0'  width='100%' style='padding:3px'>
 		<tr>
 		 <td colspan='2' align='center' class='bg1'>
@@ -119,7 +119,7 @@ else {
 		   }
 		   else {
 		   }
-		   if ($CODE == 3) { 
+		   if ($CODE == 3) {
 		   		if($puid == $this->profileArray[1] || $this->profileArray[2] == 1 || $this->profileArray[2] == 2){
 		  			echo "<textarea id='submitbox' name='submitbox'  cols='100' rows='15'>" . $pbody . "</textarea>";
 				}
@@ -130,7 +130,7 @@ else {
 					</div><br />";
 				}
 			}
-			else if ($CODE == 4){ 
+			else if ($CODE == 4){
 				echo "<textarea id='submitbox' name='submitbox'>" . $tbody . "</textarea>";
 			}
 			else {
@@ -221,7 +221,7 @@ else {
 				while(list($puid,$pdate,$pbody) = mysql_fetch_array($result001)){
 					$pbody = stripslashes($pbody);
 					$pdate = $this->timeZoneChange($pdate,$this->profileArray[3]);
-					$pdate = date("M j Y, h:i A",$pdate);	
+					$pdate = date("M j Y, h:i A",$pdate);
 					if($i % 2){$class = " class=\"oddrow\"";}
 					else {$class = " class=\"evenrow\"";}
 					echo "<tr".$class.">";
@@ -254,4 +254,3 @@ else {
 			});
 		</script>";
 		}
-	

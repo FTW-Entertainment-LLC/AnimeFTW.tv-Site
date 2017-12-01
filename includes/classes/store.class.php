@@ -1059,7 +1059,7 @@ class Shopping_Cart extends Config {
 					<input type="hidden" name="weight_unit" value="lbs" />
 					<input type="hidden" name="return" value="https://www.animeftw.tv/store/account/" />
 					<input type="hidden" name="cancel_return" value="https://www.animeftw.tv/store/account/cancel" />
-					<input type="image" src="https://www.animeftw.tv/images/storeimages/paypal-buy-now-image.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+					<input type="image" src="//i.animeftw.tv/storeimages/paypal-buy-now-image.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 					<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 				</form>
 			</div>
@@ -1072,92 +1072,6 @@ class Shopping_Cart extends Config {
 				</div>
 			</div>
 		</div>';
-		/*
-		echo '<div style="background:#50c0e4;">
-			<div style="display:inline-block;width:200px;vertical-align:top;" align="center">
-				<div style="padding-top:50px;">
-					<form action="https://checkout.google.com/api/checkout/v2/checkoutForm/Merchant/456133132125502" id="BB_BuyButtonForm" method="post" name="BB_BuyButtonForm" target="_parent">
-						<input name="item_name_1" type="hidden" value="Invoice Payment"/>
-						<input name="item_description_1" type="hidden" value="AnimeFTW.tv Cart #' . $this->cart_id . '"/>
-						<input name="item_quantity_1" type="hidden" value="1"/>
-						<input name="item_price_1" type="hidden" value="' . $this->total_price . '"/>
-						<input name="item_currency_1" type="hidden" value="USD"/>
-						<input name="item_merchant_id_1" type="hidden" value="8073"/>
-						<input name="continue_url" type="hidden" value="https://www.animeftw.tv/store/account"/>
-						<input name="_charset_" type="hidden" value="utf-8"/>
-
-						<input type="hidden" name="ship_method_name_1" value="USPS Priority Mail" />
-						<input type="hidden" name="ship_method_price_1" value="4.95" />
-						<input type="hidden" name="ship_method_currency_1" value="USD" />
-						<input type="hidden" name="ship_method_name_2" value="USPS Priority Mail with Delivery Confirmation" />
-						<input type="hidden" name="ship_method_price_2" value="5.60" />
-						<input type="hidden" name="ship_method_currency_1" value="USD" />
-						<input type="hidden" name="ship_method_name_3" value="FedEx Ground" />
-						<input type="hidden" name="ship_method_price_3" value="10.00" />
-						<input type="hidden" name="ship_method_currency_3" value="USD" />
-						<input type="hidden" name="ship_method_name_4" value="FedEx Express Saver" />
-						<input type="hidden" name="ship_method_price_4" value="15.00" />
-						<input type="hidden" name="ship_method_currency_4" value="USD" />
-						<input type="hidden" name="ship_method_name_5" value="FedEx 2Day" />
-						<input type="hidden" name="ship_method_price_5" value="18.00" />
-						<input type="hidden" name="ship_method_currency_5" value="USD" />
-
-						<!--this says shipping options 1 through 5 are only for US Continental 48 States -->
-						<input type="hidden" name="ship_method_us_area_1" value="CONTINENTAL_48" />
-						<input type="hidden" name="ship_method_us_area_2" value="CONTINENTAL_48" />
-						<input type="hidden" name="ship_method_us_area_3" value="CONTINENTAL_48" />
-						<input type="hidden" name="ship_method_us_area_4" value="CONTINENTAL_48" />
-						<input type="hidden" name="ship_method_us_area_5" value="CONTINENTAL_48" />
-
-						<!--Shipping option 6 is for Alaska and Hawaii rates. AK and HI are not part of Continental 48-->
-						<input type="hidden" name="ship_method_name_6" value="FedEx 2Day - Alaska and Hawaii" />
-						<input type="hidden" name="ship_method_price_6" value="24.00" />
-						<input type="hidden" name="ship_method_currency_6" value="USD" />
-
-						<!--International Section -->
-						<input type="hidden" name="ship_method_name_7" value="International Flat Rate" />
-						<input type="hidden" name="ship_method_price_7" value="20.00" />
-						<input type="hidden" name="ship_method_currency_7" value="USD" />
-
-						<!-- International: Canada (only) rate, all other countries will use option 7 -->
-						<input type="hidden" name="ship_method_name_8" value="Canada Flat Rate" />
-						<input type="hidden" name="ship_method_price_8" value="25.00" />
-						<input type="hidden" name="ship_method_currency_8" value="USD" />
-
-						<!-- We now restrict the shipping options above accordingly -->
-
-						<!-- This restricts option 6, Fedex 2Day Alaska and Hawaii, display to customers who have AK and HI delivery addresses -->
-						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-6.shipping-restrictions.allowed-areas.us-state-area-1.state" value="AK" />
-						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-6.shipping-restrictions.allowed-areas.us-state-area-2.state" value="HI" />
-
-						<!-- All international countries (except Canada, more below) will use this rate -->
-						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-7.shipping-restrictions.allowed-areas.world-area-1" value="true" />
-
-						<!-- we don\'t want the above rate displayed to US delivery destinations -->
-						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-7.shipping-restrictions.excluded-areas.us-country-area-1.country-area" value="ALL" />
-
-						<!-- we don\'t want the above rate displayed to Canada delivery destinations either -->
-						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-7.shipping-restrictions.excluded-areas.postal-area-1.country-code" value="CA" />
-
-						<!-- We now set the rate for Canada -->
-						<input type="hidden" name="checkout-flow-support.merchant-checkout-flow-support.shipping-methods.flat-rate-shipping-8.shipping-restrictions.allowed-areas.postal-area-1.country-code" value="CA" />
-
-						  <input type="hidden" name="tax_rate" value="0.0705"/>
-
-						  <input type="hidden" name="tax_us_state" value="IL"/>
-						<input type="image" name="Google Checkout" alt="Fast checkout through Google" src="https://www.animeftw.tv/images/storeimages/google-wallet-checkout.png" />
-					</form>
-				</div>
-			</div>
-			<div style="display:inline-block;padding:10px;width:450px;">
-				<div style="font-size:14px;font-weight:bold;">
-				About Google Wallet:
-				</div>
-				<div>
-				Google-owned payment processing service designed to make paying for items online easier for buyers. It allows users to store credit and debit card information, and shipping address in a Google Account, which eliminates the need to re-enter it each time the user goes shopping online. Additional benefits for buyers using Google Checkout is the ability to check status on all orders from multiple websites in a single page offered through your Google Checkout account.
-				</div>
-			</div>
-		</div>';*/
 	}
 
 	public function ShowCart()
@@ -1227,7 +1141,7 @@ class Shopping_Cart extends Config {
             text-align: center;
         }
 		.right-checkout-button {
-			background:#FFF url(/images/forum_button.png) 105px 9px no-repeat;
+			background:#FFF url(//i.animeftw.tv/forum_button.png) 105px 9px no-repeat;
 			border:2px solid #747478;
 			color:#555;
 			display:inline-block;
@@ -1244,7 +1158,7 @@ class Shopping_Cart extends Config {
 			cursor:pointer;
 		}
 		.right-checkout-button:hover {
-			background:#11B4E9 url(/images/forum_button.png) 105px -16px no-repeat;
+			background:#11B4E9 url(//i.animeftw.tv/forum_button.png) 105px -16px no-repeat;
 			border:2px solid #11B4E9;
 			color:#fff;
 		}

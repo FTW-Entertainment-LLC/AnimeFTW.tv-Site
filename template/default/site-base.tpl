@@ -3,25 +3,25 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="robots" content="index, follow">
-	<meta name="keywords" content="streaming anime, hd anime, anime, free, hd, high definition, hq, high quality, online, stream, streaming, manga, chat, mkv, naruto, divx anime, divx"> 
+	<meta name="keywords" content="streaming anime, hd anime, anime, free, hd, high definition, hq, high quality, online, stream, streaming, manga, chat, mkv, naruto, divx anime, divx">
 	<meta name="description" content="AnimeFTW.tv has free streaming anime in High Quality, including Psychic School, Garden of Words, Attack on Titan, R15 OAD, See Me After Class, The Devil is a Part-Timer, Sword Art Online, Akira, Mind Game, Steins;Gate, I Don't have many Friends, Valvrave the Liberator, Fairy Tail and Btooom!"/>
     <meta name="application-name" content="AnimeFTW.tv"/>
     <meta name="msapplication-TileColor" content="#5bdaff"/>
-    <meta name="msapplication-TileImage" content="/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png"/>
+    <meta name="msapplication-TileImage" content="//i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png"/>
     <link rel="search" type="application/opensearchdescription+xml" title="AnimeFTW.tv Site Search" href="/AFTWSiteSearch.xml">
 	<meta name="google-site-verification" content="nlqON6-3cGGASfArw7quKmD8YJbwnZRFS4bfKhTGp10" />
 	<link rel="stylesheet" href="/aftw.css?v=4002" type="text/css" />	<link rel="icon" href="/favicon.ico" />
 	<link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
-    <link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png"/>
-        
+    <link rel="apple-touch-icon" href="//i.animeftw.tv/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon-precomposed" href="//i.animeftw.tv/apple-touch-icon-precomposed.png"/>
+
 	<!--[if IE]>  <link rel="stylesheet" type="text/css" href="/iestyle.css?v=4002" />  <![endif]-->
 	<script type="text/javascript" src="/scripts/jquery.tools.min.js"></script>
 	<script type="text/javascript" src="/scripts/search-bar.js"></script>
 	<script type="text/javascript" src="/scripts/dyncontent.min.js"></script>
 	<script type="text/javascript" src="/scripts/ajax.min.js"></script>
     <script type="text/javascript" src="/scripts/tooltip.min.js"></script>
-    
+
 		<script>
 		 $(document).ready(function() {
 			 $("#notesprite").load("//www.animeftw.tv/scripts.php?view=notifications&show=sprite");
@@ -62,8 +62,8 @@
    }
    return retVal;
 
-} 
-</script>     
+}
+</script>
 	<title>[@title]</title>
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -84,14 +84,14 @@
 		<table align='center' cellpadding='0' cellspacing='0' width='990'>
 	<tr>
 			<td class='header-logo' style='padding-top: 9px;'>
-<a href="/" title="AnimeFTW.TV"><img src="/images/new-logo.png" alt="AnimeFTW.TV" style="border:0px;" title="AnimeFTW.tv, your home for High Quality Streaming Anime" /></a></td>
+<a href="/" title="AnimeFTW.TV"><img src="//i.animeftw.tv/new-logo.png" alt="AnimeFTW.TV" style="border:0px;" title="AnimeFTW.tv, your home for High Quality Streaming Anime" /></a></td>
 			<td align='right'>
-				<div class='header-log'><div class="newnavbar"><div class="aftwU"><span style=""><img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></div><div class="aftwNot"><a href="https://www.animeftw.tv/pm"><img src="/images/new-icons/pm_new.png" alt="" title="View your Personal Messages" /><span class="JewelNotif" id="requestJewelNotif">0</span></a></div><div class="dropdown">
-					   <a href="#" id="linkglobal"><img src="/images/new-icons/notifications_new.png" alt="" title="View your Site Notifications" height="18px" /><span id="notesprite"></span></a>
+				<div class='header-log'><div class="newnavbar"><div class="aftwU"><span style=""><img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></div><div class="aftwNot"><a href="https://www.animeftw.tv/pm"><img src="//i.animeftw.tv/new-icons/pm_new.png" alt="" title="View your Personal Messages" /><span class="JewelNotif" id="requestJewelNotif">0</span></a></div><div class="dropdown">
+					   <a href="#" id="linkglobal"><img src="//i.animeftw.tv/new-icons/notifications_new.png" alt="" title="View your Site Notifications" height="18px" /><span id="notesprite"></span></a>
 							<ul style="display: none;" id="ulglobal">
-								<img src="/images/new-icons/trangle-sprite.png" alt="" style="float:right;margin:-20px 123px 0 0;" />
+								<img src="//i.animeftw.tv/new-icons/trangle-sprite.png" alt="" style="float:right;margin:-20px 123px 0 0;" />
 								<div class="usernotes" id="usernotes">Loading your Notifications...</div>
-						  </ul></div><div class="aftwNot"><a href="https://www.animeftw.tv/manage/"><img src="/images/new-icons/uploads_new.png" alt="" /><span class="JewelNotif disBlock" id="requestJewelNotif">3</span></a></div><div class="aftwNot"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent('manageedit','/scripts.php?view=management&u=1&node=users'); return false;"><img src="/images/new-icons/settings_new.png" alt="" title="AFTW Management interface Launch" /></a></div><div class="aftwNot"><a href="https://www.animeftw.tv/logout"><img src="/images/new-icons/logout_new.png" alt="" title="Log off your AnimeFTW.tv Account" /></a></div></div>				</div>
+						  </ul></div><div class="aftwNot"><a href="https://www.animeftw.tv/manage/"><img src="//i.animeftw.tv/new-icons/uploads_new.png" alt="" /><span class="JewelNotif disBlock" id="requestJewelNotif">3</span></a></div><div class="aftwNot"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent('manageedit','/scripts.php?view=management&u=1&node=users'); return false;"><img src="//i.animeftw.tv/new-icons/settings_new.png" alt="" title="AFTW Management interface Launch" /></a></div><div class="aftwNot"><a href="https://www.animeftw.tv/logout"><img src="//i.animeftw.tv/new-icons/logout_new.png" alt="" title="Log off your AnimeFTW.tv Account" /></a></div></div>				</div>
 				<div class='header-dir'></div>
 			</td>
 		</tr>
@@ -110,7 +110,7 @@
 <a id="tab-5" class="aftw-main-nav" href="/forums">Forum</a><a id="tab-8" class="aftw-main-nav" href='/staff/applications'>Staff</a>
 <a id="tab-7" class="aftw-main-nav" href="#" onClick="window.open('/irc','winname','directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0,scrollbars=no,resizable=no,width=650,height=550'); return false;">Chat</a><script>
 		$(document).ready(function(){
-			var active_tab = $(".header-nav-left").find(".current").attr("id"); 
+			var active_tab = $(".header-nav-left").find(".current").attr("id");
 			$("#hover-" + active_tab).show();
 			$(".aftw-main-nav").mouseenter(function() {
 				var menuid = $(this).attr("id");
@@ -125,9 +125,9 @@
 							<input type='hidden' name='sid' value='421683913e05a866b6b7db1bf6236704' />
 							<span class='search'>
 									<input type='text' name='q' id='q' class='search-box' value='AnimeFTW.tv Site Search' autocomplete='off' />
-									<img src='/images/search-button.png' alt='' onClick='document.slimsearch.submit()' class='search-button' />
+									<img src='//i.animeftw.tv/search-button.png' alt='' onClick='document.slimsearch.submit()' class='search-button' />
 							</span>
-						</form>				<div class='search-text'><a href="/forums/releases/topic-4157/s-0"><img src="/images/latest-news.png" alt="" title="Posted on: Aug 3 2014, 09:01 AM" /></a><span class="search-text-pre">News: </span><span class="search-text-post" title="Anime Update: Time Is Running Out!">Anime Update: Time Is Running Out!</span>				</div><div id='SearchResults'></div>			</div></div>			</td>
+						</form>				<div class='search-text'><a href="/forums/releases/topic-4157/s-0"><img src="//i.animeftw.tv/latest-news.png" alt="" title="Posted on: Aug 3 2014, 09:01 AM" /></a><span class="search-text-pre">News: </span><span class="search-text-post" title="Anime Update: Time Is Running Out!">Anime Update: Time Is Running Out!</span>				</div><div id='SearchResults'></div>			</div></div>			</td>
 		</tr>
 		</table>
 	</td>
@@ -139,9 +139,9 @@
 						<div id="hover-tab-3" class="pane-subnav" align="center">Click to Proceed to your Profile.</div>
 						<div id="hover-tab-4" class="pane-subnav" align="center">Love AnimeFTW.tv? Check out the Store for awesome Goodies, AFTW Style.</div>
 						<div id="hover-tab-5" class="pane-subnav" align="center"><a href='/forums/global-announcements/'>Announcements</a> | <a href='/forums/releases/'>Releases</a> | <a href='/forums/anime-requests/'>Anime Requests</a> | <a href='/forums/bug-reports/'>Bug Reports</a> | <a href='/forums/active-topics'>Active Topics</a></div>
-						<div id="hover-tab-6" class="pane-subnav" align="center">Get the Perks of Advanced Membership Today!</div> 
-						<div id="hover-tab-7" class="pane-subnav" align="center">Join the Staff and other Members in Chat!</div> 
-						<div id="hover-tab-8" class="pane-subnav" align="center">Want to help AnimeFTW.tv Spread Anime Love? Apply Within!</div> 
+						<div id="hover-tab-6" class="pane-subnav" align="center">Get the Perks of Advanced Membership Today!</div>
+						<div id="hover-tab-7" class="pane-subnav" align="center">Join the Staff and other Members in Chat!</div>
+						<div id="hover-tab-8" class="pane-subnav" align="center">Want to help AnimeFTW.tv Spread Anime Love? Apply Within!</div>
 						<div></div>
 					</div><div class="apple_overlay" id="manage"><h2 style="margin:0px">Site Management</h2><div class="comments" id="manageedit">Loading. Please Wait...</div></div><div class="apple_overlay" id="uploads"><h2 style="margin:0px">AnimeFTW.tv Uploads Tracker</h2><div class="comments" id="uploadstracker">Loading. Please Wait...</div></div><br /><br /><br /><br /><br /><br />
 <table align='center' cellpadding='0' cellspacing='0' width='990' style='margin-top:-40px;'>
@@ -161,7 +161,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/releases/topic-4157/'>Anime Update: Time Is Running Out!</a></span>
 <br />
-<span class='poster'>Posted on 08.03.14 by <img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
+<span class='poster'>Posted on 08.03.14 by <img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
 </div>
 <div class='tbl'><p>
 	Hey Anime Fans! I&#39;d like you all to join me in welcoming our second new batch of encoders who&#39;ve passed all four rounds:&nbsp;<a href="https://www.animeftw.tv/user/jackddvice">jackddvice</a>,&nbsp;<a href="https://www.animeftw.tv/user/gogonzo">gogonzo</a>,&nbsp;<a href="https://www.animeftw.tv/user/hedphonze">hedphonze</a>&nbsp;&amp;&nbsp;<a href="https://www.animeftw.tv/user/mrdeadworry">mrdeadworry</a>!&nbsp;We&#39;ve still got Staff Applications open for 2 more weeks,&nbsp;<a href="http://www.animeftw.tv/forums/releases/topic-4132/">take a look at this post</a>&nbsp;to see the requirements.</p>
@@ -230,7 +230,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/releases/topic-4142/'>Anime Update: New Staff & A New Contest!</a></span>
 <br />
-<span class='poster'>Posted on 07.27.14 by <img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
+<span class='poster'>Posted on 07.27.14 by <img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
 </div>
 <div class='tbl'><p>
 	Hey Anime Fans! We&#39;ve had a busy week here at AFTW, and I&#39;d like you all to join me in welcoming our first new batch encoders who&#39;ve passed ALL FOUR ROUNDS:&nbsp;<a href="https://www.animeftw.tv/user/nikey646">nikey646</a>,&nbsp;<a href="https://www.animeftw.tv/user/cod0rama71">cod0rama71</a>, &amp;&nbsp;<a href="https://www.animeftw.tv/user/marcmelo">marcmelo</a>! We&#39;ve still got Staff Applications open,<a href="https://www.animeftw.tv/forums/releases/topic-4132/">&nbsp;take a look at this post&nbsp;</a>to see the requirements.</p>
@@ -319,7 +319,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/releases/topic-4132/'>Anime Update: Fighting Evil By Moonlight</a></span>
 <br />
-<span class='poster'>Posted on 07.18.14 by <img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
+<span class='poster'>Posted on 07.18.14 by <img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
 </div>
 <div class='tbl'><p>
 	<span style="font-size: 14px;"><span style="font-family: 'times new roman', times, serif;">Hey Anime Fans, it&#39;s time for another Anime Update as well as a little News! Brad has been busy working on updates for the site these past few months, and we are super proud to annouce that we now have HTML5 video support and 100% SSL support site-wide available to&nbsp;<a href="https://www.animeftw.tv/advanced-signup">Advanced Members</a>!! SSL is, of course, still available to regular members where needed.</span></span></p>
@@ -539,7 +539,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/global-announcements/topic-4124/'>Full Site SSL Support comes to AnimeFTW.tv</a></span>
 <br />
-<span class='poster'>Posted on 07.14.14 by <span style=""><img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
+<span class='poster'>Posted on 07.14.14 by <span style=""><img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
 </div>
 <div class='tbl'><p>
 	Hey Everyone!</p>
@@ -558,7 +558,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/global-announcements/topic-4093/'>Database Migrations have been completed!</a></span>
 <br />
-<span class='poster'>Posted on 06.15.14 by <span style=""><img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
+<span class='poster'>Posted on 06.15.14 by <span style=""><img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
 </div>
 <div class='tbl'><p>
 	Hey Everyone!</p>
@@ -573,7 +573,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/global-announcements/topic-4061/'>Updates, Fixes and Fun.. Oh My!</a></span>
 <br />
-<span class='poster'>Posted on 05.15.14 by <span style=""><img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
+<span class='poster'>Posted on 05.15.14 by <span style=""><img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
 </div>
 <div class='tbl'><p>
 	Hello Everyone,</p>
@@ -594,7 +594,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/releases/topic-4028/'>Anime Update: It's Happening!</a></span>
 <br />
-<span class='poster'>Posted on 04.27.14 by <img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
+<span class='poster'>Posted on 04.27.14 by <img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/mimby">mimby</a></span>
 </div>
 <div class='tbl'><p>
 	<span style="font-size: 16px;"><span style="font-family: 'times new roman', times, serif;">Hey Anime Fans! We are excited to announce we will be doing an Offline AnimeFTW Meetup this year! We are still working out the dates but it will either be at the end of July or beginning of August in Chicago, we will let you know in the next week or two the exact date hopefully. We don&#39;t have everything pinned down just yet, so if you have some ideas on what you&#39;d like to see happen at our meetup please&nbsp;<a href="http://www.animeftw.tv/user/mimby">PM me(Mimby)</a>&nbsp;or Email us at support@animeftw.tv. We will need volunteers to help with registration and various other things, so if you&#39;re interested in that keep it in mind when we announce the date!</span></span></p>
@@ -731,7 +731,7 @@
 <div class='side-body-bg'>
 <span class='scapmain'><a href='/forums/releases/topic-4004/'>Anime Update: Spring is upon us!</a></span>
 <br />
-<span class='poster'>Posted on 04.13.14 by <span style=""><img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
+<span class='poster'>Posted on 04.13.14 by <span style=""><img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" /><a href="https://www.animeftw.tv/user/robotman321">robotman321</a></span></span>
 </div>
 <div class='tbl'><p>
 	Hello Anime Fans! It has been a while since we had an update for you, we are pleased to be bring a whole host of newly airing series for your viewing pleasure!</p>
@@ -862,7 +862,7 @@
 		</div></div></div>
 <div class='side-body-bg'><div class='scapmain'>Friends of AFTW</div>
 <div class='side-body floatfix'>
-<div align="center"><a href="http://www.cybernations.net"><img src="/images/cn-gif.gif" alt="Cybernations - A Nation Simulation Game" border="0" /></a>&nbsp;<a href="http://animetoplist.org/"><img src="http://animetoplist.org/button.php?id=317" alt="Read Manga online" /></a><br /></div></div></div>
+<div align="center"><a href="http://www.cybernations.net"><img src="//i.animeftw.tv/cn-gif.gif" alt="Cybernations - A Nation Simulation Game" border="0" /></a>&nbsp;<a href="http://animetoplist.org/"><img src="http://animetoplist.org/button.php?id=317" alt="Read Manga online" /></a><br /></div></div></div>
 <div class='side-body-bg'><div class='scapmain'>Top My WatchList Series</div>
 <div class='side-body floatfix'>
 <ol class="top10"><li type="1"><a href="/anime/attack-on-titan/" title="740 Users Watching">Attack on Titan</a></li>
@@ -880,12 +880,12 @@
 Today, on August 5th, AnimeFTW.tv has 129 Member's Celebrating their Birthday!<br /><br />Visit the <a href="/birthdays">Birthday Zone</a> and See who is having their Birthday Today!!</div></div>
 <div class='side-body-bg'><div class='scapmain'>View us on..</div>
 <div class='side-body floatfix'>
-<div align="center"><a href="http://www.twitter.com/animeftwtv" target="_blank"><img src="http://twitter-badges.s3.amazonaws.com/twitter-a.png" alt="Follow animeftwdottv on Twitter" border="0"/></a>&nbsp;&nbsp;<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2FAnimeFTW.tv&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe></div><a href='http://xbmc.org/' target='_blank'><img src='/images/xbmc-logo.png' alt='XBMC Logo' border='0' /></a><br /><a href="http://www.animeftw.tv/download/AnimeFTW.tv.apk"><img src="/images/android_logo.jpg" alt="" width="225px" /></a></div></div>
+<div align="center"><a href="http://www.twitter.com/animeftwtv" target="_blank"><img src="http://twitter-badges.s3.amazonaws.com/twitter-a.png" alt="Follow animeftwdottv on Twitter" border="0"/></a>&nbsp;&nbsp;<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2FAnimeFTW.tv&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe></div><a href='http://xbmc.org/' target='_blank'><img src='//i.animeftw.tv/xbmc-logo.png' alt='XBMC Logo' border='0' /></a><br /><a href="http://www.animeftw.tv/download/AnimeFTW.tv.apk"><img src="//i.animeftw.tv/android_logo.jpg" alt="" width="225px" /></a></div></div>
 <div class='side-body-bg'><div class='scapmain'>Latest Series</div>
 <div class='side-body floatfix'>
-<div align="center" style="padding:3px;"><a href="/anime/toward-the-terra/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1202',this);return false;" onmouseout="ajax_hideTooltip()">Toward The Terra</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/freedom/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1201',this);return false;" onmouseout="ajax_hideTooltip()">Freedom</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/yami-shibai-japanese-ghost-stories/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1200',this);return false;" onmouseout="ajax_hideTooltip()">Yami Shibai: Japanese Ghost Stories</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/saki-zenkoku-hen/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1199',this);return false;" onmouseout="ajax_hideTooltip()">Saki: The Nationals</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/guilty-crown-lost-christmas---an-episode-of-port-town/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1198',this);return false;" onmouseout="ajax_hideTooltip()">Guilty Crown: Lost Christmas - An Episode of Port Town</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/gingitsune/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1197',this);return false;" onmouseout="ajax_hideTooltip()">Gingitsune: Messenger Fox of the Gods</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/momo-kyun-sword/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1196',this);return false;" onmouseout="ajax_hideTooltip()">Momo Kyun Sword</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/black-butler-book-of-circus/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1195',this);return false;" onmouseout="ajax_hideTooltip()">Black Butler: Book of Circus</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/girls-und-panzer-ova/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1194',this);return false;" onmouseout="ajax_hideTooltip()">Girls und Panzer OVA</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/corpse-party-tortured-souls/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1193',this);return false;" onmouseout="ajax_hideTooltip()">Corpse Party: Tortured Souls</a> was Added</div><div align="right"><a href="#"><img src="/images/rss_feed_icon.png" alt="rss feed" width="30px" /></a></div></div></div><div class='side-body-bg'><div class='scapmain'>Latest Episodes(Airing)</div>
+<div align="center" style="padding:3px;"><a href="/anime/toward-the-terra/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1202',this);return false;" onmouseout="ajax_hideTooltip()">Toward The Terra</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/freedom/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1201',this);return false;" onmouseout="ajax_hideTooltip()">Freedom</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/yami-shibai-japanese-ghost-stories/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1200',this);return false;" onmouseout="ajax_hideTooltip()">Yami Shibai: Japanese Ghost Stories</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/saki-zenkoku-hen/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1199',this);return false;" onmouseout="ajax_hideTooltip()">Saki: The Nationals</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/guilty-crown-lost-christmas---an-episode-of-port-town/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1198',this);return false;" onmouseout="ajax_hideTooltip()">Guilty Crown: Lost Christmas - An Episode of Port Town</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/gingitsune/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1197',this);return false;" onmouseout="ajax_hideTooltip()">Gingitsune: Messenger Fox of the Gods</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/momo-kyun-sword/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1196',this);return false;" onmouseout="ajax_hideTooltip()">Momo Kyun Sword</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/black-butler-book-of-circus/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1195',this);return false;" onmouseout="ajax_hideTooltip()">Black Butler: Book of Circus</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/girls-und-panzer-ova/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1194',this);return false;" onmouseout="ajax_hideTooltip()">Girls und Panzer OVA</a> was Added</div><div align="center" style="padding:3px;"><a href="/anime/corpse-party-tortured-souls/" onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1193',this);return false;" onmouseout="ajax_hideTooltip()">Corpse Party: Tortured Souls</a> was Added</div><div align="right"><a href="#"><img src="//i.animeftw.tv/rss_feed_icon.png" alt="rss feed" width="30px" /></a></div></div></div><div class='side-body-bg'><div class='scapmain'>Latest Episodes(Airing)</div>
 <div class='side-body floatfix'>
-<div align="center"><span style="font-weight:bold;"><a href="/anime/aldnoah.zero/ep-5">Phantom of the Emperor	</a></span><br />Posted in: <a href="/anime/aldnoah.zero/">Aldnoah.Zero</a><br />Added on: Aug 5 2014, 02:28 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/the-irregular-at-magic-high-school:-enrolment-arc/ep-16">Nine Schools Competition IX	</a></span><br />Posted in: <a href="/anime/the-irregular-at-magic-high-school:-enrolment-arc/">The Irregular at Magic High School: Enrolment Arc</a><br />Added on: Aug 5 2014, 02:27 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/himegoto/ep-4">What`s with That Setup?</a></span><br />Posted in: <a href="/anime/himegoto/">Himegoto</a><br />Added on: Aug 5 2014, 12:31 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/majimoji-rurumo/ep-3">Magical Girl Showdown</a></span><br />Posted in: <a href="/anime/majimoji-rurumo/">Majimoji Rurumo</a><br />Added on: Aug 5 2014, 12:29 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/barakamon/ep-5">Unnioegi (Going to the Sea to Swim)</a></span><br />Posted in: <a href="/anime/barakamon/">Barakamon</a><br />Added on: Aug 4 2014, 01:03 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/sword-art-online-ii/ep-5">Gun and Sword</a></span><br />Posted in: <a href="/anime/sword-art-online-ii/">Sword Art Online II</a><br />Added on: Aug 4 2014, 07:00 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/rail-wars/ep-5">Don`t Look at Me</a></span><br />Posted in: <a href="/anime/rail-wars/">Rail Wars!</a><br />Added on: Aug 3 2014, 04:25 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/kurokos-basketball/ep-18">No!!	</a></span><br />Posted in: <a href="/anime/kurokos-basketball/">Kuroko's Basketball</a><br />Added on: Aug 2 2014, 07:53 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/tokyo-ghoul/ep-5">Scars</a></span><br />Posted in: <a href="/anime/tokyo-ghoul/">Tokyo Ghoul</a><br />Added on: Aug 2 2014, 07:48 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/pretty-guardian-sailor-moon-crystal/ep-2">Ami: Sailor Mercury	</a></span><br />Posted in: <a href="/anime/pretty-guardian-sailor-moon-crystal/">Pretty Guardian Sailor Moon Crystal</a><br />Added on: Aug 2 2014, 07:42 AM</div><br /><div align="right"><a href="#"><img src="/images/rss_feed_icon.png" alt="rss feed" width="30px" /></a></div></div></div></td>
+<div align="center"><span style="font-weight:bold;"><a href="/anime/aldnoah.zero/ep-5">Phantom of the Emperor	</a></span><br />Posted in: <a href="/anime/aldnoah.zero/">Aldnoah.Zero</a><br />Added on: Aug 5 2014, 02:28 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/the-irregular-at-magic-high-school:-enrolment-arc/ep-16">Nine Schools Competition IX	</a></span><br />Posted in: <a href="/anime/the-irregular-at-magic-high-school:-enrolment-arc/">The Irregular at Magic High School: Enrolment Arc</a><br />Added on: Aug 5 2014, 02:27 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/himegoto/ep-4">What`s with That Setup?</a></span><br />Posted in: <a href="/anime/himegoto/">Himegoto</a><br />Added on: Aug 5 2014, 12:31 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/majimoji-rurumo/ep-3">Magical Girl Showdown</a></span><br />Posted in: <a href="/anime/majimoji-rurumo/">Majimoji Rurumo</a><br />Added on: Aug 5 2014, 12:29 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/barakamon/ep-5">Unnioegi (Going to the Sea to Swim)</a></span><br />Posted in: <a href="/anime/barakamon/">Barakamon</a><br />Added on: Aug 4 2014, 01:03 PM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/sword-art-online-ii/ep-5">Gun and Sword</a></span><br />Posted in: <a href="/anime/sword-art-online-ii/">Sword Art Online II</a><br />Added on: Aug 4 2014, 07:00 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/rail-wars/ep-5">Don`t Look at Me</a></span><br />Posted in: <a href="/anime/rail-wars/">Rail Wars!</a><br />Added on: Aug 3 2014, 04:25 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/kurokos-basketball/ep-18">No!!	</a></span><br />Posted in: <a href="/anime/kurokos-basketball/">Kuroko's Basketball</a><br />Added on: Aug 2 2014, 07:53 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/tokyo-ghoul/ep-5">Scars</a></span><br />Posted in: <a href="/anime/tokyo-ghoul/">Tokyo Ghoul</a><br />Added on: Aug 2 2014, 07:48 AM</div><br /><div align="center"><span style="font-weight:bold;"><a href="/anime/pretty-guardian-sailor-moon-crystal/ep-2">Ami: Sailor Mercury	</a></span><br />Posted in: <a href="/anime/pretty-guardian-sailor-moon-crystal/">Pretty Guardian Sailor Moon Crystal</a><br />Added on: Aug 2 2014, 07:42 AM</div><br /><div align="right"><a href="#"><img src="//i.animeftw.tv/rss_feed_icon.png" alt="rss feed" width="30px" /></a></div></div></div></td>
 </tr>
 </table>
 </td>

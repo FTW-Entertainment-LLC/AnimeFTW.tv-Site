@@ -2,7 +2,7 @@
 	$mode = isset($_GET['mode']) ? $_GET['mode'] : "";
 	if($mode == "cover") {
 		header("content-type:image/jpeg");
-		$nocover = "http://www.animeftw.tv/images/nocover.jpg";
+		$nocover = "http://i.animeftw.tv/nocover.jpg";
 		$file = (isset($_GET['img'])) ? $_GET['img'] : $nocover;
 		$im = (fopen($file, "r")) ? imagecreatefromjpeg($file) : imagecreatefromjpeg($nocover);
 		$new = imagecreatetruecolor(168,240);
@@ -10,13 +10,13 @@
 		imagejpeg($new);
 	} elseif($mode == "screen") {
 		header("content-type:image/jpeg");
-		$nocover = "http://www.animeftw.tv/images/noscreen.jpg";
+		$nocover = "http://i.animeftw.tv/noscreen.jpg";
 		$file = (isset($_GET['img'])) ? $_GET['img'] : $nocover;
 		$file = (basename($file) == "noimage.png") ? $nocover : $file;
 		$im = (fopen($file, "r")) ? imagecreatefromjpeg($file) : imagecreatefromjpeg($nocover);
 		$width = imagesx($im); $start = (floor($width/2)-60);
 		$new = imagecreatetruecolor(120,396);
-		
+
 		if(imagesy($im) < 396) {
 			$newWidth = floor((imagesx($im)/imagesy($im))*396);
 			$im2 = imagecreatetruecolor($newWidth,396);

@@ -6,7 +6,7 @@ echo "<div id='QuickReply' style='display: none; position: relative;'>
 <br />
 
 <div class='borderwrapsub'>
-	<div class='darkrow1' align='center'><img src='/images/forumimages/nav_m.gif' border='0'  alt='&gt;' width='8' height='8' />&nbsp;Fast Reply</div>
+	<div class='darkrow1' align='center'><img src='//i.animeftw.tv/forumimages/nav_m.gif' border='0'  alt='&gt;' width='8' height='8' />&nbsp;Fast Reply</div>
 	<div style='padding:6px;' align='center' class='row2'>
 		<div id='fast-reply-controls' align='center' style='width:100%;padding:6px; margin:0 auto 0 auto' class='rte-buttonbar'>
 

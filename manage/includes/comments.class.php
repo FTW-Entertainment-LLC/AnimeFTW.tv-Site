@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: comments.class.php								 
-## Author: Brad Riemann								 
+## FileName: comments.class.php
+## Author: Brad Riemann
 ## Usage: Comments sub class
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -15,7 +15,7 @@ class Comments extends Config {
 		$this->buildMainPage();
 		echo '</div>';
 	}
-	
+
 	private function buildMainPage()
 	{
 		if($this->ValidatePermission(10) == TRUE)
@@ -25,10 +25,10 @@ class Comments extends Config {
 				if(!isset($_GET['mode']) && $this->ValidatePermission(11) == TRUE)
 				{
 					$query = "SELECT page_comments.id, page_comments.comments, page_comments.ip, page_comments.dated, page_comments.epid, page_comments.uid, episode.epnumber, series.seriesname, series.seoname, series.fullSeriesName FROM page_comments, episode, series WHERE page_comments.type = 0 AND episode.id=page_comments.epid AND series.id=episode.sid ORDER by page_comments.id DESC LIMIT 0, 60";
-					
+
 					$result = mysql_query($query);
-					$count = mysql_num_rows($result); 
-					if ($count>0) 
+					$count = mysql_num_rows($result);
+					if ($count>0)
 					{
 						echo '<div class="table-wrapper" style="width:100%;">';
 						echo '	<div class="table-row-header" style="padding:5px;font-weight:bold;">';
@@ -50,18 +50,18 @@ class Comments extends Config {
 							{
 								$rowstyle = 'background-color:#B8EAFA;';
 							}
-							
-							$comment_id = $row['id']; 
+
+							$comment_id = $row['id'];
 							$comments = $row['comments'];
 							$when = explode(" ",$row['dated']);
-					
+
 							// do you want to look - if there's an admin comment or long comment ...
 							$see_me = "";
 							if(strlen($myrow['comments'])>60)
 							{
 								$see_me = 1;
 							}
-							
+
 							echo '	<div class="table-row" style="padding-top:2px;' . $rowstyle . '" id="comment-' . $comment_id . '">';
 							echo '		<div class="table-row-column" style="display:inline-block;width:255px;vertical-align:top;word-wrap:break-word;"><a href="/anime/' . $row['seoname'] . '/" target="_blank">' . $row['fullSeriesName'] . '</a></div>';
 							echo '		<div class="table-row-column" style="display:inline-block;width:30px;vertical-align:top;word-wrap:break-word;"><a href="/anime/' . $row['seoname'] . '/ep-' . $row['epnumber'] . '" target="_blank">' . $row['epnumber'] . '</a></div>';
@@ -73,14 +73,14 @@ class Comments extends Config {
 							{
 								if ($see_me == 1)
 								{
-									echo "<a href=\"#\"><img src='http://www.animeftw.tv/images/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
+									echo "<a href=\"#\"><img src='//i.animeftw.tv/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
 								}
 								else
 								{
 									echo "&nbsp;";
 								}
 							}
-							else 
+							else
 							{
 								echo '&nbsp;';
 							}
@@ -100,7 +100,7 @@ class Comments extends Config {
 								echo "<img src='" . $this->Host . "/management/delete-icon.png' width='16' height='15' alt='delete' border='0' />";
 								echo "</a>";
 							}
-							else 
+							else
 							{
 								echo '&nbsp;';
 							}
@@ -132,8 +132,8 @@ class Comments extends Config {
 										}
 									});
 									return false;
-								
-								
+
+
 									// Delete the row
 									//$.ajax({
 									//	url: "ajax.php?node=comments&do=delete&id=" + this_id,
@@ -179,7 +179,7 @@ class Comments extends Config {
 			}
 		}
 	}
-	
+
 }
 
 ?>

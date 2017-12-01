@@ -16,10 +16,10 @@ include('header.php');
 		/*echo "<span class='scapmain'>Error 404, Document not Found.</span>\n";
 		echo "<br />\n";
 		echo "</div>\n";*/
-		echo "<br /><div align=\"center\"><h3>Were Sorry.. That page doesn't exist.. yet...</h3><br /><img src=\"/images/404.png\" alt=\"Error 404 Image\" title=\"Error 404!\" /><br /><h3>....While you wait, can we interest you in some <a href=\"/anime\">Anime</a>?</h3></div>";
+		echo "<br /><div align=\"center\"><h3>Were Sorry.. That page doesn't exist.. yet...</h3><br /><img src=\"//i.animeftw.tv/404.png\" alt=\"Error 404 Image\" title=\"Error 404!\" /><br /><h3>....While you wait, can we interest you in some <a href=\"/anime\">Anime</a>?</h3></div>";
 	}
 	else if($_GET['error'] == '403'){
-		echo "<span class='scapmain'>Error 403, Access is Denied.</span>\n";		
+		echo "<span class='scapmain'>Error 403, Access is Denied.</span>\n";
 		echo "<br />\n";
 		echo "</div>\n";
 	}
@@ -30,7 +30,7 @@ include('header.php');
 	}
 	else {}
 	// End Main BG
-					
+
 					*/
 include('footer.php')
 ?>

@@ -25,115 +25,115 @@
 #-----------------------------------------------------------
 
 				function html_to_bbcode($bbcode){
-     				
+
      				$searchFor = array(
-										'/<s\>(.*?)<\/s\>/is', 
-										'/<b\>(.*?)<\/b\>/is', 
-										'/<i\>(.*?)<\/i\>/is', 
-										'/<a href="(.*?)"\\>(.*?)<\/a\>/is', 
-										'/<img src="(.*?)" alt="user image" \/\>/is', 
-										'/<img src="(.*?)" \/\>/is', 
-										'/<div align="center"\>(.*?)<\/div\>/is', 
+										'/<s\>(.*?)<\/s\>/is',
+										'/<b\>(.*?)<\/b\>/is',
+										'/<i\>(.*?)<\/i\>/is',
+										'/<a href="(.*?)"\\>(.*?)<\/a\>/is',
+										'/<img src="(.*?)" alt="user image" \/\>/is',
+										'/<img src="(.*?)" \/\>/is',
+										'/<div align="center"\>(.*?)<\/div\>/is',
 										'/<u\>(.*?)<\/u\>/is',
 										'/<div align="left"\>(.*?)<\/div\>/is',
 										'/<div align="right"\>(.*?)<\/div\>/is',
 										'/\<br(\s*)?\/?\>/i',
 										'/<div class="quotetop"\>QUOTE<div class="quotemain"\>(.*?)<\/div\><\/div\>/is'
-										); 
+										);
      				$replaceWith = array(
-										'[s]$1[/s]', 
-										'[b]$1[/b]', 
-										'[i]$1[/i]', 
-										'[url=$1]$2[/url]', 
-										'[img]$1[/img]', 
-										'[img]$1[/img]', 
-										'[center]$1[/center]', 
-										'[u]$1[/u]', 
-										'[left]$1[/left]', 
-										'[right]$1[/right]', 
+										'[s]$1[/s]',
+										'[b]$1[/b]',
+										'[i]$1[/i]',
+										'[url=$1]$2[/url]',
+										'[img]$1[/img]',
+										'[img]$1[/img]',
+										'[center]$1[/center]',
+										'[u]$1[/u]',
+										'[left]$1[/left]',
+										'[right]$1[/right]',
 										"\n",
 										'[quote]$1[/quote]'
-										); 
+										);
      				$html = preg_replace($searchFor, $replaceWith, $bbcode);
 					return $html;
 				}
-				
+
 			#-----------------------------------------------------------
 			# Function bbcode_to_html
 			# Replaces bbcode with html for the database!
-			#-----------------------------------------------------------				
+			#-----------------------------------------------------------
 				function code_to_html($bbcode){
-     				
+
      				$searchFor = array(
-										'/\[s\](.*?)\[\/s\]/is', 
-										'/\[b\](.*?)\[\/b\]/is', 
-										'/\[i\](.*?)\[\/i\]/is', 
-										'/\[url\=(.*?)\](.*?)\[\/url\]/is', 
-										'/\[img\](.*?)\[\/img\]/is', 
-										'/\[center\](.*?)\[\/center\]/is', 
-										'/\[u\](.*?)\[\/u\]/is', 
-										'/\[left\](.*?)\[\/left\]/is', 
-										'/\[right\](.*?)\[\/right\]/is', 
+										'/\[s\](.*?)\[\/s\]/is',
+										'/\[b\](.*?)\[\/b\]/is',
+										'/\[i\](.*?)\[\/i\]/is',
+										'/\[url\=(.*?)\](.*?)\[\/url\]/is',
+										'/\[img\](.*?)\[\/img\]/is',
+										'/\[center\](.*?)\[\/center\]/is',
+										'/\[u\](.*?)\[\/u\]/is',
+										'/\[left\](.*?)\[\/left\]/is',
+										'/\[right\](.*?)\[\/right\]/is',
 										'/\\n/is',
 										'/\[quote\](.*?)\[\/quote\]/is'
-										); 
+										);
      				$replaceWith = array(
-										'<s>$1</s>', 
-										'<b>$1</b>', 
-										'<i>$1</i>', 
-										'<a href="$1">$2</a>', 
-										'<img src="$1" alt="user image" />', 
-										'<div align="center">$1</div>', 
+										'<s>$1</s>',
+										'<b>$1</b>',
+										'<i>$1</i>',
+										'<a href="$1">$2</a>',
+										'<img src="$1" alt="user image" />',
+										'<div align="center">$1</div>',
 										'<u>$1</u>',
 										'<div align="left">$1</div>',
 										'<div align="right">$1</div>',
 										'<br />',
 										'<div class="quotetop">QUOTE<div class="quotemain">$1</div></div>'
-										); 
+										);
      				$html = preg_replace($searchFor, $replaceWith, $bbcode);
 					return $html;
 					}
 			#-----------------------------------------------------------
 			# Function bbcode_to_smilies
 			# Replaces bbcode with smiley html for the database!
-			#-----------------------------------------------------------				
+			#-----------------------------------------------------------
 				function bbcode_to_smilies($bbcode){
-     				
+
      				$searchFor = array(
-										'/<img src="images/smilies/smile.gif" alt="" \/\>/is', 
-										'/<i\>(.*?)<\/i\>/is', 
-										'/<a href="(.*?)"\\>(.*?)<\/a\>/is', 
-										'/<img src="(.*?)" \/\>/is', 
-										'/<div align="center"\>(.*?)<\/div\>/is', 
+										'/<img src="images/smilies/smile.gif" alt="" \/\>/is',
+										'/<i\>(.*?)<\/i\>/is',
+										'/<a href="(.*?)"\\>(.*?)<\/a\>/is',
+										'/<img src="(.*?)" \/\>/is',
+										'/<div align="center"\>(.*?)<\/div\>/is',
 										'/<u\>(.*?)<\/u\>/is',
 										'/<div align="left"\>(.*?)<\/div\>/is',
 										'/<div align="right"\>(.*?)<\/div\>/is'
-										); 
+										);
      				$replaceWith = array(
-										':)', 
-										'[i]$1[/i]', 
-										'[url=$1]$1[/url]', 
-										'[img]$1[/img]', 
-										'[center]$1[/center]', 
-										'[u]$1[/u]', 
-										'[left]$1[/left]', 
+										':)',
+										'[i]$1[/i]',
+										'[url=$1]$1[/url]',
+										'[img]$1[/img]',
+										'[center]$1[/center]',
+										'[u]$1[/u]',
+										'[left]$1[/left]',
 										'[right]$1[/right]'
-										); 
+										);
      				$html = preg_replace($searchFor, $replaceWith, $bbcode);
 					return $html;
 					}
 			#-----------------------------------------------------------
 			# Function bbcode_to_smilies
 			# Replaces bbcode with smiley html for the database!
-			#-----------------------------------------------------------				
+			#-----------------------------------------------------------
 				function smilies_to_bbcode($bbcode){
-     				
+
      				$searchFor = array(
 										'/\:\)/is'
-										); 
+										);
      				$replaceWith = array(
 										'<img src=\'images/smilies/smile.gif\' />'
-										); 
+										);
      				$html = preg_replace($searchFor, $replaceWith, $bbcode);
 					return $html;
 					}
@@ -141,7 +141,7 @@
 			# Function underscoresToSpaces
 			# Checks and replaces underscores with spaces!
 			#-----------------------------------------------------------
-				
+
 			function underscoresToSpaces($postedData) {
 			// Replace spaces with underscores
 			$output = preg_replace("/_/e" , " " , $postedData);
@@ -150,23 +150,23 @@
 			$output = preg_replace("/\W/e" , "_" , $output);
 
 			return strtolower($output);
-			}	
-			function threadPagingV2($paging) {
-			
 			}
-			
+			function threadPagingV2($paging) {
+
+			}
+
 			#-----------------------------------------------------------
 			# Function checkUserName
 			# Checks a username against the DB and adds preffixs as needed
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkUserName ($username) {
 			$query = "SELECT Username, Level_access, advanceImage, Active, advancePreffix
 						FROM users
 						WHERE Username='$username'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$Username = $row['Username']; 
+			$Username = $row['Username'];
 			$Level_access = $row['Level_access'];
 			$Active = $row['Active'];
 			$advanceImage = $row['advanceImage'];
@@ -186,20 +186,20 @@
 				$link = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $Username . '">';
 				if($Level_access == 1)
 				{
-					$fixedUsername = $spanbefore . '<img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 2)
 				{
-					$fixedUsername = $spanbefore . '<img src="/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Manager" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Manager" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
 				{
-					// /images/staff-icon.png
-					$fixedUsername = $spanbefore . '<img src="/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
+					// //i.animeftw.tv/staff-icon.png
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 7)
 				{
-					$fixedUsername = '<img src="/images/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
+					$fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
 				}
 				else
 				{
@@ -210,20 +210,20 @@
 				$fixedUsername = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/'.$Username.'"><s>'.$Username.'</s></a>';
 			}
 			return $fixedUsername;
-			}	
-			
+			}
+
 			#----------------------------------------------------------------------------
 			# Function checkUserNameNoLink
 			# Checks a username against the DB and adds preffixs as needed, no link
 			#----------------------------------------------------------------------------
-			
+
 			function checkUserNameNoLink ($username) {
 			$query = "SELECT Username, Level_access, advanceImage, Active, advancePreffix
 						FROM users
 						WHERE Username='$username'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$Username = $row['Username']; 
+			$Username = $row['Username'];
 			$Level_access = $row['Level_access'];
 			$Active = $row['Active'];
 			$advanceImage = $row['advanceImage'];
@@ -242,57 +242,57 @@
 				}
 				if($Level_access == 1)
 				{
-					$fixedUsername = $spanbefore . '<img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Administrator" />' . $Username . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Administrator" />' . $Username . $spanafter;
 				}
 				else if($Level_access == 2)
 				{
-					$fixedUsername = $spanbefore . '<img src="/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Manager" />'  . $Username . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Manager" />'  . $Username . $spanafter;
 				}
 				else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
 				{
-					// /images/staff-icon.png
-					$fixedUsername = $spanbefore . '<img src="/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Member" />'  . $Username . $spanafter;
+					// //i.animeftw.tv/staff-icon.png
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Member" />'  . $Username . $spanafter;
 				}
 				else if($Level_access == 7)
 				{
-					$fixedUsername = '<img src="/images/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" />'.$Username.'';
-				}						
+					$fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" />'.$Username.'';
+				}
 				else
-				{			
+				{
 					$fixedUsername = ''.$Username.'';
 				}
 			}
-			else 
+			else
 			{
 				$fixedUsername = '<s>'.$Username.'</s>';
 			}
 			return $fixedUsername;
-			}	
-			
+			}
+
 			#----------------------------------------------------------------------------
 			# Function bbsmiliesToCode
 			# looks for smiley bbcode and converts to the html code
 			#----------------------------------------------------------------------------
-			
+
 		function bbsmiliesToCode ($bbcode) {
 					//Smilies fix
 					//Zigbigidorlu was here =D
-					$basedir = "/images/forumimages";
+					$basedir = "//i.animeftw.tv/forumimages";
 					$searchFor = array(
-										'/\:\)/is', 
-										'/\:D/is', 
-										'/\;\)/is', 
-										'/\&lt;\.\&lt;/is', 
-										'/\^\_\^/is', 
-										'/\:P/is', 
-										'/\:p/is', 
+										'/\:\)/is',
+										'/\:D/is',
+										'/\;\)/is',
+										'/\&lt;\.\&lt;/is',
+										'/\^\_\^/is',
+										'/\:P/is',
+										'/\:p/is',
 										'/\:o/is',
-										'/\:O/is',  
-										'/\:\(/is', 
-										'/o\.o/is',  
-										'/XD/is', 
-										'/xD/is', 
-										); 
+										'/\:O/is',
+										'/\:\(/is',
+										'/o\.o/is',
+										'/XD/is',
+										'/xD/is',
+										);
      				$replaceWith = array(
 										'<img src="'.$basedir.'/smilies/smile.gif" alt="" />',
 										'<img src="'.$basedir.'/smilies/biggrin.gif" alt="" />',
@@ -307,22 +307,22 @@
 										'<img src="'.$basedir.'/smilies/huh.gif" alt="" />',
 										'<img src="'.$basedir.'/smilies/doh.gif" alt="" />',
 										'<img src="'.$basedir.'/smilies/doh.gif" alt="" />',
-										); 
+										);
      				$html = preg_replace($searchFor, $replaceWith, $bbcode);
 					return $html;
 		}
 			#-----------------------------------------------------------
 			# Function checkUserNameNumber
 			# Checks a username against the DB and adds preffixs as needed
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkUserNameNumber ($ID,$lastActivity = NULL) {
 			$query = "SELECT Username, Level_access, advanceImage, Active, advancePreffix
 						FROM users
 						WHERE ID='$ID'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$Username = $row['Username']; 
+			$Username = $row['Username'];
 			$Level_access = $row['Level_access'];
 			$Active = $row['Active'];
 			$advanceImage = $row['advanceImage'];
@@ -350,20 +350,20 @@
 				$link = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $Username . '"' . $title . '>';
 				if($Level_access == 1)
 				{
-					$fixedUsername = $spanbefore . '<img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 2)
 				{
-					$fixedUsername = $spanbefore . '<img src="/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Manager" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Manager" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
 				{
-					// /images/staff-icon.png
-					$fixedUsername = $spanbefore . '<img src="/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
+					// //i.animeftw.tv/staff-icon.png
+					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 7)
 				{
-					$fixedUsername = '<img src="/images/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
+					$fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
 				}
 				else
 				{
@@ -374,99 +374,99 @@
 				$fixedUsername = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/'.$Username.'"' . $title . '><s>'.$Username.'</s></a>';
 			}
 			return $fixedUsername;
-			}	
+			}
 			#-----------------------------------------------------------
 			# Function checkUserNameNumberNoLink
 			# Checks a username against the DB and adds preffixs as needed
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkUserNameNumberNoLink($ID) {
 			$query = "SELECT Username
 						FROM users
 						WHERE ID='$ID'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$Username = $row['Username']; 
+			$Username = $row['Username'];
 			return $Username;
-			}	
+			}
 			#-----------------------------------------------------------
 			# Function checkUserNameNumberNoLink
 			# Checks a Username against the DB and get an ID
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function reverseCheckUserNameNumberNoLink($Username) {
 			$query = "SELECT ID
 						FROM users
 						WHERE Username='$Username'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$ID = $row['ID']; 
+			$ID = $row['ID'];
 			return $ID;
-			}				
+			}
 			#-----------------------------------------------------------
 			# Function timeZoneChange
 			# Checks the Date, and adds subtracts an hour based on a users timezone
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function timeZoneChange($date,$timezone) {
 				$timezone = (60*60)*($timezone+6);
 				$revisedDate = $date+($timezone);
 				return $revisedDate;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeries
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeries($epid) {
 				$query = "SELECT s.seoname AS sname, s.fullSeriesName AS fname FROM series AS s, episode AS e WHERE e.seriesname=s.seriesName AND e.id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seoname = $row['sname']; 
-				$fullSeriesName = $row['fname']; 
+				$seoname = $row['sname'];
+				$fullSeriesName = $row['fname'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$FinalLink = '<a href="/anime/'.$seoname.'/">'.$fullSeriesName.'</a>';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function reverseCheckSeries
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function reverseCheckSeries($seriesName) {
 				$query = "SELECT seriesName FROM series WHERE fullSeriesName LIKE '%".$seriesName."%'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seriesname = $row['seriesName']; 
+				$seriesname = $row['seriesName'];
 				return $seriesname;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function seoCheck
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function seoCheck($seriesName) {
 				$query = "SELECT seoname FROM series WHERE seriesName='$seriesName'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seoname = $row['seoname']; 
+				$seoname = $row['seoname'];
 				return $seoname;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesSid
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesSid($sid) {
 				$query = "SELECT * FROM series WHERE id='$sid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
 				$seoname = $row['seoname'];
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				if($row['OVA'] == 0)
 				{
@@ -481,72 +481,72 @@
 				else {
 					$filmType = 'ovas';
 				}
-				
+
 				$FinalLink = '<a href="/anime/'.$seoname.'/">'.$fullSeriesName.'</a>';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesNoLink
 			# checks the series for a given seriesname
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesNoLink($seriesname) {
 				$query = "SELECT fullSeriesName FROM series WHERE seriesName='$seriesname'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				return $fullSeriesName;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesNoLinkId
 			# checks the series for a given series Id
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesNoLinkId($sid) {
 				$query = "SELECT fullSeriesName FROM series WHERE id='$sid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				return $fullSeriesName;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkEpNoLink
 			# when given various credentials, system checks items against
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpNoLink($eid,$variable) {
 					$query = "SELECT epnumber AS variable FROM episode WHERE id='$eid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$variablefinal = $row['variable']; 
+				$variablefinal = $row['variable'];
 				$variablefinal = stripslashes($variablefinal);
 				return $variablefinal;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesId
 			# checks the seriesname and returns the ID
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesId($seriesname) {
 				$query = "SELECT id FROM series WHERE seriesName='$seriesname'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$id = $row['id']; 
+				$id = $row['id'];
 				return $id;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkEpisode
-			# With a given Series ID And Episode number it 
+			# With a given Series ID And Episode number it
 			# spits out a valid link, only shows the ep number as a link
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpisode($epid) {
 				$query = "SELECT e.epnumber, e.Movie, s.seoname, s.OVA FROM episode AS e, series AS s WHERE e.seriesname=s.seriesName AND e.id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -568,18 +568,18 @@
 				$FinalLink = '<a href="/anime/'.$seoname.'/'.$fileType.'-'.$EpNumber.'">'.$EpNumber.'</a>';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkEpisode2
-			# With a given Series ID And Episode number it 
+			# With a given Series ID And Episode number it
 			# spits out a valid link, only shows the ep number as a link
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpisode2($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seriesname = $row['seriesname']; 
+				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$EpName = $row['epname'];
 				$Movie = $row['Movie'];
@@ -607,14 +607,14 @@
 				$FinalLink = '<a href="/'.$filmType.'/'.$seoname.'/'.$fileType.'-'.$EpNumber.'">'.$EpName.'</a>';
 				return $FinalLink;
 			}
-			
-			
+
+
 			#-----------------------------------------------------------
 			# Function checkEpisodeName
-			# With a given Series ID And Episode number it 
+			# With a given Series ID And Episode number it
 			# spits out a valid link, only shows the ep number as a link
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpisodeName($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -626,15 +626,15 @@
 			}
 			#-----------------------------------------------------------
 			# Function checkEpisodeLinkOnly
-			# With a given Series ID And Episode number it 
+			# With a given Series ID And Episode number it
 			# spits out a valid link, only shows the ep number as a link
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpisodeLinkOnly($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seriesname = $row['seriesname']; 
+				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$Movie = $row['Movie'];
 				$query = "SELECT * FROM series WHERE seriesName='$seriesname'";
@@ -660,18 +660,18 @@
 				$FinalLink = 'http://www.animeftw.tv/'.$filmType.'/'.$seoname.'/'.$fileType.'-'.$EpNumber.'';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkEpisodeFull
 			# With a given ID number, it spits out series and episode
 			# ID number with full link to video
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpisodeFull($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seriesname = $row['seriesname']; 
+				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$Movie = $row['Movie'];
 				$query = "SELECT fullSeriesName, seoname FROM series WHERE seriesName='$seriesname'";
@@ -698,18 +698,18 @@
 				$FinalLink = '<a href="/'.$filmType.'/'.$seoname.'/'.$fileType.'-'.$EpNumber.'">Ep# '.$EpNumber.' of '.$fullSeriesName.'</a>';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkEpisodeSeriesName
 			# With a given ID number, it spits out series and episode
 			# ID number with full link to video
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkEpisodeSeriesName($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$seriesname = $row['seriesname']; 
+				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$query = "SELECT fullSeriesName FROM series WHERE seriesName='$seriesname'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -718,18 +718,18 @@
 				$FinalLink = 'Viewed Series '.$fullSeriesName.' Episode #'.$EpNumber;
 				return $FinalLink;
 			}
-			
-			
+
+
 			#-----------------------------------------------------------
 			# Function checkSeries2
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeries2($SeriesId) {
 				$query = "SELECT * FROM series WHERE id='$SeriesId'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				if($row['OVA'] == 0)
@@ -748,17 +748,17 @@
 					$FinalLink = '<a href="/'.$filmType.'/'.$seoname.'/">'.$fullSeriesName.'</a>';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeries3
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeries3($SeriesName) {
 				$query = "SELECT * FROM series WHERE seriesName='$SeriesName'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				if($row['OVA'] == 0)
@@ -783,17 +783,17 @@
 				}
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeries4
 			# checks the series for a given seriesname (for the topnav)
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeries4($SeriesName) {
 				$query = "SELECT fullSeriesName, seoname, OVA, moviesonly, seriesType, aonly FROM series WHERE seriesName='$SeriesName'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				$Type = '';
@@ -821,7 +821,7 @@
 					$Type .= '';
 				}
 				else {
-					$Type .= '<img src="/images/advancedonly.png" alt="Advanced Members only Series" title="This is an Advanced only Series!" />&nbsp;';
+					$Type .= '<img src="//i.animeftw.tv/advancedonly.png" alt="Advanced Members only Series" title="This is an Advanced only Series!" />&nbsp;';
 				}
 				// Lets find out if its MKV or not!
 				if($row['seriesType'] == 0)
@@ -830,7 +830,7 @@
 				}
 				else if($row['seriesType'] == 1)
 				{
-					$Type .= '<img src="/images/mkv-series.png" alt="MKV series" title="This series is in DivX Web 2.0 Format" />';
+					$Type .= '<img src="//i.animeftw.tv/mkv-series.png" alt="MKV series" title="This series is in DivX Web 2.0 Format" />';
 				}
 				else {
 					$Type .= '';
@@ -838,18 +838,18 @@
 					$FinalLink = '<a href="/'.$filmType.'/'.$seoname.'/">'.$fullSeriesName.'&nbsp;'.$Type.'</a>';
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesWIcons
-			# checks the series for a given id number and gives 
+			# checks the series for a given id number and gives
 			# it an airing icon
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesWIcons($SeriesId) {
 				$query = "SELECT fullSeriesName, seoname, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE seriesId='$SeriesId'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				$stillRelease = $row['stillRelease'];
@@ -865,7 +865,7 @@
 				}
 				else {
 					$seriesList = 'amv';
-				}				
+				}
 				if($row['seriesType'] == 0)
 				{
 					$Type = '';
@@ -890,24 +890,24 @@
 				}
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesWIconsV2
-			# checks the series for a given id number and gives 
+			# checks the series for a given id number and gives
 			# it an airing icon --Version2--
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesWIconsV2($SeriesId) {
 				$query = "SELECT fullSeriesName, seoname, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE seriesId='$SeriesId'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				$stillRelease = $row['stillRelease'];
 				$seriesList = $row['seriesList'];
 				$moviesOnly = $row['moviesOnly'];
-				
+
 				if($seriesList == 0)
 				{
 					$seriesList = 'anime';
@@ -934,7 +934,7 @@
 				{
 					$airing = '&nbsp;<img src="' . $CDNHost . '/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
 				}
-				
+
 				else {
 					$airing = '&nbsp;';
 				}
@@ -943,22 +943,22 @@
 					$Type .= '&nbsp;<img src="' . $CDNHost . '/movie_blue.png" alt="Movie" title="This is a Movie"  style="vertical-align:middle;" border="0" />';
 				}
 				//if($row['seriesList']
-						  
+
 				$FinalLink = '<a href="/'.$seriesList.'/'.$seoname.'/">'.$fullSeriesName.'</a>'.$airing.$Type;
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesWIconsV3
-			# checks the series for a given id number and gives 
+			# checks the series for a given id number and gives
 			# it an airing icon --Version3--
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesWIconsV3($SeriesId) {
 				$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				$stillRelease = $row['stillRelease'];
@@ -966,7 +966,7 @@
 				$moviesOnly = $row['moviesOnly'];
 				$description = $row['description'];
 				$description = stripslashes($description);
-				
+
 				if($seriesList == 0)
 				{
 					$seriesList = 'anime';
@@ -993,7 +993,7 @@
 				{
 					$airing = '&nbsp;<img src="' . $CDNHost . '/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
 				}
-				
+
 				else {
 					$airing = '&nbsp;';
 				}
@@ -1002,68 +1002,68 @@
 					$Type .= '&nbsp;<img src="' . $CDNHost . '/movie_blue.png" alt="Movie" title="This is a Movie"  style="vertical-align:middle;" border="0" />';
 				}
 				//$FinalLink = '<a href="/'.$seriesList.'/'.$seoname.'/"><span class="formInfo">'.$fullSeriesName.'<span style="display: none;" class="animetip">';
-				//$FinalLink .= '<table><tr><td width="10%" valign="top"><img src="/images/resize/anime/large/'.$row['id'].'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
+				//$FinalLink .= '<table><tr><td width="10%" valign="top"><img src="//i.animeftw.tv/resize/anime/large/'.$row['id'].'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
 				//$FinalLink .= '</span></span></a>'.$airing.$Type;
-				
+
 				$FinalLink = '<a href="/'.$seriesList.'/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$row['id'].'\',this);return false" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a>'.$airing.$Type;
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesReviews
-			# checks the series for a given id number and gives 
+			# checks the series for a given id number and gives
 			# it an airing icon
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesReviews($SeriesId) {
 				$query = "SELECT * FROM series WHERE seriesId='$SeriesId'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
 				$sid = $row['id'];
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
 				$stillRelease = $row['stillRelease'];
-				
+
 				if($stillRelease == 'yes')
 				{
-					$FinalLink = '<a href="/reviews/series-'.$sid.'/">'.$fullSeriesName.'</a>&nbsp;<img src="/images/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
+					$FinalLink = '<a href="/reviews/series-'.$sid.'/">'.$fullSeriesName.'</a>&nbsp;<img src="//i.animeftw.tv/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
 				}
 				else {
 					$FinalLink = '<a href="/reviews/series-'.$sid.'/">'.$fullSeriesName.'</a>';
 				}
 				return $FinalLink;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkSeriesOvas
 			# checks the series for a given id number
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeriesOvas($SeriesId) {
 				$query = "SELECT * FROM series WHERE seriesId='$SeriesId'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$fullSeriesName = $row['fullSeriesName']; 
+				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$seoname = $row['seoname'];
-				
+
 				$FinalLink = '<a href="/ovas/'.$seoname.'/">'.$fullSeriesName.'</a>';
 				return $FinalLink;
 			}
-			
-	
-			
+
+
+
 			#-------------------------------------------------------------
 			# Function seriesTopSeriesRank
 			# This function takes the top anime and
 			# spits them out for all to see.
 			#-------------------------------------------------------------
-			
+
 		function seriesTopSeriesRank($seriesId) {
-				$query = "SELECT lastPosition, currentPosition FROM site_topseries 
+				$query = "SELECT lastPosition, currentPosition FROM site_topseries
 						WHERE seriesId='".$seriesId."'
-						ORDER BY currentPosition 
+						ORDER BY currentPosition
 						ASC ";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
@@ -1096,23 +1096,23 @@
 							$singleRank .= $listedName.' is ranked #<b>'.$Rank."</b> on AnimeFTW.tv\n";
 						}
 					}
-				
+
 				return $singleRank;
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function topSelectiveAnime
 			# With Given number amount of outputted anime is displayed
 			# put in number for how many returned.
 			#-------------------------------------------------------------
-			
+
 			function topSelectiveAnime($amount,$location) {
 				$query = "SELECT series.id, series.seoname, series.fullSeriesName, site_topseries.lastPosition, site_topseries.currentPosition FROM series, site_topseries WHERE series.id=site_topseries.seriesId ORDER BY currentPosition ASC LIMIT 0, ".$amount."";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$i = 0;
-				echo "<br />\n";	
+				echo "<br />\n";
 				while(list($id,$seoname,$fullSeriesName,$lastPosition,$currentPosition) = mysql_fetch_array($result))
-				{						
+				{
 					$onmouse = 'onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$id.'\',this);return false" onmouseout="ajax_hideTooltip()"';
 					echo "<a class='side' href='/anime/".$seoname."/' ".$onmouse.">".$fullSeriesName."</a>\n";
 					echo "<br />\n";
@@ -1120,24 +1120,24 @@
 					$i++;
 				}
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function addTopicView
 			# Each page refresh makes a new pageview for a given topic
 			#-------------------------------------------------------------
-			
+
 			function addTopicView($tid) {
 				$query = "UPDATE forums_threads SET tviews = tviews+1 WHERE tid = $tid";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
-				
+
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function recordEpisodeTopseries
 			# Each page refresh makes a new pageview for a given topic
 			# if the user's ip is not in the database already
 			#-------------------------------------------------------------
-			
+
 			function recordEpisodeTopseries($seriesId,$ip,$epNumber) {
 				//Get the Date for today, all 24 hours
 				$currentDay = date('d-m-Y',time());
@@ -1153,13 +1153,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					mysql_query($query) or die('Could not connect, way to godddd retard:' . mysql_error());
 				}
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function checkServer
 			# Checks the userID against the DB for encoders
 			# then outputs what server thay are on.
 			#-------------------------------------------------------------
-			
+
 			function checkServer($id) {
 				$query1 = "SELECT server FROM encoders WHERE id='$id'";
 				$result1 = mysql_query($query1);
@@ -1168,23 +1168,23 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$returnvar = checkUserNameNumberNoLink($id).' is on '.$server.'.';
 				return $returnvar;
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function setFailedLoginCookie
 			# sets a cookie saying a user cannot login for 15 min
 			#-------------------------------------------------------------
-			
+
 			function setFailedLoginCookie(){
 				setcookie ( "__flc", time() + 900, time() + 900, '/' );
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function checkFailedLogins
 			# Checks failed logins against the server,
-			# once it hits 5 then it blocks the user for 15 minutes by 
+			# once it hits 5 then it blocks the user for 15 minutes by
 			# setting a cookie that expires in 15 min.
 			#-------------------------------------------------------------
-			
+
 			function checkFailedLogins($ip) {
 				$fivebefore = time()-300;
 				$query1 = "SELECT ip FROM `failed_logins` where date>='".$fivebefore."' AND ip='".$ip."'";
@@ -1208,13 +1208,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $statement;
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function cronMail
 			# sends emails based upon the crons list of to-dos
 			# 1= site pm, 2=episode note
 			#-------------------------------------------------------------
-			
+
 			function cronMail($toid,$fromid,$emailtype,$date) {
 				//query to user
 					$query1 = "SELECT Username, Email FROM users WHERE ID='$toid'";
@@ -1222,16 +1222,16 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					$row = mysql_fetch_array($result1);
 					$toUsername = $row['Username'];
 					$toEmail = $row['Email'];
-				
-				//site pm email	
+
+				//site pm email
 				if($emailtype == 1)
-				{ 
+				{
 				//query from user
 					$query2 = "SELECT Username FROM users WHERE ID='$fromid'";
 					$result2 = mysql_query($query2);
 					$row2 = mysql_fetch_array($result2);
 					$fromUsername = $row2['Username'];
-					
+
 					$query1 = "SELECT id, msgSubject, msgBody FROM messages WHERE date='$date' AND rid='$toid' AND sid='$fromid'";
 					$result1 = mysql_query($query1);
 					$row = mysql_fetch_array($result1);
@@ -1242,7 +1242,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					$subject = 'New Site Personal Message!';
 					$to = $toEmail;    //  their email
 					$body =  "Hi $toUsername,<br /><br />\n";
-					$body .= "$fromUsername has sent you a site PM entitled: $msgSubject <br />\n"; 
+					$body .= "$fromUsername has sent you a site PM entitled: $msgSubject <br />\n";
 					$body .= "--------------------------------------------------------------------------------<br />\n";
 					$body .= "$msgBody <br />\n";
 					$body .= "--------------------------------------------------------------------------------<br />\n";
@@ -1257,16 +1257,16 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					$body = wordwrap($body,70);
 				//away we go!
 					mail($to, $subject, $body, $headers);
-					
+
 				}
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function videoCheck
-			# checks episode id to the report column in the db, 
+			# checks episode id to the report column in the db,
 			# 1=reported, 0=normal
 			#-------------------------------------------------------------
-			
+
 			function videoCheck($eid) {
 				$query1 = "SELECT report FROM episode WHERE id='$eid'";
 				$result1 = mysql_query($query1);
@@ -1274,22 +1274,22 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$report = $row['report'];
 				if($report == 0)
 				{
-					$videoreport = '<a onClick="javascript:showReport();" style="border:none;cursor:pointer;"><img src="http://www.animeftw.tv/images/reportavideo.png" /></a>
+					$videoreport = '<a onClick="javascript:showReport();" style="border:none;cursor:pointer;"><img src="//i.animeftw.tv/reportavideo.png" /></a>
 ';
 				}
 				else {
-					$videoreport = '<a style="border:none;cursor:pointer;" title="This video has been reported with an error!"><img src="http://www.animeftw.tv/images/reportavideoreported.png" /></a>
+					$videoreport = '<a style="border:none;cursor:pointer;" title="This video has been reported with an error!"><img src="//i.animeftw.tv/reportavideoreported.png" /></a>
 ';
 				}
 				return $videoreport;
 			}
-			
+
 			#------------------------------------------------------------
 			# Function hideInformation
-			# Checks to see if a MORE is needed on submissions to the 
+			# Checks to see if a MORE is needed on submissions to the
 			# Video reports console
 			#------------------------------------------------------------
-			
+
 			function hideInformation($id,$information)
 			{
 				$spanbefore = '<span id="'.$id.'" style="display: none">';
@@ -1297,44 +1297,44 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$information2 = substr($information,0,56). $spanbefore . substr($information,-$properamoutn) .'</span> <a id="morelink'.$id.'" href="javascript:showFullComment('.$id.')" class="storylinks">... MORE &gt;</a>';
 				return $information2;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkItemCat
 			# checks category and makes it 'proper'
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkItemCat($catid) {
 			$query = "SELECT name
 						FROM store_category
 						WHERE id='$catid'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$name = $row['name']; 
+			$name = $row['name'];
 			return $name;
-			}	
-			
-			
+			}
+
+
 			#-----------------------------------------------------------
 			# Function checkSeoItemCat
 			# checks category and makes it 'proper'
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkSeoItemCat($catid) {
 			$query = "SELECT name
 						FROM store_category
 						WHERE id='$catid'";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$name = $row['name']; 
+			$name = $row['name'];
 			$name = strtolower(name);
 			return $name;
-			}	
-			
+			}
+
 			#-----------------------------------------------------------
 			# Function errorReportStatus
 			# returns the column for the status of a submission
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function errorReportStatus($status) {
 				if($status == 0)
 				{
@@ -1348,13 +1348,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					$finalStatus = '<td align="center" style="color:#FFFF00;">Working On</td>';
 				}
 			return $finalStatus;
-			}	
-			
+			}
+
 			#-----------------------------------------------------------
 			# Function reviewStatus
 			# returns the column for the status of a submission
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function reviewStatus($status,$rid,$sid) {
 				if($status == 0)
 				{
@@ -1411,28 +1411,28 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 			return $finalStatus;
 			}
-			
+
 			#-----------------------------------------------------------
 			# Function checkKanji
 			# take a series name and check the kanji
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkKanji($seriesName) {
-				mysql_query("SET NAMES 'utf8'"); 
+				mysql_query("SET NAMES 'utf8'");
 				$query = "SELECT kanji
 						FROM series
 						WHERE seriesName='$seriesName';";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$kanji = $row['kanji']; 
+			$kanji = $row['kanji'];
 			return $kanji;
-			}	
-			
+			}
+
 			#-----------------------------------------------------------
 			# Function checkRomaji
 			# take a series name and check the romaji
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkRomaji($seriesName) {
 				$query = "SELECT romaji
 						FROM series
@@ -1440,19 +1440,19 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row = mysql_fetch_array($result);
-			$romaji = $row['romaji']; 
+			$romaji = $row['romaji'];
 			return $romaji;
-			}	
-			
-			
+			}
+
+
 			#-----------------------------------------------------------
 			# Function checkForSpecialChars
 			# Checks inputs and makes sure the special chars are taken care of..
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkForSpecialChars($input) {
 				$html_entities = array (
-					"&" =>  "&amp;",     #ampersand  
+					"&" =>  "&amp;",     #ampersand
 					"á" =>  "&aacute;",     #latin small letter a
 					"Â" =>  "&Acirc;",     #latin capital letter A
 					"â" =>  "&acirc;",     #latin small letter a
@@ -1501,22 +1501,22 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					"" => "",
 					"" => "",*/
 				);
-			
+
 				foreach ($html_entities as $key => $value) {
 					$str = str_replace($key, $value, $str);
 				}
-				return $str; 
-			}	
-		  
-		  
+				return $str;
+			}
+
+
 			#-----------------------------------------------------------
 			# Function checkFakeEmail
 			# checks domain against list and says if its spam or not
-			#-----------------------------------------------------------	
-			
+			#-----------------------------------------------------------
+
 			function checkFakeEmail($subject) {
 				$fakes = array("10minutemail.com","20minutemail.com","anonymbox.com","beefmilk.com","bsnow.net","bugmenot.com","deadaddress.com","despam.it","disposeamail.com","dodgeit.com","dodgit.com","dontreg.com","e4ward.com","emailias.com","emailwarden.com","enterto.com","gishpuppy.com","goemailgo.com","greensloth.com","guerrillamail.com","guerrillamailblock.com","hidzz.com","incognitomail.net","jetable.org","kasmail.com","lifebyfood.com","lookugly.com","mailcatch.com","maileater.com","mailexpire.com","mailin8r.com","mailinator.com","mailinator.net","mailinator2.com","mailmoat.com","mailnull.com","meltmail.com","mintemail.com","mt2009.com","myspamless.com","mytempemail.com","mytrashmail.com","netmails.net","odaymail.com","pookmail.com","shieldedmail.com","smellfear.com","sneakemail.com","sogetthis.com","soodonims.com","spam.la","spamavert.com","spambox.us","spamcero.com","spamex.com","spamfree24.com","spamfree24.de","spamfree24.eu","spamfree24.info","spamfree24.net","spamfree24.org","spamgourmet.com","spamherelots.com","spamhole.com","spaml.com","spammotel.com","spamobox.com","spamspot.com","tempemail.net","tempinbox.com","tempomail.fr","temporaryinbox.com","tempymail.com","thisisnotmyrealemail.com","trash2009.com","trashmail.net","trashymail.com","tyldd.com","yopmail.com","zoemail.com","tradermail.info","zippymail.info","suremail.info","safetymail.info","binkmail.com","tradermail.info","zippymail.info","suremail.info","safetymail.info","PutThisInYourSpamDatabase.com","SpamHerePlease.com","SendSpamHere.com","chogmail.com","SpamThisPlease.com","frapmail.com","obobbo.com","devnullmail.com","bobmail.info","slopsbox.com");
-				
+
 				$num_bots=0;
 				foreach($fakes as $num=>$fakes){
 				preg_match("/".$fakes."/i", $subject, $matches);
@@ -1528,20 +1528,20 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $num_bots;
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function trackerShowEpisode
 			# ep: <epnumber> of <seriesName> on Date
 			#-----------------------------------------------------------
-			
+
 			function trackerShowEpisode($uid,$elimit) {
-				
+
 				$query2 = "SELECT eid, dateViewed FROM episode_tracker WHERE uid='".$uid."' ORDER BY id DESC LIMIT $elimit, 1";
 				$result2 = mysql_query($query2) or die('Error : Such a Username does not exist!');
 				$row2 = mysql_fetch_array($result2);
 				$eid = $row2['eid'];
 				$dateViewed = $row2['dateViewed'];
-				
+
 				$query3 = "SELECT seriesName FROM episode WHERE id='".$eid."'";
 				$result3 = mysql_query($query3) or die('Error ');
 				$row3 = mysql_fetch_array($result3);
@@ -1551,22 +1551,22 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						$Variable02.= "...";
 				$dateViewed2 = date("M jS",$dateViewed);
 				return 'ep: '.checkEpNoLink($eid,'epnum').' of '.$Variable02.'on '.$dateViewed2;
-				
+
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function trackerShowEpisode
 			# ep: <epnumber> of <seriesName> on Date
 			#-----------------------------------------------------------
-			
+
 			/*function trackerShowEpisode($uid,$elimit) {
-				
+
 				$query2 = "SELECT eid, dateViewed FROM episode_tracker WHERE uid='".$uid."' ORDER BY id DESC LIMIT $elimit, 1";
 				$result2 = mysql_query($query2) or die('Error : Such a Username does not exist!');
 				$row2 = mysql_fetch_array($result2);
 				$eid = $row2['eid'];
 				$dateViewed = $row2['dateViewed'];
-				
+
 				$query3 = "SELECT seriesName FROM episode WHERE id='".$eid."'";
 				$result3 = mysql_query($query3) or die('Error ');
 				$row3 = mysql_fetch_array($result3);
@@ -1576,14 +1576,14 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						$Variable02.= "...";
 				$dateViewed2 = date("M jS",$dateViewed);
 				return 'ep: '.checkEpNoLink($eid,'epnum').' of '.$Variable02.'on '.$dateViewed2;
-				
+
 			}*/
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function showAniDBLink
 			# Takes an AniDB ID and makes it into a link
 			#-----------------------------------------------------------
-			
+
 			function showAniDBLink($aid){
 				if($aid == 0)
 				{
@@ -1595,13 +1595,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $finalproduct;
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function userReviewedSeries
 			# Take a userid and spit back all possible
 			# series they have reviewed
 			#-----------------------------------------------------------
-			
+
 			function userReviewedSeries($uid,$approval){
 				$query = "SELECT s.id, s.fullSeriesName, r.sid, r.uid, r.approved FROM series s, reviews r WHERE r.uid='$uid' AND s.id = r.sid AND r.approved = '$approval' ORDER BY s.fullSeriesName ASC";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -1618,13 +1618,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $showReturn;
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function checkLoginStatus
 			# Takes the login info and checks, if the user is logged in
 			# spits back login information that is returned by the browser
 			#-----------------------------------------------------------
-			
+
 			function checkLoginStatus($globalnonid,$remoteAddr,$userAgent){
 				if(isset($globalnonid))
 				{
@@ -1698,13 +1698,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$returnArray = array($Logged,$globalnonid,$PermissionLevelAdvanced,$timeZone,$bannedornot,$name,$canDownload,$postBan,$siteTheme,$forumBan,$messageBan,0,$viewNotifications);
 				return $returnArray;
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function newMessages
 			# checks messages for a user and
 			# returns if they have any or not.
 			#-----------------------------------------------------------
-			
+
 			function newMessages($uid){
 				$query   = "SELECT COUNT(id) AS unreadMsgs FROM messages WHERE rid='".$uid."' AND viewed='1'";
 				$result  = mysql_query($query) or die('Error, query failed');
@@ -1712,13 +1712,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$unreadMsgs = $row['unreadMsgs'];
 				return $unreadMsgs;
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function showAvailableForums
 			# Take the Level_access and show certain forums to people.
 			# one var controls full function
 			#-----------------------------------------------------------
-			
+
 			function showAvailableForums($pud){
 				$query = "SELECT cid, ctitle FROM forums_categories WHERE cpermission LIKE '%".$pud."%'";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
@@ -1736,13 +1736,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $showReturnFinal.'<li><A href="/forums/view-active-topics">Today\'s Active Topics</a></li>';
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function showAvailableVideos
-			# Takes the level access and returns 
+			# Takes the level access and returns
 			# available videos to that user.
 			#-----------------------------------------------------------
-			
+
 			function showAvailableVideos($accesslevel) {
 				$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, seriesId, fullSeriesName FROM series WHERE active='yes' ORDER BY seriesName";
 				$query = mysql_query ($sql) or die (mysql_error());
@@ -1752,7 +1752,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					${$records['letter']}[$records['seriesId']] = $records['fullSeriesName'];
 				}
 				$countup = '';
-				
+
 				$returnFirstPart = '';
 				$videoList = '';
 				foreach(range('A','Z') as $i) {
@@ -1767,33 +1767,33 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $videoList;
 			}
-			
-			#-----------------------------------------------------------	
+
+			#-----------------------------------------------------------
 			# Function seriesStatistics
-			# Takes a given series id number  
+			# Takes a given series id number
 			# and returns total episodes and movies.
 			#-----------------------------------------------------------
-			
+
 			function seriesStatistics($id) {
-				mysql_query("SET NAMES 'utf8'"); 
+				mysql_query("SET NAMES 'utf8'");
 				$query = "SELECT kanji, romaji
 						FROM series
 						WHERE id='$id';";
 				$result = mysql_query($query) or die('Error : ' . mysql_error());
 				$row = mysql_fetch_array($result);
-				$kanji = $row['kanji']; 
-				$romaji = $row['romaji']; 
-				
+				$kanji = $row['kanji'];
+				$romaji = $row['romaji'];
+
 				$returnInfo = limitCharacters($romaji,40).'<br />'.limitCharacters($kanji,40);
 				return $returnInfo;
 			}
-			
+
 			#------------------------------------------------------------
 			# Function maxOf32Chars
-			# measures the length and makes sure that the length is 
+			# measures the length and makes sure that the length is
 			# limited to 32 CHARS
 			#------------------------------------------------------------
-			
+
 			function maxOf32Chars($id,$information)
 			{
 				$spanbefore = '<span id="'.$id.'" style="display: none">';
@@ -1801,18 +1801,18 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$information2 = substr($information,0,30). $spanbefore . substr($information,-$properamoutn) .'</span> <a id="morelink'.$id.'" href="javascript:showFullComment('.$id.')" class="storylinks">...</a>';
 				return $information2;
 			}
-			
+
 			#------------------------------------------------------------
 			# Function getImageUrl
-			# takes an ID number and gives back a full 
+			# takes an ID number and gives back a full
 			# IMG tag for an avatar
 			#------------------------------------------------------------
-			
+
 			function getImageUrl($size,$uid,$type)
 			{
 				if($type == 'anime')
 				{
-					$returnUrl = '/images/resize/anime/s-small/'.$uid.'.jpg';
+					$returnUrl = '//i.animeftw.tv/resize/anime/s-small/'.$uid.'.jpg';
 				}
 				else {
 					$query   = "SELECT avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'";
@@ -1823,32 +1823,32 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					{
 						if($avatarActivate == 'no')
 						{
-							$returnUrl = '/images/avatars/default.gif';
+							$returnUrl = '//i.animeftw.tv/avatars/default.gif';
 						}
 						else {
-							$returnUrl = '/images/avatars/user'.$uid.'.'.$row['avatarExtension'];
+							$returnUrl = '//i.animeftw.tv/avatars/user'.$uid.'.'.$row['avatarExtension'];
 						}
 					}
 					else {
 						if($avatarActivate == 'no')
 						{
-							$returnUrl = '/images/resize/user/'.$size.'/default.gif';
+							$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/default.gif';
 						}
 						else {
-							$returnUrl = '/images/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
+							$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
 						}
 					}
 				}
 				return $returnUrl;
 			}
-			
+
 			#------------------------------------------------------------
 			# Function showEpisodeInfo
 			# Give an episode
 			# @Param: $seriesname, $epnumber
 			# IMG tag for an avatar
 			#------------------------------------------------------------
-			
+
 			function showEpisodeInfo($seriesname,$epnum,$mov)
 			{
 				if($mov == 'ep'){$movvar = "AND Movie='0' AND ova='0'";}
@@ -1866,38 +1866,38 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				}
 				return $episodeArray;
 			}
-			
+
 			#------------------------------------------------------------
 			# Function showSeriesInfo
 			# Give a seoname and it will give info on the series
 			# @Param: $seoname
 			#------------------------------------------------------------
-			
+
 			function showSeriesInfo($seoname)
 			{
 				$query   = "SELECT id, seriesName, seoname, fullSeriesName, videoServer, maxEps, description, ratingLink, seriesId, noteActivate, noteReason, aonly, prequelto, sequelto, category, total_reviews FROM series WHERE seoname='".$seoname."'";
-				$result  = mysql_query($query) or die('Error : ' . mysql_error()); 
+				$result  = mysql_query($query) or die('Error : ' . mysql_error());
 				$row     = mysql_fetch_array($result, MYSQL_ASSOC);
-				
+
 				$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],$row['fullSeriesName'],$row['videoServer'],$row['maxEps'],$row['description'],$row['ratingLink'],$row['seriesId'],$row['noteActivate'],$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews']);
 				return $seriesArray;
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function shareOptionsUpdated
-			# Shows the options accessable to users based on 
+			# Shows the options accessable to users based on
 			# sharing of current episodes
 			#-------------------------------------------------------------
 			function shareOptionsUpdated($ep,$seriesName) {
-				
+
 				#series query
 				$query1 = "SELECT seoname, fullSeriesName, moviesonly, OVA, seriesList FROM series WHERE seriesName='$seriesName'";
 				$result1 = mysql_query($query1);
 				$row = mysql_fetch_array($result1);
-				$seoname = $row['seoname']; 
+				$seoname = $row['seoname'];
 				$fullSeriesName = $row['fullSeriesName'];
 				$moviesOnly = $row['moviesonly'];
-				$OVA = $row['OVA']; 
+				$OVA = $row['OVA'];
 				$seriesList = $row['seriesList'];
 				//$fullSeriesName = addPluses($fullSeriesName);
 $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episode on Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fwww.animeftw.tv%2Fanime%2F'.$seoname.'%2Fep-'.$ep.'" target="_blank"><span>facebook share</span></a>
@@ -1910,23 +1910,23 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 <a id="stumbleuponlink" title="Share this Episode on StumbleUpon" href="http://www.stumbleupon.com/submit?url=http://www.animeftw.tv/anime/'.$seoname.'/ep-'.$ep.'" target="_blank"><span>stumble share</span></a>
 <a id="newsvinelink" title="Share this Episode on Newsvine" href="http://www.newsvine.com/_tools/seed&save?u=http://www.animeftw.tv/anime/'.$seoname.'/ep-'.$ep.'&h=Watching+'.urlencode($fullSeriesName).'+episode+'.$ep.'+at+AnimeFTW.tv" target="_blank"><span>newsvine share</span></a>
 <a id="technoratilink" title="Share this Episode on Technorati" href="http://technorati.com/signup/?f=favorites&amp;Url=http://www.animeftw.tv/anime/'.$seoname.'/ep-'.$ep.'" target="_blank"><span>technorati share</span></a></div>';
-						
+
 					return $fullOutput;
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function showListing
 			# Shows in 3 cloumn tier of series listings
 			# --
 			#-------------------------------------------------------------
-			
+
 			function showListing ($listType,$sort,$alevel,$stype){
 				if($alevel == 0){$aonly = "AND aonly='0'";}
 				else if ($alevel == 3){$aonly = "AND aonly<='1'";}
 				else{$aonly = '';}
 				if($stype == 0){
 					if($sort == NULL){
-						echo '<div align="center"><a href="/anime/age/e"><img src="/images/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="/images/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="/images/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="/images/ratings/18+.jpg" alt="" /></a></div><br />';
+						echo '<div align="center"><a href="/anime/age/e"><img src="//i.animeftw.tv/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="" /></a></div><br />';
 						$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."ORDER BY fullSeriesName";
 					}
 					else {
@@ -1934,7 +1934,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					}
 				}
 				else {
-					echo '<div align="center"><a href="/anime/age/e"><img src="/images/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="/images/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="/images/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="/images/ratings/18+.jpg" alt="" /></a></div><br />';
+					echo '<div align="center"><a href="/anime/age/e"><img src="//i.animeftw.tv/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="" /></a></div><br />';
 					if($sort == NULL){
 						$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."ORDER BY fullSeriesName";
 					}
@@ -1956,14 +1956,14 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				echo '</div><br />';
 				// Create Data Listing
 				$countup = 1;
-				$columncount = 1; 
+				$columncount = 1;
 				$col = 2;
 				echo "<div id=\"col1\">\n";
-					
+
 				floor($total_rows/3);
 				foreach(range('A','Z') as $i) {
 					if (array_key_exists ("$i", $alpha)) {
-					
+
 						echo '		<a name="'.$i.'"></a><h2>'.$i."</h2>\n";
 						foreach ($$i as $key=>$value) {
 							echo "		<div>".checkSeriesWIconsV3($key)."</div>\n";
@@ -1988,7 +1988,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 						}
 						echo "		<br />\n";
 					}
-					
+
 				}
 				echo '</div></div></div>';
 				echo '<script type="text/javascript">
@@ -2003,7 +2003,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			# Takes a given IP and checks to see if it is banned
 			# @param $ip
 			#-------------------------------------------------------------
-			
+
 			function checkBan($ip){
 				//$ip = $_SERVER['REMOTE_ADDR']; #get the users ip address
 				$getip = mysql_query("SELECT * FROM `banned` WHERE `ip` = '$ip'"); #select the IP from the database
@@ -2014,16 +2014,16 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				if(mysql_num_rows($getip) > 0)
 				{
 					die("You are currently banned from viewing this site!<br />Reason: $reason");
-				
+
 				} #if the user's ip address is in the database, then kill the script, and tell them that they are banned
 			}
-			
+
 			#-------------------------------------------------------------
 			# Function tagCloud
 			# Place function on any page to get a tag cloud.
 			# @param NULL
 			#-------------------------------------------------------------
-			
+
 			function tagCloud($list){
 				include('wordcloud.class.php');
 				$cloud = new wordcloud();
@@ -2052,13 +2052,13 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					}
 				}
 			}
-			
+
 			#------------------------------------------------------------
 			# Function limitCharacters
 			# Takes @param chars and reports back a condensed version
 			# @param characters
 			#------------------------------------------------------------
-			
+
 			function limitCharacters($input,$chars)
 			{
 				$counted = strlen($input);
@@ -2067,52 +2067,52 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				else {$information2 = $input;}
 				return $information2;
 			}
-			
-			
+
+
 		#------------------------------------------------------------
 		# Function forumThreadList
-		# Shows the given forum list  
+		# Shows the given forum list
 		#------------------------------------------------------------
-		
+
 		function forumThreadList ($fid,$fseo,$requestedLimit,$PermissionLevelAdvanced){
-		echo forumPinnedList($fid,$fseo,$requestedLimit,$PermissionLevelAdvanced);				
-		$query4  = "SELECT tid, ttitle, tpid, tfid, tclosed, tviews 
-		            FROM forums_threads 
+		echo forumPinnedList($fid,$fseo,$requestedLimit,$PermissionLevelAdvanced);
+		$query4  = "SELECT tid, ttitle, tpid, tfid, tclosed, tviews
+		            FROM forums_threads
 					WHERE tfid='$fid' AND tstickied='0' ORDER BY tclosed ASC, tupdated DESC LIMIT ".$requestedLimit.", 30";
-					
+
 		$result4 = mysql_query($query4) or die('Error : ' . mysql_error());
-		
+
 		echo "<tr>\n";
 		echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
 		echo "<td class='tbl2 forum-cap'><strong>Forum Topics</strong></td>\n";
 		echo "</tr>\n";
-		
+
 		while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$tviews) = mysql_fetch_array($result4)) {
 				   $ttitle = stripslashes($ttitle);
-				   
+
 				   //HTML exploit fix
 				   //Zigbigidorlu was here =D
 				   $ttitle = htmlentities($ttitle);
 		echo "<tr>\n";
 		if ($tclosed == 1) {
-		    $thread_image = "<img src='/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
+		    $thread_image = "<img src='//i.animeftw.tv/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
 		  } else {
-		    $thread_image = "<img src='/images/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
+		    $thread_image = "<img src='//i.animeftw.tv/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
 		  }
             $thread_subject = "<a id='topic-".$tid."' href='/forums/$fseo/topic-".$tid."/s-0' >".$ttitle."</a>";
-			
-		
+
+
 		echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$thread_image."</td>\n";
 		echo "<td width='100%' class='tbl1'>".$thread_subject."</td>\n";
-	
-			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'"); 
+
+			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'");
 			$total_thread_posts = mysql_result($query3, 0);
 			$total_thread_posts2 = $total_thread_posts-1;
 
 		echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$total_thread_posts2."</td>\n";
-		echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>".checkUserNameNumber($tpid)."</td>\n";	
+		echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>".checkUserNameNumber($tpid)."</td>\n";
 		echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$tviews."</td>\n";
-					
+
 			//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 1";
 			$result02 = mysql_query($query02) or die('Error : ' . mysql_error());
@@ -2123,17 +2123,17 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			$pdate3 = timeZoneChange($pdate3,$timeZone);
 			$pdate4 = date("M j Y, h:i A",$pdate3);
 			$last_post_by = "<a href='/forums/".$fseo."/topic-".$tid."/showlastpost'>Last post by:</a>&nbsp;".checkUserNameNumber($puid);
-			
+
 		echo "<td width='1%' class='tbl1' style='white-space:nowrap'>".$pdate4."<br />".$last_post_by."</td>\n";
-		
+
 		if ($PermissionLevelAdvanced == 1 || $PermissionLevelAdvanced == 2) {
 		    $input_checkbox = "<input class='modcheck' type='checkbox' name='modcheck' value='".$tid."' />";
-		
+
 		echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$input_checkbox."</td>\n";
 	  } else {
 	  }
 		echo "</tr>\n";
-	  }	
+	  }
 		echo "</table><!--sub_forum_table-->\n";
 	  }
 
@@ -2141,9 +2141,9 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 		# Function showAvailableEpisodes
 		# Use the seriesname and return a list of episodes
 		#------------------------------------------------------------
-		
+
 		function showAvailableEpisodes($seriesname,$agent,$accesslevel,$videoServer,$fullSeriesName,$seoname,$canDownload,$type){
-			$query = mysql_query("SELECT id FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='0'"); 
+			$query = mysql_query("SELECT id FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='0'");
 			$total_episodes = mysql_num_rows($query);
 			if($total_episodes == 0){}
 			else {
@@ -2162,11 +2162,11 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					$epname    = stripslashes($epname);
 					if ($accesslevel == 7 || $canDownload == 1){
 						if($type == 1 && ($accesslevel == 7 || $canDownload == 1)){
-							$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
-							//$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:right;padding-top:8px;" border="0" /></a>';
+							$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
+							//$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:right;padding-top:8px;" border="0" /></a>';
 						}
 						else {$imgurl = '';}
-					
+
 					}
 					else {$imgurl = '';}
 					if($accesslevel == 0)
@@ -2191,14 +2191,14 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				//echo '</div>';
 			}
 		}
-			
+
 		#------------------------------------------------------------
 		# Function showAvailableMovies
 		# Use the seriesname and return a list of Movies
 		#------------------------------------------------------------
-		
+
 		function showAvailableMovies($seriesname,$agent,$accesslevel,$videoServer,$fullSeriesName,$seoname,$canDownload){
-			$query = mysql_query("SELECT id FROM episode WHERE seriesname='$seriesname' AND Movie='1' AND ova='0'"); 
+			$query = mysql_query("SELECT id FROM episode WHERE seriesname='$seriesname' AND Movie='1' AND ova='0'");
 			$total_episodes = mysql_num_rows($query);
 			if($total_episodes == 0){}
 			else {
@@ -2219,17 +2219,17 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					$epname    = stripslashes($epname);
 					if($accesslevel == 0)
 					{
-						echo "<div style=\"padding-top:5px;\">Movie #".$epnumber.": ".$epname."</div>"; 
+						echo "<div style=\"padding-top:5px;\">Movie #".$epnumber.": ".$epname."</div>";
 					}
 					else
 					{
 						if ($accesslevel == 7 || $canDownload == 1)
 						{
-							echo '<a href="http://'.$videoServer.'.animeftw.tv/movies/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
+							echo '<a href="http://'.$videoServer.'.animeftw.tv/movies/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
 						}
 						else {
 						}
-						echo "<div style=\"padding-top:5px;\">Movie #".$epnumber.": <a href=\"/anime/".$seoname."/movie-".$epnumber."\">".$epname."</a>"; 
+						echo "<div style=\"padding-top:5px;\">Movie #".$epnumber.": <a href=\"/anime/".$seoname."/movie-".$epnumber."\">".$epname."</a>";
 						echo "</div>";
 					}
 				}
@@ -2239,14 +2239,14 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				}
 			}
 		}
-			
+
 		#------------------------------------------------------------
 		# Function showAvailableOvas
 		# Use the seriesname and return a list of Movies
 		#------------------------------------------------------------
-		
+
 		function showAvailableOvas($seriesname){
-			$query = mysql_query("SELECT id FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='1'"); 
+			$query = mysql_query("SELECT id FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='1'");
 			$total_episodes = mysql_num_rows($query);
 			if($total_episodes == 0){}
 			else {
@@ -2267,17 +2267,17 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					$epname    = stripslashes($epname);
 					if($accesslevel == 0)
 					{
-						echo "<div style=\"padding-top:5px;\">Ova #".$epnumber.": ".$epname."</div>"; 
+						echo "<div style=\"padding-top:5px;\">Ova #".$epnumber.": ".$epname."</div>";
 					}
 					else
 					{
 						if ($accesslevel == 7 || $canDownload == 1)
 						{
-							echo '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
+							echo '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
 						}
 						else {
 						}
-						echo "<div style=\"padding-top:5px;\">Ova #".$epnumber.": <a href=\"/anime/".$seoname."/movie-".$epnumber."\">".$epname."</a>"; 
+						echo "<div style=\"padding-top:5px;\">Ova #".$epnumber.": <a href=\"/anime/".$seoname."/movie-".$epnumber."\">".$epname."</a>";
 						echo "</div>";
 					}
 				}
@@ -2287,12 +2287,12 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				}
 			}
 		}
-			
+
 		#------------------------------------------------------------
 		# Function searchSeries
 		# Searches through Series and gives back information.
 		#------------------------------------------------------------
-		
+
 		function searchSeries($input,$userlevel){
 			$input = mysql_real_escape_string($input);
 			if($userlevel == 0){$aonly = "aonly='0' AND ";}
@@ -2308,7 +2308,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				{
 					$fullSeriesName = stripslashes($fullSeriesName);
 					echo '<div class="searchdiv">';
-					echo '<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="http://'.$_SERVER['HTTP_HOST'].'/images/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>';
+					echo '<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="//i.animeftw.tv/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>';
 					echo '<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.checkRomaji($seriesName).'<br />Kanji: '.checkKanji($seriesName).'<br />Categories: ';
 					$episodes = split(", ",$category);
 					foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/$value\">$value</a>, ";}
@@ -2324,21 +2324,21 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 		<div>
 			<div class="item">
 		*/
-			
+
 		#------------------------------------------------------------
 		# Function searchSeries2
 		# Searches through Series and gives back information.
 		#------------------------------------------------------------
-		
+
 		function searchSeries2($input,$userlevel){
 			$input = mysql_real_escape_string($input);
 			$dualarray = array('2','5','8','11','14','17','20','23','26','29','32','35','38','41','44','47','50','53','56','59','62','65','68','71','74','77','80','83','86','89','92','95','98','101');
 			if($userlevel == 0){$aonly = " AND aonly='0'";}
 			else if ($userlevel == 3){$aonly = " AND aonly<='1'";}
 			else{$aonly = '';}
-			
+
 			$ExplodedInput = explode(',',str_replace(' ', '', $input));
-			
+
 			if(count($ExplodedInput) > 1)
 			{
 				$subsearch = "";
@@ -2357,7 +2357,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			{
 				$subsearch = "fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' OR category LIKE '%".$input."%'";
 			}
-			
+
 			$query   = "SELECT id, seriesName, fullSeriesName, seoname, ratingLink, category, total_reviews FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
 			$result  = mysql_query($query) or die('Error : ' . mysql_error());
 			$ts = mysql_num_rows($result);
@@ -2369,7 +2369,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					$fullSeriesName = stripslashes($fullSeriesName);
 					echo '<div class="item">'."\n";
 					echo '	<div class="searchdiv">'."\n";
-					echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="http://'.$_SERVER['HTTP_HOST'].'/images/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
+					echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="//i.animeftw.tv/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
 					echo '		<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.checkRomaji($seriesName).'<br />Kanji: '.checkKanji($seriesName).'<br />Categories: '."\n";
 					$episodes = split(", ",$category);
 					foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/$value\">$value</a>, ";}
@@ -2385,48 +2385,48 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				}
 			}
 		}
-			
-			
-			
-			
+
+
+
+
 		#------------------------------------------------------------
 		# Function searchEpisodes
 		# Searches through Episodes and gives back information.
 		#------------------------------------------------------------
-		
+
 		function searchEpisodes($input,$userlevel){
 		}
-			
+
 		#------------------------------------------------------------
 		# Function searchFriends
 		# Searches through Friends and gives back information.
 		#------------------------------------------------------------
-		
+
 		function searchFriends($input,$userlevel){
 		}
-			
+
 		#------------------------------------------------------------
 		# Function adv_count_words
 		# Takes a string and gives word count back.
 		#------------------------------------------------------------
-		
+
 		function adv_count_words($str){
 			$words = 0;
 			$str = eregi_replace(" +", " ", $str);
 			$array = explode(" ", $str);
 			for($i=0;$i < count($array);$i++)
 			{
-		 		if (eregi("[0-9A-Za-zÀ-ÖØ-öø-ÿ]", $array[$i])) 
+		 		if (eregi("[0-9A-Za-zÀ-ÖØ-öø-ÿ]", $array[$i]))
 			 	$words++;
 			}
 			return $words;
 	 	}
-		
+
 		#------------------------------------------------------------
 		# Function NextEpisodes
 		# Grabs a set amount of episodes before and after
 		#------------------------------------------------------------
-		
+
 		function NextEpisodes($count,$seriesname,$epnumber,$epprefix,$moe,$seoname){
 			// simple vars
 			$nextep = $epnumber+1;
@@ -2440,7 +2440,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			$query = "SELECT COUNT(id) as numrows FROM episode WHERE seriesname='".$seriesname."' ".$moevar;
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
-			$MaxEps = $row['numrows'];	
+			$MaxEps = $row['numrows'];
 			//key shortcuts... W00t!
 			echo '<script type="text/javascript">
 				document.onkeydown = function(e) {
@@ -2458,7 +2458,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			}
 			echo '		}
 				};
-				</script>';			
+				</script>';
 			// start real code.
 			echo '<table><tr>';
 			//Prev Ep code
@@ -2507,19 +2507,19 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			}
 			echo '</tr></table>';
 		}
-		
+
 		#--------------------------------------------------------
 		# Function ListGroups
 		#
 		#--------------------------------------------------------
-		
+
 		//function ListGroups
-		
-		
-		
+
+
+
 		#--------------------------------------------------------
 		# Function ShowListChange
 		#
 		#
-		
-		
+
+

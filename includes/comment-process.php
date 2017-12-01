@@ -17,7 +17,7 @@ function niceday2($dated) {
 	$niceday = @date("g:ia \o\\n\ l, F jS, Y",mktime($hour,$minute,0,$month,$day,$year));
 	echo $niceday;
 }
-		
+
 
 if($_POST)
 {
@@ -53,11 +53,11 @@ if($_POST)
 			mysql_query($queryi);
 			$result2 = mysql_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
 			$row2 = mysql_fetch_array($result2);
-			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="/images/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';}
-			else {$avatar = '<img src="/images/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" width="40px" style="padding:2px;" border="0" />';}
+			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="//i.animeftw.tv/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';}
+			else {$avatar = '<img src="//i.animeftw.tv/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" width="40px" style="padding:2px;" border="0" />';}
 			$comment = stripslashes($comment);
 			$comment = nl2br($comment);
-			
+
 			//echo $query;
 			echo '<div id="justposted" class="side-body floatfix">';
 			echo '<div id="dropmsg0" class="dropcontent">
@@ -79,13 +79,13 @@ if($_POST)
 			$row = mysql_fetch_array($result);
 			$result2 = mysql_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
 			$row2 = mysql_fetch_array($result2);
-			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="/images/avatars/default.gif" alt="avatar" height="50px" border="0" />';}
-			else {$avatar = '<img src="/images/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" height="50px" border="0" />';}
-			
+			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="//i.animeftw.tv/avatars/default.gif" alt="avatar" height="50px" border="0" />';}
+			else {$avatar = '<img src="//i.animeftw.tv/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" height="50px" border="0" />';}
+
 			$commentajax = "ajax_loadContent('ca-".$row['id']."','/includes/random_scripts.php?get=utilities&mode=comutil&cid=".$row['id']."&username=".$row2['Username']."&stage=before');";
 			$comment = stripslashes($comment);
 			$comment = nl2br($comment);
-			
+
 			echo '
 			<li class="box">
 				<div class="more2"><span id="ca-'.$row['id'].'">loading..</span><script type="text/javascript">'.$commentajax.'</script></div>

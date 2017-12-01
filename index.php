@@ -11,7 +11,7 @@
         $port = $_SERVER['SERVER_PORT'];
     }
 	if(strpos($_SERVER['REQUEST_URI'], 'store') && $port == '80')
-	{	
+	{
 		header("location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit;
 	}
@@ -106,7 +106,7 @@ if (isset($_GET['rf'])){
 	echo "</tr>\n</table>\n";
 	echo "<br />\n<br />\n";
 	}
-    function news($Config) 
+    function news($Config)
 	{
 		//12 for staff, 14 for staff and ams
 		if($Config->UserArray[2] == 1 || $Config->UserArray[2] == 2 || $Config->UserArray[2] == 4 || $Config->UserArray[2] == 5 || $Config->UserArray[2] == 6)
@@ -122,17 +122,17 @@ if (isset($_GET['rf'])){
 			$addonquery = '';
 		}
         $query = "SELECT `tid`, `ttitle`, `tpid`, `tfid`, `tdate`, `fseo` FROM `forums_threads` INNER JOIN `forums_forum` ON `forums_forum`.`fid`=`forums_threads`.`tfid` WHERE `forums_threads`.`tfid` in (" . $showForumPosts . ") ORDER BY `tid` DESC";
-		$query = "SELECT t.tid, t.ttitle, t.tpid, t.tfid, t.tdate, p.pbody, f.ftitle, f.fseo FROM forums_threads as t, forums_post as p, forums_forum as f 
+		$query = "SELECT t.tid, t.ttitle, t.tpid, t.tfid, t.tdate, p.pbody, f.ftitle, f.fseo FROM forums_threads as t, forums_post as p, forums_forum as f
 		WHERE (t.tfid='1' OR t.tfid='2' OR t.tfid='9'" . $addonquery . ") AND p.pistopic='1' AND p.puid=t.tpid AND p.ptid=t.tid AND f.fid=t.tfid ORDER BY t.tid DESC LIMIT 0, 8";
 		if($Config->UserArray[0] == 1)
 		{
 			echo '<!-- Query:' . $query . ' -->';
 		}
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		while(list($tid, $ttitle, $tpid, $tfid, $tdate, $pbody, $ftitle, $fseo) = mysql_fetch_array($result)) 
+		while(list($tid, $ttitle, $tpid, $tfid, $tdate, $pbody, $ftitle, $fseo) = mysql_fetch_array($result))
 		{
 			$pbody = stripslashes($pbody);
-	
+
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'><a href='/forums/".$fseo."/topic-".$tid."/'>".$ttitle."</a></span>\n";
 			echo "<br />\n";
@@ -145,7 +145,7 @@ if (isset($_GET['rf'])){
 	// Start Mid and Right Content
 	echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 	echo "<td valign='top' class='main-mid'>\n";
-	
+
 	if(!isset($_GET['node']))
 	{
 		echo news($Config);
@@ -154,36 +154,36 @@ if (isset($_GET['rf'])){
 	{
 				$FinalDate3 = time()-86400;
 				//how many active in last minute
-				$query22 = mysql_query("SELECT ID FROM users WHERE lastActivity>='".(time()-86400)."'"); 
+				$query22 = mysql_query("SELECT ID FROM users WHERE lastActivity>='".(time()-86400)."'");
 				$online_users_24hours = mysql_num_rows($query22) or die("Error: ". mysql_error(). " with query ". $query22);
-				//sidebar st00fs					
-					$query2 = mysql_query("SELECT id FROM episode"); 
+				//sidebar st00fs
+					$query2 = mysql_query("SELECT id FROM episode");
 					$full_total_episodes = mysql_num_rows($query2) or die("Error: ". mysql_error(). " with query ". $query2);
-					
-					$query3 = mysql_query("SELECT id FROM series WHERE active='yes'"); 
+
+					$query3 = mysql_query("SELECT id FROM series WHERE active='yes'");
 					$total_series = mysql_num_rows($query3) or die("Error: ". mysql_error(). " with query ". $query3);
-					
-					$query4 = mysql_query("SELECT id FROM page_comments"); 
+
+					$query4 = mysql_query("SELECT id FROM page_comments");
 					$total_comments = mysql_num_rows($query4) or die("Error: ". mysql_error(). " with query ". $query4);
 				//gender queries!
 					//male
-					$query5 = mysql_query("SELECT ID FROM users WHERE gender='male'"); 
+					$query5 = mysql_query("SELECT ID FROM users WHERE gender='male'");
 					$total_male = mysql_num_rows($query5) or die("Error: ". mysql_error(). " with query ". $query5);
 					//female
-					$query6 = mysql_query("SELECT ID FROM users WHERE gender='female'"); 
+					$query6 = mysql_query("SELECT ID FROM users WHERE gender='female'");
 					$total_female = mysql_num_rows($query6) or die("Error: ". mysql_error(). " with query ". $query6);
 				//avatar queries!
 					// how many active?
-					$query7 = mysql_query("SELECT ID FROM users WHERE avatarActivate='yes'"); 
+					$query7 = mysql_query("SELECT ID FROM users WHERE avatarActivate='yes'");
 					$total_avatars = mysql_num_rows($query7) or die("Error: ". mysql_error(). " with query ". $query7);
 					// how many gif?
-					$query8 = mysql_query("SELECT ID FROM users WHERE avatarExtension='gif'"); 
+					$query8 = mysql_query("SELECT ID FROM users WHERE avatarExtension='gif'");
 					$total_avatars_gif = mysql_num_rows($query8) or die("Error: ". mysql_error(). " with query ". $query8);
 					// how many jpgs?
-					$query9 = mysql_query("SELECT ID FROM users WHERE avatarExtension='jpg'"); 
+					$query9 = mysql_query("SELECT ID FROM users WHERE avatarExtension='jpg'");
 					$total_avatars_jpg = mysql_num_rows($query9) or die("Error: ". mysql_error(). " with query ". $query9);
 					// how many pngs?
-					$query10 = mysql_query("SELECT ID FROM users WHERE avatarExtension='png'"); 
+					$query10 = mysql_query("SELECT ID FROM users WHERE avatarExtension='png'");
 					$total_avatars_png = mysql_num_rows($query10) or die("Error: ". mysql_error(). " with query ". $query10);
 		echo "<div class='side-body-bg'>\n";
 		echo "<span class='scapmain'>AnimeFTW.tv Site Statistics</span>\n";
@@ -199,18 +199,18 @@ if (isset($_GET['rf'])){
   				while(list($ID,$lastActivity) = mysql_fetch_array($result19))
 				{
 					$lastActivity = $Config->timeZoneChange($lastActivity,$profileArray[3]);
-					
+
 					echo $Config->formatUsername($ID,'self',$lastActivity = NULL);
 					if($i <= $ucount)
 					{
 						echo ', ';
 					}
 					$i++;
-					
-				}	
+
+				}
 				echo "<br /><br />";
 					//who was online~query
-				
+
 				echo '</div>';
 				echo 'Our users have posted '.$total_comments.' Comments to date<br />';
 				echo '<br />We have '.$total_series.' series up for viewing!<br />';
@@ -236,7 +236,7 @@ if (isset($_GET['rf'])){
 						{
 							echo '<a href="//'.$siteroot.'/user/'.$Username.'">'.$Username.'</a>, ';
 						}
-						
+
 						?>
         	<div class="date"></div>
        		<h2>Latest 15 Episodes</h2>
@@ -247,7 +247,7 @@ if (isset($_GET['rf'])){
 			$query = "SELECT episode.id, episode.seriesname, episode.epname, episode.epnumber FROM episode, series WHERE episode.seriesname=series.seriesName AND series.active = 'yes' ORDER BY episode.id DESC LIMIT 0, 15";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$self = $_SERVER['PHP_SELF'];
-	
+
 			while(list($id, $seriesname, $epname, $epnumber) = mysql_fetch_array($result, MYSQL_NUM))
 			{
 			$query2 = "SELECT seriesName, fullSeriesName, seoname FROM series WHERE seriesName='".$seriesname."'";
@@ -264,7 +264,7 @@ if (isset($_GET['rf'])){
 			$query = "SELECT id, seriesname, epname, epnumber FROM episode ORDER BY date DESC LIMIT 0, 15";
 			$result = mysql_query($query) or die('Error : ' . mysql_error());
 			$self = $_SERVER['PHP_SELF'];
-	
+
 			while(list($id, $seriesname, $epname, $epnumber) = mysql_fetch_array($result, MYSQL_NUM))
 			{
 			$query2 = "SELECT seriesName, fullSeriesName, seoname FROM series WHERE seriesName='".$seriesname."'";
@@ -301,14 +301,14 @@ if (isset($_GET['rf'])){
            <div class="mpart">
            <div align="center">You are being connected to irc.ftwirc.com, FTW Entertainment's personal IRC server.<br />To change your nick type /nick (nickhere)</div>
                     <?php
-					
+
 				if ( $Logged == 1 )
 							{
 								echo '<div align="center"><iframe align="center" src="http://widget.mibbit.com/?settings=ea6a5f6fddfdb032b083170d36ac4d3c&server=irc.ftwirc.com&channel=%23ftw&noServerNotices=true&noServerMotd=true&autoConnect=true&nick='.$name.'" height="450px" width="750px" frameborder="0"></iframe></div>';
 							}
-							else 
+							else
 							{
-							
+
 				echo '<div align="center"><iframe align="center" src="http://widget.mibbit.com/?settings=ea6a5f6fddfdb032b083170d36ac4d3c&server=irc.ftwirc.com&channel=%23ftw&noServerNotices=true&noServerMotd=true&autoConnect=true" height="350px" width="650px" frameborder="0"></iframe></div>';
 							}
 				?>
@@ -323,9 +323,9 @@ if (isset($_GET['rf'])){
 		echo "</div>\n";
 		  echo '<div class="mpart">
 			<p>When we notice that people are looking for malicious scripts we ban them, we wont take lightly to our site being contested.. so here are all the ip\'s with a reason to their banning, if you find this page and would like to be unbanned, please contact the admins</p>';
-		  
-					$query1 = "SELECT ip, seenReason FROM banned 
-							ORDER BY id 
+
+					$query1 = "SELECT ip, seenReason FROM banned
+							ORDER BY id
 							DESC";
 				$result1 = mysql_query($query1) or die('Error : ' . mysql_error());
   				while(list($ip,$seenReason) = mysql_fetch_array($result1))
@@ -339,18 +339,18 @@ if (isset($_GET['rf'])){
 	   }
 	   else if($_GET['node'] == 'contact')
 	   {
-		   
+
 		echo "<div class='side-body-bg'>\n";
 		echo "<span class='scapmain'>AnimeFTW.tv Contact Form</span>\n";
 		echo "</div>\n";
 		if($_POST['email-submit'])
 		{
 			echo'<p>Comment/Contact Submitted.</p>';
-			
+
 			// EDIT THE 2 LINES BELOW AS REQUIRED
 			$email_to = "support@animeftw.tv";
 			$email_subject = "AnimeFTW.tv Contact Form";
-			 
+
 			function died($error) {
 				// your error code can go here
 				echo "We are very sorry, but there were error(s) found with the form you submitted. ";
@@ -359,18 +359,18 @@ if (isset($_GET['rf'])){
 				echo "Please go back and fix these errors.<br /><br />";
 				die();
 			}
-			 
+
 			// validation expected data exists
 			if(!isset($_POST['email']) ||
 				!isset($_POST['sites'])) {
-				died('We are sorry, but there appears to be a problem with the form you submitted.');      
+				died('We are sorry, but there appears to be a problem with the form you submitted.');
 			}
-			 
+
 			$name = $_POST['name']; // required
 			$email_from = $_POST['email']; // required
 			$comments = $_POST['sites']; // required
 			$ip = $_POST['ip']; // required
-			 
+
 			$error_message = "";
 			$email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
 			if(strlen($comments) < 2) {
@@ -380,24 +380,24 @@ if (isset($_GET['rf'])){
 				died($error_message);
 			}
 			$email_message = "Form details below.\n\n";
-			 
+
 			function clean_string($string) {
 			  $bad = array("content-type","bcc:","to:","cc:","href");
 			  return str_replace($bad,"",$string);
 			}
-			 
+
 			$email_message .= "Name: ".clean_string($name)."\n";
 			$email_message .= "Email: ".clean_string($email_from)."\n";
 			$email_message .= "Comments: ".clean_string($comments)."\n";
 			$email_message .= "IP: ".clean_string($ip)."\n";
-			 
-			 
+
+
 			// create email headers
 			$headers = 'From: '.$email_from."\r\n".
 			'Reply-To: '.$email_from."\r\n" .
 			'X-Mailer: PHP/' . phpversion();
-			@mail($email_to, $email_subject, $email_message, $headers);  
-			
+			@mail($email_to, $email_subject, $email_message, $headers);
+
 		}
 		if($_SERVER['HTTP_REFERER'] == 'http://'.$siteroot.'/contact-us')
 		{
@@ -470,7 +470,7 @@ if (isset($_GET['rf'])){
                     <div>
                         Once submitted, your app/channel instance will be able to pull down a token from the servers, if you have issues authenticating your app, please hop in the <a href="/irc" target="_blank">chat</a> or email support@animeftw.tv.
                     </div>
-                    <div id="key-failure-notice" style="display:none;">                        
+                    <div id="key-failure-notice" style="display:none;">
                     </div>
                 </form>
             </div>
@@ -543,7 +543,7 @@ if (isset($_GET['rf'])){
 		</div>
 		</div>';
 	}
-	$stats->get_la($profileArray[2]);	
+	$stats->get_la($profileArray[2]);
 	if(strpos($_SERVER['REQUEST_URI'], 'store'))
 	{
 		echo "<div class='side-body-bg'>";
@@ -552,11 +552,11 @@ if (isset($_GET['rf'])){
 		echo '<div align="center">';
 		if($profileArray[0] == 1)
 		{
-			echo '<a href="/scripts.php?view=cart&KeepThis=true&TB_iframe=true&height=400&width=780" title="Your Current Basket" class="thickbox"><img src="/images/storeimages/shopping_basket.png" alt="" title="View your current Basket" /></a>';
-			echo '<a href="/store/account"><img src="/images/storeimages/history.png" alt="" title="View past orders" /></a>';
+			echo '<a href="/scripts.php?view=cart&KeepThis=true&TB_iframe=true&height=400&width=780" title="Your Current Basket" class="thickbox"><img src="//i.animeftw.tv/storeimages/shopping_basket.png" alt="" title="View your current Basket" /></a>';
+			echo '<a href="/store/account"><img src="//i.animeftw.tv/storeimages/history.png" alt="" title="View past orders" /></a>';
 			if($profileArray[2] == 1)
 			{
-				echo '<a href="/store/admin"><img src="/images/storeimages/workflow.png" alt="" title="Manage the Store" /></a>';
+				echo '<a href="/store/admin"><img src="//i.animeftw.tv/storeimages/workflow.png" alt="" title="Manage the Store" /></a>';
 			}
 		}
 		else
@@ -599,7 +599,7 @@ if (isset($_GET['rf'])){
         echo "<br /><a href='//www.animeftw.tv/forums/xbmc-plugin-support/topic-4730/s-0' target='_blank'><img src='" . $Config->Host . "/themes/default/kodi-image.png' alt='Kodi Logo' border='0' width='225px' /></a><br />";
         echo "<br /><a href='//www.animeftw.tv/forums/roku-channel-support/' tager='_blank'><img src='" . $Config->Host . "/themes/default/roku-logo.png' alt='Roku TV logo' border='0' /></a><br />";
     }
-	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"/images/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
+	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"//i.animeftw.tv/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
 	echo "</div></div>\n";
 	$stats->get_zone($profileArray[3]);
 	$stats->LatestSeries();
@@ -611,6 +611,6 @@ if (isset($_GET['rf'])){
     echo "</td>\n";
 	echo "</tr>\n</table>\n";
 	// End Main BG
-		
+
 include('footer.php');
 ?>

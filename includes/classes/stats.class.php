@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: stats.class.php									 
-## Author: Brad Riemann										 
+## FileName: stats.class.php
+## Author: Brad Riemann
 ## Usage: Statistics class
 ## Copywrite 2011 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -13,24 +13,24 @@ class AFTWstats extends Config {
 	var $la; //Level Access Var
 	var $zone;
 	var $UserArray;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 		$this->array_buildSiteSettings();
 	}
-	
+
 	//gather all of the data...
 	function get_type($i){$this->type = $i;}
 	function get_format($i){$this->format = $i;}
 	function get_la($i){$this->la = $i;}
 	function get_zone($i){$this->zone = $i;}
-	
+
 	//Basic usage stats, for the right column
 	public function UsageStats()
 	{
@@ -41,14 +41,14 @@ class AFTWstats extends Config {
 			echo 'There were errors with the setup.';
 			exit;
 		}
-		
+
 		$stats = array();
 		while($row = mysql_fetch_array($results))
 		{
 			$stats[$row['id']]['name'] = $row['name'];
 			$stats[$row['id']]['content'] = $row['content'];
 		}
-		
+
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Site Statistics</div>\n";
 		echo "<div class='side-body floatfix'>\n";
@@ -65,7 +65,7 @@ class AFTWstats extends Config {
 			<div align="center" style="font-size:8px;">Stats updated Every 2 hours.</div>
 		</div>';
 		echo "</div></div>\n";
-	}	
+	}
 	//birthday function
 	private function Birthday($bm,$bd,$by){
 		if($by == '0000'){return 'Unknown';}
@@ -78,12 +78,12 @@ class AFTWstats extends Config {
 			return floor($ageYears);
 		}
 	}
-    
+
     public function donationBox($horizontal = false)
     {
         $query = "SELECT `value` FROM `settings` WHERE `id` = 10";
         $result = mysql_query($query);
-        
+
         if (!$result) {
             echo 'There was an issue running the donation box query';
             exit;
@@ -105,12 +105,12 @@ class AFTWstats extends Config {
                     <a href="/donate">
                         <img src="//img03.animeftw.tv/support-aftw-horizontal.png" alt="support aftw" />
                     </a>
-                </div>';                
+                </div>';
             } else {
             }
         }
     }
-    
+
 	public function BirthdayBox(){
 		$Month = date("m");
 		$Day = date("d");
@@ -121,7 +121,7 @@ class AFTWstats extends Config {
 		echo "<div class='side-body floatfix'>\n";
 		echo "Today, on ".date("F jS").", AnimeFTW.tv has ".$row['numrows']." Members celebrating their Birthday!<br /><br />Visit the <a href=\"/birthdays\">Birthday Zone</a> and See who is having their Birthday Today!!";
 		echo "</div></div>\n";
-		
+
 	}
 	public function TodaysBirthdays(){
 		$Month = date("m");
@@ -133,7 +133,7 @@ class AFTWstats extends Config {
 		}
 		echo "<div>";
 	}
-	
+
 	public function LatestEpisodes(){
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Latest Episodes(Airing)</div>\n";
@@ -172,13 +172,13 @@ class AFTWstats extends Config {
 			}
 		}
 		if($this->UserArray[0] == 1) {
-			echo "<div align=\"right\"><a href=\"/rss/episodes\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+			echo "<div align=\"right\"><a href=\"/rss/episodes\"><img src=\"//i.animeftw.tv/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
 		}
 		else {
 			echo "</div></div>";
 		}
 	}
-	
+
 	public function LatestSeries(){
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Latest Series</div>\n";
@@ -193,13 +193,13 @@ class AFTWstats extends Config {
 			echo '<div align="center" style="padding:3px;"><a href="/anime/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$id.'\',this);return false;" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a> was Added</div>';
 			}
 		if($this->UserArray[0] == 1) {
-			echo "<div align=\"right\"><a href=\"/rss/series\"><img src=\"/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+			echo "<div align=\"right\"><a href=\"/rss/series\"><img src=\"//i.animeftw.tv/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
 		}
 		else {
 			echo "</div></div>";
 		}
 	}
-	
+
 	public function TopWatchList(){
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Top My WatchList Series</div>\n";
@@ -212,7 +212,7 @@ class AFTWstats extends Config {
 		echo "</ol>";
 		echo "</div></div>";
 	}
-	
+
 	public function ShowStoreCategories()
 	{
 		echo "<div class='side-body-bg'>";
@@ -228,56 +228,56 @@ class AFTWstats extends Config {
 		echo '</div>';
 		echo "</div></div>";
 	}
-	
+
 	public function BuildStats(){
 		/*
 		// Update the total users
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE Active = 1) WHERE name = 'total_users'");
-		
+
 		// Update the total episode count
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM episode) WHERE name = 'total_episodes'");
-		
+
 		// Update the total series count
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM series) WHERE name = 'total_series'");
-		
+
 		// Update the total page comments
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM page_comments WHERE type = 0) WHERE name = 'total_comments'");
-		
+
 		// Update the total profile page comments
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM page_comments WHERE type = 1) WHERE name = 'total_comments_profile'");
-		
+
 		// Update the total episodes tracked
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM episode_tracker) WHERE name = 'total_tracker_rows'");
-		
+
 		// Upudate the total statuses
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM status) WHERE name = 'total_statuses'");
-		
+
 		// Update total users in last 24 hours
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE lastActivity>='".(time()-86400)."') WHERE name = 'total_24_hour_users'");
-		
+
 		// Update total watchlist entries
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(id) FROM watchlist) WHERE name = 'total_mywatchlist'");
-		
+
 		// Update total Males
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE gender = 'male') WHERE name = 'total_males'");
-		
+
 		// Update total females
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE gender = 'female') WHERE name = 'total_female'");
-		
+
 		// update total active avatars
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes') WHERE name = 'total_avatars'");
-		
+
 		//
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'gif') WHERE name = 'total_avatars_gif'");
-		
+
 		//
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'jpg') WHERE name = 'total_avatars_jpgs'");
-		
+
 		//
 		mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'png') WHERE name = 'total_avatars_pngs'");
 		//mysql_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'gif') WHERE name = 'total_users'");
-		
-		
+
+
 		// Calculations.
 		$minutes_of_total_eps = $total_episodes*24;
 		$length_of_total_eps = ($total_episodes*24)/60;

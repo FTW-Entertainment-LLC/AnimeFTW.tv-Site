@@ -660,11 +660,11 @@ else if($_GET['node'] == 'advanced-signup'){
 		echo '<div align="center">As the site has grown, so has our offering, many users asked us, how could we support the site, one the devoted itself to the highest quality anime on the net. After much thought, we came up with the Advanced Member Title. Since the conception of the Advanced Member, we have evolved the status to something more. FTW Subscribers, users who are a FTW Subscriber have access to all of the premium benefits on all of FTW Entertainment LLC\'s Sites, Being an Advanced Member is a Subsidary of this overall perk.</div> <br /><br />
 				<div>To be an FTW Subscriber, there is a monthly re-accuring fee, ranging from $5.00 USD a month to $4.10 USD a month, depending on the package  chosen is how much you pay. To be an FTW Subscriber, is to be a part of something bigger, AnimeFTW.TV and FTW Entertainment LLC are on a mission to bring high Quality Anime to the Masses, for free. We want you to be excited about your daily dose of anime, not just because the story is good, because the <i>quallity</i> is amazing.<br /><br />Below are some lists of perks that you will get on AnimeFTW.TV for signing up as a FTW Subscriber.</div>
 				<div align="center"><h5>(Click Images to see a bigger image)<h5></div>
-				<div align="left"><a href="/images/externalamdownloadnew.png" target="_blank"><img src="/images/externalamdownloadnew.png" width="350" alt="External AM downloads" style="float:left;" /></a><br /><b>Know What episodes you love?</b> <br />Download them from the episodes listing in a flash!</div><br /><br /><br /><br />
-				<div align="right"><a href="/images/AMstatus.png" target="_blank"><img src="/images/AMstatus.png" width="350" alt="AM Status" style="float:right;" /></a><b>Like to let people know of your current doings?</b> <br />Set your status on your profile page!</div><br /><br /><br />
-				<div align="left"><a href="/images/personalamsettings.png" target="_blank"><img src="/images/personalamsettings.png" height="300" alt="AM Profiles" style="float:left;" /></a><br /><b>Love profiles?</b> <br />With even more options for your account, go nuts!</div><br /><br /><br /><br /><br /><br /><br />
-				<div align="right"><a href="/images/html5video.png" target="_blank"><img src="/images/html5video.png" width="350" alt="HTML5 Player" style="float:right;" /></a><b>Want to use the HTML5 Video player?</b> <br />Choose to keep the DivX player, or start using the HTML5 player right away!</div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-				<div align="left"><a href="/images/sslsupport.png" target="_blank"><img src="/images/sslsupport.png" width="350" alt="Site Wide SSL Support" style="float:left;" /></a><br /><b>Don\'t want someone snooping on your anime?</b> <br />Use AnimeFTW.tv securely, on ALL pages!</div><br />
+				<div align="left"><a href="//i.animeftw.tv/externalamdownloadnew.png" target="_blank"><img src="//i.animeftw.tv/externalamdownloadnew.png" width="350" alt="External AM downloads" style="float:left;" /></a><br /><b>Know What episodes you love?</b> <br />Download them from the episodes listing in a flash!</div><br /><br /><br /><br />
+				<div align="right"><a href="//i.animeftw.tv/AMstatus.png" target="_blank"><img src="//i.animeftw.tv/AMstatus.png" width="350" alt="AM Status" style="float:right;" /></a><b>Like to let people know of your current doings?</b> <br />Set your status on your profile page!</div><br /><br /><br />
+				<div align="left"><a href="//i.animeftw.tv/personalamsettings.png" target="_blank"><img src="//i.animeftw.tv/personalamsettings.png" height="300" alt="AM Profiles" style="float:left;" /></a><br /><b>Love profiles?</b> <br />With even more options for your account, go nuts!</div><br /><br /><br /><br /><br /><br /><br />
+				<div align="right"><a href="//i.animeftw.tv/html5video.png" target="_blank"><img src="//i.animeftw.tv/html5video.png" width="350" alt="HTML5 Player" style="float:right;" /></a><b>Want to use the HTML5 Video player?</b> <br />Choose to keep the DivX player, or start using the HTML5 player right away!</div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+				<div align="left"><a href="//i.animeftw.tv/sslsupport.png" target="_blank"><img src="//i.animeftw.tv/sslsupport.png" width="350" alt="Site Wide SSL Support" style="float:left;" /></a><br /><b>Don\'t want someone snooping on your anime?</b> <br />Use AnimeFTW.tv securely, on ALL pages!</div><br />
 				<br /><br />
                 <div align="center" style="padding-top:100px;">
 				<table width="90%" border="0" cellspacing="1" cellpadding="1">
@@ -677,26 +677,26 @@ else if($_GET['node'] == 'advanced-signup'){
   <tr>
     <td align="center">Streaming</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr bgcolor="#CCCCCC">
     <td align="center">Comments account</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Profile to Update</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr bgcolor="#CCCCCC">
     <td align="center">Basic Profile Fields</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Friends Allowed</td>
@@ -708,73 +708,73 @@ else if($_GET['node'] == 'advanced-signup'){
     <td align="center">Interests Section</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">About You Section</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
    <tr bgcolor="#CCCCCC">
     <td align="center">Nickname customization</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Icon before Nickname</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
    <tr bgcolor="#CCCCCC">
     <td align="center">Direct Downloads</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Signature</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
    <tr bgcolor="#CCCCCC">
     <td align="center">Nickname Change</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Enhanced Episode Tracker</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr bgcolor="#CCCCCC">
     <td align="center">No Ads or Waiting Periods</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Profile Status</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr bgcolor="#CCCCCC">
     <td align="center">HTML5 Video</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
   <tr>
     <td align="center">Site Wide SSL Support</td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
-    <td align="center"><img src="/images/checkmark.gif" alt="check mark" /></td>
+    <td align="center"><img src="//i.animeftw.tv/checkmark.gif" alt="check mark" /></td>
   </tr>
 </table>
 </div>

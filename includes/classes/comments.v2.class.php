@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: comments.v2.class.php                                     
-## Author: Brad Riemann                                         
+## FileName: comments.v2.class.php
+## Author: Brad Riemann
 ## Usage: Comment Class and Functions
 ## Copywrite 2014 FTW Entertainment LLC, All Rights Reserved
 ## Updated: 10/5/2014 by Robotman321
@@ -22,25 +22,25 @@ class Comment extends Config {
         $this->DevArray = $DevArray;
         $this->permissionArray = $permissionArray;
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
-        
+
         // deploy the variables used in normal operations.
         $this->PerPage                = 20;
         $this->Epid                    = $Epid;        // Episode ID, always helpful.
-        
+
     }
-    
+
     public function connectProfile($input)
     {
         $this->UserArray = $input;
     }
-    
+
     public function showComments()
     {
         echo '
         <div id="comments-wrapper">';
         // if the user is not banned from posting comments, we let it through.
         $this->showForm();
-        
+
         // Wrap the comments in their div here so we can add dynamic loading later..
         echo '<div class="comments-group">';
         $this->buildComments();
@@ -48,7 +48,7 @@ class Comment extends Config {
         echo '
         </div>';
     }
-    
+
     public function processComment()
     {
         if(isset($_POST['form-type']) && $_POST['form-type'] == 'ProfileComment')
@@ -67,7 +67,7 @@ class Comment extends Config {
             $insertId = $this->mysqli->insert_id;
             //select the id for everything else
             $this->mysqli->query("INSERT INTO notifications (`id`, `uid`, `date`, `type`, `d1`, `d2`, `d3`) VALUES (NULL, '".$pid."', '".time()."', '2', '" . $insertId . "', NULL, NULL)");
-            
+
             if($this->UserArray['avatarActivate'] == 'no')
             {
                 $avatar = '<img src="' . $this->ImageHost . '/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';
@@ -78,13 +78,13 @@ class Comment extends Config {
             }
             $comment = stripslashes($comment);
             $comment = nl2br($comment);
-            
+
             //echo $query;
             echo '<div id="justposted" class="side-body floatfix" style="margin-bottom:2px;">';
             echo '<div id="dropmsg0" class="dropcontent">
             <div style="float:right;">'.$avatar.'</div>
             <div style="padding-bottom:2px;">' . $this->UserArray['FancyUsername'] . ' - <span title="Posted '.date('l, F jS, o \a\t g:i a',time()).'">'.date('M jS',time()).'</span></div>'.$comment.'</div></div>';
-            
+
             if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv'){
                 $slackData = "*New Profile Comment by " . $this->UserArray['Username'] . " on " . $this->string_fancyUsername($pid,NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "'s profile from the Website*: \n ```" . $comment . "```";
                 $slack = $this->postToSlack($slackData);
@@ -95,7 +95,7 @@ class Comment extends Config {
             echo 'Something went wrong somewhere..';
         }
     }
-    
+
     private function showForm()
     {
         if($this->UserArray['postBan'] == 0)
@@ -132,7 +132,7 @@ class Comment extends Config {
             </div>
             <script>
             $(".comment-submit").click(function() {
-                $(".comment-submit").attr("disabled", true);                
+                $(".comment-submit").attr("disabled", true);
                 $.ajax({
                     type: "POST",
                     url: "/scripts.php?view=commentsv2&epid=' . $this->Epid . '&sub=post",
@@ -187,14 +187,14 @@ class Comment extends Config {
                 $dated = $row['dated'];
                 $negative = $row['negative'];
                 $positive = $row['positive'];
-                
+
                 // Build the date in a normal format..
                 $dated = str_replace(array(" ",":"),"-",$dated);
                 list($year,$month,$day,$hour,$minute) = explode("-",$dated);
                 // you can edit this line to display date/time in your preferred notation
                 $dated = @date("M jS Y",mktime($hour,$minute,0,$month,$day,$year));
-            
-                
+
+
                 // Build the users avatar
                 if($row['avatarActivate'] == 'no')
                 {
@@ -217,20 +217,20 @@ class Comment extends Config {
                     if($row['Voted'] == 0)
                     {
                         // it means they have not voted yet
-                        $actionbar .= '<a id="cid-up-' . $cid . '" class="vote-up linkopacity" style="cursor:pointer;" title="Vote Up this Comment!"><img src="/images/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
-                        $actionbar .= '<a id="cid-dw-' . $cid . '" class="vote-down linkopacity" style="cursor:pointer;" title="Vote Down this Comment!"><img src="/images/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a id="cid-up-' . $cid . '" class="vote-up linkopacity" style="cursor:pointer;" title="Vote Up this Comment!"><img src="//i.animeftw.tv/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a id="cid-dw-' . $cid . '" class="vote-down linkopacity" style="cursor:pointer;" title="Vote Down this Comment!"><img src="//i.animeftw.tv/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
                     }
                     else
                     {
                         // it means they already voted this up or down.
-                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="/images/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
-                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="/images/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="//i.animeftw.tv/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="//i.animeftw.tv/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
                     }
                 }
-                $actionbar .= '<a href="/pm/compose/' . $uid . '" title="Will open in a new Tab" target="_blank" class="linkopacity"><img src="/images/tinyicons/email.png" alt="" border="0"></a>&nbsp;';
-                $actionbar .= '<a href="javascript:void(0)" class="linkopacity" title="Report Comment" onclick="alert(\'Feature coming soon!\');"><img src="/images/tinyicons/exclamation.png" alt="" border="0"></a>&nbsp;';
-                $actionbar .= '<a href="/user/' . $row['Username'] . '" class="linkopacity" title="View User\'s Profile" target="_blank"><img src="/images/tinyicons/user.png" alt="" border="0"></a>';
-                
+                $actionbar .= '<a href="/pm/compose/' . $uid . '" title="Will open in a new Tab" target="_blank" class="linkopacity"><img src="//i.animeftw.tv/tinyicons/email.png" alt="" border="0"></a>&nbsp;';
+                $actionbar .= '<a href="javascript:void(0)" class="linkopacity" title="Report Comment" onclick="alert(\'Feature coming soon!\');"><img src="//i.animeftw.tv/tinyicons/exclamation.png" alt="" border="0"></a>&nbsp;';
+                $actionbar .= '<a href="/user/' . $row['Username'] . '" class="linkopacity" title="View User\'s Profile" target="_blank"><img src="//i.animeftw.tv/tinyicons/user.png" alt="" border="0"></a>';
+
                 echo '
                     <div class="single-comment-wrapper" style="margin:20px 0 20px 10px;">
                         <div class="comment-wrapper" id="comment-' . $cid . '">
@@ -253,13 +253,13 @@ class Comment extends Config {
                         </div>
                     </div>';
             }
-            
+
             if($ajax == 0 && $count == 20)
             {
                 echo '</div>';
                 echo '
                 <script>
-                    var nextpage = 1;            
+                    var nextpage = 1;
                     jQuery(
                       function($)
                       {
@@ -283,12 +283,12 @@ class Comment extends Config {
                       }
                     );
                 </script>';
-                
+
                 echo '
                 <script>
                     $(document).ready(function(){
                         $(".comment-wrapper").hover(function() {
-                            
+
                         });
                         $(".vote-up").click(function() {
                             var comment_id = $(this).attr("id").substring(7);
@@ -339,7 +339,7 @@ class Comment extends Config {
     public function processSubmission()
     {
         // objective of this script is to process the form data coming in..
-        
+
         $uid = $this->UserArray['ID'];
         $ip = $this->mysqli->real_escape_string($_POST['ip']);
         $epid = $this->mysqli->real_escape_string($_POST['epid']);
@@ -348,8 +348,8 @@ class Comment extends Config {
         $spoiler = $this->mysqli->real_escape_string($spoiler);
         $dated = date("Y-m-d H:i:s");
         $is_approved = 1;
-        
-        
+
+
         $pid = $this->mysqli->real_escape_string($pid);
         $comment = strip_tags($comment);
         $comment = nl2br($comment);
@@ -362,7 +362,7 @@ class Comment extends Config {
         }
         echo 'Success';
     }
-    
+
     public function bool_totalComments($id)
     {
         $query = "SELECT COUNT(id) as numrows FROM `page_comments` WHERE `epid` = " . $this->mysqli->real_escape_string($id);
@@ -370,7 +370,7 @@ class Comment extends Config {
         $row = $result->fetch_assoc();
         return $row['numrows'];
     }
-    
+
     public function array_displayComments()
     {
         // we set the count of how many comments to display, default is 20
@@ -489,7 +489,7 @@ class Comment extends Config {
         }
         return $returnarray;
     }
-    
+
     public function array_addComment(){
         if(!isset($this->Data['id']) || !is_numeric($this->Data['id']) || !isset($this->Data['comment']) || (isset($this->Data['spoiler']) && !is_numeric($this->Data['spoiler']))){
             // there was data missing.. let them know.
@@ -502,7 +502,7 @@ class Comment extends Config {
             else {
                 $commentType = $this->Data['type'];
             }
-            
+
             if($commentType == 0){
                 // episode comment
                 $pageId = 0;
@@ -521,9 +521,9 @@ class Comment extends Config {
                 $spoiler = 0;
             }
             $query = "INSERT INTO `page_comments` (`id`, `comments`, `isSpoiler`, `ip`, `page_id`, `dated`, `uid`, `epid`, `source`) VALUES (NULL, '" . $this->mysqli->real_escape_string($this->Data['comment']) . "', '" . $this->mysqli->real_escape_string($spoiler) . "', '" . $this->mysqli->real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . $pageId . "', NOW(), '" . $this->UserArray['ID'] . "', '" . $this->mysqli->real_escape_string($this->Data['id']) . "', '" . $this->DevArray['id'] . "')";
-            
+
             $result = $this->mysqli->query($query);
-            
+
             if(!$result){
                 // failure
                 $returnarray = array('status' => '500', 'message' => 'Something went wrong executing the query, please try again.');
