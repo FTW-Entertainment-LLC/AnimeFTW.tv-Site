@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: pages.class.php									 
-## Author: Brad Riemann										 
+## FileName: pages.class.php
+## Author: Brad Riemann
 ## Usage: Page Layout Class
 ## Copywrite 2011 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -11,7 +11,7 @@ class AFTWpage{
 	var $ssl;
 	var $gmessage;
 	var $uid;
-	
+
 	//getting the page width..
 	function get_width($width){
 		$this->width = $width;
@@ -68,7 +68,7 @@ class AFTWpage{
 				<!-- End Insticator API Embed Code -->
 			<?
 			echo "</div></div>\n";
-		}	
+		}
 	}
 	//right bottom
 	function rightBottom(){
@@ -104,7 +104,7 @@ class AFTWpage{
 			echo "<div class='tbl'>$body</div>\n";
 			echo "<br />\n";
 		}
-	}	
+	}
 	public function bodyTopInfo($message,$bdybr,$profileArray,$SettingsArray){
 		if($bdybr == NULL){$bodyTop = "";}
 		else {$bodyTop = "\n";}
@@ -184,9 +184,9 @@ class AFTWpage{
 		$bodyTop .= "<td valign='top' class='main-mid'>\n";
 		return $bodyTop;
 	}
-	
-	public function LatestNews($profileArray){				
-		mysql_query("SET NAMES 'utf8'"); 
+
+	public function LatestNews($profileArray){
+		mysql_query("SET NAMES 'utf8'");
         if ($profileArray[2] != 0 && $profileArray[2] != 3) {
             $showForumPosts = "'1','2','9', '14'";
         } else {
@@ -196,12 +196,12 @@ class AFTWpage{
 		$row = mysql_fetch_array($query);
 		$ttitle = stripslashes($row['ttitle']);
 		$ttitle = htmlspecialchars($ttitle);
-		echo "<a href=\"/forums/".$row['fseo']."/topic-".$row['tid']."/s-0\"><img src=\"/images/latest-news.png\" alt=\"\" title=\"Posted on: ".date("M j Y, h:i A",$row['tdate'])."\" /></a><span class=\"search-text-pre\">News: </span><span class=\"search-text-post\" title=\"$ttitle\">";
+		echo "<a href=\"/forums/".$row['fseo']."/topic-".$row['tid']."/s-0\"><img src=\"//i.animeftw.tv/latest-news.png\" alt=\"\" title=\"Posted on: ".date("M j Y, h:i A",$row['tdate'])."\" /></a><span class=\"search-text-pre\">News: </span><span class=\"search-text-post\" title=\"$ttitle\">";
 		if(strlen($ttitle) <= 45){
 			echo $ttitle;
 		}
 		else {
-			echo substr($ttitle,0,41).'&hellip;'; 
+			echo substr($ttitle,0,41).'&hellip;';
 		}
 		echo "</span>";
 	}

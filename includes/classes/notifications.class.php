@@ -1,13 +1,13 @@
 <?php
 /****************************************************************\
-## FileName: notifications.class.php									 
-## Author: Brad Riemann										 
+## FileName: notifications.class.php
+## Author: Brad Riemann
 ## Usage: Notifications Class, for the win
 ## Copyright 2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class AFTWNotifications extends Config {
-	/* 
+	/*
 	# This Script is the core to the AFTW Notification system.
 	# The Notification System is a Hybrid notification system (or sorts), values are input into the table and output
 	# to end users as a stream of events. The idea is that we can record one instance for an episode addition
@@ -15,28 +15,28 @@ class AFTWNotifications extends Config {
 	# additions to the site can be logged and rotated with a 7 day TTL on an individual basis. Hey, i'm making this up
 	# as i go along.. -Brad
 	*/
-	
+
 	//#- Vars -#\\
 	var $uid, $darray, $UserArray;
-	
+
 	//#- Contruct -#\\
 	public function __construct($uid = NULL)
 	{
 		parent::__construct();
 		$this->darray = array(1 => 86400, 2 => 172800, 3 => 259200, 4 => 345600, 5 => 432000, 6 => 518400, 7 => 604800);
 	}
-	
+
 	public function connectProfile($input)
 	{
 		$this->UserArray = $input;
 	}
-	
+
 	//#- Output -#\\
 	public function Output(){
 		$this->BuildList();
 		$this->RecordView();
 	}
-	
+
 	# function CronJob
 	public function CronJob(){
 		//build the date to bind off of.
@@ -47,13 +47,13 @@ class AFTWNotifications extends Config {
 		mysql_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '13', '" . time() . "', '" . time() . "');");
 		mysql_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = 13");
 	}
-	
+
 	public function ShowSprite()
 	{
 		if($this->UserArray[0] == 1)
 		{
             $query = "SELECT COUNT(id) as Total FROM notifications WHERE notifications.date > ".$this->UserArray[12]." AND (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1].")))";
-			$result = mysql_query($query); 
+			$result = mysql_query($query);
 			if(!$result)
 			{
 			}
@@ -64,7 +64,7 @@ class AFTWNotifications extends Config {
 				{
 					return '<span class="JewelNotif2 disBlock" id="requestJewelNotif">'.$CountNotes.'</span>';
 				}
-				else 
+				else
 				{
 				}
 			}
@@ -72,14 +72,14 @@ class AFTWNotifications extends Config {
 		else {
 		}
 	}
-	
+
 	public function showProfile()
 	{
 		// make sure the user is logged in first.
 		if($this->UserArray[0] == 1)
 		{
 			$query = "SELECT COUNT(notifications.id) FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ";
-			$result = mysql_query($query); 
+			$result = mysql_query($query);
 			if(!$result)
 			{
 				echo 'There was an error executing the query.';
@@ -103,15 +103,15 @@ class AFTWNotifications extends Config {
 			echo 'Please <a href="/login">Log in</a> to view your Notification listing.';
 		}
 	}
-	
+
 	//#- Private Functions -#\\
-	
+
 	# function Query
 	private function Query($q){
-		$query = mysql_query($q); 
+		$query = mysql_query($q);
 		return $query;
 	}
-	
+
 	# function BuildIcon
 	private function BuildList($spriteMode=TRUE)
 	{
@@ -125,8 +125,8 @@ class AFTWNotifications extends Config {
 			// we limit this to 8 rows.
 			$queryLimit = " LIMIT 0, 30";
 		}
-		
-		mysql_query("SET NAMES 'utf8'"); 
+
+		mysql_query("SET NAMES 'utf8'");
 		$query = "SELECT notifications.* FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ORDER BY notifications.date DESC" . $queryLimit;
 		$result = $this->Query($query);
 		//echo '<ul>';
@@ -135,7 +135,7 @@ class AFTWNotifications extends Config {
 			echo '<li><div align="left" class="notificationHeader">AnimeFTW.tv Site Notifications</div></li>';
 		}
 		$count = mysql_num_rows($result);
-		
+
 		if($count < 1)
 		{
 			if($spriteMode == TRUE)
@@ -159,12 +159,12 @@ class AFTWNotifications extends Config {
 			echo '<li><div align="center" class="notificationFooter"><a href="/user/'.$this->UserArray[5].'">View All Notifications</a></div></li>';
 		}
 		echo '
-		<script>		
+		<script>
 			$(".add-friend-link").click(function(){
 				var this_id = $(this).attr("id").substring(5);
-				
+
 				var request_url = "/scripts.php?view=profile&subview=friend-notification&id=" + this_id;
-				
+
 				$.ajax({
 					type: "GET",
 					processData: true,
@@ -191,7 +191,7 @@ class AFTWNotifications extends Config {
 		</script>';
 		//echo '</ul>';
 	}
-	
+
 	# function PopulateRow
 	private function PopulateRow($id,$uid = NULL,$date,$type,$spriteMode,$d1 = NULL,$d2 = NULL,$d3 = NULL){
 		if($uid == NULL)
@@ -211,12 +211,12 @@ class AFTWNotifications extends Config {
 			}
 			echo $startTag . '
 				<div align="center"'.$eimage.'>
-					Episode '.$row['epnumber'].' of '.$row['fullSeriesName'].' was added.<br /> 
+					Episode '.$row['epnumber'].' of '.$row['fullSeriesName'].' was added.<br />
 					Titled: '.$row['epname'].'<br />
 					<a href="/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'"><b>Watch this Episode Now</b></a>
 				</div>
 				<div class="notif_time">
-					'.$this->BuildDate($date).'<img src="/images/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
+					'.$this->BuildDate($date).'<img src="//i.animeftw.tv/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
 				</div>' . $endTag;
 		}
 		else
@@ -243,7 +243,7 @@ class AFTWNotifications extends Config {
 					$startTag = '<div style="border-bottom:1px solid #e5e5e5;padding:5px 0 5px 0;">';
 					$endTag = '</div>';
 				}
-				echo $startTag . '				
+				echo $startTag . '
 					<div align="left">
 						<img src="'.$userimage.'" alt="" height="50px" style="padding:3px;" />
 						<div class="inotif" align="left">
@@ -288,7 +288,7 @@ class AFTWNotifications extends Config {
 					$startTag = '<div style="border-bottom:1px solid #e5e5e5;padding:5px 0 5px 0;">';
 					$endTag = '</div>';
 				}
-				echo $startTag . '	
+				echo $startTag . '
 				<div align="left">
 					<div style="display:inline-block;width:20%;" align="center">
 						<img src="'.$userimage.'" alt="" width="50px" style="padding:10px 1px 1px 1px;" />
@@ -307,12 +307,12 @@ class AFTWNotifications extends Config {
 		}
 		//echo '<li></li>';
 	}
-	
+
 	# function BuildDate
 	private function BuildDate($date){
 		$today = date('md',time());
 		$var = date('md',$date);
-		
+
 		if($var == $today){ //aw yeah.. its today..
 			$return = 'Today at '.date('h:ia',$date);
 		}
@@ -331,7 +331,7 @@ class AFTWNotifications extends Config {
 		}
 		return $return;
 	}
-	
+
 	# function RecordView
 	private function RecordView(){
 		mysql_query("UPDATE users SET viewNotifications = '".time()."' WHERE ID = '".$this->UserArray[1]."'");

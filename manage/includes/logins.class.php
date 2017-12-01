@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: logins.class.php								 
-## Author: Brad Riemann								 
+## FileName: logins.class.php
+## Author: Brad Riemann
 ## Usage: AFTW Management Logins are handled by this class
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -9,13 +9,13 @@
 class Logins extends Config {
 
 	var $LoginError;
-	
+
 	public function __construct()
 	{
 		parent::__construct(TRUE);
 		$this->LoginError = '';
 	}
-	
+
 	public function processLogins()
 	{
 		// we need to get the email to make the process work.
@@ -31,7 +31,7 @@ class Logins extends Config {
 			echo 'Error in the MySQL Query:' . $PhaseTwo;
 			exit;
 		}
-		else 
+		else
 		{
 			$count = mysql_num_rows($results);
 			if($count < 1)
@@ -40,25 +40,25 @@ class Logins extends Config {
 				if(isset($_POST['generatehash']))
 				{
 					echo 'Your new password has been sent to Brad, please hang tight.';
-					
+
 					$vars = "This is a Password update request.\n\n";
 					$vars .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n";
 					$vars .= "Username: " . $_POST['logname'] . "\n";
 					$vars .= "Password Hash: " . $PhaseTwo . "\n\n";
-					
+
 					$Email = new Email();
 					$Email->Send(6,$vars);
 				}
 				else
 				{
 					echo 'The Username or Password was incorrect. Please try again.';
-					
+
 					$vars = "There was a failed login attempt to the AnimeFTW.tv Management Console.\n\n";
 					$vars .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . " (" . gethostbyaddr($_SERVER['REMOTE_ADDR']) . ")\n";
 					$vars .= "Username: " . $_POST['logname'] . "\n";
 					$vars .= "Password: " . substr($_POST['passw0rd'], 0, 1) . str_repeat('*', (strlen($_POST['passw0rd']) -1)) . "\n\n";
 					$vars .= "Please be aware of this login, if there are multiple attempts a banning needs to occur.\n";
-					
+
 					$Email = new Email("support@animeftw.tv");
 					$Email->Send(5,$vars);
 				}
@@ -71,13 +71,13 @@ class Logins extends Config {
 			}
 		}
 	}
-	
+
 	public function loginCode()
 	{
 		$Data = '
 		<div id="body-wrapper2">
 			<div id="welcome-wrapper">
-				<div style="margin:auto;float:left;position:absolute;z-index;-1;margin:-140px 0 0 -290px;"><img src="/images/fay-maid.png" alt="" /></div>
+				<div style="margin:auto;float:left;position:absolute;z-index;-1;margin:-140px 0 0 -290px;"><img src="//i.animeftw.tv/fay-maid.png" alt="" /></div>
 				<form id="welcome-form" autocomplete="off">';
 				if(isset($_GET['create']) && $_GET['create'] == 'yes')
 				{
@@ -148,8 +148,8 @@ class Logins extends Config {
 		</script>
 		<script>
 			$(document).ready(function(){
-				
-				
+
+
 				$("#welcome-submit").click(function() {
 					$.post("ajax.php", $("#welcome-form").serialize(), function(){
 					})
@@ -166,25 +166,25 @@ class Logins extends Config {
 					})
 					.fail(function(data) {
 						alert("failed..");
-					});					
+					});
 				});
 			});
 		</script>';
 		return $Data;
 	}
-	
+
 	private function setSessions($UserID)
-	{		
+	{
 		session_start();
-		
+
 		$_SESSION['m_user_id'] = $UserID;
 		$_SESSION['m_logged_in'] = TRUE;
 	}
-	
+
 	public function checkSessions()
 	{
 		session_start();
-		
+
 		if(isset($_SESSION['m_logged_in']) && $_SESSION['m_logged_in'] == TRUE)
 		{
 			return TRUE;
@@ -194,11 +194,11 @@ class Logins extends Config {
 			return FALSE;
 		}
 	}
-	
+
 	public function removeSessions()
 	{
 		session_start();
-		
+
 		$_SESSION['m_user_id'] = 0;
 		$_SESSION['m_logged_in'] = FALSE;
 	}

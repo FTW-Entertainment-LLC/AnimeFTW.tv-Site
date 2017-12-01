@@ -1,6 +1,6 @@
 *.log
 error_log
-images/avatars/
+images/
 cache/
 .ftpquota
 .idea/

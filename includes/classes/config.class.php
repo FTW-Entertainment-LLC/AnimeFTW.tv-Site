@@ -25,7 +25,7 @@ class Config {
         $this->MainDB = 'mainaftw_anime';
         if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
         {
-            $this->MainDB = 'devadmin_anime'; // Main DB for everything else
+            $this->MainDB = 'devsftw9_anime'; // Main DB for everything else
         }
         // Set the domain..
         $this->ThisDomain = ".animeftw.tv";
@@ -48,12 +48,12 @@ class Config {
         if($port == 443)
         {
             //$this->Host = 'https://d206m0dw9i4jjv.cloudfront.net';
-            $this->Host = 'https://img03.animeftw.tv';
+            $this->Host = 'https://i.animeftw.tv';
         }
         else
         {
             //$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
-            $this->Host = 'https://img03.animeftw.tv';
+            $this->Host = 'https://i.animeftw.tv';
         }
 
         // build the site default settings..
@@ -468,20 +468,20 @@ class Config {
             }
             if($Level_access == 1)
             {
-                $fixedUsername = $spanbefore . '<img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;width:16px;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;width:16px;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
             }
             else if($Level_access == 2)
             {
-                $fixedUsername = $spanbefore . '<img src="/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;width:16px;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;width:16px;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
             }
             else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
             {
-                // /images/staff-icon.png
-                $fixedUsername = $spanbefore . '<img src="/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;width:16px;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                // //i.animeftw.tv/staff-icon.png
+                $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;width:16px;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
             }
             else if($Level_access == 7)
             {
-                $fixedUsername = '<img src="/images/advancedimages/'.$advanceImage.'.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" /><a href="/user/'.$Username.'">'.$display_name.'</a>';
+                $fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" /><a href="/user/'.$Username.'">'.$display_name.'</a>';
             }
             else
             {
@@ -569,20 +569,20 @@ class Config {
                     }
                     if($Level_access == 1)
                     {
-                        $fixedUsername = $spanbefore . '<img src="/images/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else if($Level_access == 2)
                     {
-                        $fixedUsername = $spanbefore . '<img src="/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
                     {
-                        // /images/staff-icon.png
-                        $fixedUsername = $spanbefore . '<img src="/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        // //i.animeftw.tv/staff-icon.png
+                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else if($Level_access == 7)
                     {
-                        $fixedUsername = $spanbefore . '<img src="/images/advancedimages/' . $advanceImage . '.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/advancedimages/' . $advanceImage . '.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else
                     {

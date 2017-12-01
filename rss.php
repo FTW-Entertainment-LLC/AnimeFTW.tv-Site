@@ -25,15 +25,15 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>2</ttl>
     <image>
-      <url>http://www.animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
+      <url>http://i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
       <link>http://www.animeftw.tv/</link>
       <title>Latest News and Updates from AnimeFTW.tv</title>
     </image>';
 
 $query = "SELECT forums_threads.tid, forums_threads.ttitle, forums_threads.tfid, forums_threads.tdate, forums_forum.fseo, users.Username FROM forums_threads, forums_forum, users WHERE (tfid='1' OR tfid='2' OR tfid='9') AND users.ID=tpid AND fid=tfid ORDER BY tid DESC LIMIT 0, 10";
 $result = mysql_query($query) or die('Error : ' . mysql_error());
-while(list($tid, $ttitle, $tfid, $tdate, $fseo, $Username) = mysql_fetch_array($result)) 
-{	
+while(list($tid, $ttitle, $tfid, $tdate, $fseo, $Username) = mysql_fetch_array($result))
+{
 	$pbody = strip_tags($pbody);
 	echo '<item>
       <pubDate>' . date("r",$tdate) . '</pubDate>
@@ -52,7 +52,7 @@ else
 	if(isset($_GET['type']) && $_GET['type'] == 'episodes')
 	{
 		echo '<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" 
+<rss version="2.0"
 	xmlns:atom="http://www.w3.org/2005/Atom"
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
 >
@@ -70,7 +70,7 @@ else
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>2</ttl>
     <image>
-      <url>http://www.animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
+      <url>http://i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
       <link>http://www.animeftw.tv/anime</link>
       <title>Latest 50 Episodes from AnimeFTW.tv</title>
     </image>';
@@ -130,7 +130,7 @@ echo '
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>2</ttl>
     <image>
-      <url>http://www.animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
+      <url>http://i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
       <link>http://www.animeftw.tv/anime</link>
       <title>Latest 20 Series from AnimeFTW.tv</title>
     </image>';

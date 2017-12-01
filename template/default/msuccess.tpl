@@ -8,7 +8,7 @@
  <BODY>
   <A name="top"></a>
   <DIV class="header">
-   <IMG src="/images/new-logo.png">
+   <IMG src="//i.animeftw.tv/new-logo.png">
   </DIV>
   <DIV class="content">
    <DIV class="chead">

@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: store.class.php								 
-## Author: Brad Riemann								 
+## FileName: store.class.php
+## Author: Brad Riemann
 ## Usage: Store management class for the site.
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -15,7 +15,7 @@ class Store extends Config {
 		$this->storeAdminInterface();
 		echo '</div>';
 	}
-	
+
 	private function storeAdminInterface()
 	{
 		$link = 'ajax.php?node=store'; // base url
@@ -24,19 +24,19 @@ class Store extends Config {
 					<div align="center">Please Choose what you would like to do.</div>
 					<div align="center">';
 					if($this->ValidatePermission(80) == TRUE)
-					{		
+					{
 						echo '<a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=manage-stock\'); return false;">Manage Stock</a>';
 					}
 					if($this->ValidatePermission(81) == TRUE)
-					{		
+					{
 						echo '| <a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=manage-orders\'); return false;">Manage Orders</a>';
 					}
 					if($this->ValidatePermission(82) == TRUE)
-					{		
+					{
 						echo '| <a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=manage-carts\'); return false;">Manage Carts</a>';
 					}
 					if($this->ValidatePermission(83) == TRUE)
-					{		
+					{
 						echo '| <a href="#" onClick="$(\'#right-column\').load(\''.$link.'&stage=manage-logs\'); return false;">View Logs</a>';
 					}
 					echo '</div>
@@ -71,7 +71,7 @@ class Store extends Config {
 				echo "</div>\n";
 				echo "<br />\n";
 	}
-	
+
 	private function deployStoreManagement()
 	{
 		if(isset($_GET['stage']))
@@ -120,12 +120,12 @@ class Store extends Config {
 								echo 'This script just hates you.';
 							}
 							else
-							{								
+							{
 								$inv_id = substr($_GET['inv_id'],5);
 								$inv_type = substr($_GET['inv_id'],0,4);
-								
+
 								$this->ModRecord("Update Inventory for Item " . mysql_real_escape_string($_GET['id']));
-								
+
 								if($inv_type == 'size')
 								{
 									// We are going to update the size value
@@ -152,7 +152,7 @@ class Store extends Config {
 				{
 					$query = "SELECT id, name, productnum FROM store_items ORDER BY name ASC";
 					$results = mysql_query($query);
-					
+
 					$rowcount = mysql_num_rows($results);
 					echo '<div style="float:right;padding-right:15px;"><a href="#" onClick="AdminFunction(\'manage-stock\',\'add\',\'0\'); return false;">Add Item</a></div><div align="center" style="margin-top:5px;">Showing a total of ' . $rowcount . ' items available on the store.</div>
 					<div>';
@@ -204,7 +204,7 @@ class Store extends Config {
 			echo 'The request could not be processed at this time.';
 		}
 	}
-	
+
 	private function ShowItem()
 	{
 		$query = "SELECT id, name, price, availability, description, productnum, pictures, picturetype FROM store_items WHERE name = '" . mysql_real_escape_string($this->options[1]) . "'";
@@ -218,7 +218,7 @@ class Store extends Config {
 			$row = mysql_fetch_array($result);
 			$this->ItemName = $row['name'];
 			$numrows = mysql_num_rows($result);
-			
+
 			if($numrows > 0)
 			{
 				$this->Item = $row;
@@ -231,7 +231,7 @@ class Store extends Config {
 				echo "<span class='poster'>&nbsp;</span><br />\n";
 				echo '<div class="tbl" style="font-size:14px;">
 					<div>
-						<div style="float:left;width:355px;vertical-align:top;padding-right:3px;" id="primary-item-image-wrapper"><a href="#" onClick="window.open($(\'#primary-item-image\').attr(\'src\')); return false;"><img src="/images/storeimages/item' . $row['id'] . '-0.' . $row['picturetype'] . '" id="primary-item-image" style="width:350px;border:1px solid #021a40;" /></a></div>
+						<div style="float:left;width:355px;vertical-align:top;padding-right:3px;" id="primary-item-image-wrapper"><a href="#" onClick="window.open($(\'#primary-item-image\').attr(\'src\')); return false;"><img src="//i.animeftw.tv/storeimages/item' . $row['id'] . '-0.' . $row['picturetype'] . '" id="primary-item-image" style="width:350px;border:1px solid #021a40;" /></a></div>
 						<div style="vertical-align:top;">
 							<span style="font-weight:bold;padding-bottom:2px;">Category: </span> <a href="/store/' . strtolower($this->CatArray[$this->options[0]]['name']) . '/">' . $this->CatArray[$this->options[0]]['name'] . '</a><br />
 							<span style="font-weight:bold;padding-bottom:2px;">Price: </span> $' . $row['price'] . ' USD<br />
@@ -245,7 +245,7 @@ class Store extends Config {
 					$i = 0;
 					while($i <= ($row['pictures']-1))
 					{
-						$image = '/images/storeimages/item' . $row['id'] . '-' . $i . '.' . $row['picturetype'];
+						$image = '//i.animeftw.tv/storeimages/item' . $row['id'] . '-' . $i . '.' . $row['picturetype'];
 						echo '<a href="' . $image . '" onClick="$(\'#primary-item-image\').attr(\'src\',\'' . $image . '\'); return false;">
 							<img src="' . $image . '" style="width:100px;border:1px solid #021a40;" alt="" />
 						</a>';
@@ -263,13 +263,13 @@ class Store extends Config {
 			}
 		}
 	}
-	
+
 	private function BuildAvailability($item_id)
 	{
 		$query = "SELECT `id`, `item_count`, `item_size` FROM store_inventory WHERE item_id='$item_id' AND item_count>0 ORDER BY `order` ASC";
 		$results = mysql_query($query);
 		$numrow = mysql_num_rows($results);
-		
+
 		if($numrow > 0) // if there are active rows, it means it can be bought.
 		{
 			if($this->UserArray[0] == 1)
@@ -304,7 +304,7 @@ class Store extends Config {
 		echo $addtocart;
 		echo '</form>';
 	}
-	
+
 	private function ItemForm($Type = 'Add')
 	{
 		if($Type == 'Edit')
@@ -317,7 +317,7 @@ class Store extends Config {
 			$FormOptions = '';
 			$FormTitle = '<div style="font-size:16px;width:200px;border-bottom:1px solid #ccc;">Editting an Item</div>';
 		}
-		else 
+		else
 		{
 			$id = '';
 			$category = '';
@@ -394,11 +394,11 @@ class Store extends Config {
 						if(html.substring(4, 11) == "Success")
 						{
 							' . $FormOptions . '
-							$(\'#item-output\').show().html(html);	
+							$(\'#item-output\').show().html(html);
 						}
 						else
 						{
-							$(\'#item-output\').show().html(html);	
+							$(\'#item-output\').show().html(html);
 						}
 					}
 				});
@@ -407,17 +407,17 @@ class Store extends Config {
 		});
 		</script>';
 	}
-	
+
 	private function ListInventory($id)
 	{
 		echo '<div id="inventory-wrapper">';
 		echo '<div style="padding:5px;">';
 		echo '<div style="float:right;"><a href="#" id="inventory-add">Add a New Inventory Item</a></div>';
 		echo '<div style="font-size:16px;width:200px;border-bottom:1px solid #ccc;">Item Inventory</div>';
-		
+
 		$query = "SELECT `id`, `item_count`, `item_size`, `order` FROM store_inventory WHERE item_id = $id ORDER BY `order` ASC";
 		$results = mysql_query($query);
-		
+
 		if(!$results)
 		{
 			echo 'There was an error with the MySQL query; ' . mysql_error();
@@ -455,7 +455,7 @@ class Store extends Config {
 			$(".txtBox3").blur( function() {
 				var inv_id = $(this).attr("id");
 				var inv_value = $(this).attr("value");
-				
+
 				var request_url = "ajax.php?node=store&stage=manage-stock&action=update-inventory-row&id=' . $id . '&inv_id="  + inv_id + "&value=" + inv_value;
 				var request = $.ajax({
 					type: "GET",
@@ -483,7 +483,7 @@ class Store extends Config {
 	{
 		$query = "SELECT * FROM store_category";
 		$result = mysql_query($query);
-		
+
 		// if we want to specifiy something, we change it!
 		if($type == 1)
 		{
@@ -519,7 +519,7 @@ class Store extends Config {
 			$this->CatArray = $CatArray;
 		}
 	}
-	
+
 	// This will be the root function for the order management section
 	private function manageOrders()
 	{
@@ -545,11 +545,11 @@ class Store extends Config {
 						exit;
 					}
 					// now that the update has been completed we need to send them an email!
-					
+
 					// first select the data set.
 					$query = "SELECT `store_order_paypallogs`.`payer_email`, `store_orders`.`cart_id` FROM `store_orders`, `store_order_paypallogs` WHERE `store_order_paypallogs`.`option_selection1`=`store_orders`.`cart_id` AND `store_orders`.`id` = " . mysql_real_escape_string($_GET['id']);
 					$results = mysql_query($query);
-					
+
 					if(!$results)
 					{
 						echo "There was an error running the query: " . mysql_error();
@@ -557,7 +557,7 @@ class Store extends Config {
 					}
 					else
 					{
-						$row = mysql_fetch_array($results);						
+						$row = mysql_fetch_array($results);
 						// We need to send a pm/email stating that the order was received.
 						include("../includes/classes/email.class.php");
 						$Email = new Email($row['payer_email'],'support@animeftw.tv');
@@ -588,7 +588,7 @@ class Store extends Config {
 		{
 			$query = "SELECT `id`, `cart_id`, `total_price`, `date_submitted`, `status`, `tracking_num`, `payment_method`, `payment_id` FROM `store_orders` ORDER BY `id` ASC";
 			$results = mysql_query($query);
-						
+
 			$rowcount = mysql_num_rows($results);
 			echo '<div align="center" style="margin-top:5px;">Showing a total of ' . $rowcount . ' orders.</div>
 			<div>';
@@ -614,7 +614,7 @@ class Store extends Config {
 				}
 				echo '
 				<div class="cart-row-wrapper" style="' . $rowstyle . '">
-					<div style="display:inline-block;"><a href="#" id="cart-id-' . $cart_id . '" class="button-showing-order"><img src="//www.animeftw.tv/images/storeimages/shopping-cart-icon.png" alt="" style="height:14px;" title="View the Cart Details for this order" /></a></div>
+					<div style="display:inline-block;"><a href="#" id="cart-id-' . $cart_id . '" class="button-showing-order"><img src="//i.animeftw.tv/storeimages/shopping-cart-icon.png" alt="" style="height:14px;" title="View the Cart Details for this order" /></a></div>
 					<div style="display:inline-block;width:100px;" class="order-column-row">' . str_pad($id, 8, '0', STR_PAD_LEFT) . '</div>
 					<div style="display:inline-block;width:100px;" class="order-column-row">$' . $total_price . '</div>
 					<div style="display:inline-block;width:100px;" class="order-column-row">' . date('m/d/Y',$date_submitted) . '</div>
@@ -638,7 +638,7 @@ class Store extends Config {
 				$(".order-status-select").on("change", function() {
 					var req_value = $(this).val();
 					var order_id = $(this).attr("id").substring(13);
-					
+
 					if(req_value == "2")
 					{
 						// we change it to shipped, so we need to add the tracking number
@@ -682,12 +682,12 @@ class Store extends Config {
 			';
 		}
 	}
-	
+
 	private function displayOrderStatus($order_id,$status_id)
 	{
 		$Statuses = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'store_order_statuses'","value");
 		$StatusArray = preg_split("/\|+/", $Statuses);
-		
+
 		$data = '<select id="order-status-' . $order_id . '" class="order-status-select" style="width:180px;">';
 		$i = 0;
 		foreach($StatusArray as &$Status)
@@ -702,11 +702,11 @@ class Store extends Config {
 			}
 			$i++;
 		}
-		
+
 		$data .= '</select>';
 		return $data;
 	}
-	
+
 	private function displayPaymentMethods($payment_id)
 	{
 		/*
@@ -717,7 +717,7 @@ class Store extends Config {
 		*/
 		$Payments = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'store_payment_methods'","value");
 		$PaymentArray = preg_split("/\|+/", $Payments);
-		
+
 		$data = '<select class="order-payments-select">';
 		$i = 0;
 		foreach($PaymentArray as &$Payment_name)
@@ -732,7 +732,7 @@ class Store extends Config {
 			}
 			$i++;
 		}
-		
+
 		$data .= '</select>';
 		return $data;
 	}

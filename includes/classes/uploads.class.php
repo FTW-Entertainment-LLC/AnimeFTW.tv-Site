@@ -1,7 +1,7 @@
 <?php
 /****************************************************************\
-## FileName: uploads.class.php									 
-## Author: Brad Riemann										 
+## FileName: uploads.class.php
+## Author: Brad Riemann
 ## Usage: Provides all Functionality for the Uploads Board
 ## Copywrite 2011-2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
@@ -9,12 +9,12 @@
 include($_SERVER['DOCUMENT_ROOT'] . "/includes/classes/config.class.php");
 
 class Uploads extends Config {
-	
+
 	//#- Public Functions -#\\
 	public function __construct(){
 		parent::__construct();
 	}
-	
+
 	public function Output()
 	{
 		if(!isset($_GET['subpage']) || (isset($_GET['subpage']) && $_GET['subpage'] == 'home'))
@@ -52,9 +52,9 @@ class Uploads extends Config {
 			echo 'The page you requested does not exist... yet..';
 		}
 	}
-	
+
 	//#- Private Functions -#\\
-	
+
 	private function BuildList()
 	{
 		$Statuses = $this->SingleVarQuery("SELECT value FROM settings WHERE name = 'upload_tracker_statuses'","value");
@@ -65,7 +65,7 @@ class Uploads extends Config {
 			echo '<div align="center"><b>Notices</b>:<br />- Encoders may ONLY have five(5) series at any one time under Claimed, Encoding or Uploading. To much claiming and not enough doing has resulted in this restriction.<br />- If you are working on an airing series, it is YOUR job to make sure it is up to date, if you cannot get the encode done a certain week, let management know, so we can cover it.</div>';
 		}
 		echo '<div id="UploadsTrackerMain">';
-		echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
+		echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';
 		foreach($StatusArray as &$Status)
 		{
 			if($Status == 'Live' && ($this->UserArray[2] != 1 && $this->UserArray[2] != 2))
@@ -82,7 +82,7 @@ class Uploads extends Config {
 		{
 			ShowLoading();
 			$(".uploads-row-bottom").hide();
-			$("#uploads-row-" + id).toggle(); 
+			$("#uploads-row-" + id).toggle();
 			HideLoading();
 			return false;
 		}
@@ -143,7 +143,7 @@ class Uploads extends Config {
 			else
 			{
 				// don`t do anything.
-			} 
+			}
 			HideLoading();
 			return false;
 		}
@@ -152,7 +152,7 @@ class Uploads extends Config {
 		unset($Status);
 			$this->Visit();
 	}
-	
+
 	private function BuildRow($Status)
 	{
 		echo '<div class="section-wrapper" style="width:620px;">';
@@ -175,7 +175,7 @@ class Uploads extends Config {
 		{
 			echo '<div class="uploads-message" style="padding-left:20px;font-size:12px;">There are no rows to display for ' . $Status . '</div>';
 		}
-		else 
+		else
 		{
 			$i = 0;
 			while($row = mysql_fetch_array($results, MYSQL_NUM))
@@ -184,10 +184,10 @@ class Uploads extends Config {
 				$Project = stripslashes($row[1]);
 				$Preffix = $row[2];
 				if(strlen($Project) >= 37){
-					$Project = substr($Project,0,37).'&hellip;'; 
+					$Project = substr($Project,0,37).'&hellip;';
 				}
 				if(strlen($Preffix) >= 17){
-					$Preffix = substr($Preffix,0,17).'&hellip;'; 
+					$Preffix = substr($Preffix,0,17).'&hellip;';
 				}
 				if(strtotime($row[8]) >= ($this->UserArray[14]))
 				{
@@ -211,12 +211,12 @@ class Uploads extends Config {
 				else
 				{
 					$AniDBLink = '<a title="Clicking this link will open a new Tab/Window" href="http://anidb.net/perl-bin/animedb.pl?show=anime&aid=' . $row[9] . '" target="_blank">AniDB</a>';
-				}	
+				}
 				if($row[7] == $this->UserArray[1])
 				{
-					$MyEntry = '<img src="/images/myentry-star.png" alt="" />';
+					$MyEntry = '<img src="//i.animeftw.tv/myentry-star.png" alt="" />';
 				}
-				else 
+				else
 				{
 					$MyEntry = '&nbsp;';
 				}
@@ -235,7 +235,7 @@ class Uploads extends Config {
 				<div style="float:left;display:inline;width:290px;" align="right">';
 				if(($row[7] == $this->UserArray[1]) || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
 				{
-					echo '<a href="#" onClick="UploadsFunction(\'edit-series\',\'' . $row[0] . '\'); return false;">Edit</a>'; 
+					echo '<a href="#" onClick="UploadsFunction(\'edit-series\',\'' . $row[0] . '\'); return false;">Edit</a>';
 					if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 					{
 						if($this->ValidatePermission(78) == TRUE){
@@ -243,10 +243,10 @@ class Uploads extends Config {
 						}
 						if($this->ValidatePermission(22) == TRUE){
 							echo '| <a href="#" onClick="$(\'#uploads-global-wrapper\').load(\'/scripts.php?view=management&u='.$this->UserArray[1].'&node=series&stage=addseries&step=before&ueid=' . $row[0] . '\'); return false;">Add Series</a> ';
-						}						
+						}
 						if($this->ValidatePermission(18) == TRUE){
 							echo '| <a href="#" onClick="$(\'#uploads-global-wrapper\').load(\'/scripts.php?view=management&u='.$this->UserArray[1].'&node=episodes&edit=add&step=before&ueid=' . $row[0] . '\'); return false;">Add Episode</a> ';
-						}					
+						}
 					}
 				}
 				echo '</div>
@@ -255,10 +255,10 @@ class Uploads extends Config {
 				$i++;
 			}
 		}
-		
+
 		echo '</div>';
 	}
-	
+
 	private function SeriesForm($Type = NULL)
 	{
 		if($Type == 'edit' && isset($_GET['id']))
@@ -301,7 +301,7 @@ class Uploads extends Config {
 				$Series = '';$Prefix = '';$episodesdoing = '';$episodetotal = '';$width = '';$height = '';$SeriesType = 'series';$anidb = '';$Fansub = '';
 			}
 		}
-		else 
+		else
 		{
 			$Status = 'claimed';
 			$ExtraSettings = '<input type="hidden" id="method" class="method" value="UploadsAddition" name="method" />';
@@ -329,7 +329,7 @@ class Uploads extends Config {
 				echo '<script>
 				$("#to-reencode").change(function() {
 					var id = $(this).find(\':selected\')[0].id;
-					UploadsFunction(\'add-series-pre\',\'' . $_GET['section'] . '&add-type=1&to-reencode=\' + id); 
+					UploadsFunction(\'add-series-pre\',\'' . $_GET['section'] . '&add-type=1&to-reencode=\' + id);
 					return false;
 				});
 				</script>';
@@ -345,7 +345,7 @@ class Uploads extends Config {
 				echo '</table>';
 			}
 		}
-		else 
+		else
 		{
 			echo '<form method="POST" action="#" id="UploadsForm">';
 			echo '
@@ -360,31 +360,31 @@ class Uploads extends Config {
 						<label for="Series" id="SeriesError" class="FormError">A Series Name is Required.</label>
 					</td>
 				</tr>
-				<tr> 
+				<tr>
 					<td width="150" class="fontcolor"><b>Episode Preffix</b></td>
 					<td><input name="Prefix" type="text" class="text-input" id="Prefix" size="25" value="'.$Prefix.'" />
 						<label for="Prefix" id="PrefixError" class="FormError">The episode prefix is required.</label>
 					</td>
-				</tr> 
-				<tr> 
+				</tr>
+				<tr>
 					<td width="150" class="fontcolor"><b>Episodes</b><br /> </td>
 					<td>
-						<input name="episodesdoing" type="text" class="text-input" id="episodesdoing" style="width:40px;" value="'.$episodesdoing.'" /> / 
+						<input name="episodesdoing" type="text" class="text-input" id="episodesdoing" style="width:40px;" value="'.$episodesdoing.'" /> /
 						<input name="episodetotal" type="text" class="text-input" id="episodetotal" style="width:40px;" value="'.$episodetotal.'" />
 						<label for="episodesdoing" id="episodesdoingError" class="FormError">The current Episode is Required.</label>
 						<label for="episodetotal" id="episodetotalError" class="FormError">The total Episodes are Required.</label>
 					</td>
 				</tr>
-				<tr> 
+				<tr>
 					<td width="150" class="fontcolor"><b>Resolution</b><br /></td>
 					<td>
-						<input name="width" type="text" class="text-input" id="width" style="width:40px;" value="'.$width.'" /> x 
+						<input name="width" type="text" class="text-input" id="width" style="width:40px;" value="'.$width.'" /> x
 						<input name="height" type="text" class="text-input" id="height" style="width:40px;" value="'.$height.'" />
 						<label for="width" id="widthError" class="FormError">The Length of the Video is Required.</label>
 						<label for="height" id="heightError" class="FormError">The Width of the Video is Required.</label>
 					</td>
 				</tr>
-				<tr> 
+				<tr>
 					<td width="150" class="fontcolor"><b>Series Type</b></td>
 					<td>
 						<select name="Type" style="color: #000000;">
@@ -393,8 +393,8 @@ class Uploads extends Config {
 							<option value="ova"'; if($SeriesType == 'ova'){echo ' selected="selected"';} echo '>Ova</option>
 						</select>
 					</td>
-				</tr>				
-				<tr> 
+				</tr>
+				<tr>
 					<td width="150" class="fontcolor"><b>Status</b></td>
 					<td>';
 					if($Status == 'live' && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
@@ -420,14 +420,14 @@ class Uploads extends Config {
 							<option value="done"'; if($Status == 'done'){echo ' selected="selected"';} echo '>Done</option>'.$LiveOption.'</select>
 					</td>
 				</tr>
-				<tr> 
+				<tr>
 					<td width="150" class="fontcolor"><b>AniDB ID</b></td>
 					<td>
 						<input name="anidb" type="text" class="text-input" id="anidb" style="width:40px;" value="'.$anidb.'" />
 						<label for="anidb" id="anidbError" class="FormError">The AniDB ID is Required.</label>
 					</td>
 				</tr>
-				<tr> 
+				<tr>
 					<td width="150" class="fontcolor"><b>Fansub Group</b></td>
 					<td>
 						<input name="fansub" type="text" class="text-input" id="fansub" style="width:150px;" value="'.$Fansub.'" />
@@ -436,7 +436,7 @@ class Uploads extends Config {
 				</tr>';
 			if($Type == 'edit' && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
 			{
-				echo '<tr> 
+				echo '<tr>
 					<td width="150" class="fontcolor"><b>Encoder</b></td>
 					<td>
 						<select id="uploader" name="uploader" style="color: #000000;">';
@@ -477,8 +477,8 @@ class Uploads extends Config {
 					$(\'.text-input\').blur(function(){
 						$(this).css({border:"1px solid #CCC"});
 					});
-					$(".SubmitUploadsForm").click(function() {	
-						$(\'.form_results\').slideUp();												
+					$(".SubmitUploadsForm").click(function() {
+						$(\'.form_results\').slideUp();
 						$(\'label\').hide();
 						var Series = $("input#Series").val();
 						if (Series == "") {
@@ -539,7 +539,7 @@ class Uploads extends Config {
 									echo '
 									$(\'.form_results\').slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;\'>Update Successful</div>");';
 								}
-								echo '											
+								echo '
 									$(\'.form_results\').delay(8000).slideUp();
 								}
 								else{
@@ -551,9 +551,9 @@ class Uploads extends Config {
 					});
 					return false;
 				});
-				</script>';	
+				</script>';
 	}
-	
+
 	private function Visit()
 	{
 		mysql_query("UPDATE users SET UploadsVisit = '".time()."' WHERE ID = ".$this->UserArray[1]);

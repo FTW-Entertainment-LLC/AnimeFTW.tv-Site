@@ -1,13 +1,13 @@
 <?php
 /****************************************************************\
-## FileName: search.class.php									 
-## Author: Brad Riemann										 
+## FileName: search.class.php
+## Author: Brad Riemann
 ## Usage: Search Class
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class Search extends Config {
-	
+
 	var $UserArray;
 	public function __construct()
 	{
@@ -15,13 +15,13 @@ class Search extends Config {
 		// initialize the userarray
 		$this->UserArray = $this->outputUserInformation();
 	}
-	
+
 	private function array_searchSite($input)
 	{
-		
-	}			
-		
-	
+
+	}
+
+
 	private function array_searchSeries($input)
 	{
 		$input = mysql_real_escape_string($input);
@@ -36,7 +36,7 @@ class Search extends Config {
 		}
 		else
 		{
-			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";		
+			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
 		}
 		$result  = mysql_query($query) or die('Error : ' . mysql_error());
 		$numrows = mysql_num_rows($result);
@@ -65,31 +65,31 @@ class Search extends Config {
 		}
 	}
 
-	
+
 	private function array_searchEpisodes($input)
 	{
 	}
-	
+
 	private function srray_searchUsers($input)
 	{
 	}
-	
+
 	private function array_searchComments($input)
 	{
 	}
-	
+
 	public function seriesStatistics($id) {
-		mysql_query("SET NAMES 'utf8'"); 
+		mysql_query("SET NAMES 'utf8'");
 		$query = "SELECT kanji, romaji FROM series WHERE id='$id';";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
-		$kanji = $row['kanji']; 
-		$romaji = $row['romaji']; 
-				
+		$kanji = $row['kanji'];
+		$romaji = $row['romaji'];
+
 		$returnInfo = $this->limitCharacters($romaji,40).'<br />'.$this->limitCharacters($kanji,40);
 		return $returnInfo;
 	}
-	
+
 	private function limitCharacters($input,$chars)
 	{
 		$counted = strlen($input);
@@ -98,21 +98,21 @@ class Search extends Config {
 		else {$information2 = $input;}
 		return $information2;
 	}
-	
+
 	public function seoCheck($seriesName)
 	{
 		$query = "SELECT seoname FROM series WHERE seriesName='$seriesName'";
 		$result = mysql_query($query) or die('Error : ' . mysql_error());
 		$row = mysql_fetch_array($result);
-		$seoname = $row['seoname']; 
+		$seoname = $row['seoname'];
 		return $seoname;
 	}
-	
+
 	public function getImageUrl($size,$uid,$type)
 	{
 		if($type == 'anime')
 		{
-			$returnUrl = '/images/resize/anime/s-small/' . $uid . '.jpg';
+			$returnUrl = '//i.animeftw.tv/resize/anime/s-small/' . $uid . '.jpg';
 		}
 		else {
 			$query   = "SELECT avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'";
@@ -132,16 +132,16 @@ class Search extends Config {
 			else {
 				if($avatarActivate == 'no')
 				{
-					$returnUrl = '/images/resize/user/'.$size.'/default.gif';
+					$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/default.gif';
 				}
 				else {
-					$returnUrl = '/images/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
+					$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
 				}
 			}
 		}
 		return $returnUrl;
 	}
-	
+
 	public function adv_count_words($str)
 	{
 		$words = 0;
@@ -149,7 +149,7 @@ class Search extends Config {
 		$array = explode(" ", $str);
 		for($i=0;$i < count($array);$i++)
 		{
-	 		if (eregi("[0-9A-Za-zÀ-ÖØ-öø-ÿ]", $array[$i])) 
+	 		if (eregi("[0-9A-Za-zÀ-ÖØ-öø-ÿ]", $array[$i]))
 		 	$words++;
 		}
 		return $words;

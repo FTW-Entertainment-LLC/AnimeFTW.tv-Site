@@ -1,19 +1,19 @@
 <?php
 /****************************************************************\
-## FileName: footer.v2.class.php									 
-## Author: Brad Riemann										 
+## FileName: footer.v2.class.php
+## Author: Brad Riemann
 ## Usage: Simple Footer Class
 ## Copywrite 2014 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class Footer extends Config {
-		
+
 	//#- Public Functions -#\\
 	public function __construct()
 	{
 		parent::__construct();
 	}
-	
+
 	# function Output
 	public function Output()
 	{
@@ -34,28 +34,28 @@ class Footer extends Config {
 		$output .= "<div class='panel-title'>Top Anime</div>\n";
 		$output .= $this->TopAnime(5,'f');
 		$output .= "</td>\n";
-		$output .= "<td class='footer-mascot' valign='top'>";		
+		$output .= "<td class='footer-mascot' valign='top'>";
 		if($this->UserArray[8] == 1)
 		{
-			$output .= "<img src='/images/holiday/christmas/footer-mascot.png' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
+			$output .= "<img src='//i.animeftw.tv/holiday/christmas/footer-mascot.png' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
 		}
-		else 
+		else
 		{
-			$output .= "<img src='/images/birthday/AnimeFTW_FooterFolks_Party.jpg' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
+			$output .= "<img src='//i.animeftw.tv/birthday/AnimeFTW_FooterFolks_Party.jpg' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
 		}
 		$output .= "</td>\n";
 		$output .= "</tr>\n</table>\n";
 		$output .= "<table align='left' cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 		$output .= "<td class='copyright'>\n";
-		$output .= "Powered by <a href='https://www.ftwentertainment.com/' title='FTW Entertainment LLC'>FTW</a> engine v4.0 copyright &copy; 2008 - ".date("Y")." by FTW Entertainment LLC.<br />Theme designed by <a href='https://www.animeftw.tv/user/falcon' title='Falcon of aGXTHEMES.com'>Falcon</a><div align='left' style='padding-top:5px;'><a href='http://ipv6-test.com/validate.php?url=referer'><img src='/images/button-ipv6-80x15.png' alt='ipv6 ready' title='AnimeFTW.tv ipv6 ready' border='0' /></a></div>";
-		$output .= "</tr>\n</table>\n";	
+		$output .= "Powered by <a href='https://www.ftwentertainment.com/' title='FTW Entertainment LLC'>FTW</a> engine v4.0 copyright &copy; 2008 - ".date("Y")." by FTW Entertainment LLC.<br />Theme designed by <a href='https://www.animeftw.tv/user/falcon' title='Falcon of aGXTHEMES.com'>Falcon</a><div align='left' style='padding-top:5px;'><a href='http://ipv6-test.com/validate.php?url=referer'><img src='//i.animeftw.tv/button-ipv6-80x15.png' alt='ipv6 ready' title='AnimeFTW.tv ipv6 ready' border='0' /></a></div>";
+		$output .= "</tr>\n</table>\n";
 		$output .= "</td>\n";
 		$output .= "</tr>\n</table>\n";
 		return $output;
 	}
-	
+
 	//#- Private Functions -#\\
-	
+
 	# function latestnews
 	private function LatestNews()
 	{
@@ -75,7 +75,7 @@ class Footer extends Config {
 		}
 		return $output;
 	}
-	
+
 	private function RandomAnime($v)
 	{
 		$query = "SELECT `id`, `seoname`, `fullSeriesName` FROM `series` WHERE `active`='yes' ORDER BY RAND() LIMIT $v";
@@ -83,7 +83,7 @@ class Footer extends Config {
 		$i = 0;
 		$output = '';
 		while(list($id, $seoname, $fullSeriesName) = $result->fetch_assoc())
-		{						
+		{
 			$output .= '<a class="side" href="/anime/' . $seoname . '/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id=' . $id . '\',this);return false" onmouseout="ajax_hideTooltip()">' . $fullSeriesName . "</a>\n";;
 			$output .= "<br />\n";
 			if($i < 4)
@@ -94,16 +94,16 @@ class Footer extends Config {
 		}
 		return $output;
 	}
-	
+
 	private function TopAnime($amount,$location)
 	{
 		$query = "SELECT `site_topseries`.`lastPosition`, `site_topseries`.`currentPosition`, `series`.`id`, `series`.`seoname`, `series`.`fullSeriesName` FROM `site_topseries`, `series` WHERE `series`.`id`=`site_topseries`.`seriesId` ORDER BY currentPosition ASC LIMIT 0, ".$amount."";
 		$result = $this->mysqli->query($query);
 		$i = 0;
 		$output = '';
-		$output .= "<br />\n";	
+		$output .= "<br />\n";
 		while(list($lastPosition,$currentPosition,$id,$seoname, $fullSeriesName) = $result->fetch_assoc())
-		{					
+		{
 			$output .= '<a class="side" href="/anime/' . $seoname . '/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id=' . $id . '\',this);return false" onmouseout="ajax_hideTooltip()">' . $fullSeriesName . "</a>\n";;
 			$output .= "<br />\n";
 			if($i < 4)
@@ -114,5 +114,5 @@ class Footer extends Config {
 		}
 		return $output;
 	}
-	
+
 }

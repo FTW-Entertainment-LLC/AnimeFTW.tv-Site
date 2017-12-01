@@ -1,14 +1,14 @@
 <?php
 /****************************************************************\
-## FileName: forumview.forum.class.php									 
-## Author: Brad Riemann										 
+## FileName: forumview.forum.class.php
+## Author: Brad Riemann
 ## Usage: Single Forum Class
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
 class AFTWForumView {
 	var $reqforum,$perms,$reqLimit,$Logged,$timezone;
-	
+
 	public function Con($reqforum,$perms,$reqLimit,$Logged,$timezone){
 		$this->reqforum = $reqforum;
 		$this->perms = $perms;
@@ -16,40 +16,40 @@ class AFTWForumView {
 		$this->reqLimit = $reqLimit;
 		$this->Logged = $Logged;
 		$this->timezone = $timezone;
-	}	
-	
+	}
+
 	public function ForumDisplay(){
 		$query2 = "SELECT fid, ftitle, fseo FROM forums_forum WHERE fseo='".$this->reqforum."' AND fpermission LIKE '%".$this->perms."%'";
-		mysql_query("SET NAMES 'utf8'"); 
+		mysql_query("SET NAMES 'utf8'");
 		$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
 		$row2 = mysql_fetch_array($result2);
 		$fid = $row2['fid'];
 		$ftitle = $row2['ftitle'];
 		$fseo = $row2['fseo'];
 		if ($fid == '') {
-			echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
+			echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 			echo "<div class='errorwrap'><h4>The error returned was:</h4><p>Sorry, the link that brought you to this page seems to be out of date or broken.</p></div><br />";
-		} 
+		}
 		else {
-			echo "<div id=\"navstrip\"><img src='/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a></div><!-- Bgin subforums?! --><table style='width:100%' cellspacing=\"0\"><tr><td style='padding-left:0px' width=\"60%\">";
+			echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a></div><!-- Bgin subforums?! --><table style='width:100%' cellspacing=\"0\"><tr><td style='padding-left:0px' width=\"60%\">";
 			//paginate here!
 			$requestedLimit = $this->reqLimit;
 			$requestedLimit = $requestedLimit+0;
-			$requestedLimitUp = $this->reqLimit+30;	
-			$requestedLimitDown = $this->reqLimit-30;				
-			$query = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid'"); 
+			$requestedLimitUp = $this->reqLimit+30;
+			$requestedLimitDown = $this->reqLimit-30;
+			$query = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid'");
 			$users = mysql_result($query, 0);
 			$page_count = round(($users/30)+1);
 			echo "&nbsp;";
 			//New Paging
-			$query9 = mysql_query("SELECT COUNT(tid) FROM forums_threads WHERE tfid='$fid'"); 
+			$query9 = mysql_query("SELECT COUNT(tid) FROM forums_threads WHERE tfid='$fid'");
 			$total_threadv2 = mysql_result($query9, 0);
 			include_once('includes/classes/forumpaging.class.php');
 			$paging = new AFTWForumPageing();
 			$paging->get_icount($total_threadv2);
 			$paging->get_start($this->reqLimit);
 			$paging->get_setlimit('30');
-			$paging->get_url('/forums/'.$fseo.'/');		
+			$paging->get_url('/forums/'.$fseo.'/');
 			echo $paging->ShowPaging();
 			echo "</td>";
 			//END PAGINATE (TOP)
@@ -63,7 +63,7 @@ class AFTWForumView {
 				$allowed = $row['fid'];
 				if ($allowed ==''){}
 				else {
-					echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='/images/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
+					echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//i.animeftw.tv/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
 				}
 			}
 			echo "</td></tr></table>";
@@ -79,7 +79,7 @@ class AFTWForumView {
 		echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>Last Action</td>\n";
 		if ($this->perms == 1 || $this->perms == 2 || $this->perms == 6) {
 			echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'><input type=\"checkbox\" id=\"selectall\" /></td>\n";
-	  	} 
+	  	}
 		else {}
 		echo "</tr>\n";
 		//END HEADER STUFFS..

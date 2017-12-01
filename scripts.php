@@ -59,7 +59,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 		$verifier = mysql_num_rows($result);
 		$row = mysql_fetch_array($result);
 		$description = stripslashes($row['description']);
-		echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
+		echo '<table><tr><td width="20%" valign="top"><img src="//i.animeftw.tv/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
 	}
 	if($_GET['show'] == 'user-tips'){
 		$id = $_GET['id'];
@@ -68,7 +68,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 		$verifier = mysql_num_rows($result);
 		$row = mysql_fetch_array($result);
 		$description = stripslashes($row['description']);
-		echo '<table><tr><td width="20%" valign="top"><img src="/images/avatars/user'.$id.'.png" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
+		echo '<table><tr><td width="20%" valign="top"><img src="//i.animeftw.tv/avatars/user'.$id.'.png" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
 	}
 	if($_GET['show'] == 'eptips'){
 		$id = $_GET['id'];
@@ -83,7 +83,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 			$imgUrl = "{$Host}/video-images/{$row['sid']}/{$id}_screen.jpeg";
 		}
 		echo '<table><tr><td valign="top"><img src="'.$imgUrl.'" alt="Episode: '.$row['epnumber'].'" width="395px" /></td></tr></table>';
-		//echo '<table><tr><td width="20%" valign="top"><img src="/images/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
+		//echo '<table><tr><td width="20%" valign="top"><img src="//i.animeftw.tv/resize/anime/large/'.$id.'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
 	}
 }
 if(isset($_GET['view']) && $_GET['view'] == 'user')
@@ -310,10 +310,10 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
   				while(list($uid,$username,$avatarActivate,$avatarExtension) = mysql_fetch_array($result19))
 				{
 					if($avatarActivate == 'yes'){
-						$av = '<img src="//www.animeftw.tv/images/avatars/user'.$uid.'.'.$avatarExtension.'" alt="" style="max-width:65px;padding:5px;" />';
+						$av = '<img src="//www.animeftw.tv//i.animeftw.tv/avatars/user'.$uid.'.'.$avatarExtension.'" alt="" style="max-width:65px;padding:5px;" />';
 					}
 					else {
-						$av = '<img src="//www.animeftw.tv/images/avatars/default.gif" alt="" style="max-width:65px;padding:5px;" />';
+						$av = '<img src="//www.animeftw.tv//i.animeftw.tv/avatars/default.gif" alt="" style="max-width:65px;padding:5px;" />';
 					}
 					echo '<td align="center" valign="top">';
 					echo '<a href="/user/'.$username.'">'.$av.'</a><br />';
@@ -459,7 +459,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 						mysql_real_escape_string('1', $conn),
 						mysql_real_escape_string($row1['id'], $conn));
 					mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
-					echo "<a href=\"#\" onclick=\"return false;\"><img src='http://".$_SERVER['HTTP_HOST']."/images/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
+					echo "<a href=\"#\" onclick=\"return false;\"><img src='http://".$_SERVER['HTTP_HOST']."//i.animeftw.tv/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
 					*/
 					echo 'Oh snap!';
 				}
@@ -1069,7 +1069,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 					// Check if $uploadOk is set to 0 by an error
 					if($uploadOk == 0)
 					{
-						echo '<img src="/images/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
+						echo '<img src="//i.animeftw.tv/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
 						$errormsg .= "Sorry, your file was not uploaded.";
 						// if everything is ok, try to upload file
 					}
@@ -1086,11 +1086,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 							mysql_query("UPDATE `users` SET `avatarActivate` = 'yes', `avatarExtension` = '" . mysql_real_escape_string($imageFileType) . "' WHERE `ID` = " . mysql_real_escape_string($_POST['uid']));
 							/* We have succesfully resized and created thumbnail image
 							We can now output image to user's browser or store information in the database*/
-							echo '<img src="/images/avatars/' . $filename . '" alt="user-avatar" />';
+							echo '<img src="//i.animeftw.tv/avatars/' . $filename . '" alt="user-avatar" />';
 						}
 						else
 						{
-							echo '<img src="/images/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
+							echo '<img src="//i.animeftw.tv/avatars/user' . $_POST['uid'] . '.' . $_POST['extension'] . '" alt="user-avatar" />';
 							$errormsg .= "Sorry, there was an error uploading your file.";
 						}
 					}
