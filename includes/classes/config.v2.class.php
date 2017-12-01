@@ -92,7 +92,7 @@ class Config {
     #----------------------------------------------------------------
     private function DB_Con()
     {
-        $dbhost = '10.150.14.10';
+        $dbhost = 'localhost';
         $dbuser = 'mainaftw_anime';
         $dbpass = '26V)YPh:|IJG';
         $dbname = 'mainaftw_anime';

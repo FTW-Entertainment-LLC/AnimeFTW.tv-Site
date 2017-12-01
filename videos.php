@@ -30,9 +30,9 @@ include('header-nav.php');
 if(isset($_GET['ref']))
 {
 	//$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('%s', NULL, '%s', '%s', '%s')";
-	$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) 
+	$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`)
 	VALUES ('" . mysql_real_escape_string($_SERVER['HTTP_REFERER']) . "', '" . mysql_real_escape_string($_SERVER['REQUEST_URI']) . "', '" . mysql_real_escape_string($_GET['ref']) . "', '" . time() . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
-	mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());	
+	mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
 }
 
 echo psa($profileArray,1);
@@ -46,7 +46,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 	<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 		<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		$bodyTop .= "<div class='side-body-bg'>";
+	/*	$bodyTop .= "<div class='side-body-bg'>";
 		$bodyTop .= "<div class='scapmain'>Advertisement</div>\n";
 		$bodyTop .= "<div class='side-body floatfix'>\n";
 		if($profileArray[2] == 3){
@@ -59,10 +59,10 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 				</div>
 				<!-- End Insticator API Embed Code -->';
 		$bodyTop .= "</div>\n";
-		$bodyTop .= "</div>\n";
+		$bodyTop .= "</div>\n";*/
 	}
 	if(!isset($Config->SettingsArray[17])){
-		$bodyTop .= "<div class='side-body-bg'>";
+		/*$bodyTop .= "<div class='side-body-bg'>";
 		$bodyTop .= "<div class='scapmain'>Game</div>\n";
 		$bodyTop .= "<div class='side-body floatfix'>\n";
 		$bodyTop .= '<!-- Insticator API Embed Code -->
@@ -76,10 +76,10 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 			</div>
 			<!-- End Insticator API Embed Code -->';
 		$bodyTop .= "</div>\n";
-		$bodyTop .= "</div>\n";
+		$bodyTop .= "</div>\n";*/
 	}
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		$bodyTop .= "<div class='side-body-bg'>";
+	/*	$bodyTop .= "<div class='side-body-bg'>";
 		$bodyTop .= "<div class='scapmain'>Advertisement</div>\n";
 		$bodyTop .= "<div class='side-body floatfix'>\n";
 		if($profileArray[2] == 3){
@@ -91,7 +91,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 				</div>
 				<!-- End Insticator API Embed Code -->';
 		$bodyTop .= "</div>\n";
-		$bodyTop .= "</div>\n";
+		$bodyTop .= "</div>\n";*/
 	}
 	$bodyTop .= '
 	</div>
@@ -109,7 +109,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 	$bodyTop .= "<td valign='top' class='main-mid'>\n";
 	return $bodyTop;
 }
-		if($_GET['node'] == 'sort'){			
+		if($_GET['node'] == 'sort'){
 			if($_GET['type'] == 'anime'){
 				if(isset($_GET['param'])){
 					echo bodyTopInfo($index_global_message,'yes',$profileArray,$Config);
@@ -118,7 +118,7 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 					echo "<br />\n";
 					echo "<span class='poster'>Sorting through Anime for the tag: <b>".$_GET['param']."</b></span>\n";
 					echo "</div>\n";
-                    echo $stats->donationBox(true); 
+                    echo $stats->donationBox(true);
 					echo "<br />";
 					echo "<div id=\"lister\">";
 					echo '<br />'.$v->tagCloud('anime').'<br />';
@@ -142,13 +142,13 @@ function bodyTopInfo($message,$bdybr,$profileArray,$Config){
 					}
 					else {}
 				}
-				
+
 			}
 			if($_GET['type'] == 'drama')
 			{
 			}
 		}
-		if($_GET['node'] == 'age'){	
+		if($_GET['node'] == 'age'){
 			if($_GET['type'] == 'anime'){
 				if(isset($_GET['param'])){
 					echo bodyTopInfo($index_global_message,'yes',$profileArray,$Config);

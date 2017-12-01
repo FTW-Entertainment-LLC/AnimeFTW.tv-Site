@@ -1,7 +1,7 @@
-<?php 
+<?php
 /****************************************************************\
-## FileName: apiv2.class.php                                 
-## Author: Brad Riemann                                     
+## FileName: apiv2.class.php
+## Author: Brad Riemann
 ## Usage: Central API management Class
 ## Copywrite 2013 FTW Entertainment LLC, All Rights Reserved
 ## Modified: 12/08/2013
@@ -9,10 +9,10 @@
 \****************************************************************/
 
 Class api extends Config {
-    
+
     protected $Method, $Style, $Data = array();
     var $username, $password, $DevArray, $MessageCodes, $permissionArray, $UserArray;
-    
+
     private $APIActions = array(
         'display-episodes' => array(
             'action' => 'display-episodes',
@@ -300,7 +300,7 @@ Class api extends Config {
     {
         // import the functions from the parent class.
         parent::__construct();
-        
+
         // Scripts..
         $this->array_buildAPICodes(); // establish the status codes to be returned to the api.
         $this->determineInput(); // this will figure out if they are using POST or GET requests
@@ -308,10 +308,12 @@ Class api extends Config {
         $this->launchAPI(); // This is the main method for the API, after we have done everything else we need to `initialize` the script.
         $this->recordGoogleAnalytics(); // sends a post request to google analytics for the requested page.
     }
-    
+
     // function will determine what style it is, AND will also validate to make sure an application key is given
     private function determineInput()
     {
+        $this->reportResult(500,"AnimeFTW.tv has closed down as of November 30th, 2017, please see the site for details.");
+        exit;
         $input = Array();
         // loop through the POST data, adding it to the input array.
         foreach ($_POST as $key => $value) {
@@ -322,11 +324,11 @@ Class api extends Config {
             $input[$key] = $value;
         }
         // This array will contain both POST and GET data.
-        // TODO: A way to handle duplicates, possibly responses back to client 
+        // TODO: A way to handle duplicates, possibly responses back to client
         // Letting them know they can only submit one variable per request.
         $this->Data = $input;
     }
-    
+
     // function will determine if the developer is requesting JSON or XML output. (We can expand later.)
     private function determineStyle()
     {
@@ -338,8 +340,8 @@ Class api extends Config {
             $this->Style = 'json';
         }
     }
-    
-    // Part of the API includes error reporting to the developers, this will need to output formats that 
+
+    // Part of the API includes error reporting to the developers, this will need to output formats that
     // are known by the Devs.
     private function reportResult($ResultCode = 401,$Message = null)
     {
@@ -350,8 +352,8 @@ Class api extends Config {
         $Result = array('status' => $this->MessageCodes["Result Codes"][$ResultCode]["Status"], 'message' => $Message); // we put the error and the message together for the output..
         $this->formatData($Result); // format the data how the client is looking for..
         exit; // we exit the script so it doesnt keep trying to go forward.
-    }    
-    
+    }
+
     // function will take an array of data and output to the format requested by the developer
     private function formatData($data)
     {
@@ -369,13 +371,13 @@ Class api extends Config {
             // JSON output
                 echo json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
             }
-            
+
         } else {
             // the aw crap option.. the array wasnt an array so we have to halt everything!
             $this->reportResult(400);
         }
     }
-    
+
     // Function to validate the requested action to ensure if it is something a non-logged-in person can view.
     private function validateAction()
     {
@@ -401,14 +403,14 @@ Class api extends Config {
             return false;
         }
     }
-    
+
     // the `final frontier` for the API script, this will get things rolling.
     private function launchAPI()
     {
         // 1) check devkey, verify that its valid.
         // 2) validate the token for the user
         // 3) launch into the sub routines of the API.
-        
+
         // we validate the developer key, if they pass go, they collect 200 bits
         if($this->validateDevKey() == true) {
             // UPDATED: 04/01/2017
@@ -439,30 +441,30 @@ Class api extends Config {
         // Record ALL hits in the api logs.
         $this->RecordDevLogs();
     }
-    
+
     // function will validate the developer key
     private function validateDevKey()
     {
         $DevKey = $this->Data['devkey']; // declare the developer key from the dataset
         $query = "SELECT `id`, `devkey`, `name`, `info`, `frequency`, `uid`, `ads`, `license`, `deviceauth`, `dashes` FROM `" . $this->MainDB . "`.`" . $this->DevTable . "` WHERE `devkey` = '" . $this->mysqli->real_escape_string($DevKey) . "'";
-        
+
         $result = $this->mysqli->query($query);
-        
+
         $count = mysqli_num_rows($result);
-        
+
         // if there are no results, throw an error.
         if ($count < 1) {
             return false; // There was no match.. return a false..
         } else {
             $row = $result->fetch_assoc();
             $this->DevArray = array(
-                'id' => $row['id'], 
-                'devkey' => $row['devkey'], 
-                'name' => $row['name'], 
-                'info' => $row['info'], 
-                'frequency' => $row['frequency'], 
-                'uid' => $row['uid'], 
-                'ads' => $row['ads'], 
+                'id' => $row['id'],
+                'devkey' => $row['devkey'],
+                'name' => $row['name'],
+                'info' => $row['info'],
+                'frequency' => $row['frequency'],
+                'uid' => $row['uid'],
+                'ads' => $row['ads'],
                 'license' => $row['license'],
                 'deviceauth' => $row['deviceauth'],
                 'dashes' => $row['dashes'],
@@ -470,7 +472,7 @@ Class api extends Config {
             return true; // Return true to let it continue on.
         }
     }
-    
+
     // Token validation and authorization function, options, `create` and `validate`
     private function tokenAuthorization($Type = 'create')
     {
@@ -487,7 +489,7 @@ Class api extends Config {
                     $this->UserArray['Username']     = 'guest'; // Username of the logged in user.
                     $this->UserArray['display_name'] = 'guest'; // display_name of the logged in user.
                     $this->UserArray['Level_access'] = 0;       // Level access of the logged in user.
-                    
+
                     return false;
                 } else {
                     // User exists, enter the details into the UserArray
@@ -496,7 +498,7 @@ Class api extends Config {
                     $this->UserArray['Username']     = $row['Username'];       // Username of the logged in user.
                     $this->UserArray['display_name'] = $row['display_name'];   // display_name of the logged in user.
                     $this->UserArray['Level_access'] = $row['Level_access'];   // Level access of the logged in user.
-                    
+
                     // 2. Grab all available settings, then compare against what was returned, save the option and value in an array
                     $query = "SELECT `id`, `group`, `default_option` FROM `user_setting_option`";
                     $results = $this->mysqli->query($query);
@@ -544,17 +546,17 @@ Class api extends Config {
             }
         }
     }
-    
+
     // validates the user so as to verify that the login credentials are indeed correct.
     private function validateUser()
     {
         // the following were needed for portability to the config class..
         $this->username = $this->Data['username'];
         $this->password = $this->Data['password'];
-        
+
         // We need to validate the user, see if it works for us.
         $UserValidation = $this->array_validateAPIUser($this->Data['username'],$this->Data['password']);
-        
+
         // validate the user logins given to us.
         if ($UserValidation[0] == true && $UserValidation[2] == 1) {
             $this->UserArray['ID'] = $UserValidation[1]; // we need to make the uid be a global for later usage..
@@ -568,7 +570,7 @@ Class api extends Config {
             return array(false,404,'The user is unknown.');
         }
     }
-    
+
     // destroys the token of the currently logged in user.
     private function destroyToken()
     {
@@ -578,7 +580,7 @@ Class api extends Config {
         // let them know it was a success!
         $this->formatData(array('status' => '200', 'message' => 'User logged out Successfully.'));
     }
-    
+
     // after the user has been authenticated via the token. We need to parse through the available options
     // that the dev could push through the app, this function jumps to all of those.
     private function launchAPISubFunctions()
@@ -605,7 +607,7 @@ Class api extends Config {
             $this->destroyToken();
         } else if(isset($this->Data['action']) && $this->Data['action'] == $this->APIActions[$this->Data['action']]["action"] && $this->Data['action'] != '') {
             include("includes/classes/" . $this->APIActions[$this->Data['action']]["location"]);
-            
+
             $C = new $this->APIActions[$this->Data['action']]["classname"]($this->Data,$this->UserArray,$this->DevArray,$this->permissionArray);
             $Method = $this->APIActions[$this->Data['action']]["method"];
             $this->formatData($C->$Method());
@@ -614,7 +616,7 @@ Class api extends Config {
             $this->reportResult(500,"The action was unknown.");
         }
     }
-    
+
     // record the functions accessed as well as the details of the request
     private function RecordDevLogs()
     {
@@ -628,13 +630,13 @@ Class api extends Config {
             $Data[$key] = $value;
         }
         $Data = json_encode($Data);
-        
+
         if (array_key_exists("id",$this->DevArray)) {
             $devid = $this->DevArray['id'];
         } else {
             $devid = 0;
         }
-        
+
         if ($this->UserArray['ID'] != 0) {
             // if the user id is set, then they are logged in with a valid token.
             // update the last activity.
@@ -650,12 +652,12 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
         // execute the query, adding the request to the dev logs.
         $this->mysqli->query($query);
     }
-    
+
     private function recordGoogleAnalytics()
     {
-        // This function was designed just to throw a post notification over to google's analytics servers. 
+        // This function was designed just to throw a post notification over to google's analytics servers.
         // It allows us to keep track of traffic hitting the api.
-        
+
         // first we parse through the data, we don't want to send username or passwords to google.
         $dp = '/api/v2';
         // first we add the developer key..
@@ -685,7 +687,7 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
             'uip' => $_SERVER['REMOTE_ADDR'],
             'ua' => $_SERVER['HTTP_USER_AGENT'],
         );
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-type: application/x-www-form-urlencoded'));
@@ -695,7 +697,7 @@ VALUES ('".time()."', '" . $devid . "', '0', '" . $_SERVER['HTTP_USER_AGENT'] . 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
-        
+
         curl_close($ch);
     }
 }

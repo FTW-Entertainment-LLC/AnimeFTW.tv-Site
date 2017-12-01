@@ -60,7 +60,7 @@ if (isset($_GET['rf'])){
 	echo psa($profileArray);
     echo "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	echo "<td width='".THEME_WIDTH."' class='main-bg'>\n";
-	if(!isset($Config->SettingsArray[17])){
+/*	if(!isset($Config->SettingsArray[17])){
 		echo '
 		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 			<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
@@ -80,9 +80,9 @@ if (isset($_GET['rf'])){
 			<!-- End Insticator API Embed Code -->';
 		echo "</div>\n";
 		echo "</div>\n";
-	}
+	}*/
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo "<div class='side-body-bg'>";
+	/*	echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Advertisement</div>\n";
 		echo "<div class='side-body floatfix'>\n";
 		if($profileArray[2] == 3){
@@ -94,7 +94,7 @@ if (isset($_GET['rf'])){
 				</div>
 				<!-- End Insticator API Embed Code -->';
 		echo "</div>\n";
-		echo "</div>\n";
+		echo "</div>\n";*/
 	}
 	echo '
 	</div>
@@ -152,6 +152,7 @@ if (isset($_GET['rf'])){
 	}
 	else if($_GET['node'] == 'stats')
 	{
+        if (1 == 2) {
 				$FinalDate3 = time()-86400;
 				//how many active in last minute
 				$query22 = mysql_query("SELECT ID FROM users WHERE lastActivity>='".(time()-86400)."'");
@@ -277,9 +278,13 @@ if (isset($_GET['rf'])){
 			}
 		   echo' </div>';
 		}
+    } else {
+        echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+    }
 	}
 	else if($_GET['node'] == 'topseries')
 	{
+        if (1 == 2) {
 		echo "<div class='side-body-bg'>\n";
 		echo "<span class='scapmain'>AnimeFTW.tv Series and Movies Toplist</span>\n";
 		echo "</div>\n";
@@ -291,31 +296,10 @@ if (isset($_GET['rf'])){
 		   $mtl->TopAnime();
 	   		echo '</div>';
 			echo '</div>';
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+        }
 	 }
-	 else if($_GET['node'] == 'chat')
-	 {
-		echo "<div class='side-body-bg'>\n";
-		echo "<span class='scapmain'>AnimeFTW.tv Chat</span>\n";
-		echo "</div>\n";
-		   ?>
-           <div class="mpart">
-           <div align="center">You are being connected to irc.ftwirc.com, FTW Entertainment's personal IRC server.<br />To change your nick type /nick (nickhere)</div>
-                    <?php
-
-				if ( $Logged == 1 )
-							{
-								echo '<div align="center"><iframe align="center" src="http://widget.mibbit.com/?settings=ea6a5f6fddfdb032b083170d36ac4d3c&server=irc.ftwirc.com&channel=%23ftw&noServerNotices=true&noServerMotd=true&autoConnect=true&nick='.$name.'" height="450px" width="750px" frameborder="0"></iframe></div>';
-							}
-							else
-							{
-
-				echo '<div align="center"><iframe align="center" src="http://widget.mibbit.com/?settings=ea6a5f6fddfdb032b083170d36ac4d3c&server=irc.ftwirc.com&channel=%23ftw&noServerNotices=true&noServerMotd=true&autoConnect=true" height="350px" width="650px" frameborder="0"></iframe></div>';
-							}
-				?>
-				<div class="date"></div>
-				</div>
-           <?php
-	   }
 	   else if($_GET['node'] == 'banned')
 	   {
 		echo "<div class='side-body-bg'>\n";
@@ -339,7 +323,7 @@ if (isset($_GET['rf'])){
 	   }
 	   else if($_GET['node'] == 'contact')
 	   {
-
+           if (1 == 2) {
 		echo "<div class='side-body-bg'>\n";
 		echo "<span class='scapmain'>AnimeFTW.tv Contact Form</span>\n";
 		echo "</div>\n";
@@ -418,15 +402,22 @@ if (isset($_GET['rf'])){
 						</form>';
 					}
 		}
+    } else {
+        echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+    }
 	}
 	else if($_GET['node'] == 'birthdays'){
-		echo "<div class='side-body-bg'>\n";
-		echo "<span class='scapmain'>AnimeFTW.tv Birthdays!</span>\n";
-		echo "</div>\n";
-		echo "<div class='side-body' align=\"center\">\n";
-		echo "誕生日おめでとう, gelukkige Verjaardag, Joyeux anniversaire, feliz cumpleaños, <b><i>Happy Birthday</i></b>.<br />From all the Staff at AnimeFTW.tv, We wish you a Happy Birthday, however you say it!";
-		echo "</div>";
-		$stats->TodaysBirthdays();
+        if (1 == 2){
+    		echo "<div class='side-body-bg'>\n";
+    		echo "<span class='scapmain'>AnimeFTW.tv Birthdays!</span>\n";
+    		echo "</div>\n";
+    		echo "<div class='side-body' align=\"center\">\n";
+    		echo "誕生日おめでとう, gelukkige Verjaardag, Joyeux anniversaire, feliz cumpleaños, <b><i>Happy Birthday</i></b>.<br />From all the Staff at AnimeFTW.tv, We wish you a Happy Birthday, however you say it!";
+    		echo "</div>";
+    		$stats->TodaysBirthdays();
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+        }
 	}
 	else if($_GET['node'] == 'staff'){
 		if($profileArray[2] != 0){
@@ -439,91 +430,103 @@ if (isset($_GET['rf'])){
 		}
 	}
 	else if($_GET['node'] == 'store'){
-		include('includes/classes/store.class.php');
-		$S = new Store();
-		$S->connectProfile($profileArray);
-		$S->StoreInit();
+        if (1 == 2) {
+    		include('includes/classes/store.class.php');
+    		$S = new Store();
+    		$S->connectProfile($profileArray);
+    		$S->StoreInit();
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+        }
 	}
 	else if($_GET['node'] == 'connect'){
-		echo "<div class='side-body-bg'>\n";
-		echo "<span class='scapmain'>Connect your Device to your AnimeFTW.tv Account!</span>\n";
-		echo "<div class='side-body' align=\"center\">\n";
-        echo '<div align="center" style="font-size:16px;">Connect your device to your AnimeFTW.tv account, use the code from the Channel/App to pair the device to your account.</div>';
-        if($profileArray[2] != 0){
-            echo '<br />
-            <div align="center" id="key-wrapper">
-                <form id="key-form">
-                    <div id="key-div-wrapper">
-                        <div>
-                            <input type="input" name="key" id="app-key" style="height:60px;width:260px;font-size:52px;text-align:center;border:1px solid #CCC;border-radius:5px;" maxlength="6" onkeyup="countChar(this)" />
+        if (1 == 2){
+    		echo "<div class='side-body-bg'>\n";
+    		echo "<span class='scapmain'>Connect your Device to your AnimeFTW.tv Account!</span>\n";
+    		echo "<div class='side-body' align=\"center\">\n";
+            echo '<div align="center" style="font-size:16px;">Connect your device to your AnimeFTW.tv account, use the code from the Channel/App to pair the device to your account.</div>';
+            if($profileArray[2] != 0){
+                echo '<br />
+                <div align="center" id="key-wrapper">
+                    <form id="key-form">
+                        <div id="key-div-wrapper">
+                            <div>
+                                <input type="input" name="key" id="app-key" style="height:60px;width:260px;font-size:52px;text-align:center;border:1px solid #CCC;border-radius:5px;" maxlength="6" onkeyup="countChar(this)" />
+                            </div>
+                            <div>
+                                (The Key is case sensitive)
+                            </div>
+                        </div>
+                        <div id="hidden-success" style="display:none;min-height:60px;font-size:26px;" align="center">
+                            Your Device has been successfully registered with your account, proceed back to your device to continue with the Device Authentication process.
+                        </div>
+                        <div style="padding-top:20px;">
+                            <input type="button" name="Submit" value="Submit" id="key-submit-button" />
                         </div>
                         <div>
-                            (The Key is case sensitive)
+                            Once submitted, your app/channel instance will be able to pull down a token from the servers, if you have issues authenticating your app, please hop in the <a href="/irc" target="_blank">chat</a> or email support@animeftw.tv.
                         </div>
-                    </div>
-                    <div id="hidden-success" style="display:none;min-height:60px;font-size:26px;" align="center">
-                        Your Device has been successfully registered with your account, proceed back to your device to continue with the Device Authentication process.
-                    </div>
-                    <div style="padding-top:20px;">
-                        <input type="button" name="Submit" value="Submit" id="key-submit-button" />
-                    </div>
-                    <div>
-                        Once submitted, your app/channel instance will be able to pull down a token from the servers, if you have issues authenticating your app, please hop in the <a href="/irc" target="_blank">chat</a> or email support@animeftw.tv.
-                    </div>
-                    <div id="key-failure-notice" style="display:none;">
-                    </div>
-                </form>
-            </div>
-            <script>
-            function countChar(val) {
-                var len = val.value.length;
-                if (len == 6) {
-                    $("#app-key").css("border","1px solid green");
-                } else {
-                    $("#app-key").css("border","1px solid #CCC");
-                }
-            };
-            $("#key-submit-button").on("click",function(){
-                var len = $("#app-key").val().length;
-                if (len < 6) {
-                    $("#app-key").css("border","1px solid red");
-                    return false;
-                } else {
-                    $("#key-failure-notice").hide();
-                    $.ajax({
-						type: "POST",
-						url: "/scripts.php?view=api&subview=validate-key",
-						data: $("#key-form").serialize(),
-						success: function(html)
-						{
-							if(html.indexOf("Success") >= 0)
-							{
-                                $("#key-div-wrapper").hide();
-                                $("#hidden-success").show();
-							}
-							else{
-								$("#key-failure-notice").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;\'>Error Submitting Request: " + html + "</div>");
-							}
-						}
-					});
-					return false;
-                }
-            });
-            </script>';
+                        <div id="key-failure-notice" style="display:none;">
+                        </div>
+                    </form>
+                </div>
+                <script>
+                function countChar(val) {
+                    var len = val.value.length;
+                    if (len == 6) {
+                        $("#app-key").css("border","1px solid green");
+                    } else {
+                        $("#app-key").css("border","1px solid #CCC");
+                    }
+                };
+                $("#key-submit-button").on("click",function(){
+                    var len = $("#app-key").val().length;
+                    if (len < 6) {
+                        $("#app-key").css("border","1px solid red");
+                        return false;
+                    } else {
+                        $("#key-failure-notice").hide();
+                        $.ajax({
+    						type: "POST",
+    						url: "/scripts.php?view=api&subview=validate-key",
+    						data: $("#key-form").serialize(),
+    						success: function(html)
+    						{
+    							if(html.indexOf("Success") >= 0)
+    							{
+                                    $("#key-div-wrapper").hide();
+                                    $("#hidden-success").show();
+    							}
+    							else{
+    								$("#key-failure-notice").slideDown().html("<div align=\'center\' style=\'color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;\'>Error Submitting Request: " + html + "</div>");
+    							}
+    						}
+    					});
+    					return false;
+                    }
+                });
+                </script>';
+            }
+            echo "</div>";
+    		echo "</div>\n";
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
         }
-        echo "</div>";
-		echo "</div>\n";
     }
 	else {
-		include('includes/classes/content.class.php');
-		$C = new Content();
-		$C->connectProfile($profileArray);
-		$C->Output();
+        if (1 ==2) {
+    		include('includes/classes/content.class.php');
+    		$C = new Content();
+    		$C->connectProfile($profileArray);
+    		$C->Output();
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+        }
 	}
 	echo "</td>\n";
 	echo "<td style='padding-left:10px; width:250px;  vertical-align:top;' class='main-right'>\n";
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo '
+		/*echo '
 		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 			<div id="ad-sidebar" style="width:220px;float:right;margin:0 0 0 270px;position:absolute;z-index:0;">';
 		echo "<div class='side-body-bg'>";
@@ -541,7 +544,7 @@ if (isset($_GET['rf'])){
 		echo "</div>\n";
 		echo '
 		</div>
-		</div>';
+		</div>';*/
 	}
 	$stats->get_la($profileArray[2]);
 	if(strpos($_SERVER['REQUEST_URI'], 'store'))
@@ -566,7 +569,7 @@ if (isset($_GET['rf'])){
 		echo "</div></div></div>\n";
 		$stats->ShowStoreCategories();
 	}
-	$stats->donationBox();
+	//$stats->donationBox();
 	if($profileArray[2] != 0){
 		echo "<!-- Start Top 10 List -->";
 		$top->get_num(10);
@@ -576,9 +579,9 @@ if (isset($_GET['rf'])){
 		$top->StyleBottom();
 		echo "<!-- End Top 10 List -->";
 	}
-	$stats->UsageStats();
-	$stats->TopWatchList();
-	$stats->BirthdayBox();
+	//$stats->UsageStats();
+	//$stats->TopWatchList();
+	//$stats->BirthdayBox();
 	echo "<div class='side-body-bg'>";
 	echo "<div class='scapmain'>View us on..</div>\n";
 	echo "<div class='side-body floatfix'>\n";
@@ -602,8 +605,8 @@ if (isset($_GET['rf'])){
 	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"//i.animeftw.tv/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
 	echo "</div></div>\n";
 	$stats->get_zone($profileArray[3]);
-	$stats->LatestSeries();
-	$stats->LatestEpisodes();
+//	$stats->LatestSeries();
+	//$stats->LatestEpisodes();
 	echo "</td>\n";
 	echo "</tr>\n</table>\n";
 

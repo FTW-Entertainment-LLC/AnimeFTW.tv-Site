@@ -25,7 +25,7 @@ if ($GETview == 'lastpost')
 		header ( "Location: http://".$_SERVER['HTTP_HOST']."/forums/".$row1['fseo']."/topic-$ptid/s-$rounded#entry$pid");
 }
 if ($GETview == 'findpost')
-{ 
+{
 	if(isset($_GET['post'])){
 		if(isset($_GET['post']) && is_numeric($_GET['post'])){$postID = $_GET['post'];}
 		$postID = mysql_real_escape_string($postID);
@@ -157,9 +157,9 @@ if(isset($_POST['doreply']))
 			exit;
 		}
 		else if($CODE == 2)
-		{ 
+		{
 			$tid = mysql_real_escape_string($tid);
-			$query2 = mysql_query("SELECT pid FROM forums_post WHERE ptid='$tid'"); 
+			$query2 = mysql_query("SELECT pid FROM forums_post WHERE ptid='$tid'");
 			$total_thread_posts = mysql_num_rows($query2) or die("Error: ". mysql_error(). " with query ". $query2);
 			$new_post_id = $total_thread_posts+1;
 			$query = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, ptispost, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -227,7 +227,7 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
     echo "<table align='center' cellpadding='0' cellspacing='0' width='".THEME_WIDTH."'>\n<tr>\n";
 	echo "<td width='".THEME_WIDTH."' class='main-bg'>\n";
 	if(!isset($Config->SettingsArray[17])){
-		echo '
+	/*	echo '
 		<div id="ad-wrapper" style="height:100%;position:absolute;z-index:0;">
 			<div id="ad-sidebar" style="width:220px;float:left;margin:-10px 0 0 -245px;position:absolute;z-index:0;">';
 		echo "<div class='side-body-bg'>";
@@ -245,10 +245,10 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 			</div>
 			<!-- End Insticator API Embed Code -->';
 		echo "</div>\n";
-		echo "</div>\n";
+		echo "</div>\n";*/
 	}
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo "<div class='side-body-bg'>";
+	/*	echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Advertisement</div>\n";
 		echo "<div class='side-body floatfix'>\n";
 		if($profileArray[2] == 3){
@@ -260,7 +260,7 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 				</div>
 				<!-- End Insticator API Embed Code -->';
 		echo "</div>\n";
-		echo "</div>\n";
+		echo "</div>\n";*/
 	}
 	echo '
 	</div>
@@ -269,7 +269,7 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 	echo "<td class='note-message' align='center'>".$forum_global_message."</td>\n";
 	echo "</tr>\n</table>\n";
 	if($profileArray[2] == 0 || $profileArray[2] == 3){
-		echo '
+	/*	echo '
 		<div id="ad-wrapper" style="height:100%;position:relative;z-index:0;float:right;">
 			<div id="ad-sidebar" style="width:220px;float:right;margin:-45px 0 0 30px;position:absolute;z-index:0;">';
 		echo "<div class='side-body-bg'>";
@@ -287,12 +287,12 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 		echo "</div>\n";
 		echo '
 		</div>
-		</div>';
+		</div>';*/
 	}
-	
+
 	echo "<br />\n<br />\n";
-	
-			include_once('includes/classes/forumpaging.class.php');	
+
+			include_once('includes/classes/forumpaging.class.php');
 			include_once('includes/classes/forum.class.php');
 			$f = new Forum();
 			include_once('includes/classes/mainview.forum.class.php');
@@ -300,16 +300,16 @@ $forum_global_message = "We want to thank everyone, these forums were redesigned
 			include_once('includes/classes/threads.forum.class.php');
 			include_once('includes/classes/threadview.forum.class.php');
 			$f->buildVars(@$_GET['action'],$profileArray);
-			$f->Output();	
+			$f->Output();
 	// End Main BG
     echo "</td>\n";
 	echo "</tr>\n</table>\n";
-		
+
 	echo "<br />\n<br />\n<br />\n";
-	
+
 	echo "<table align='center' cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 	echo "<td align='center'>".$f->Copyright()."</td>\n";
 	echo "</tr>\n</table>\n";
-		
-include_once('footer.php'); 
+
+include_once('footer.php');
 ?>

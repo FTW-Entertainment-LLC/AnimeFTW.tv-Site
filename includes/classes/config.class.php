@@ -33,6 +33,17 @@ class Config {
         {
             $this->ThisDomain = ".ftwdevs.com";
         }
+        // Check if the User has acknowledged the cookie for the read only site.
+        if (!isset($_COOKIE['eolack']) && !isset($_POST['eolackset'])){
+            //print_r($_POST);
+            //echo 'printr';
+            header('location: /farewell.html');
+            exit;
+        } else if (!isset($_COOKIE['eolack']) && isset($_POST['eolackset'])){
+            // they are attempting to acknowledge the eol of the site.
+            setcookie("eolack", '1', time() + (60*60*24*365*10), "/", $this->ThisDomain, 0, 1);
+        } else {
+        }
 
         if(isset($_SERVER['HTTP_CF_VISITOR'])){
             $decoded = json_decode($_SERVER['HTTP_CF_VISITOR'], true);

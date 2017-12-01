@@ -18,7 +18,7 @@ if($port == '80')
 	header("location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 }
 //Header area start. (This code loads before anything in the body tags..)
-if($_GET['node'] == 'login'){
+if($_GET['node'] == 'login' && 2 == 1){
 $PageTitle = 'Login - AnimeFTW.TV';
 	if (isset($_POST['username']) && isset($_POST['password'])){
 		function makeUrlFriendly($postUsername) {
@@ -113,7 +113,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 		}
 	}
 }
-else if($_GET['node'] == 'register'){
+else if($_GET['node'] == 'register' && 2 == 1){
 	include_once('includes/classes/register.class.php');
 	$Register = new Register();
 	$OutputArray = $Register->registerAccount();
@@ -123,7 +123,7 @@ else if($_GET['node'] == 'register'){
 
 	$PageTitle = 'Account Registration  - AnimeFTW.TV';
 }
-else if($_GET['node'] == 'forgot-password'){
+else if($_GET['node'] == 'forgot-password' && 2 == 1){
 	$PageTitle = 'Password Recovery - AnimeFTW.TV';
 	if(array_key_exists ( '_submit_check', $_POST)){
 		require_once('includes/settings.php');
@@ -154,7 +154,7 @@ else if($_GET['node'] == 'forgot-password'){
 	else {
 	}
 }
-else if($_GET['node'] == 'email-resend')
+else if($_GET['node'] == 'email-resend' && 2 == 1)
 {
 	$PageTitle = 'Welcome Email Resend - AnimeFTW.TV';
 	require_once ( 'includes/settings.php' );
@@ -181,7 +181,7 @@ else if($_GET['node'] == 'email-resend')
 		}
 	}
 }
-else if($_GET['node'] == 'reviews')
+else if($_GET['node'] == 'reviews' && 2 == 1)
 {
 	$PageTitle = 'Series Reviews - AnimeFTW.TV';
 	if(isset($_GET['subnode']) && $_GET['subnode'] == 'submit'){
@@ -205,7 +205,7 @@ else if($_GET['node'] == 'reviews')
 		}
 	}
 }
-else if($_GET['node'] == 'password-confirm')
+else if($_GET['node'] == 'password-confirm' && 2 == 1)
 {
 	$PageTitle = 'Password Confirmation - AnimeFTW.TV';
 	require_once ( 'includes/settings.php' );
@@ -231,7 +231,7 @@ else if($_GET['node'] == 'password-confirm')
 	}
 
 }
-else if($_GET['node'] == 'donate'){
+else if($_GET['node'] == 'donate' && 2 == 1){
 	$PageTitle = 'Site Donations - AnimeFTW.TV';
 	include('includes/classes/donate.class.php');
 	$donate = new AFTWDonate();
@@ -270,79 +270,82 @@ else {
 			<span class="poster">Use your AnimeFTW.tv Account to access copious amounts of Anime in the Greatest Quality found on the net.</span>
 			</div>
 			<div class="tbl"><br />';
-		if(isset($_COOKIE['__flc'])){
-			$timeleft = $_COOKIE['__flc'] - time();
-			$time = round($timeleft/60);
-			echo 'ERROR: '.$time.' minute(s) left before reactivation.';
-		}
-		else {
-			echo'<br />';
-			if(!isset($_SERVER['HTTP_REFERER'])){
-				$referer2 = 'http://www.animeftw.tv/';
-			}
-			else {$referer2 = $_SERVER['HTTP_REFERER'];}
-			echo '<div align="center"><form id="form1" action="'.$_SERVER['REQUEST_URI'].'" method="post">
-				<input type="hidden" name="_submit_check" value="1" />
-				<input type="hidden" name="issubmit" value="1">
-				<input type="hidden" name="cookies-set" value="0" id="cookies-set" />
-				<div id="cookie-warning" style="margin-top:-10px;margin-bottom:10px;display:none;">
-					<div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;border-radius:5px;color:white;">WARNING: AnimeFTW.tv requires cookies to log in, if they are not enabled you will not be able to log in.</div>
-				</div>
-				<script type="text/javascript">
-				are_cookies_enabled();
-				function are_cookies_enabled()
-				{
-					var cookieEnabled = (navigator.cookieEnabled) ? true : false;
+        if (2 == 1) {
+    		if(isset($_COOKIE['__flc'])){
+    			$timeleft = $_COOKIE['__flc'] - time();
+    			$time = round($timeleft/60);
+    			echo 'ERROR: '.$time.' minute(s) left before reactivation.';
+    		}
+    		else {
+    			echo'<br />';
+    			if(!isset($_SERVER['HTTP_REFERER'])){
+    				$referer2 = 'http://www.animeftw.tv/';
+    			}
+    			else {$referer2 = $_SERVER['HTTP_REFERER'];}
+    			echo '<div align="center"><form id="form1" action="'.$_SERVER['REQUEST_URI'].'" method="post">
+    				<input type="hidden" name="_submit_check" value="1" />
+    				<input type="hidden" name="issubmit" value="1">
+    				<input type="hidden" name="cookies-set" value="0" id="cookies-set" />
+    				<div id="cookie-warning" style="margin-top:-10px;margin-bottom:10px;display:none;">
+    					<div style="padding:5px;border:1px solid #e76b6b;background-color:#e76b6b;border-radius:5px;color:white;">WARNING: AnimeFTW.tv requires cookies to log in, if they are not enabled you will not be able to log in.</div>
+    				</div>
+    				<script type="text/javascript">
+    				are_cookies_enabled();
+    				function are_cookies_enabled()
+    				{
+    					var cookieEnabled = (navigator.cookieEnabled) ? true : false;
 
-					if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
-					{
-						document.cookie="testcookie";
-						cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
-					}
-					if(cookieEnabled == false)
-					{
-						$("#cookie-warning").css("display","");
-						$("#cookies-set").val("1");
-					}
-				}
-				</script>
-				<table width="500px">
-				<tr>
-					<td align="right">
-					<input name="last_page" type="hidden" value="'.$referer2.'" />
-					<label class="left" for="username" style="margin: 0px 0px 0px 0px;color:#555555;">Username:</label>
-					</td>
-					<td width="340px" align="left">
-					<input name="username" id="username" type="text" class="loginForm" style="width: 227px" /><br />
-					</td>
-				</tr>
-				<tr>
-					<td align="right">
-					<label class="left" for="password" style="margin: 0px 0px 0px 0px;color:#555555;">Password:</label>
-					</td>
-					<td align="left">
-					<input name="password" id="password" type="password" class="loginForm" style="width:154px;" />
-					<input name="submit" type="submit" class="button_2" value="Sign In" />
-					</td>
-				</tr>
-				<tr>
-				<td colspan="2">
-				<div class="cb"></div>
-					<div style="margin: 5px 0px 0px 100px;">
-							<div style="margin-left:50px;"><input type="checkbox" name="remember" id="remember" checked="checked" />Keep me logged in</div>
-							<div style="font-size: 9px;">(Not recommended for public or shared computers)</div>
-							<div style="margin: 10px 0px 0px 50px;"><a href="/forgot-password">Forgot Password?</a></div>
-							<div style="margin: 10px 0px 0px 50px;">Don\'t have an account? <a href="/register">Register Here.</a></div>
-					</td>
-				  </tr>
-				 </table>
-				 </form>
-				 <br /><br />
-				 <i>AnimeFTW.tv Members Enjoy many perks over the average Anime Streaming site. By logging in with your AnimeFTW.tv Account, you are given access to the net\'s Largest library of on Demand Streaming Anime in HD Quality. <br /><br />Along with the perks that come with being a basic member, users can upgrade their account, "FTW Subscribers" are allowed to enhance their AnimeFTW.tv Account by making them Advanced Members. AMs for short, are allowed to download all our videos and have direct access to the CDN for the fastest download speeds anywhere in the world.</i></div>
-				 </div>';
-		}
+    					if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
+    					{
+    						document.cookie="testcookie";
+    						cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
+    					}
+    					if(cookieEnabled == false)
+    					{
+    						$("#cookie-warning").css("display","");
+    						$("#cookies-set").val("1");
+    					}
+    				}
+    				</script>
+    				<table width="500px">
+    				<tr>
+    					<td align="right">
+    					<input name="last_page" type="hidden" value="'.$referer2.'" />
+    					<label class="left" for="username" style="margin: 0px 0px 0px 0px;color:#555555;">Username:</label>
+    					</td>
+    					<td width="340px" align="left">
+    					<input name="username" id="username" type="text" class="loginForm" style="width: 227px" /><br />
+    					</td>
+    				</tr>
+    				<tr>
+    					<td align="right">
+    					<label class="left" for="password" style="margin: 0px 0px 0px 0px;color:#555555;">Password:</label>
+    					</td>
+    					<td align="left">
+    					<input name="password" id="password" type="password" class="loginForm" style="width:154px;" />
+    					<input name="submit" type="submit" class="button_2" value="Sign In" />
+    					</td>
+    				</tr>
+    				<tr>
+    				<td colspan="2">
+    				<div class="cb"></div>
+    					<div style="margin: 5px 0px 0px 100px;">
+    							<div style="margin-left:50px;"><input type="checkbox" name="remember" id="remember" checked="checked" />Keep me logged in</div>
+    							<div style="font-size: 9px;">(Not recommended for public or shared computers)</div>
+    							<div style="margin: 10px 0px 0px 50px;"><a href="/forgot-password">Forgot Password?</a></div>
+    							<div style="margin: 10px 0px 0px 50px;">Don\'t have an account? <a href="/register">Register Here.</a></div>
+    					</td>
+    				  </tr>
+    				 </table>
+    				 </form>
+    				 <br /><br />
+    				 <i>AnimeFTW.tv Members Enjoy many perks over the average Anime Streaming site. By logging in with your AnimeFTW.tv Account, you are given access to the net\'s Largest library of on Demand Streaming Anime in HD Quality. <br /><br />Along with the perks that come with being a basic member, users can upgrade their account, "FTW Subscribers" are allowed to enhance their AnimeFTW.tv Account by making them Advanced Members. AMs for short, are allowed to download all our videos and have direct access to the CDN for the fastest download speeds anywhere in the world.</i></div>
+    				 </div>';
+                 }
+             } else {
+                 echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+             }
 	}
-
 	else if($_GET['node'] == 'register'){
 		echo "<span class='scapmain'>AnimeFTW.tv Registration</span>\n";
 		echo "<br />\n";
@@ -353,236 +356,241 @@ else {
 		echo "<td valign='top' class='main-mid'>\n";
 		echo '<table align="center" border="0" cellpadding="0" cellspacing="0">
 	<tr><td>';
-		if( isset ( $error ) && (isset($noReg) && $noReg != 'yes'))	{
-			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
-			echo "</tr>\n</table>\n";
-		}
-		else if ( isset($error) && (isset($noReg) && $noReg == 'yes') ){
-			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-			echo "<td class='note-message' align='center'><b>Registration Message: </b>".$error."</td>\n";
-			echo "</tr>\n</table></td></tr></table>\n";
-		}
-		else {
-			// for everything else..
-			if(isset($error)){
-				echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
-				echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
-				echo "</tr>\n</table></td></tr></table>\n";
-			}
-		}
-		if(isset($noReg) && $noReg == 'yes'){
-			echo "<br /><br /><br /><br /><br /><br />";
-		}
-		else {
-		echo '<form action="'.$_SERVER['REQUEST_URI'].'" method="POST">
-				<input type="hidden" name="_submit_check" value="1" />
-				<input type="hidden" name="issubmit" value="1">
-				<div id="wizard" class="swMain">
-					<ul>
-						<li><a href="#step-1"><label class="stepNumber">1</label><span class="stepDesc">Account Details<br /><small>Fill your account details</small></span></a></li>
-						<li><a href="#step-2"><label class="stepNumber">2</label><span class="stepDesc">Profile Details<br /><small>Fill your profile details</small></span></a></li>
-						<li><a href="#step-3"><label class="stepNumber">3</label><span class="stepDesc">Preferences<br /><small>Some Small Site Settings</small></span></a></li>
-						<li><a href="#step-4"><label class="stepNumber">4</label><span class="stepDesc">Validations<br /><small>Prove your not a bot.</small> </span></a></li>
-					</ul>
-					<div id="step-1"><h2 class="StepTitle">Step 1: Account Details</h2>
-					<table cellspacing="3" cellpadding="3" align="center">
-						<tr><td align="center" colspan="3">&nbsp;</td></tr>
-						<tr>
-							<td align="right">Username* :</td>
-							<td align="left"><input type="text" id="username" name="username" class="txtBox" onKeyUp="timeoutUsernameCheck()" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['username'].'"';} echo '></td>
-							<td align="left"><span id="msg_username"></span>&nbsp;<div id="username_exists" style="display: inline; margin-right:140px; float:right;"></div></td>
-						</tr>
-						<tr>
-							<td align="right">Password* :</td>
-							<td align="left"><input type="password" id="password" name="password" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['password'].'"';} echo '></td>
-							<td align="left"><span id="msg_password"></span>&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="right">Confirm Password* :</td>
-							<td align="left"><input type="password" id="cpassword" name="cpassword" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['cpassword'].'"';} echo '></td>
-							<td align="left"><span id="msg_cpassword"></span>&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="right">Email* :</td>
-							<td align="left"><input type="text" id="email" name="email" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['email'].'"';} echo '></td>
-							<td align="left"><span id="msg_email"></span>&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="right">Confirm Email* :</td>
-							<td align="left"><input type="text" id="cemail" name="cemail" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['cemail'].'"';} echo '></td>
-							<td align="left"><span id="msg_cemail"></span>&nbsp;</td>
-						</tr>
-					</table>
-					</div>
-					<div id="step-2">
-					<h2 class="StepTitle">Step 2: Profile Details</h2>
-					<table cellspacing="3" cellpadding="3" align="center">
-						<tr><td align="center" colspan="3">&nbsp;</td></tr>
-						<tr>
-							<td align="right">First Name :</td>
-							<td align="left"><input type="text" id="firstname" name="firstname" value="" class="txtBox"></td>
-							<td align="left"><span id="msg_firstname"></span>&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="right">Gender :</td>
-							<td align="left">
-								<select id="gender" name="gender" class="txtBox">
-								  <option value="">-select-</option>
-								  <option value="Female">Female</option>
-								  <option value="Male">Male</option>
-								</select>
-							</td>
-							<td align="left"><span id="msg_gender"></span>&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="right">Age* :</td>
-							<td align="left">
-								<select name="ageDay" class="txtBox2">
-								<option value="00" selected="selected">--Day--</option>';
-								for($i=1; $i<=31; $i++)
-								{
-									$ri = $i<10?('0'.$i):$i;
-									echo '<option value="' . $ri . '">' . $i . '</option>';
-								}
-								echo '</select>
-								<select name="ageMonth" class="txtBox2">
-								<option value="00" selected="selected">--Month--</option>';
-								$monthsarr = array('January','February','March','April','May','June','July ','August','September','October','November','December');
-								for($i=0; $i<=11; $i++)
-								{
-									$ri = ($i+1)<10?('0'.($i+1)):($i+1);
-									echo '<option value="' . $ri . '">' . $monthsarr[$i] . '</option>';
-								}
-								echo '</select>
-								<select name="ageYear" class="txtBox2">
-								<option value="0000" selected="selected">--Year--</option>';
-								$startyear = date("Y")-90;
-								$endyear = date("Y")-12;
-								for($i=$endyear; $i>=$startyear; $i--)
-								{
-									echo '<option value="' . $i . '">' . $i . '</option>';
-								}
-								echo '</select>
-							</td>
-						</tr>
-					</table>
-					</div>
-					<div id="step-3">
-					<h2 class="StepTitle">Step 3: Preferences</h2>
-					<table cellspacing="3" cellpadding="3" align="center">
-							<tr>
-								<td align="center" colspan="3">&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="right">Timezone* :</td>
-								<td align="left">
-		<select name="timeZone" class="txtBox">
-			<option value="-12"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-12'){echo ' selected="selected"';} echo '>(GMT - 12:00 hours) Enewetak, Kwajalein</option>
-			<option value="-11"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-11'){echo ' selected="selected"';} echo '>(GMT - 11:00 hours) Midway Island, Samoa</option>
-			<option value="-10"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-10'){echo ' selected="selected"';} echo '>(GMT - 10:00 hours) Hawaii</option>
-			<option value="-9.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-9.5'){echo ' selected="selected"';} echo '>(GMT - 9:30 hours) French Polynesia</option>
-			<option value="-9"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-9'){echo ' selected="selected"';} echo '>(GMT - 9:00 hours) Alaska</option>
-			<option value="-8"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-8'){echo ' selected="selected"';} echo '>(GMT - 8:00 hours) Pacific Time (US &amp; Canada)</option>
-			<option value="-7"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-7'){echo ' selected="selected"';} echo '>(GMT - 7:00 hours) Mountain Time (US &amp; Canada)</option>
-			<option value="-6"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-6'){echo ' selected="selected"';}else{echo 'selected="selected"';} echo '>(GMT - 6:00 hours) Central Time (US &amp; Canada), Mexico City</option>
-			<option value="-5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-5'){echo ' selected="selected"';} echo '>(GMT - 5:00 hours) Eastern Time (US &amp; Canada), Bogota, Lima</option>
-			<option value="-4"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-4'){echo ' selected="selected"';} echo '>(GMT - 4:00 hours) Atlantic Time (Canada), Caracas, La Paz</option>
-			<option value="-3.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-3.5'){echo ' selected="selected"';} echo '>(GMT - 3:30 hours) Newfoundland</option>
-			<option value="-3"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-3'){echo ' selected="selected"';} echo '>(GMT - 3:00 hours) Brazil, Buenos Aires, Falkland Is.</option>
-			<option value="-2"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-2'){echo ' selected="selected"';} echo '>(GMT - 2:00 hours) Mid-Atlantic, Ascention Is., St Helena</option>
-			<option value="-1"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-1'){echo ' selected="selected"';} echo '>(GMT - 1:00 hours) Azores, Cape Verde Islands</option>
-			<option value="0"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '0'){echo ' selected="selected"';} echo '>(GMT) Casablanca, Dublin, London, Lisbon, Monrovia</option>
-			<option value="1"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '1'){echo ' selected="selected"';} echo '>(GMT + 1:00 hours) Brussels, Copenhagen, Madrid, Paris</option>
-			<option value="2"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '2'){echo ' selected="selected"';} echo '>(GMT + 2:00 hours) Kaliningrad, South Africa</option>
-			<option value="3"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '3'){echo ' selected="selected"';} echo '>(GMT + 3:00 hours) Baghdad, Riyadh, Moscow, Nairobi</option>
-			<option value="3.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '3.5'){echo ' selected="selected"';} echo '>(GMT + 3:30 hours) Tehran</option>
-			<option value="4"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '4'){echo ' selected="selected"';} echo '>(GMT + 4:00 hours) Abu Dhabi, Baku, Muscat, Tbilisi</option>
-			<option value="4.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '4.5'){echo ' selected="selected"';} echo '>(GMT + 4:30 hours) Kabul</option>
-			<option value="5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '5'){echo ' selected="selected"';} echo '>(GMT + 5:00 hours) Ekaterinburg, Karachi, Tashkent</option>
-			<option value="5.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '5.5'){echo ' selected="selected"';} echo '>(GMT + 5:30 hours) Bombay, Calcutta, Madras, New Delhi</option>
-			<option value="5.75"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '5.75'){echo ' selected="selected"';} echo '>(GMT + 5:45 hours) Kathmandu</option>
-			<option value="6"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '6'){echo ' selected="selected"';} echo '>(GMT + 6:00 hours) Almaty, Colombo, Dhaka</option>
-			<option value="6.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '6.5'){echo ' selected="selected"';} echo '>(GMT + 6:30 hours) Yangon, Naypyidaw, Bantam</option>
-			<option value="7"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '7'){echo ' selected="selected"';} echo '>(GMT + 7:00 hours) Bangkok, Hanoi, Jakarta</option>
-			<option value="8"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '8'){echo ' selected="selected"';} echo '>(GMT + 8:00 hours) Hong Kong, Perth, Singapore, Taipei</option>
-			<option value="8.75"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '8.75'){echo ' selected="selected"';} echo '>(GMT + 8:45 hours) Caiguna, Eucla</option>
-			<option value="9"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '9'){echo ' selected="selected"';} echo '>(GMT + 9:00 hours) Osaka, Sapporo, Seoul, Tokyo, Yakutsk</option>
-			<option value="9.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '9.5'){echo ' selected="selected"';} echo '>(GMT + 9:30 hours) Adelaide, Darwin</option>
-			<option value="10"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '10'){echo ' selected="selected"';} echo '>(GMT + 10:00 hours) Melbourne, Papua New Guinea, Sydney</option>
-			<option value="10.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '10.5'){echo ' selected="selected"';} echo '>(GMT + 10:30 hours) Lord Howe Island</option>
-			<option value="11"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '11'){echo ' selected="selected"';} echo '>(GMT + 11:00 hours) Magadan, New Caledonia, Solomon Is.</option>
-			<option value="11.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '11.5'){echo ' selected="selected"';} echo '>(GMT + 11:30 hours) Burnt Pine, Kingston</option>
-			<option value="12"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '12'){echo ' selected="selected"';} echo '>(GMT + 12:00 hours) Auckland, Fiji, Marshall Island</option>
-			<option value="12.75"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '12.75'){echo ' selected="selected"';} echo '>(GMT + 12:45 hours) Chatham Islands</option>
-			<option value="13"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '13'){echo ' selected="selected"';} echo '>(GMT + 13:00 hours) Kamchatka, Anadyr</option>
-			<option value="14"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '14'){echo ' selected="selected"';} echo '>(GMT + 14:00 hours) Kiritimati</option>
-			</select>
-							  </td>
-								<td align="left"><span id="msg_tz"></span>&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="right">Receive Administrator Notifications :</td>
-								<td align="left">
-									<select name="notifications" class="txtBox">
-										<option value="1" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['notifications'] == '1'){echo ' selected="selected"';}else{echo ' selected="selected"';} echo '>Yes</option>
-										<option value="0" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['notifications'] == '0'){echo ' selected="selected"';} echo '>No</option>
-									</select>
-								</td>
-								<td align="left">&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="right">Site PM Notifications :</td>
-								<td align="left">
-									<select name="sitepmnote" class="txtBox">
-										<option value="1" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['sitepmnote'] == '1'){echo ' selected="selected"';}else{echo ' selected="selected"';} echo'>Yes</option>
-										<option value="0" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['sitepmnote'] == '0'){echo ' selected="selected"';} echo'>No</option>
-									</select>
-								</td>
-								<td align="left">&nbsp;</td>
-							</tr>
-					   </table>
-				</div>
-					<div id="step-4">
-					<h2 class="StepTitle">Step 4: Validation</h2>
-					<table cellspacing="3" cellpadding="3" align="center">
-							<tr>
-								<td align="center" colspan="3">&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="right" valign="top">Bot Check* :</td>
-								<td align="left">
-								  <div style="padding-bottom:5px;">Solve this equation to prove you are not a bot: <b>(2+8)-4+3</b></div>
-								  <input type="text" maxlength="150" id="google" name="google" class="txtBox" />
-							  </td>
-								<td align="left" valign="bottom"><span id="msg_google"></span>&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="right" valign="top">Are you Human?* :</td>
-								<td align="left"><div align="center">
-								<div class="g-recaptcha" data-sitekey="6Lej28MSAAAAAHbSX338LhM9FdQD-RalGgrKSM3Z"></div>
-								<span style="color: red;" id="captchaStatus">&nbsp;</span></div></td>
-								<td align="left"><span id="msg_recaptcha"></span>&nbsp;</td>
-							</tr>
-							<tr>
-								<td align="right">Agreement* :</td>
-								<td align="left"><input name="agreement" type="checkbox" value="yes" id="agreement" /> by Submitting your registration you agree to AnimeFTW.tv\'s <a href="/tos" target="_blank">ToS</a> as well as our <a href="/rules" target="_blank">Rules</a></td>
-								<td align="left"><span id="msg_agreement"></span>&nbsp;
-								</td>
-							</tr>
-					   </table>
-					   </td>
-					</tr>
-			   </table>
-			</td>
-		</tr>
-	</table>
-				</div>
-				</div>
-		</form>
-		<div align="center">
-		*= Is required to signup on AnimeFTW.tv, if you have any questions please use the <a href="/contact-us">Contact Us</a> or hop in the <a href="/irc">Chat</a> and leave us a message.</div>';
-		}
+
+        if (1 == 2) {
+    		if( isset ( $error ) && (isset($noReg) && $noReg != 'yes'))	{
+    			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+    			echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
+    			echo "</tr>\n</table>\n";
+    		}
+    		else if ( isset($error) && (isset($noReg) && $noReg == 'yes') ){
+    			echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+    			echo "<td class='note-message' align='center'><b>Registration Message: </b>".$error."</td>\n";
+    			echo "</tr>\n</table></td></tr></table>\n";
+    		}
+    		else {
+    			// for everything else..
+    			if(isset($error)){
+    				echo "<table cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
+    				echo "<td class='note-message' align='center'><b>Registration Error: </b>".$error."</td>\n";
+    				echo "</tr>\n</table></td></tr></table>\n";
+    			}
+    		}
+    		if(isset($noReg) && $noReg == 'yes'){
+    			echo "<br /><br /><br /><br /><br /><br />";
+    		}
+    		else {
+    		echo '<form action="'.$_SERVER['REQUEST_URI'].'" method="POST">
+    				<input type="hidden" name="_submit_check" value="1" />
+    				<input type="hidden" name="issubmit" value="1">
+    				<div id="wizard" class="swMain">
+    					<ul>
+    						<li><a href="#step-1"><label class="stepNumber">1</label><span class="stepDesc">Account Details<br /><small>Fill your account details</small></span></a></li>
+    						<li><a href="#step-2"><label class="stepNumber">2</label><span class="stepDesc">Profile Details<br /><small>Fill your profile details</small></span></a></li>
+    						<li><a href="#step-3"><label class="stepNumber">3</label><span class="stepDesc">Preferences<br /><small>Some Small Site Settings</small></span></a></li>
+    						<li><a href="#step-4"><label class="stepNumber">4</label><span class="stepDesc">Validations<br /><small>Prove your not a bot.</small> </span></a></li>
+    					</ul>
+    					<div id="step-1"><h2 class="StepTitle">Step 1: Account Details</h2>
+    					<table cellspacing="3" cellpadding="3" align="center">
+    						<tr><td align="center" colspan="3">&nbsp;</td></tr>
+    						<tr>
+    							<td align="right">Username* :</td>
+    							<td align="left"><input type="text" id="username" name="username" class="txtBox" onKeyUp="timeoutUsernameCheck()" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['username'].'"';} echo '></td>
+    							<td align="left"><span id="msg_username"></span>&nbsp;<div id="username_exists" style="display: inline; margin-right:140px; float:right;"></div></td>
+    						</tr>
+    						<tr>
+    							<td align="right">Password* :</td>
+    							<td align="left"><input type="password" id="password" name="password" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['password'].'"';} echo '></td>
+    							<td align="left"><span id="msg_password"></span>&nbsp;</td>
+    						</tr>
+    						<tr>
+    							<td align="right">Confirm Password* :</td>
+    							<td align="left"><input type="password" id="cpassword" name="cpassword" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['cpassword'].'"';} echo '></td>
+    							<td align="left"><span id="msg_cpassword"></span>&nbsp;</td>
+    						</tr>
+    						<tr>
+    							<td align="right">Email* :</td>
+    							<td align="left"><input type="text" id="email" name="email" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['email'].'"';} echo '></td>
+    							<td align="left"><span id="msg_email"></span>&nbsp;</td>
+    						</tr>
+    						<tr>
+    							<td align="right">Confirm Email* :</td>
+    							<td align="left"><input type="text" id="cemail" name="cemail" class="txtBox" '; if((isset($FailCheck) && $FailCheck == TRUE)){echo 'value="'.$_POST['cemail'].'"';} echo '></td>
+    							<td align="left"><span id="msg_cemail"></span>&nbsp;</td>
+    						</tr>
+    					</table>
+    					</div>
+    					<div id="step-2">
+    					<h2 class="StepTitle">Step 2: Profile Details</h2>
+    					<table cellspacing="3" cellpadding="3" align="center">
+    						<tr><td align="center" colspan="3">&nbsp;</td></tr>
+    						<tr>
+    							<td align="right">First Name :</td>
+    							<td align="left"><input type="text" id="firstname" name="firstname" value="" class="txtBox"></td>
+    							<td align="left"><span id="msg_firstname"></span>&nbsp;</td>
+    						</tr>
+    						<tr>
+    							<td align="right">Gender :</td>
+    							<td align="left">
+    								<select id="gender" name="gender" class="txtBox">
+    								  <option value="">-select-</option>
+    								  <option value="Female">Female</option>
+    								  <option value="Male">Male</option>
+    								</select>
+    							</td>
+    							<td align="left"><span id="msg_gender"></span>&nbsp;</td>
+    						</tr>
+    						<tr>
+    							<td align="right">Age* :</td>
+    							<td align="left">
+    								<select name="ageDay" class="txtBox2">
+    								<option value="00" selected="selected">--Day--</option>';
+    								for($i=1; $i<=31; $i++)
+    								{
+    									$ri = $i<10?('0'.$i):$i;
+    									echo '<option value="' . $ri . '">' . $i . '</option>';
+    								}
+    								echo '</select>
+    								<select name="ageMonth" class="txtBox2">
+    								<option value="00" selected="selected">--Month--</option>';
+    								$monthsarr = array('January','February','March','April','May','June','July ','August','September','October','November','December');
+    								for($i=0; $i<=11; $i++)
+    								{
+    									$ri = ($i+1)<10?('0'.($i+1)):($i+1);
+    									echo '<option value="' . $ri . '">' . $monthsarr[$i] . '</option>';
+    								}
+    								echo '</select>
+    								<select name="ageYear" class="txtBox2">
+    								<option value="0000" selected="selected">--Year--</option>';
+    								$startyear = date("Y")-90;
+    								$endyear = date("Y")-12;
+    								for($i=$endyear; $i>=$startyear; $i--)
+    								{
+    									echo '<option value="' . $i . '">' . $i . '</option>';
+    								}
+    								echo '</select>
+    							</td>
+    						</tr>
+    					</table>
+    					</div>
+    					<div id="step-3">
+    					<h2 class="StepTitle">Step 3: Preferences</h2>
+    					<table cellspacing="3" cellpadding="3" align="center">
+    							<tr>
+    								<td align="center" colspan="3">&nbsp;</td>
+    							</tr>
+    							<tr>
+    								<td align="right">Timezone* :</td>
+    								<td align="left">
+    		<select name="timeZone" class="txtBox">
+    			<option value="-12"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-12'){echo ' selected="selected"';} echo '>(GMT - 12:00 hours) Enewetak, Kwajalein</option>
+    			<option value="-11"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-11'){echo ' selected="selected"';} echo '>(GMT - 11:00 hours) Midway Island, Samoa</option>
+    			<option value="-10"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-10'){echo ' selected="selected"';} echo '>(GMT - 10:00 hours) Hawaii</option>
+    			<option value="-9.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-9.5'){echo ' selected="selected"';} echo '>(GMT - 9:30 hours) French Polynesia</option>
+    			<option value="-9"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-9'){echo ' selected="selected"';} echo '>(GMT - 9:00 hours) Alaska</option>
+    			<option value="-8"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-8'){echo ' selected="selected"';} echo '>(GMT - 8:00 hours) Pacific Time (US &amp; Canada)</option>
+    			<option value="-7"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-7'){echo ' selected="selected"';} echo '>(GMT - 7:00 hours) Mountain Time (US &amp; Canada)</option>
+    			<option value="-6"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-6'){echo ' selected="selected"';}else{echo 'selected="selected"';} echo '>(GMT - 6:00 hours) Central Time (US &amp; Canada), Mexico City</option>
+    			<option value="-5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-5'){echo ' selected="selected"';} echo '>(GMT - 5:00 hours) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+    			<option value="-4"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-4'){echo ' selected="selected"';} echo '>(GMT - 4:00 hours) Atlantic Time (Canada), Caracas, La Paz</option>
+    			<option value="-3.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-3.5'){echo ' selected="selected"';} echo '>(GMT - 3:30 hours) Newfoundland</option>
+    			<option value="-3"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-3'){echo ' selected="selected"';} echo '>(GMT - 3:00 hours) Brazil, Buenos Aires, Falkland Is.</option>
+    			<option value="-2"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-2'){echo ' selected="selected"';} echo '>(GMT - 2:00 hours) Mid-Atlantic, Ascention Is., St Helena</option>
+    			<option value="-1"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '-1'){echo ' selected="selected"';} echo '>(GMT - 1:00 hours) Azores, Cape Verde Islands</option>
+    			<option value="0"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '0'){echo ' selected="selected"';} echo '>(GMT) Casablanca, Dublin, London, Lisbon, Monrovia</option>
+    			<option value="1"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '1'){echo ' selected="selected"';} echo '>(GMT + 1:00 hours) Brussels, Copenhagen, Madrid, Paris</option>
+    			<option value="2"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '2'){echo ' selected="selected"';} echo '>(GMT + 2:00 hours) Kaliningrad, South Africa</option>
+    			<option value="3"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '3'){echo ' selected="selected"';} echo '>(GMT + 3:00 hours) Baghdad, Riyadh, Moscow, Nairobi</option>
+    			<option value="3.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '3.5'){echo ' selected="selected"';} echo '>(GMT + 3:30 hours) Tehran</option>
+    			<option value="4"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '4'){echo ' selected="selected"';} echo '>(GMT + 4:00 hours) Abu Dhabi, Baku, Muscat, Tbilisi</option>
+    			<option value="4.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '4.5'){echo ' selected="selected"';} echo '>(GMT + 4:30 hours) Kabul</option>
+    			<option value="5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '5'){echo ' selected="selected"';} echo '>(GMT + 5:00 hours) Ekaterinburg, Karachi, Tashkent</option>
+    			<option value="5.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '5.5'){echo ' selected="selected"';} echo '>(GMT + 5:30 hours) Bombay, Calcutta, Madras, New Delhi</option>
+    			<option value="5.75"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '5.75'){echo ' selected="selected"';} echo '>(GMT + 5:45 hours) Kathmandu</option>
+    			<option value="6"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '6'){echo ' selected="selected"';} echo '>(GMT + 6:00 hours) Almaty, Colombo, Dhaka</option>
+    			<option value="6.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '6.5'){echo ' selected="selected"';} echo '>(GMT + 6:30 hours) Yangon, Naypyidaw, Bantam</option>
+    			<option value="7"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '7'){echo ' selected="selected"';} echo '>(GMT + 7:00 hours) Bangkok, Hanoi, Jakarta</option>
+    			<option value="8"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '8'){echo ' selected="selected"';} echo '>(GMT + 8:00 hours) Hong Kong, Perth, Singapore, Taipei</option>
+    			<option value="8.75"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '8.75'){echo ' selected="selected"';} echo '>(GMT + 8:45 hours) Caiguna, Eucla</option>
+    			<option value="9"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '9'){echo ' selected="selected"';} echo '>(GMT + 9:00 hours) Osaka, Sapporo, Seoul, Tokyo, Yakutsk</option>
+    			<option value="9.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '9.5'){echo ' selected="selected"';} echo '>(GMT + 9:30 hours) Adelaide, Darwin</option>
+    			<option value="10"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '10'){echo ' selected="selected"';} echo '>(GMT + 10:00 hours) Melbourne, Papua New Guinea, Sydney</option>
+    			<option value="10.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '10.5'){echo ' selected="selected"';} echo '>(GMT + 10:30 hours) Lord Howe Island</option>
+    			<option value="11"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '11'){echo ' selected="selected"';} echo '>(GMT + 11:00 hours) Magadan, New Caledonia, Solomon Is.</option>
+    			<option value="11.5"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '11.5'){echo ' selected="selected"';} echo '>(GMT + 11:30 hours) Burnt Pine, Kingston</option>
+    			<option value="12"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '12'){echo ' selected="selected"';} echo '>(GMT + 12:00 hours) Auckland, Fiji, Marshall Island</option>
+    			<option value="12.75"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '12.75'){echo ' selected="selected"';} echo '>(GMT + 12:45 hours) Chatham Islands</option>
+    			<option value="13"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '13'){echo ' selected="selected"';} echo '>(GMT + 13:00 hours) Kamchatka, Anadyr</option>
+    			<option value="14"'; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['timeZone'] == '14'){echo ' selected="selected"';} echo '>(GMT + 14:00 hours) Kiritimati</option>
+    			</select>
+    							  </td>
+    								<td align="left"><span id="msg_tz"></span>&nbsp;</td>
+    							</tr>
+    							<tr>
+    								<td align="right">Receive Administrator Notifications :</td>
+    								<td align="left">
+    									<select name="notifications" class="txtBox">
+    										<option value="1" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['notifications'] == '1'){echo ' selected="selected"';}else{echo ' selected="selected"';} echo '>Yes</option>
+    										<option value="0" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['notifications'] == '0'){echo ' selected="selected"';} echo '>No</option>
+    									</select>
+    								</td>
+    								<td align="left">&nbsp;</td>
+    							</tr>
+    							<tr>
+    								<td align="right">Site PM Notifications :</td>
+    								<td align="left">
+    									<select name="sitepmnote" class="txtBox">
+    										<option value="1" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['sitepmnote'] == '1'){echo ' selected="selected"';}else{echo ' selected="selected"';} echo'>Yes</option>
+    										<option value="0" '; if((isset($FailCheck) && $FailCheck == TRUE) && $_POST['sitepmnote'] == '0'){echo ' selected="selected"';} echo'>No</option>
+    									</select>
+    								</td>
+    								<td align="left">&nbsp;</td>
+    							</tr>
+    					   </table>
+    				</div>
+    					<div id="step-4">
+    					<h2 class="StepTitle">Step 4: Validation</h2>
+    					<table cellspacing="3" cellpadding="3" align="center">
+    							<tr>
+    								<td align="center" colspan="3">&nbsp;</td>
+    							</tr>
+    							<tr>
+    								<td align="right" valign="top">Bot Check* :</td>
+    								<td align="left">
+    								  <div style="padding-bottom:5px;">Solve this equation to prove you are not a bot: <b>(2+8)-4+3</b></div>
+    								  <input type="text" maxlength="150" id="google" name="google" class="txtBox" />
+    							  </td>
+    								<td align="left" valign="bottom"><span id="msg_google"></span>&nbsp;</td>
+    							</tr>
+    							<tr>
+    								<td align="right" valign="top">Are you Human?* :</td>
+    								<td align="left"><div align="center">
+    								<div class="g-recaptcha" data-sitekey="6Lej28MSAAAAAHbSX338LhM9FdQD-RalGgrKSM3Z"></div>
+    								<span style="color: red;" id="captchaStatus">&nbsp;</span></div></td>
+    								<td align="left"><span id="msg_recaptcha"></span>&nbsp;</td>
+    							</tr>
+    							<tr>
+    								<td align="right">Agreement* :</td>
+    								<td align="left"><input name="agreement" type="checkbox" value="yes" id="agreement" /> by Submitting your registration you agree to AnimeFTW.tv\'s <a href="/tos" target="_blank">ToS</a> as well as our <a href="/rules" target="_blank">Rules</a></td>
+    								<td align="left"><span id="msg_agreement"></span>&nbsp;
+    								</td>
+    							</tr>
+    					   </table>
+    					   </td>
+    					</tr>
+    			   </table>
+    			</td>
+    		</tr>
+    	</table>
+    				</div>
+    				</div>
+    		</form>
+    		<div align="center">
+    		*= Is required to signup on AnimeFTW.tv, if you have any questions please use the <a href="/contact-us">Contact Us</a> or hop in the <a href="/irc">Chat</a> and leave us a message.</div>';
+    		}
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+        }
 	}
 
 else if($_GET['node'] == 'forgot-password'){
@@ -591,6 +599,7 @@ else if($_GET['node'] == 'forgot-password'){
 		<span class="poster">Forgot your password to the site? No problem! Use this form to get an email for your temp password.</span>
 		</div>
 		<div class="tbl"><br />';
+    if (1 == 2) {
 		if(isset($error)){echo '<div align="center" style="font-size:18px;">'.$error.'</div>';}
     echo '<div align="center"><form id="form1" action="'.$_SERVER['REQUEST_URI'].'" method="post">
 			<input type="hidden" name="_submit_check" value="1" />
@@ -615,7 +624,11 @@ else if($_GET['node'] == 'forgot-password'){
               </tr>
              </table>
              </form>
-			 </div>
+			 </div>';
+        } else {
+            echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+        }
+             echo '
 			 </div>';
 }
 else if($_GET['node'] == 'email-resend'){
@@ -624,6 +637,7 @@ else if($_GET['node'] == 'email-resend'){
 		<span class="poster">Didn&rsquo;t get your Welcome Email? Use this form to resend the email so you can activate your account!.</span>
 		</div>
 		<div class="tbl"><br />';
+    if (1 == 2) {
 		if(isset($error)){echo '<div align="center" style="font-size:18px;">'.$error.'</div>';}
     echo '<div align="center"><form id="form1" action="'.$_SERVER['REQUEST_URI'].'" method="post">
 			<input type="hidden" name="_submit_check" value="1" />
@@ -648,7 +662,11 @@ else if($_GET['node'] == 'email-resend'){
               </tr>
              </table>
              </form>
-			 </div>
+			 </div>';
+         } else {
+             echo '<div align="center" style="font-size:26px;">Thank you for your interest in the site,<br> sadly AnimeFTW.tv has closed down. <br>Please see <a href="https://www.animeftw.tv/forums/global-announcements/topic-5079/s-0">this topic</a> for the full details.</div>';
+         }
+             echo '
 			 </div>';
 }
 else if($_GET['node'] == 'advanced-signup'){
