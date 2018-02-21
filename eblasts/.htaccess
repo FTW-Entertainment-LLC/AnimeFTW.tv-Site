@@ -1,3 +1,0 @@
-RewriteEngine on 
-RewriteRule ^/?link/(.+)$ index.php?link=$1 [L]
-RewriteRule ^/?form/(.+)$ index.php?form=$1 [L]
