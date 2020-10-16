@@ -69,7 +69,7 @@ $PageTitle = 'Login - AnimeFTW.TV';
 						{
 							$Session->setUserSessionData($row['ID'],$row['Username'],(@$_POST['remember'])?TRUE:FALSE);
 							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysqli_real_escape_string($conn, $userName) . '\'';
-							mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+							mysqli_query($conn, $query);
 							$query = "INSERT INTO `" . $Config->MainDB . "`.`logins` (`ip`, `date`, `uid`, `agent`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row['ID']."', '".$_SERVER['HTTP_USER_AGENT']."')";
 							mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 

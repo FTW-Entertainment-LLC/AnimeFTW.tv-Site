@@ -731,7 +731,7 @@ class Uploads extends Config {
 						<select id="uploader" name="uploader" style="color: #000000;">';
 						$query = "SELECT ID, Username FROM users WHERE (Level_access = 1 OR Level_access = 2 OR Level_access = 4 OR Level_access = 5 OR Level_access = 6) ORDER BY Username ASC";
 						echo '<option id="'.$user.'" value="'.$user.'">Encoder No longer with us.</option> ';
-						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query);
 						while(list($ID, $Username) = mysqli_fetch_array($result, MYSQL_NUM))
 						{
 							echo '<option id="'.$ID.'" value="'.$ID.'"'; if($ID == $user){echo' selected';} echo '>'.$Username.'</option> ';

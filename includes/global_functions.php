@@ -164,7 +164,7 @@
 			$query = "SELECT Username, Level_access, advanceImage, Active, advancePreffix
 						FROM users
 						WHERE Username='$username'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$Username = $row['Username'];
 			$Level_access = $row['Level_access'];
@@ -221,7 +221,7 @@
 			$query = "SELECT Username, Level_access, advanceImage, Active, advancePreffix
 						FROM users
 						WHERE Username='$username'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$Username = $row['Username'];
 			$Level_access = $row['Level_access'];
@@ -320,7 +320,7 @@
 			$query = "SELECT Username, Level_access, advanceImage, Active, advancePreffix
 						FROM users
 						WHERE ID='$ID'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$Username = $row['Username'];
 			$Level_access = $row['Level_access'];
@@ -384,7 +384,7 @@
 			$query = "SELECT Username
 						FROM users
 						WHERE ID='$ID'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$Username = $row['Username'];
 			return $Username;
@@ -398,7 +398,7 @@
 			$query = "SELECT ID
 						FROM users
 						WHERE Username='$Username'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$ID = $row['ID'];
 			return $ID;
@@ -421,7 +421,7 @@
 
 			function checkSeries($epid) {
 				$query = "SELECT s.seoname AS sname, s.fullSeriesName AS fname FROM series AS s, episode AS e WHERE e.seriesname=s.seriesName AND e.id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seoname = $row['sname'];
 				$fullSeriesName = $row['fname'];
@@ -437,7 +437,7 @@
 
 			function reverseCheckSeries($seriesName) {
 				$query = "SELECT seriesName FROM series WHERE fullSeriesName LIKE '%".$seriesName."%'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seriesname = $row['seriesName'];
 				return $seriesname;
@@ -450,7 +450,7 @@
 
 			function seoCheck($seriesName) {
 				$query = "SELECT seoname FROM series WHERE seriesName='$seriesName'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seoname = $row['seoname'];
 				return $seoname;
@@ -463,7 +463,7 @@
 
 			function checkSeriesSid($sid) {
 				$query = "SELECT * FROM series WHERE id='$sid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seoname = $row['seoname'];
 				$fullSeriesName = $row['fullSeriesName'];
@@ -493,7 +493,7 @@
 
 			function checkSeriesNoLink($seriesname) {
 				$query = "SELECT fullSeriesName FROM series WHERE seriesName='$seriesname'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -507,7 +507,7 @@
 
 			function checkSeriesNoLinkId($sid) {
 				$query = "SELECT fullSeriesName FROM series WHERE id='$sid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -521,7 +521,7 @@
 
 			function checkEpNoLink($eid,$variable) {
 					$query = "SELECT epnumber AS variable FROM episode WHERE id='$eid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$variablefinal = $row['variable'];
 				$variablefinal = stripslashes($variablefinal);
@@ -535,7 +535,7 @@
 
 			function checkSeriesId($seriesname) {
 				$query = "SELECT id FROM series WHERE seriesName='$seriesname'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$id = $row['id'];
 				return $id;
@@ -549,7 +549,7 @@
 
 			function checkEpisode($epid) {
 				$query = "SELECT e.epnumber, e.Movie, s.seoname, s.OVA FROM episode AS e, series AS s WHERE e.seriesname=s.seriesName AND e.id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$EpNumber = $row['epnumber'];
 				$Movie = $row['Movie'];
@@ -577,14 +577,14 @@
 
 			function checkEpisode2($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$EpName = $row['epname'];
 				$Movie = $row['Movie'];
 				$query = "SELECT * FROM series WHERE seriesName='$seriesname'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seoname = $row['seoname'];
 				$EpName = stripslashes($EpName);
@@ -617,7 +617,7 @@
 
 			function checkEpisodeName($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$EpName = $row['epname'];
 				$EpName = stripslashes($EpName);
@@ -632,13 +632,13 @@
 
 			function checkEpisodeLinkOnly($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$Movie = $row['Movie'];
 				$query = "SELECT * FROM series WHERE seriesName='$seriesname'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seoname = $row['seoname'];
 				if($row['OVA'] == 0)
@@ -669,13 +669,13 @@
 
 			function checkEpisodeFull($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$Movie = $row['Movie'];
 				$query = "SELECT fullSeriesName, seoname FROM series WHERE seriesName='$seriesname'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$seoname = $row['seoname'];
@@ -707,12 +707,12 @@
 
 			function checkEpisodeSeriesName($epid) {
 				$query = "SELECT * FROM episode WHERE id='$epid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$seriesname = $row['seriesname'];
 				$EpNumber = $row['epnumber'];
 				$query = "SELECT fullSeriesName FROM series WHERE seriesName='$seriesname'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$FinalLink = 'Viewed Series '.$fullSeriesName.' Episode #'.$EpNumber;
@@ -727,7 +727,7 @@
 
 			function checkSeries2($SeriesId) {
 				$query = "SELECT * FROM series WHERE id='$SeriesId'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -756,7 +756,7 @@
 
 			function checkSeries3($SeriesName) {
 				$query = "SELECT * FROM series WHERE seriesName='$SeriesName'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -791,7 +791,7 @@
 
 			function checkSeries4($SeriesName) {
 				$query = "SELECT fullSeriesName, seoname, OVA, moviesonly, seriesType, aonly FROM series WHERE seriesName='$SeriesName'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -847,7 +847,7 @@
 
 			function checkSeriesWIcons($SeriesId) {
 				$query = "SELECT fullSeriesName, seoname, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE seriesId='$SeriesId'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -899,7 +899,7 @@
 
 			function checkSeriesWIconsV2($SeriesId) {
 				$query = "SELECT fullSeriesName, seoname, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE seriesId='$SeriesId'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -956,7 +956,7 @@
 
 			function checkSeriesWIconsV3($SeriesId) {
 				$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -1017,7 +1017,7 @@
 
 			function checkSeriesReviews($SeriesId) {
 				$query = "SELECT * FROM series WHERE seriesId='$SeriesId'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$sid = $row['id'];
 				$fullSeriesName = $row['fullSeriesName'];
@@ -1042,7 +1042,7 @@
 
 			function checkSeriesOvas($SeriesId) {
 				$query = "SELECT * FROM series WHERE seriesId='$SeriesId'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fullSeriesName = $row['fullSeriesName'];
 				$fullSeriesName = stripslashes($fullSeriesName);
@@ -1065,7 +1065,7 @@
 						WHERE seriesId='".$seriesId."'
 						ORDER BY currentPosition
 						ASC ";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$lastPosition = $row['lastPosition'];
 				$currentPosition = $row['currentPosition'];
@@ -1108,7 +1108,7 @@
 
 			function topSelectiveAnime($amount,$location) {
 				$query = "SELECT series.id, series.seoname, series.fullSeriesName, site_topseries.lastPosition, site_topseries.currentPosition FROM series, site_topseries WHERE series.id=site_topseries.seriesId ORDER BY currentPosition ASC LIMIT 0, ".$amount."";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$i = 0;
 				echo "<br />\n";
 				while(list($id,$seoname,$fullSeriesName,$lastPosition,$currentPosition) = mysqli_fetch_array($result))
@@ -1128,7 +1128,7 @@
 
 			function addTopicView($tid) {
 				$query = "UPDATE forums_threads SET tviews = tviews+1 WHERE tid = $tid";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 
 			}
 
@@ -1307,7 +1307,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 			$query = "SELECT name
 						FROM store_category
 						WHERE id='$catid'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$name = $row['name'];
 			return $name;
@@ -1323,7 +1323,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 			$query = "SELECT name
 						FROM store_category
 						WHERE id='$catid'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$name = $row['name'];
 			$name = strtolower(name);
@@ -1422,7 +1422,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$query = "SELECT kanji
 						FROM series
 						WHERE seriesName='$seriesName';";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$kanji = $row['kanji'];
 			return $kanji;
@@ -1438,7 +1438,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 						FROM series
 						WHERE seriesName='$seriesName';
 						";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$romaji = $row['romaji'];
 			return $romaji;
@@ -1604,7 +1604,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 
 			function userReviewedSeries($uid,$approval){
 				$query = "SELECT s.id, s.fullSeriesName, r.sid, r.uid, r.approved FROM series s, reviews r WHERE r.uid='$uid' AND s.id = r.sid AND r.approved = '$approval' ORDER BY s.fullSeriesName ASC";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$approved = mysqli_num_rows($result);
 				if($approved == 0)
 				{
@@ -1629,13 +1629,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				if(isset($globalnonid))
 				{
 					$query = "SELECT * FROM users WHERE ID='$globalnonid'";
-					$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result = mysqli_query($conn, $query);
 					$row = mysqli_fetch_array($result);
 					if(isset($_COOKIE['authenticate']) && $_COOKIE['authenticate'] == md5 ( $remoteAddr . $row['Password'] . $userAgent ) ) {
 						//they clear the authentication process...
 						$Logged = 1;
 						$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $globalnonid . '\'';
-						mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						mysqli_query($conn, $query);
 						$PermissionLevelAdvanced = $row['Level_access'];
 						$timeZone = $row['timeZone'];
 						$bannedornot = $row['Active'];
@@ -1653,7 +1653,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 							$Logged = 1;
 							$PermissionLevelAdvanced = $row['Level_access'];
 							$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\'' . $globalnonid . '\'';
-							mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+							mysqli_query($conn, $query);
 							$timeZone = $row['timeZone'];
 							$bannedornot = $row['Active'];
 							$name = $row['Username'];
@@ -1721,13 +1721,13 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 
 			function showAvailableForums($pud){
 				$query = "SELECT cid, ctitle FROM forums_categories WHERE cpermission LIKE '%".$pud."%'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				while(list($cid,$ctitle) = mysqli_fetch_array($result, MYSQL_NUM))
 				{
 					$showReturn1 = '';
 					$showReturnBegin = '<li><a href="/forums">'.$ctitle.'</a><ul>';
 					$query1 = "SELECT fid, ftitle FROM forums_forum WHERE fpermission LIKE '%".$pud."%' AND fcid='".$cid."' ORDER BY forder";
-					$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
+					$result1 = mysqli_query($conn, $query1);
 					while(list($fid,$ftitle) = mysqli_fetch_array($result1, MYSQL_NUM))
 					{
 						$showReturn1 .= '<li><a href="/forums/index.php?forum='.$fid.'">'.$ftitle.'</a></li>';
@@ -1779,7 +1779,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$query = "SELECT kanji, romaji
 						FROM series
 						WHERE id='$id';";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$kanji = $row['kanji'];
 				$romaji = $row['romaji'];
@@ -1855,7 +1855,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				else if($mov == 'movie'){$movvar = "AND Movie='1' AND ova='0'";}
 				else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 				$query   = "SELECT id, epnumber, epname, vidheight, vidwidth, epprefix, subGroup, date, uid, report, videotype FROM episode WHERE seriesname='".$seriesname."' AND epnumber='".$epnum."' ".$movvar;
-				$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result  = mysqli_query($conn, $query);
 				$numEpisodes = mysqli_num_rows($result);
 				if($numEpisodes == 0){
 					$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0);
@@ -1876,7 +1876,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 			function showSeriesInfo($seoname)
 			{
 				$query   = "SELECT id, seriesName, seoname, fullSeriesName, videoServer, maxEps, description, ratingLink, seriesId, noteActivate, noteReason, aonly, prequelto, sequelto, category, total_reviews FROM series WHERE seoname='".$seoname."'";
-				$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result  = mysqli_query($conn, $query);
 				$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 
 				$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],$row['fullSeriesName'],$row['videoServer'],$row['maxEps'],$row['description'],$row['ratingLink'],$row['seriesId'],$row['noteActivate'],$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews']);
@@ -2080,7 +2080,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 		            FROM forums_threads
 					WHERE tfid='$fid' AND tstickied='0' ORDER BY tclosed ASC, tupdated DESC LIMIT ".$requestedLimit.", 30";
 
-		$result4 = mysqli_query($conn, $query4) or die('Error : ' . mysqli_error());
+		$result4 = mysqli_query($conn, $query4);
 
 		echo "<tr>\n";
 		echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
@@ -2115,7 +2115,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 
 			//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 1";
-			$result02 = mysqli_query($conn, $query02) or die('Error : ' . mysqli_error());
+			$result02 = mysqli_query($conn, $query02);
 			$row02 = mysqli_fetch_array($result02);
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];
@@ -2148,7 +2148,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			if($total_episodes == 0){}
 			else {
 				$query   = "SELECT id, sid, epnumber, epname, epprefix, videotype, image FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='0' ORDER BY epnumber";
-				$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result  = mysqli_query($conn, $query);
 				echo '<div><b>Episodes:</b></div>';
 				//echo '<div id="tooltipdiv">';
 				while(list($id,$sid,$epnumber,$epname,$epPrefix,$videotype,$image) = mysqli_fetch_array($result))
@@ -2205,12 +2205,12 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				if($agent == 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13' && $accesslevel == '3')
 				{
 					$query   = "SELECT epnumber, epname, epprefix, videotype FROM episode WHERE seriesname='$seriesname' AND Movie='1' AND ova='0' ORDER BY epnumber LIMIT 0, 2";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query);
 					$xbmcplus = '0';
 				}
 				else {
 					$query   = "SELECT epnumber, epname, epprefix, videotype FROM episode WHERE seriesname='$seriesname' AND Movie='1' AND ova='0' ORDER BY epnumber";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query);
 					$xbmcplus = '1';
 				}
 				echo '<br /><div><b>Movies:</b></div>';
@@ -2253,12 +2253,12 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				if($agent == 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13' && $accesslevel == '3')
 				{
 					$query   = "SELECT epnumber, epname, epprefix, videotype FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='1' ORDER BY epnumber LIMIT 0, 2";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query);
 					$xbmcplus = '0';
 				}
 				else {
 					$query   = "SELECT epnumber, epname, epprefix, videotype FROM episode WHERE seriesname='$seriesname' AND Movie='0' AND ova='1' ORDER BY epnumber";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query);
 					$xbmcplus = '1';
 				}
 				echo '<br /><div><b>Movies:</b></div>';
@@ -2299,7 +2299,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			else if ($userlevel == 3){$aonly = "aonly<='1' AND ";}
 			else{$aonly = '';}
 			$query   = "SELECT id, seriesName, fullSeriesName, seoname, ratingLink, category, total_reviews FROM series WHERE".$aonly." fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' OR category LIKE '%".$input."%' ORDER BY seriesName ASC LIMIT 10";
-			$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result  = mysqli_query($conn, $query);
 			$ts = mysqli_num_rows($result);
 			if($ts > 0)
 			{
@@ -2359,7 +2359,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			}
 
 			$query   = "SELECT id, seriesName, fullSeriesName, seoname, ratingLink, category, total_reviews FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
-			$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result  = mysqli_query($conn, $query);
 			$ts = mysqli_num_rows($result);
 			if($ts > 0)
 			{
@@ -2438,7 +2438,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			else if($moe == 'ova'){$moevar = "AND Movie = '0' AND ova = '1'";}
 			// select all episodes for this series..
 			$query = "SELECT COUNT(id) as numrows FROM episode WHERE seriesname='".$seriesname."' ".$moevar;
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 			$MaxEps = $row['numrows'];
 			//key shortcuts... W00t!
@@ -2470,7 +2470,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			}
 			//Previous Ep Image code...
 			$query = "SELECT id, sid, epnumber, epname, epprefix, image FROM episode WHERE seriesName='".$seriesname."' AND epnumber < $epnumber ".$moevar." ORDER BY epnumber DESC LIMIT 0, 1";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$rowb = mysqli_fetch_array($result, MYSQL_ASSOC);
 			$br = mysqli_num_rows($result);
 			if($br != 0){
@@ -2481,7 +2481,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 			}
 			//Current Ep Image code
 			$query = "SELECT image, id FROM episode WHERE seriesName='".$seriesname."' AND epnumber = '".$epnumber."' ".$moevar;
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$rowc = mysqli_fetch_array($result, MYSQL_ASSOC);
 			if($rowc['image'] == 0){$imvarc = '' . $CDNHost . '/video-images/noimage.png';}
 			else {$imvarc = "{$CDNHost}/video-images/{$rowb['sid']}/{$rowc['id']}_screen.jpeg";}
@@ -2489,7 +2489,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					<img src="'.$imvarc.'" border="0" style="border:1px solid black;"  width="175" alt="Current Episode, '.$epnumber.'"></a><br />Current Episode, #'.$epnumber.'</div></td>';
 			//Next Ep Image code...
 			$query = "SELECT id, epnumber, epname, epprefix, image FROM episode WHERE seriesName='".$seriesname."' AND epnumber > $epnumber ".$moevar." ORDER BY epnumber ASC LIMIT 0, 1";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$rowa = mysqli_fetch_array($result, MYSQL_ASSOC);
 			$ar = mysqli_num_rows($result);
 			if($ar != 0){

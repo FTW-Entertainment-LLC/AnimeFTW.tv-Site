@@ -26,7 +26,7 @@ class AFTWtoplist extends Config {
 	#displays a given amount of toseries based on the $num param
 	function TopAnime(){
 		$query = "SELECT seriesId, lastPosition, currentPosition FROM site_topseries ORDER BY currentPosition ASC LIMIT 0, ".$this->num;
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		if($this->num == 10){$topTen = '<ol class="top10">'."\n";}
 		else{$topTen = '<ol>'."\n";}
   		while(list($seriesId,$lastPosition,$currentPosition) = mysqli_fetch_array($result)){
@@ -61,7 +61,7 @@ class AFTWtoplist extends Config {
 	}
 	function ShowData2($seriesId){
 		$query = "SELECT id, seoname, fullSeriesName FROM series WHERE id='$seriesId'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		return "<a class='side tooltip-overlay' href='/anime/".$row['seoname']."/' data-node=\"/scripts.php?view=profiles&show=tooltips&id=".$row['id']."\">".stripslashes($row['fullSeriesName'])."</a>\n";
 	}

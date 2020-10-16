@@ -24,7 +24,7 @@ class AFTWForumMain extends Config {
 		echo "<div id='navstrip'><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums/'>AnimeFTW.TV Forums</a></div><br />";
 		$query1 = "SELECT cid, ctitle, cpermission, cseo FROM forums_categories WHERE cpermission LIKE '%".$this->perms."%' ORDER BY corder ";
 		mysqli_query($conn, "SET NAMES 'utf8'");
-		$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
+		$result1 = mysqli_query($conn, $query1);
 		while(list($cid,$ctitle,$cpermission,$cseo) = mysqli_fetch_array($result1)) {
 			echo "<table cellpadding='0' cellspacing='1' width='100%' class='forum_idx_table'>\n";
 			echo "<tr>\n<td colspan='2' class='forum-caption forum_cat_name'>".$ctitle."</td>\n";
@@ -33,7 +33,7 @@ class AFTWForumMain extends Config {
 			echo "<td width='1%' class='forum-caption' style='white-space:nowrap'>Last Post Info</td>\n";
 			echo "</tr>\n";
 			$query200 = "SELECT fid, fpermission, ftitle, fdescription, ficon, fcid, fseo FROM forums_forum WHERE fcid='".$cid."' AND fpermission LIKE '%".$this->perms."%' ORDER BY forder ASC";
-			$result200 = mysqli_query($conn, $query200) or die('Error : ' . mysqli_error());
+			$result200 = mysqli_query($conn, $query200);
 			while(list($fid,$fpermission,$ftitle,$fdescription,$ficon,$fcid,$fseo) = mysqli_fetch_array($result200)) {
 				$fdescription = stripslashes($fdescription);
 				$fim = "<img src='//i.animeftw.tv/forumimages/bf_new.png' border='0'  alt='Posts!' />";
@@ -103,7 +103,7 @@ class AFTWForumMain extends Config {
 	// Function just to give teh latest activity
 	private function LatestActivity($FinalDate3){
 		$query19 = "SELECT ID, lastActivity FROM users WHERE lastActivity>='".$FinalDate3."' ORDER BY lastActivity DESC";
-		$result19 = mysqli_query($conn, $query19) or die('Error : ' . mysqli_error());
+		$result19 = mysqli_query($conn, $query19);
 
 		$count = mysqli_num_rows($result19);
 		$online_users_24hours = "";

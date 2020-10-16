@@ -189,7 +189,7 @@ class Users extends Config {
 				}
 				else 
 				{
-					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					mysqli_query($conn, $query);
 					$this->ModRecord($fscript);
 					echo 'Success';
 				}
@@ -281,7 +281,7 @@ class Users extends Config {
 		if($go >= 1 && $go <= 3)
 		{
 			echo '<div>';	
-			$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result  = mysqli_query($conn, $query);
 			$paging = $this->pagingV1('right-column',$rowcount,30,$count,$link);
 			if($go == 1)
 			{
@@ -336,7 +336,7 @@ class Users extends Config {
 				if($_GET['part'] == 'after')
 				{					
 					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysqli_escape_string($_GET['username'])."%'";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query);
 					$count = mysqli_num_rows($result);
 					if($count > 24)
 					{

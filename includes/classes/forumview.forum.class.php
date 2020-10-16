@@ -21,7 +21,7 @@ class AFTWForumView {
 	public function ForumDisplay(){
 		$query2 = "SELECT fid, ftitle, fseo FROM forums_forum WHERE fseo='".$this->reqforum."' AND fpermission LIKE '%".$this->perms."%'";
 		mysqli_query($conn, "SET NAMES 'utf8'");
-		$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+		$result2 = mysqli_query($conn, $query2);
 		$row2 = mysqli_fetch_array($result2);
 		$fid = $row2['fid'];
 		$ftitle = $row2['ftitle'];
@@ -58,7 +58,7 @@ class AFTWForumView {
 			if ($this->Logged != 1){}
 			else {
 				$query = "SELECT fid FROM forums_forum WHERE fseo='".$this->reqforum."' AND fpermpost LIKE '%".$this->perms."%'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$allowed = $row['fid'];
 				if ($allowed ==''){}

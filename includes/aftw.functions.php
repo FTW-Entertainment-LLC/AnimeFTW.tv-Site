@@ -47,7 +47,7 @@ function makeFriendly($postUsername) {
 function checkKanjiV2($seriesName) {
 	mysqli_query($conn, "SET NAMES 'utf8'"); 
 	$query = "SELECT kanji FROM series WHERE seriesName='$seriesName';";
-	$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result);
 	$kanji = $row['kanji']; 
 	return $kanji;

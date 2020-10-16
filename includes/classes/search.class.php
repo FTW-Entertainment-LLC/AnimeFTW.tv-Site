@@ -38,7 +38,7 @@ class Search extends Config {
 		{
 			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
 		}
-		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query);
 		$numrows = mysqli_num_rows($result);
 		$data = array();
 		if($numrows > 0)
@@ -81,7 +81,7 @@ class Search extends Config {
 	public function seriesStatistics($id) {
 		mysqli_query($conn, "SET NAMES 'utf8'");
 		$query = "SELECT kanji, romaji FROM series WHERE id='$id';";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		$kanji = $row['kanji'];
 		$romaji = $row['romaji'];
@@ -102,7 +102,7 @@ class Search extends Config {
 	public function seoCheck($seriesName)
 	{
 		$query = "SELECT seoname FROM series WHERE seriesName='$seriesName'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		$seoname = $row['seoname'];
 		return $seoname;

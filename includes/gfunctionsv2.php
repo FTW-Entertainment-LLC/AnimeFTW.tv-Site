@@ -54,7 +54,7 @@ class AFTWUser{
 		//0=full-link,1=full-no link,2=Username-no link
 		if($type == 2){$query = "SELECT Username FROM users WHERE ID='".$this->id."'";}
 		else {$query = "SELECT Username, Level_access, advanceImage, Active FROM users WHERE ID='".$this->id."'";}
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		if($type == 0){$frontUser = '<a href="'.$this->ssl.'://dev.animeftw.tv/profile/' . $row['Username'] . '">';$endUser = '</a>';}
 		else {$frontUser = '';$endUser = '';}
@@ -75,14 +75,14 @@ class AFTWUser{
 	//return variable from the Username
 	function returnVarName($var){
 		$query = "SELECT $var FROM users WHERE username='".$this->username."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		return $row[$var];
 	}
 	//return variable from the Username
 	function returnVarId($var){
 		$query = "SELECT $var FROM users WHERE username='".$this->id."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		return $row[$var];
 	}
@@ -187,7 +187,7 @@ class AFTWVideos{
 	function checkSeries($id,$type) {
 		if($type=0){$query = "SELECT fullSeriesName, seoname, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$id'";}
 		else {$query = "SELECT fullSeriesName, seoname, seriesList, seriesList FROM series WHERE id='$id'";}
-		$row = mysqli_fetch_array($result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error()));
+		$row = mysqli_fetch_array($result = mysqli_query($conn, $query));
 		$fullSeriesName = stripslashes($row['fullSeriesName']); 
 		$seoname = $row['seoname'];
 		$stillRelease = $row['stillRelease'];
@@ -285,7 +285,7 @@ class AFTWBlog{
 	// Will give the selected Blog post
 	function SingleBlog(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE id='".$this->bid."' AND uid='".$this->id."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$result = mysqli_query($conn, $query);
 		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){

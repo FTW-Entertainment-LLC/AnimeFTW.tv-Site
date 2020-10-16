@@ -9,7 +9,7 @@ if ($_GET['view'] == 'lastpost')
 	}
 	
 	$query = "SELECT * FROM forums_post WHERE ptid='$topicID' ORDER BY `forums_post`.`ptispost` DESC LIMIT 0, 1";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$pid = $row['pid'];
 			$ptid = $row['ptid'];
@@ -31,7 +31,7 @@ if ($_GET['view'] == 'findpost')
 		$postID = $_GET['p'];
 	}
 	$query = "SELECT * FROM forums_post WHERE pid='$postID'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$pid = $row['pid'];
 			$ptid = $row['ptid'];
@@ -56,7 +56,7 @@ if ($_GET['view'] == 'delete')
 		$threadID = $_GET['t'];
 	}
 	$query = "SELECT * FROM forums_post WHERE pid='$postID'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$pid = $row['pid'];
 			$ptid = $row['ptid'];
@@ -148,7 +148,7 @@ if ($_GET['view'] == 'delete')
 		
 		}
 		$query006 = "SELECT * FROM forums_threads WHERE tdate='$date'";
-			$result006 = mysqli_query($conn, $query006) or die('Error : ' . mysqli_error());
+			$result006 = mysqli_query($conn, $query006);
 			$row006 = mysqli_fetch_array($result006);
 			$ptid3 = $row006['tid'];
 		$pistopic = 1;
@@ -163,7 +163,7 @@ if ($_GET['view'] == 'delete')
 			mysqli_real_escape_string($conn, $userIp, $conn));
 		mysqli_query($conn, $query2) or die('Could not connect, way to go retard:' . mysqli_error());
 		$query005 = "SELECT * FROM forums_threads WHERE tdate='$date'";
-			$result005 = mysqli_query($conn, $query005) or die('Error : ' . mysqli_error());
+			$result005 = mysqli_query($conn, $query005);
 			$row005 = mysqli_fetch_array($result005);
 			$tid = $row005['tid'];
 			$tfid = $row005['tfid'];
@@ -185,7 +185,7 @@ if ($_GET['view'] == 'delete')
 			mysqli_real_escape_string($conn, $userIp, $conn));
 		mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 		$query = 'UPDATE forums_threads SET tupdated=\'' . mysqli_escape_string($tupdated) . '\'WHERE tid=' . $tid . '';
-  		mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+  		mysqli_query($conn, $query);
 		if($mod_options != 'nowt')
 		{
 			if($mod_options == 'pin')
@@ -208,12 +208,12 @@ if ($_GET['view'] == 'delete')
 			{
 				$query = 'UPDATE forums_threads SET tclosed=\'1\', tstickied=\'0\' WHERE tid=' . $tid . '';
 			}
-  		mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+  		mysqli_query($conn, $query);
 		}
 		else {
 		}
 		$query005 = "SELECT * FROM forums_post WHERE pdate='$date'";
-			$result005 = mysqli_query($conn, $query005) or die('Error : ' . mysqli_error());
+			$result005 = mysqli_query($conn, $query005);
 			$row005 = mysqli_fetch_array($result005);
 			$pid = $row005['pid'];
 			$ptid = $row005['ptid'];
@@ -224,14 +224,14 @@ if ($_GET['view'] == 'delete')
 	{
 		$query = 'UPDATE forums_post SET 
 		pbody=\'' . mysqli_escape_string($submitbody) . '\'WHERE pid=\'' . $pid . '\'';
-   		mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+   		mysqli_query($conn, $query);
 		header ( "location: ".$sslornot."://".$_SERVER['HTTP_HOST']."/forums/index.php?view=findpost&p=$pid" );
 	}
 	else if($CODE == 4)
 	{
 		$query = 'UPDATE forums_post SET 
 		pbody=\'' . mysqli_escape_string($submitbody) . '\'WHERE pid=\'' . $pid . '\'';
-   		mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+   		mysqli_query($conn, $query);
 		header ( "location: http://".$_SERVER['HTTP_HOST']."/forums/index.php?view=findpost&p=$pid" );
 	}
 	else

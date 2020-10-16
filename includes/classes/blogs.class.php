@@ -54,7 +54,7 @@ class AFTWBlog{
 	// Will give the selected Blog post
 	function SingleBlog(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE id='".$this->bid."' AND uid='".$this->id."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$result = mysqli_query($conn, $query);
 		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){

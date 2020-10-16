@@ -272,7 +272,7 @@ class AFTWVideos extends Config{
 		else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 		else {$movvar = NULL;}
 		$query   = "SELECT `id`, `sid`, `spriteId`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
-		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query);
 		$numEpisodes = mysqli_num_rows($result);
 		if($numEpisodes == 0){
 			$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null);
@@ -294,7 +294,7 @@ class AFTWVideos extends Config{
 	{
 		mysqli_query($conn, "SET NAMES 'utf8'");
 		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
-		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query);
 		$numSeries = mysqli_num_rows($result);
 
 		if($numSeries == 0)
@@ -319,7 +319,7 @@ class AFTWVideos extends Config{
 			return false;
 
 		$sql	= "SELECT width, height, totalWidth, rate, count FROM sprites WHERE id='{$spriteId}'";
-		$query	= mysqli_query($conn, $sql) or die('Error : ' . mysqli_error());
+		$query	= mysqli_query($conn, $sql);
 		$count	= mysqli_num_rows($query);
 
 		if ($count == 0)
@@ -352,7 +352,7 @@ class AFTWVideos extends Config{
 	private function DisplayLinks($SeriesId,$type,$alevel)
 	{
 		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		$fullSeriesName = $row['fullSeriesName'];
 		$fullSeriesName = stripslashes($fullSeriesName);
@@ -1555,7 +1555,7 @@ HDOC;
 
 		$query  = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`videotype`, `episode`.`image`, `episode`.`Movie`, `series`.`seriesname`, `series`.`seoname` FROM `episode`, `series` WHERE  `episode`.`sid`='$sid' AND `episode`.`Movie`='$MovieAllowed' AND `episode`.`ova`='$OvaAllowed' AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` ASC" . $LimitBy;
 
-		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query);
 
 		$count = mysqli_num_rows($result);
 
@@ -1789,7 +1789,7 @@ HDOC;
 		$query   = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews`, `romaji`, `kanji` FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
 
 		mysqli_query($conn, "SET NAMES 'utf8'");
-		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query);
 		$ts = mysqli_num_rows($result);
 		if($ts > 0)
 		{
@@ -1850,7 +1850,7 @@ HDOC;
 	private function seriesTopSeriesRank($SeriesArray)
 	{
 		$query = "SELECT lastPosition, currentPosition FROM site_topseries WHERE seriesId='".$SeriesArray[0]."' ORDER BY currentPosition ASC ";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		$count = mysqli_num_rows($result);
 		$lastPosition = $row['lastPosition'];
@@ -1891,7 +1891,7 @@ HDOC;
 	private function checkSeriesSid($sid)
 	{
 		$query = "SELECT `seoname`, `fullSeriesName`, `active`, `aonly` FROM `series` WHERE `id` = '$sid'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		$seoname = $row['seoname'];
 		$fullSeriesName = $row['fullSeriesName'];

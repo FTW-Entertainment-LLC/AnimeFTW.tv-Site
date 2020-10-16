@@ -65,7 +65,7 @@ class Series extends Config {
 				$TotalSeries = $this->Query('series'); //count all of the series please.
 				$query = "SELECT id, seriesName, fullSeriesName, seoname, romaji, kanji, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category FROM series ORDER BY id DESC LIMIT $page, $limit";
 				mysqli_query($conn, "SET NAMES 'utf8'");
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 
 				echo '<div id="seriesg">';
 				echo '<div style="padding:3px;">';
@@ -341,7 +341,7 @@ class Series extends Config {
 							echo '<select name="AvailableSeries" id="AvailableSeries" style="color: #000000;">';
 						$query2 = "SELECT `id`, `seriesName`, `fullSeriesName` FROM series ORDER BY fullSeriesName ASC";
 						echo '<option id="0" value="0">Choose a Series</option> ';
-						$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+						$result2 = mysqli_query($conn, $query2);
 						while(list($id, $seriesName, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 						{
 							$fullSeriesName = stripslashes($fullSeriesName);
@@ -533,7 +533,7 @@ class Series extends Config {
 							$sid = htmlentities($sid);
 							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, hd, `license` FROM series WHERE id='$sid'";
 							mysqli_query($conn, "SET NAMES 'utf8'");
-							$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+							$result2 = mysqli_query($conn, $query2);
 							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $hd, $license) = mysqli_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
 
@@ -765,7 +765,7 @@ class Series extends Config {
 								{
 									echo '<option id="0" value="0">None</option> ';
 								}
-								$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+								$result2 = mysqli_query($conn, $query2);
 								while(list($id2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 								{
 									$fullSeriesName = stripslashes($fullSeriesName);
@@ -787,7 +787,7 @@ class Series extends Config {
 								else {
 									echo '<option id="0" value="0">None</option> ';
 								}
-								$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+								$result2 = mysqli_query($conn, $query2);
 								while(list($id2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM)){
 									$fullSeriesName = stripslashes($fullSeriesName);
 									echo '<option id="'.$id2.'" value="'.$id2.'"'; if($id2 == $sequelto){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
@@ -950,7 +950,7 @@ class Series extends Config {
 		$input = mysqli_real_escape_string($conn, $_POST['SeriesName']);
 		mysqli_query($conn, "SET NAMES 'utf8'");
 		$query   = "SELECT id, seriesName, fullSeriesName, seoname, romaji, kanji, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category, (SELECT COUNT(id) FROM episode WHERE seriesname=series.seriesName) AS numeps FROM series WHERE ( fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' ) ORDER BY seriesName ASC LIMIT 100";
-		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query);
 		$ts = mysqli_num_rows($result);
 		if($ts < 1)
 		{

@@ -98,7 +98,7 @@ class AFTWUser extends Config{
 		{
 			$query = "SELECT `Username`, `display_name`, `Level_access`, `advanceImage`, `Active` FROM `users` WHERE `ID`='".$this->id."'";
 		}
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		if($type == 0)
 		{
@@ -142,14 +142,14 @@ class AFTWUser extends Config{
 	//return variable from the Username
 	public function nVar($var){
 		$query = "SELECT $var FROM users WHERE Username='".$this->username."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		return $row[$var];
 	}
 	//return variable from the Username
 	function iVar($var){
 		$query = "SELECT $var FROM users WHERE Username='".$this->id."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		return $row[$var];
 	}
@@ -170,7 +170,7 @@ class AFTWUser extends Config{
 	//return variable from the Username
 	function vUser(){
 		$query = "SELECT ID FROM users WHERE Username='".$this->username."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$CheckReturn = mysqli_num_rows($result);
 		return $CheckReturn;
 	}
@@ -199,7 +199,7 @@ class AFTWUser extends Config{
 	//profile function
 	public function Profile($uid){
 		$query = "SELECT ID, Level_access AS la, personalMsg AS pm, gender, country, stateRegion, registrationDate AS rd, ageDate AS ad, ageYear AS ay, ageMonth AS am FROM users WHERE ID='".$this->UserArray['ID']."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$r = mysqli_fetch_array($result);
 		$countries = $this->array_buildCountries();
 		if(is_numeric($r['country'])){
@@ -213,7 +213,7 @@ class AFTWUser extends Config{
 		if($r['rd'] == 'unknown'){$rd = 'June, 2008';}
 		else {$rd = date('F, Y',$r['rd']);}
 			$query = "SELECT groupName AS gn FROM site_groups WHERE groupID='".$r['la']."'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$g = mysqli_fetch_array($result);
 			// Personal Title Start
 			if($r['pm'] == ''){
@@ -238,7 +238,7 @@ class AFTWUser extends Config{
 	}
 	function About($uid){
 		$query = "SELECT Level_access AS la, aboutMe AS am FROM users WHERE ID='".$this->UserArray['ID']."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$r = mysqli_fetch_array($result);
 		$am = stripslashes($r['am']);
 		$am = nl2br($am);
@@ -259,7 +259,7 @@ class AFTWUser extends Config{
 	}
 	function Interests($uid){
 		$query = "SELECT Level_access AS la, interests AS ints FROM users WHERE ID='".$this->UserArray['ID']."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$r = mysqli_fetch_array($result);
 		$ints = stripslashes($r['ints']);
 		$ints = nl2br($ints);
@@ -268,7 +268,7 @@ class AFTWUser extends Config{
 	}
 	function Signature($uid){
 		$query = "SELECT Level_access AS la, Signature AS sig, signatureActive as sa FROM users WHERE ID='".$this->UserArray['ID']."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$r = mysqli_fetch_array($result);
 		$sig = stripslashes($r['sig']);
 		$sig = nl2br($sig);
@@ -293,7 +293,7 @@ class AFTWUser extends Config{
 	}
 	function Status($uid){
 		$query = "SELECT date, status FROM status WHERE uid='".$this->id."' ORDER BY id DESC LIMIT 0, 1";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$tr = mysqli_num_rows($result);
 		if($tr == 0){
 			if($uid == $this->id){$sm = "<span id=\"status\" class=\"editText\">No Status Updates!</span>";}
@@ -307,7 +307,7 @@ class AFTWUser extends Config{
 		return $sm;
 	}
 	private function SQLQuery($query,$type){
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		if($type == 1){
 			$result = mysqli_result($result , 0);
 		}
@@ -331,7 +331,7 @@ class AFTWUser extends Config{
 	//Function to display contact info, ho yeah!
 	public function ContactInfo($uid){
 		$query = "SELECT Email, Alias, msnAddress, aimName, yahooName, skypeName, icqNumber, showEmail FROM users WHERE ID='".$this->id."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		//echo 'E-Mail: MSN: AIM: YIM: Skype: ICQ: Twitter: Facebook:';
 		if($row['showEmail'] == 'yes'){$se = $row['Email'];}else{$se = 'Not Given';} //to show email or not to show email..
@@ -369,7 +369,7 @@ class AFTWUser extends Config{
 		{
 			echo '<form method="POST" name="ProfileEdit" id="ProfileEdit">';
 			$query = "SELECT * FROM users WHERE ID='" . mysqli_real_escape_string($conn, $ruid) . "'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$ID = $row['ID'];
 			$Username = $row['Username'];
@@ -1619,7 +1619,7 @@ class AFTWUser extends Config{
 		else
 		{
 			$query = "SELECT ID, Username, Email FROM users WHERE ID='".$ruid."'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$ID = $row['ID'];$Username = $row['Username'];$Email = $row['Email'];
 
@@ -1671,7 +1671,7 @@ class AFTWUser extends Config{
 		else
 		{
 			$query = "SELECT ID, Username, Email FROM users WHERE ID='".$ruid."'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$ID = $row['ID'];
 			$Username = $row['Username'];
@@ -1753,20 +1753,20 @@ class AFTWUser extends Config{
 		}
 		else {
 			// scripts.php?view=profile&subview=friendbutton&id=$id&add=before
-			$result1 = mysqli_query($conn, "SELECT Level_access FROM users WHERE ID='".$profileArray[1]."'") or die('Error : ' . mysqli_error());
+			$result1 = mysqli_query($conn, "SELECT Level_access FROM users WHERE ID='".$profileArray[1]."'");
 			$row1 = mysqli_fetch_array($result1);
 			$Level_accessbeta = $row1['Level_access'];
 			if($Level_accessbeta != 3){$allowedFriends = 100;}
 			else {$allowedFriends = 20;}
 			if(!isset($_GET['add']) || $_GET['add'] == 'before'){
-				$result1 = mysqli_query($conn, "SELECT ID FROM users WHERE ID='".mysqli_real_escape_string($conn, $uid)."'") or die('Error : ' . mysqli_error());
+				$result1 = mysqli_query($conn, "SELECT ID FROM users WHERE ID='".mysqli_real_escape_string($conn, $uid)."'");
 				$row1 = mysqli_fetch_array($result1);
 				$total_useres_with_name = mysqli_num_rows($result1);
 				if($total_useres_with_name == 0){}
 				else {
 					$FID = $row1['ID'];
 					$query  = "SELECT permGranted FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysqli_real_escape_string($conn, $uid)."'";
-					$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result = mysqli_query($conn, $query);
 					$onlyFriendships = mysqli_num_rows($result);
 					if($onlyFriendships == 1){
 						$permGranted = $row['permGranted'];
@@ -1782,7 +1782,7 @@ class AFTWUser extends Config{
 					}
 					else {
 						$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."'";
-						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query);
 						$numberoffriends = mysqli_num_rows($result);
 						if($numberoffriends < $allowedFriends){
 							echo "<a href=\"#\" onclick=\"$(this).load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
@@ -1795,7 +1795,7 @@ class AFTWUser extends Config{
 			}
 			else if ($_GET['add'] == 'after'){
 				$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysqli_real_escape_string($conn, $uid)."'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$onlyFriendships = mysqli_num_rows($result);
 				if($onlyFriendships == 0 && $profileArray[1] != $uid){
 					$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate, ip) VALUES ('%s', '%s', '%s', '%s', '%s')",
@@ -1806,7 +1806,7 @@ class AFTWUser extends Config{
 						mysqli_real_escape_string($conn, $_SERVER['REMOTE_ADDR']));
 					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 					//phase one done, next we find out what we just inserted was..
-					$result1 = mysqli_query($conn, "SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysqli_error());
+					$result1 = mysqli_query($conn, "SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1");
 					$row1 = mysqli_fetch_array($result1);
 					//we have our target. Proceed.
 					$query = sprintf("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES ('%s', '%s', '%s', '%s', NULL, NULL)",

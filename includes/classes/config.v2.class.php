@@ -438,7 +438,7 @@ class Config {
     // takes a query and a var and retunrs
     public function SingleVarQuery($query,$var)
     {
-        $result = $this->mysqli->query($query) or die('Error : ' . mysqli_error());
+        $result = $this->mysqli->query($query);
         $row = $result->fetch_assoc();
         return $row[$var];
     }

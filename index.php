@@ -128,7 +128,7 @@ if (isset($_GET['rf'])){
 		{
 			echo '<!-- Query:' . $query . ' -->';
 		}
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		while(list($tid, $ttitle, $tpid, $tfid, $tdate, $pbody, $ftitle, $fseo) = mysqli_fetch_array($result))
 		{
 			$pbody = stripslashes($pbody);
@@ -194,7 +194,7 @@ if (isset($_GET['rf'])){
 				echo '<div align="center">There have been '.$online_users_24hours.' registered users online in the past 24 hours!<br /><br /></div>
 					<div style="width:100%">';
 				$query19 = "SELECT ID, lastActivity FROM users WHERE lastActivity>='".$FinalDate3."' ORDER BY lastActivity DESC";
-				$result19 = mysqli_query($conn, $query19) or die('Error : ' . mysqli_error());
+				$result19 = mysqli_query($conn, $query19);
 				$ucount = mysqli_num_rows($result19);
 				$i =0;
   				while(list($ID,$lastActivity) = mysqli_fetch_array($result19))
@@ -230,7 +230,7 @@ if (isset($_GET['rf'])){
 						<div class="date"></div>
        		<h2>10 Newest Members!</h2>';
 							$query = "SELECT Username FROM users WHERE active='1' ORDER BY id DESC LIMIT 0, 10";
-							$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+							$result = mysqli_query($conn, $query);
 							$self = $_SERVER['PHP_SELF'];
 
 						while(list($Username) = mysqli_fetch_array($result, MYSQL_NUM))
@@ -246,13 +246,13 @@ if (isset($_GET['rf'])){
 			if($profileArray[2] != 0 && $profileArray[2] !=3)
 			{
 			$query = "SELECT episode.id, episode.seriesname, episode.epname, episode.epnumber FROM episode, series WHERE episode.seriesname=series.seriesName AND series.active = 'yes' ORDER BY episode.id DESC LIMIT 0, 15";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$self = $_SERVER['PHP_SELF'];
 
 			while(list($id, $seriesname, $epname, $epnumber) = mysqli_fetch_array($result, MYSQL_NUM))
 			{
 			$query2 = "SELECT seriesName, fullSeriesName, seoname FROM series WHERE seriesName='".$seriesname."'";
-			$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+			$result2 = mysqli_query($conn, $query2);
 			list($seriesName2, $fullSeriesName, $seoname) = mysqli_fetch_array($result2, MYSQL_NUM);
 			$fullSeriesName = stripslashes($fullSeriesName);
 			$epname = stripslashes($epname);
@@ -263,13 +263,13 @@ if (isset($_GET['rf'])){
 		}
 		else {
 			$query = "SELECT id, seriesname, epname, epnumber FROM episode ORDER BY date DESC LIMIT 0, 15";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$self = $_SERVER['PHP_SELF'];
 
 			while(list($id, $seriesname, $epname, $epnumber) = mysqli_fetch_array($result, MYSQL_NUM))
 			{
 			$query2 = "SELECT seriesName, fullSeriesName, seoname FROM series WHERE seriesName='".$seriesname."'";
-			$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+			$result2 = mysqli_query($conn, $query2);
 			list($seriesName2, $fullSeriesName, $seoname) = mysqli_fetch_array($result2, MYSQL_NUM);
 			$fullSeriesName = stripslashes($fullSeriesName);
 			$epname = stripslashes($epname);
@@ -311,7 +311,7 @@ if (isset($_GET['rf'])){
 					$query1 = "SELECT ip, seenReason FROM banned
 							ORDER BY id
 							DESC";
-				$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
+				$result1 = mysqli_query($conn, $query1);
   				while(list($ip,$seenReason) = mysqli_fetch_array($result1))
 				{
 					echo "----------------------<br />";

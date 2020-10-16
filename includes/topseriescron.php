@@ -29,11 +29,11 @@
 			}
 			elseif($correctorder == 3)
 			{
-				$result1 = mysqli_query($conn, "SELECT epSeriesId FROM episodestats ORDER BY id") or die('Error : ' . mysqli_error());
+				$result1 = mysqli_query($conn, "SELECT epSeriesId FROM episodestats ORDER BY id");
 				while(list($epSeriesId) = mysqli_fetch_array($result1))
 				{
 					$query = "UPDATE topseriescalc SET countedPages = countedPages+1 WHERE seriesId = $epSeriesId";
-					$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result = mysqli_query($conn, $query);
 				}
 				echo "<br />Adding episodes done, begin not so complex calculations.<br />";
 				$correctorder++;
@@ -42,7 +42,7 @@
 			{
 				// now we do the calculation one.. *could be resourcive intensive x.x*
 				$query2 = "SELECT seriesId, countedPages FROM topseriescalc ORDER BY id";
-				$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+				$result2 = mysqli_query($conn, $query2);
 				while(list($seriesId,$countedPages) = mysqli_fetch_array($result2))
 				{
 					$query3 = mysqli_query($conn, "SELECT COUNT(id) AS maxEps FROM episode WHERE sid = '$seriesId'");
@@ -58,7 +58,7 @@
 						$percentages = round($percentages,2);
 					}
 					$query4 = "UPDATE topseriescalc SET pagePercentage='$percentages' WHERE seriesId = $seriesId";
-					$result4 = mysqli_query($conn, $query4) or die('Error : ' . mysqli_error());
+					$result4 = mysqli_query($conn, $query4);
 				}
 				echo "<br />Calculations done, moving on to the last piece, updating the system for the stat fix.<br />";
 				$correctorder++;
@@ -66,12 +66,12 @@
 			else {
 				//Phew thats done.. now lets go and update the toplist!
 				$query5 = "SELECT seriesId, pagePercentage FROM topseriescalc ORDER BY pagePercentage DESC";
-				$result5 = mysqli_query($conn, $query5) or die('Error : ' . mysqli_error());
+				$result5 = mysqli_query($conn, $query5);
 				$toplistingnumber = 1;
 				while(list($seriesId,$pagePercentage) = mysqli_fetch_array($result5))
 				{
 					$query6 = "SELECT currentPosition FROM site_topseries WHERE seriesID='$seriesId'";
-							$result6 = mysqli_query($conn, $query6) or die('Error : ' . mysqli_error());
+							$result6 = mysqli_query($conn, $query6);
 							$row6 = mysqli_fetch_array($result6); 
 							$lastPosition = $row6['currentPosition'];
 							if($lastPosition == 0)
@@ -79,7 +79,7 @@
 								$lastPosition = $toplistingnumber;
 							}
 					$query7 = 'UPDATE site_topseries SET lastPosition=\'' . mysqli_escape_string($lastPosition) . '\', currentPosition=\'' . mysqli_escape_string($toplistingnumber) .'\' WHERE seriesID=\'' . $seriesId . '\'';
-					$result7 = mysqli_query($conn, $query7) or die('Error : ' . mysqli_error());
+					$result7 = mysqli_query($conn, $query7);
 					$toplistingnumber++;
 				}
 				$correctorder++;

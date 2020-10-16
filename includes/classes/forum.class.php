@@ -13,6 +13,7 @@ class Forum extends Config {
 	public function __construct()
 	{
 		parent::__construct();
+                print $this->conn;
 	}
 
 	// small constructor for my vars..
@@ -99,7 +100,7 @@ class Forum extends Config {
                 }
 		$query4 = "SELECT t1.tid, t1.ttitle, t1.tpid, t1.tfid, `t1`.`hidden`, t1.tviews, t2.ftitle, t2.fseo FROM forums_threads AS t1 LEFT JOIN forums_forum AS t2 ON t1.tfid = t2.fid WHERE (t2.fpermission LIKE '%".$PLA."%' AND t1.tupdated>='".$FinalDate3."' AND t1.tclosed=0" . $hiddenLimit  . ") ORDER BY t1.tupdated DESC";
 		mysqli_query($conn, "SET NAMES 'utf8'");
-		$result4 = mysqli_query($conn, $query4) or die('Error : ' . mysqli_error());
+		$result4 = mysqli_query($conn, $query4);
 		$numcount = mysqli_num_rows($result4);
 		if($numcount == 0){
 			echo "<tr><td class='row1' colspan=\"5\"><div style=\"padding-left:30px;\"><h3>There have been no replies in the last 24 hours.</td></tr>";
@@ -114,7 +115,7 @@ class Forum extends Config {
 			$query3 = mysqli_query($conn, "SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid' AND pistopic='0'");
 			$total_thread_posts = mysqli_result($query3, 0);
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 0, 1";
-			$result02 = mysqli_query($conn, $query02) or die('Error : ' . mysqli_error());
+			$result02 = mysqli_query($conn, $query02);
 			$row02 = mysqli_fetch_array($result02);
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];

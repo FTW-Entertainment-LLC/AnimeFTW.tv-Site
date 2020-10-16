@@ -10,7 +10,7 @@
 	require_once("/home/mainaftw/public_html/includes/classes/email.class.php"); 
 
 $query = "SELECT Username, advanceDate, advanceLevel, advanceActive FROM users WHERE Level_access = 7";
-$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query);
 
 //vars
 $CronID = 3;

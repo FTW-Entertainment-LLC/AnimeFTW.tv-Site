@@ -166,7 +166,7 @@ class Episodes extends Config {
 			else
 			{
 				$query  = "SELECT `id`, `sid`, `epnumber`, `seriesname`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `Movie`, `videotype`, `hd` FROM `episode` WHERE id= '" . mysqli_real_escape_string($conn, $_GET['eid']) . "'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				list($id, $sid, $epnumber, $seriesName, $epname, $vidheight, $vidwidth, $epprefix, $subGroup, $Movie, $videotype, $hd) = mysqli_fetch_array($result, MYSQL_NUM);
 				$FormMethod = '<input type="hidden" value="EditEpisode" name="method" />';
 				$options = '<input type="hidden" name="id" value="' . $id . '" />';
@@ -570,7 +570,7 @@ class Episodes extends Config {
 	}
 	private function SeriesList($sid, $uesid){
 		$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
-		$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
+		$result2 = mysqli_query($conn, $query2);
 		while(list($id,$fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 		{
 			$fullSeriesName = stripslashes($fullSeriesName);

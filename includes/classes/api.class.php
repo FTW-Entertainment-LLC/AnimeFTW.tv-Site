@@ -463,7 +463,7 @@ class AFTWDev{
 VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '".$ip."', '".$url."')";
 		mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 		$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\''.GetUID($username).'\'';
-		mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		mysqli_query($conn, $query);
 	}
 
 	public function Search($sort,$count,$start,$username,$password,$SearchInput,$alpha = NULL){

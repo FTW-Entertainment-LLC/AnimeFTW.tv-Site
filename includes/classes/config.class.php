@@ -6,21 +6,23 @@
 ## Copywrite 2011-2012 FTW Entertainment LLC, All Rights Reserved
 \****************************************************************/
 
-if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
-{
-    $rootdirectory = $_SERVER['DOCUMENT_ROOT'];
-}
-else
-{
-    $rootdirectory = '/home/mainaftw/public_html';
-}
-
-include_once($rootdirectory . "/includes/config_site.php");
-
 class Config {
-    public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array(), $ThisDomain, $ValidatePermission;
+    public $UserArray, $PermArray, $SettingsArray, $DefaultSettingsArray, $Host, $MainDB, $StatsDB, $RecentEps=array(), $ThisDomain, $ValidatePermission, $conn;
 
     public function __construct($autoBuildUser = FALSE){
+        // Setup the database connection at time of construct.
+        if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
+        {
+            $rootdirectory = $_SERVER['DOCUMENT_ROOT'];
+        }
+        else
+        {
+            $rootdirectory = '/home/mainaftw/public_html';
+        }
+        
+        include_once($rootdirectory . "/includes/config_site.php"); 
+        $this->conn = $conn;
+
         // Declare the main database
         $this->MainDB = 'mainaftw_anime';
         if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
@@ -104,16 +106,16 @@ class Config {
             $userCookieId = $_COOKIE['0ii'];
 
             // initial count query
-            $query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysqli_real_escape_string($conn, $sessionId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
-            $result = mysqli_query($conn, $query);
+            $query = "SELECT COUNT(id) as `count` FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysqli_real_escape_string($this->conn, $sessionId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
+            $result = mysqli_query($this->conn, $query);
             $count = mysqli_result($result, 0);
         }
         // There is an active token for this user, lets proceed.
         if($count > 0)
         {
             // First thing we will do is validate the authorization token, there must be one prior to moving forward.
-            $query = "SELECT * FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysqli_real_escape_string($conn, $authorizationId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
-            $result = mysqli_query($conn, $query);
+            $query = "SELECT * FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysqli_real_escape_string($this->conn, $authorizationId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
+            $result = mysqli_query($this->conn, $query);
 
             if(!$result) {
                 echo "There was an error selecting the authorization token." . mysqli_error();
@@ -154,28 +156,28 @@ class Config {
                 // They have access, first, update the authorization token so we don't keep having to see the same changes.
                 if($changed == 1) {
                     // The ip changed.
-                    $query = "UPDATE `" . $this->MainDB . "`.`user_authorization` SET `ip` = '" . mysqli_real_escape_string($conn, $_SERVER['REMOTE_ADDR']) . "' WHERE `id` = '" . mysqli_real_escape_string($conn, $authorizationId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
-                    $result = mysqli_query($conn, $query);
+                    $query = "UPDATE `" . $this->MainDB . "`.`user_authorization` SET `ip` = '" . mysqli_real_escape_string($this->conn, $_SERVER['REMOTE_ADDR']) . "' WHERE `id` = '" . mysqli_real_escape_string($conn, $authorizationId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
+                    $result = mysqli_query($this->conn, $query);
                 } else if($changed == 2) {
                     // The version of the browser changed.
-                    $query = "UPDATE `" . $this->MainDB . "`.`user_authorization` SET `version` = '" . mysqli_real_escape_string($conn, $userDetails['version']) . "' WHERE `id` = '" . mysqli_real_escape_string($conn, $authorizationId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
-                    $result = mysqli_query($conn, $query);
+                    $query = "UPDATE `" . $this->MainDB . "`.`user_authorization` SET `version` = '" . mysqli_real_escape_string($this->conn, $userDetails['version']) . "' WHERE `id` = '" . mysqli_real_escape_string($conn, $authorizationId) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
+                    $result = mysqli_query($this->conn, $query);
                 } else {
                     // no other changes are to be made.
                 }
 
                 // update the token and user profile, so that the user knows the last time this session was used.
-                $query = "UPDATE `" . $this->MainDB . "`.`user_session` INNER JOIN `" . $this->MainDB . "`.`users` ON (`users`.`ID`=`user_session`.`uid`) SET `user_session`.`updated` = '" . time() . "', `users`.`lastActivity`='" . time() . "' WHERE `user_session`.`id` = '" . mysqli_real_escape_string($conn, $sessionId) . "' AND `user_session`.`uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
-                $result = mysqli_query($conn, $query);
+                $query = "UPDATE `" . $this->MainDB . "`.`user_session` INNER JOIN `" . $this->MainDB . "`.`users` ON (`users`.`ID`=`user_session`.`uid`) SET `user_session`.`updated` = '" . time() . "', `users`.`lastActivity`='" . time() . "' WHERE `user_session`.`id` = '" . mysqli_real_escape_string($this->conn, $sessionId) . "' AND `user_session`.`uid` = '" . mysqli_real_escape_string($conn, $userCookieId) . "'";
+                $result = mysqli_query($this->conn, $query);
                 unset($query);
                 unset($result);
 
                 // start building the user details
-                $query = "SELECT `Email`, `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `advanceActive`, `UploadsVisit` FROM users WHERE ID='" . mysqli_real_escape_string($conn, $userCookieId) . "'";
-                $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+                $query = "SELECT `Email`, `Level_access`, `timeZone`, `Active`, `Username`, `canDownload`, `postBan`, `theme`, `forumBan`, `messageBan`, `viewNotifications`, `advanceActive`, `UploadsVisit` FROM users WHERE ID='" . mysqli_real_escape_string($this->conn, $userCookieId) . "'";
+                $result = mysqli_query($this->conn, $query);
                 $row = mysqli_fetch_array($result);
                 $Logged = 1;
-                $UserID = mysqli_real_escape_string($conn, $userCookieId);
+                $UserID = mysqli_real_escape_string($this->conn, $userCookieId);
                 // build the list of information necessary for user interactions.
                 $PermissionLevelAdvanced = $row['Level_access'];
                 $timeZone = $row['timeZone'];
@@ -232,7 +234,7 @@ class Config {
         {
             // the user is logged in, book em dan-o
             $query = "SELECT * FROM `user_setting` WHERE `uid` = " . $this->UserArray[1];
-            $result = mysqli_query($conn, $query);
+            $result = mysqli_query($this->conn, $query);
 
             $count = mysqli_num_rows($result);
             if($count > 0)
@@ -254,7 +256,7 @@ class Config {
         $this->DefaultSettingsArray = array();
 
         $query = "SELECT * FROM `user_setting_option`";
-        $result = mysqli_query($conn, $query);
+        $result = mysqli_query($this->conn, $query);
 
         while($row = mysqli_fetch_assoc($result))
         {
@@ -271,7 +273,7 @@ class Config {
             # OID of 2, means it is a single user Request
             */
             $query = "SELECT deny FROM permissions_objects WHERE permission_id = " . $permission . " AND ((type = 1 AND oid = ".$this->UserArray[2].") OR (type = 2 AND oid = ".$this->UserArray[1]."))";
-            $results = mysqli_query($conn, $query);
+            $results = mysqli_query($this->conn, $query);
             $count = @mysqli_num_rows($results);
             if($count > 0)
             {
@@ -308,7 +310,7 @@ class Config {
     // takes a query and a var and retunrs
     public function SingleVarQuery($query,$var)
     {
-        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        $result = mysqli_query($this->conn, $query);
         $row = mysqli_fetch_array($result);
         return $row[$var];
     }
@@ -316,7 +318,7 @@ class Config {
     // records the mod function right into the database.
     public function ModRecord($type)
     {
-        mysqli_query($conn, "INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysqli_real_escape_string($conn, $_SERVER['REQUEST_URI'])."')");
+        mysqli_query($this->conn, "INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysqli_real_escape_string($conn, $_SERVER['REQUEST_URI'])."')");
     }
 
     // we dont know what it does.. it just looks cool.
@@ -427,8 +429,8 @@ class Config {
 
     public function formatUsername($ID,$target = 'self',$lastActivity = NULL)
     {
-        $query = "SELECT `Username`, `display_name`, `Level_access`, `advancePreffix`, `advanceImage`, `Active` FROM `users` WHERE `ID`='" . mysqli_real_escape_string($conn, $ID) . "'";
-        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        $query = "SELECT `Username`, `display_name`, `Level_access`, `advancePreffix`, `advanceImage`, `Active` FROM `users` WHERE `ID`='" . mysqli_real_escape_string($this->conn, $ID) . "'";
+        $result = mysqli_query($this->conn, $query);
         $row = mysqli_fetch_assoc($result);
         $Username = $row['Username'];
         $display_name = $row['display_name'];
@@ -514,8 +516,8 @@ class Config {
         else
         {
             // ID is supplied, we need to give them the goods.
-            $query = 'SELECT `Username`, `display_name`, `Active`, `Level_access`, `avatarActivate`, `avatarExtension`, `advancePreffix`, `advanceImage` FROM `' . $this->MainDB . '`.`users` WHERE `ID` = \'' . mysqli_real_escape_string($conn, $ID) . '\'';
-            $results = mysqli_query($conn, $query);
+            $query = 'SELECT `Username`, `display_name`, `Active`, `Level_access`, `avatarActivate`, `avatarExtension`, `advancePreffix`, `advanceImage` FROM `' . $this->MainDB . '`.`users` WHERE `ID` = \'' . mysqli_real_escape_string($this->conn, $ID) . '\'';
+            $results = mysqli_query($this->conn, $query);
             $row = mysqli_fetch_assoc($results);
             $Username = $row['Username'];
             $display_name = $row['display_name'];
@@ -619,8 +621,8 @@ class Config {
 
     public function formatAvatar($ID,$target = 'self',$link = TRUE,$height = NULL)
     {
-        $query = "SELECT `ID`, `Username`, `avatarActivate`, `avatarExtension` FROM `users` WHERE `ID`='" . mysqli_real_escape_string($conn, $ID) . "'";
-        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        $query = "SELECT `ID`, `Username`, `avatarActivate`, `avatarExtension` FROM `users` WHERE `ID`='" . mysqli_real_escape_string($this->conn, $ID) . "'";
+        $result = mysqli_query($this->conn, $query);
         $row = mysqli_fetch_assoc($result);
         if($height != NULL)
         {
@@ -659,8 +661,8 @@ class Config {
 
     public function validateAPIUser($username,$password)
     {
-        $query = "SELECT ID FROM `users` WHERE Username = '" . mysqli_real_escape_string($conn, $username) . "' AND Password = '" . md5($password) . "'";
-        $results = mysqli_query($conn, $query);
+        $query = "SELECT ID FROM `users` WHERE Username = '" . mysqli_real_escape_string($this->conn, $username) . "' AND Password = '" . md5($password) . "'";
+        $results = mysqli_query($this->conn, $query);
 
         $count = mysqli_num_rows($results);
 
@@ -683,7 +685,7 @@ class Config {
         if($_SERVER['PHP_SELF'] == '/videos.php')
         {
             $query = "SELECT `eid`, `time`, `updated`, `max` FROM `episode_timer` WHERE `uid` = " . $this->UserArray[1];
-            $result = mysqli_query($conn, $query);
+            $result = mysqli_query($this->conn, $query);
 
             if(!$result)
             {
@@ -713,7 +715,7 @@ class Config {
     public function uploadsEntrySelect($upload_id, $extra)
     {
         $query = "SELECT ID, series FROM uestatus ORDER BY series ASC";
-        $results = mysqli_query($conn, $query);
+        $results = mysqli_query($this->conn, $query);
 
         if(!$results)
         {
@@ -739,7 +741,7 @@ class Config {
     public function buildCategories()
     {
         $query = "SELECT * FROM `categories`";
-        $result = mysqli_query($conn, $query);
+        $result = mysqli_query($this->conn, $query);
         while($row = mysqli_fetch_assoc($result))
         {
             $this->Categories[$row['id']]['id'] = $row['id'];
@@ -871,7 +873,7 @@ class Config {
     public function checkFailedLogins($ip) {
         $fivebefore = time()-300;
         $query1 = "SELECT ip FROM `failed_logins` where date>='".$fivebefore."' AND ip='".$ip."'";
-        $result1 = mysqli_query($conn, $query1);
+        $result1 = mysqli_query($this->conn, $query1);
         $total_fails = mysqli_num_rows($result1);
         if($total_fails == 1){
             $statement = '1 of 5 Failed Login attempts Used.';

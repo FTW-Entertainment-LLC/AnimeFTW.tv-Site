@@ -11,7 +11,7 @@ if ($GETview == 'lastpost')
 	if(isset($_GET['thread'])){$topicID = $_GET['thread'];	}
 		$topicID = mysqli_real_escape_string($conn, $topicID);
 		$query = "SELECT pid, ptid, pfid, ptispost FROM forums_post WHERE ptid='$topicID' ORDER BY ptispost DESC LIMIT 0, 1";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$pid = $row['pid'];
 			$ptid = $row['ptid'];
@@ -20,7 +20,7 @@ if ($GETview == 'lastpost')
 			$rounded = floor($ptispost/20);
 			$rounded = $rounded*20;
 			$query1 = "SELECT fseo FROM forums_forum WHERE fid='".$pfid."'";
-			$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
+			$result1 = mysqli_query($conn, $query1);
 			$row1 = mysqli_fetch_array($result1);
 		header ( "Location: http://".$_SERVER['HTTP_HOST']."/forums/".$row1['fseo']."/topic-$ptid/s-$rounded#entry$pid");
 }
@@ -30,7 +30,7 @@ if ($GETview == 'findpost')
 		if(isset($_GET['post']) && is_numeric($_GET['post'])){$postID = $_GET['post'];}
 		$postID = mysqli_real_escape_string($conn, $postID);
 		$query = "SELECT pid, ptid, pfid, ptispost FROM forums_post WHERE pid='$postID' ORDER BY ptispost DESC LIMIT 0, 1";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$pid = $row['pid'];
 			$ptid = $row['ptid'];
@@ -39,7 +39,7 @@ if ($GETview == 'findpost')
 			$rounded = floor($ptispost/20);
 			$rounded = $rounded*20;
 			$query1 = "SELECT fseo FROM forums_forum WHERE fid='".$pfid."'";
-			$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
+			$result1 = mysqli_query($conn, $query1);
 			$row1 = mysqli_fetch_array($result1);
 		header ( "Location: http://".$_SERVER['HTTP_HOST']."/forums/".$row1['fseo']."/topic-$ptid/s-$rounded#entry$pid");
 	}
@@ -47,12 +47,12 @@ if ($GETview == 'findpost')
 		if(isset($_GET['thread']) && is_numeric($_GET['thread'])){$threadID = $_GET['thread'];}
 		$threadID = mysqli_real_escape_string($conn, $threadID);
 		$query = "SELECT tid, tfid FROM forums_threads WHERE tid='$threadID'";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$tid = $row['tid'];
 			$tfid = $row['tfid'];
 			$query1 = "SELECT fseo FROM forums_forum WHERE fid='".$tfid."'";
-			$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
+			$result1 = mysqli_query($conn, $query1);
 			$row1 = mysqli_fetch_array($result1);
 		header ( "Location: http://".$_SERVER['HTTP_HOST']."/forums/".$row1['fseo']."/topic-$tid/s-0");
 	}
@@ -133,7 +133,7 @@ if(isset($_POST['doreply']))
 				}
 			}
 			$query006 = "SELECT tid FROM forums_threads WHERE tdate='$date'";
-			$result006 = mysqli_query($conn, $query006) or die('Error : ' . mysqli_error());
+			$result006 = mysqli_query($conn, $query006);
 			$row006 = mysqli_fetch_array($result006);
 			$ptid3 = $row006['tid'];
 			$pistopic = 1;
@@ -148,7 +148,7 @@ if(isset($_POST['doreply']))
 				mysqli_real_escape_string($conn, $userIp));
 			mysqli_query($conn, $query2) or die('Could not connect, way to go retard:' . mysqli_error());
 			$query005 = "SELECT tid, tfid FROM forums_threads WHERE tdate='$date'";
-				$result005 = mysqli_query($conn, $query005) or die('Error : ' . mysqli_error());
+				$result005 = mysqli_query($conn, $query005);
 				$row005 = mysqli_fetch_array($result005);
 				$tid = $row005['tid'];
 				$tfid = $row005['tfid'];
@@ -173,24 +173,24 @@ if(isset($_POST['doreply']))
 				mysqli_real_escape_string($conn, $userIp));
 			mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 			$query = 'UPDATE forums_threads SET tupdated=\'' . mysqli_escape_string($tupdated) . '\'WHERE tid=' . $tid . '';
-			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			mysqli_query($conn, $query);
 			if($mod_options != 'nowt'){
 				if($mod_options == 'pin'){$query = 'UPDATE forums_threads SET tstickied=\'1\' WHERE tid=' . $tid . '';}
 				else if($mod_options == 'unpin'){$query = 'UPDATE forums_threads SET tstickied=\'0\' WHERE tid=' . $tid . '';}
 				else if ($mod_options == 'close'){$query = 'UPDATE forums_threads SET tclosed=\'1\' WHERE tid=' . $tid . '';}
 				else if ($mod_options == 'pin&close'){$query = 'UPDATE forums_threads SET tclosed=\'1\' AND tstickied=\'1\' WHERE tid=' . $tid . '';}
 				else if ($mod_options == 'upinclose'){	$query = 'UPDATE forums_threads SET tclosed=\'1\', tstickied=\'0\' WHERE tid=' . $tid . '';}
-				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query);
 			}
 			else {}
 				$query005 = "SELECT pid, ptid, pfid FROM forums_post WHERE pdate='$date'";
-				$result005 = mysqli_query($conn, $query005) or die('Error : ' . mysqli_error());
+				$result005 = mysqli_query($conn, $query005);
 				$row005 = mysqli_fetch_array($result005);
 				$pid = $row005['pid'];
 				$ptid = $row005['ptid'];
 				$pfid= $row005['pfid'];
 				$query = "SELECT fseo FROM forums_forum WHERE fid='$pfid'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$fseo = $row005['fseo'];
 			//header ( "Location: ".$sslornot."://".$_SERVER['HTTP_HOST']."/forums/index.php?forum=$pfid&thread=$ptid&view=getlastpost");
@@ -199,14 +199,14 @@ if(isset($_POST['doreply']))
 		}
 		else if($CODE == 3){
 			$query = 'UPDATE forums_post SET pbody=\'' . mysqli_escape_string($submitbody) . '\'WHERE pid=\'' . $pid . '\'';
-			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			mysqli_query($conn, $query);
 			//header ( "location: ".$sslornot."://".$_SERVER['HTTP_HOST']."/forums/index.php?view=findpost&p=$pid" );
 			header ( "Location: http://".$_SERVER['HTTP_HOST']."/forums/find/post-$pid");
 			exit;
 		}
 		else if($CODE == 4){
 			$query = 'UPDATE forums_post SET pbody=\'' . mysqli_escape_string($submitbody) . '\'WHERE pid=\'' . $pid . '\'';
-			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			mysqli_query($conn, $query);
 			//header ( "location: http://".$_SERVER['HTTP_HOST']."/forums/index.php?view=findpost&p=$pid" );
 			header ( "Location: http://".$_SERVER['HTTP_HOST']."/forums/find/post-$pid");
 			exit;

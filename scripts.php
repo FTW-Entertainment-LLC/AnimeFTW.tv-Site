@@ -55,7 +55,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	if($_GET['show'] == 'tooltips'){
 		$id = $_GET['id'];
 		$query  = "SELECT description FROM series WHERE id='".mysqli_real_escape_string($conn, $id)."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$verifier = mysqli_num_rows($result);
 		$row = mysqli_fetch_array($result);
 		$description = stripslashes($row['description']);
@@ -64,7 +64,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	if($_GET['show'] == 'user-tips'){
 		$id = $_GET['id'];
 		$query  = "SELECT Username, gender, ageMonth, ageYear, country, avatarActivate, avatarExtension, personalMsg FROM users WHERE ID='".$id."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$verifier = mysqli_num_rows($result);
 		$row = mysqli_fetch_array($result);
 		$description = stripslashes($row['description']);
@@ -73,7 +73,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	if($_GET['show'] == 'eptips'){
 		$id = $_GET['id'];
 		$query  = "SELECT epnumber, epPrefix, image, sid FROM episode WHERE id='".mysqli_real_escape_string($conn, $id)."'";
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$verifier = mysqli_num_rows($result);
 		$row = mysqli_fetch_array($result);
 		if($row['image'] == 0){
@@ -306,7 +306,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 				echo '<div align="center"><br /><table>';
 				$i=0;
 				$b=0;
-				$result19 = mysqli_query($conn, $query19) or die('Error : ' . mysqli_error());
+				$result19 = mysqli_query($conn, $query19);
   				while(list($uid,$username,$avatarActivate,$avatarExtension) = mysqli_fetch_array($result19))
 				{
 					if($avatarActivate == 'yes'){
@@ -439,7 +439,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 			else if($_GET['subview'] == 'friend-notification')
 			{
 				$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysqli_real_escape_string($conn, $_GET['id'])."'";
-				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query);
 				$onlyFriendships = mysqli_num_rows($result);
 				if($onlyFriendships == 0 && $profileArray[1] != $_GET['id'])
 				{
@@ -450,7 +450,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 						mysqli_real_escape_string($conn, time(), $conn));
 					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 					//phase one done, next we find out what we just inserted was..
-					$result1 = mysqli_query($conn, "SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysqli_error());
+					$result1 = mysqli_query($conn, "SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1");
 					$row1 = mysqli_fetch_array($result1);
 					//we have our target. Proceed.
 					$query = sprintf("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES ('%s', '%s', '%s', '%s', NULL, NULL)",
@@ -480,11 +480,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 					else { //legit request, lets DO this
 						if($_GET['s'] == 'b'){ //user clicked to delete a comment
 							$query = 'UPDATE page_comments SET is_approved=\'0\' WHERE id=' . $id . '';
-			   				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			   				mysqli_query($conn, $query);
 						}
 						else if($_GET['s'] == 'a'){ //user clicked to UNDO their "delete"
 							$query = 'UPDATE page_comments SET is_approved=\'1\' WHERE id=' . $id . '';
-			   				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			   				mysqli_query($conn, $query);
 						}
 						else {
 							echo 'There was another error.. try again.';

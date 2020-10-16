@@ -1,7 +1,7 @@
 <?php
 include('../siteroot.php');
 $query = "SELECT id, fullSeriesName FROM series ORDER BY id ASC";
-$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query);
 while($row = mysqli_fetch_array($result, MYSQL_ASSOC))
 {
 	

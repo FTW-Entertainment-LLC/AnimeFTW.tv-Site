@@ -151,7 +151,7 @@ class processData extends Config {
 					`license`=\'' . $license . '\',
 					`updated`=\'' . time() . '\'
 					WHERE id=' . $sid . '';
-				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query);
 				$euidd = mysqli_query($conn, "UPDATE uestatus SET sid = $sid WHERE ID = $ueid");
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
 
@@ -284,7 +284,7 @@ class processData extends Config {
 					videotype=\'' . $videotype . '\',
 					hd=\'' . $hd . '\''.$QuerySet.'
 					WHERE sid=\'' . $sid . '\'' . $QueryAddon;
-				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query);
 				$this->ModRecord('Mass Episode Edit for Series ' . $fullSeriesName . ', old -vh:' . $old_vidheight . ', -vw:' . $old_vidwidth . ', -pref:' . $old_epprefix . ', -sg:' . $old_subGroup . ', -vt:' . $old_videotype . '');
 				echo 'Success';
 			}
@@ -589,7 +589,7 @@ class processData extends Config {
 					WHERE ID=\'' . $rid . '\'';
 					//echo $query;
 					//echo $_SERVER['REQUEST_URI'];
-   					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+   					mysqli_query($conn, $query);
 					echo 'Success';
 
 				}
@@ -721,7 +721,7 @@ class processData extends Config {
 				$epprefix    = stripslashes($epprefix);
 				// update the item in the database
 				$query = 'UPDATE episode SET epnumber=\'' . mysqli_real_escape_string($conn, $epnumber) . '\', sid=\'' . mysqli_real_escape_string($conn, $sid) .'\', epname=\'' . mysqli_real_escape_string($conn, $epname) . '\', vidheight=\'' . mysqli_real_escape_string($conn, $vidheight) . '\', vidwidth=\'' . mysqli_real_escape_string($conn, $vidwidth) . '\', epprefix=\'' . mysqli_real_escape_string($conn, $epprefix) . '\', subGroup=\'' . mysqli_real_escape_string($conn, $subGroup) . '\', Movie=\'' . mysqli_real_escape_string($conn, $Movie) . '\', videotype=\'' . mysqli_real_escape_string($conn, $videotype) . '\', `hd`=\'' . mysqli_real_escape_string($conn, $hd) . '\' WHERE id=' . $id . '';
-				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query);
 				$this->ModRecord('Edit Episode #' . $epnumber . ' of id ' . $id);
 				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;width:100%;">Episode Update Completed Successfully.</div>';
 			}
@@ -843,12 +843,12 @@ class processData extends Config {
 		if($prequelto != 0)//If the prequel is updated, we update that series sequel to this one.
 		{
 			$query = 'UPDATE series SET sequelto=\'' . mysqli_real_escape_string($conn, $sid) . '\' WHERE id=' . mysqli_real_escape_string($conn, $prequelto) . '';
-			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			mysqli_query($conn, $query);
 		}
 		if($sequelto != 0)//If the sequel is, or also was updated with the prequel, we update that series prequel to this one.
 		{
 			$query = 'UPDATE series SET prequelto=\'' . mysqli_real_escape_string($conn, $sid) . '\' WHERE id=' . mysqli_real_escape_string($conn, $sequelto) . '';
-			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			mysqli_query($conn, $query);
 		}
 	}
 

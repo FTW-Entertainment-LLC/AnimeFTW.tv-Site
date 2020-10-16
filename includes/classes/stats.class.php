@@ -159,7 +159,7 @@ class AFTWstats extends Config {
 				$aonly = "";
 			}
 			$query = "SELECT `epnumber`, `epname`, `date`, `fullSeriesName`, `seoname` FROM `episode` INNER JOIN `series` ON `episode`.`sid`=`series`.`id` AND `series`.`stillRelease` = 'yes'" . $aonly . " ORDER BY `episode`.`id` DESC LIMIT 0, 10";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			while(list($epnumber,$epname,$date,$fullSeriesName,$seoname) = mysqli_fetch_array($result, MYSQL_NUM)){
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$epname = stripslashes($epname);
@@ -189,7 +189,7 @@ class AFTWstats extends Config {
 		else if($this->la == 3){$aonly = " AND aonly < 2";}
 		else {$aonly = "";}
 			$query = "SELECT id, fullSeriesName, seoname FROM series WHERE active = 'yes'".$aonly." ORDER BY id DESC LIMIT 0, 10";
-			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query);
 			while(list($id,$fullSeriesName,$seoname) = mysqli_fetch_array($result, MYSQL_NUM)){
 				$fullSeriesName = stripslashes($fullSeriesName);
 			echo '<div align="center" style="padding:3px;"><a href="/anime/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$id.'\',this);return false;" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a> was Added</div>';

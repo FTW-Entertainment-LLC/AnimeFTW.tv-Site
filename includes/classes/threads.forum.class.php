@@ -32,7 +32,7 @@ class AFTWThreads extends Config {
 		}
 
 		$query4  = "SELECT tid, ttitle, tpid, tfid, tclosed, `hidden`, `tviews` FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='0'" . $restrictHiddenThreads . " ORDER BY tclosed ASC, tupdated DESC LIMIT ".$this->reqLimit.", 30";
-		$result4 = mysqli_query($conn, $query4) or die('Error : ' . mysqli_error());
+		$result4 = mysqli_query($conn, $query4);
 		echo "<tr>\n";
 		echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
 		echo "<td class='tbl2 forum-cap'><strong>Forum Topics</strong></td>\n";
@@ -72,7 +72,7 @@ class AFTWThreads extends Config {
 			echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$tviews."</td>\n";
 			//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 1";
-			$result02 = mysqli_query($conn, $query02) or die('Error : ' . mysqli_error());
+			$result02 = mysqli_query($conn, $query02);
 			$row02 = mysqli_fetch_array($result02);
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];
@@ -103,7 +103,7 @@ class AFTWThreads extends Config {
 			else {
 				$query04  = "SELECT tid, ttitle, tpid, tfid, tclosed, tviews FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='1' ORDER BY tclosed ASC, tupdated DESC LIMIT ".$this->reqLimit.", 30";
 				mysqli_query($conn, "SET NAMES 'utf8'");
-				$result04 = mysqli_query($conn, $query04) or die('Error : ' . mysqli_error());
+				$result04 = mysqli_query($conn, $query04);
 				echo "<tr>\n";
 				echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
 				echo "<td class='tbl2 forum-cap'><strong>Pinned Topics</strong></td>\n";
@@ -133,7 +133,7 @@ class AFTWThreads extends Config {
 
 					//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
 					$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 1";
-					$result02 = mysqli_query($conn, $query02) or die('Error : ' . mysqli_error());
+					$result02 = mysqli_query($conn, $query02);
 					$row02 = mysqli_fetch_array($result02);
 					$pid = $row02['pid'];
 					$puid = $row02['puid'];

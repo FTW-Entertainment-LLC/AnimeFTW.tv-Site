@@ -167,7 +167,7 @@ class Comments extends Config {
 					else
 					{
 						$query  = "DELETE FROM `page_comments` WHERE `id` = '" . mysqli_real_escape_string($conn, $_GET['id']) . "'";
-						mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						mysqli_query($conn, $query);
 						$this->ModRecord('Delete Comment');
 						echo 'Success';
 					}

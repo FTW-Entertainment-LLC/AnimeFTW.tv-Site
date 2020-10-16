@@ -3,7 +3,7 @@
 include('../siteroot.php');
 
 $query = "SELECT episode_tracker.id, episode_tracker.eid, episode.sid FROM episode_tracker, episode WHERE episode_tracker.seriesName = '' AND episode.id=episode_tracker.eid";
-$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query);
 
 while(list($id,$epid,$sid) = mysqli_fetch_array($result))
 {

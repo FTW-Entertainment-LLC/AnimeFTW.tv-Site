@@ -242,7 +242,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						<td width="85%" align="center" valign="top"><span style="font-size:14px;">Requirements</span></td>
 					</tr>';
 					$query   = "SELECT id, position, duties, requirements FROM applications_positions WHERE online_offline='online' ORDER BY id";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query);
 	
 					while(list($id,$position,$duties,$requirements) = mysqli_fetch_array($result)){
 					$position = stripslashes($position);
@@ -289,7 +289,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						</script>';
 					echo '<form method="post" action="/staff/applications/step-4" name="step3form" onSubmit="return defaultagree(this)">';
 					$query   = "SELECT position, duties, requirements FROM applications_positions WHERE position='".mysqli_real_escape_string($conn, $_POST['positionticked'])."'";
-					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error()); 
+					$result  = mysqli_query($conn, $query); 
 					$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 				
 					$position = $row['position'];
@@ -409,7 +409,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 				else {
 					$company = $_POST['company'];
 					$query = 'UPDATE applications_submissions SET company=\'' . mysqli_real_escape_string($conn, $company) . '\' WHERE appRound = \'' . $this->application_round . '\' AND username=\'' . $this->profileArray[5] . '\'';
-					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					mysqli_query($conn, $query);
 					if ($company == 'animeftw'){
 						echo '<div align="center">Thank You, you chose to apply for AnimeFTW for Your Staff application, it will be reviewed and handled as soon as possible, please expect a responce back by email AND site PM.</div>';
 					}
@@ -418,7 +418,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						echo '<div>Thank You, you chose to apply for FTW Entertainment LLC staff, Your Staff application will be reviewed by the admins then proccessed accordingly, we ask that you make your way over to our corperate site found <a href="http://ftwentertainment.com">here</a> and register on our forums.<br />Doing so allows us another place to contact you when you have passed and are in need of further information.<br /><br /> Before you leave, please enter your birthday if it does not show up:<br /><br />';
 						echo '	Please Enter your Age for our processing, this will ensure that everything goes smoothly on our end.<br /><br />Birthday:';
 						$query  = "SELECT ageMonth, ageDate, ageYear FROM users WHERE ID='".$this->profileArray[1]."'";
-						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query);
 						list($ageMonth, $ageDate, $ageYear) = mysqli_fetch_array($result, MYSQL_NUM);
 						echo '<form method="post" action="/staff/applications/step-finish">
 						<br />
@@ -545,7 +545,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 					$ageYear1 = $_POST['ageYear'];
 					$finalDate = $ageMonth1.'/'.$ageDate1.'/'.$ageYear1;
 					$query = 'UPDATE applications_submissions SET Age=\'' . mysqli_real_escape_string($conn, $finalDate) . '\' WHERE appRound = \'' . $this->application_round . '\' AND username=\'' . $this->profileArray[5] . '\'';
-					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+					mysqli_query($conn, $query);
 					echo '<div align="center">Thank you for your application it is now finished, feel free to move to <a href="http://animeftw.tv">the main site</a> and watch some more anime as your application is processed and evaluated.</div>';
 				}
 			}
@@ -652,7 +652,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 				echo '<div align="center">';
 				echo '<h2>Site Owners/Administrators</h2>';
 						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='1' ORDER BY Username";
-						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query);
 						$a = 0; // variable for each user
 						$b = 5; // base multiple of 5 per row
 						$c = 1; // multiples times b so when A == B*C it makes another row
@@ -680,7 +680,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						 <h2>Site Managers</h2>
 						';
 						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='2' ORDER BY Username";
-						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query);
 						$e = 0; // variable for each user
 						$f = 5; // base multiple of 5 per row
 						$g = 1; // multiples times b so when A == B*C it makes another row
@@ -708,7 +708,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						 <h2>Site Staff</h2>
 						';
 						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='4' OR Level_access='5' OR Level_access='6' ORDER BY Username";
-						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query);
 						$a = 0; // variable for each user
 						$b = 5; // base multiple of 5 per row
 						$c = 1; // multiples times b so when A == B*C it makes another row

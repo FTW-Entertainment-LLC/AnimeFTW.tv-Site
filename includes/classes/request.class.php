@@ -400,7 +400,7 @@ class AnimeRequest extends Config{
             ORDER BY $sort
             LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
         //echo $query."<br>";
-        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        $result = mysqli_query($conn, $query);
         
         $pages_query = "SELECT COUNT(*) AS amount
             FROM user_requests
@@ -416,7 +416,7 @@ class AnimeRequest extends Config{
                 $uploadstatus = $this->getStatusNum(ucfirst($uploadstatus));
                 if ($status!=$uploadstatus){ 
                     //$status in the request database is not the same as the upload boards database.
-                    mysqli_query($conn, "UPDATE requests SET status=".$uploadstatus." WHERE id=".$id) or die('Error : ' . mysqli_error());
+                    mysqli_query($conn, "UPDATE requests SET status=".$uploadstatus." WHERE id=".$id);
                     $status = $uploadstatus; //Change it on this current run too.
                 }
             }
@@ -710,7 +710,7 @@ class AnimeRequest extends Config{
         if ($this->getRemainingVotes() < $this->getMaxVotes()) {
             $rid = $_GET["requestanimevote"];
             $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysqli_real_escape_string($conn, $rid) . ")"; // Added the escape string, cant have people doing silly stuff..
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             return $this->getRemainingVotes(); // Return the remaining votes so we can be sure they dont double dip... this might be needed?
         } else {
             return 0;
@@ -1151,7 +1151,7 @@ class AnimeRequest extends Config{
         if ($this->getRemainingVotes() < $this->maxvotes) {
             //Check if it's possible to vote
             $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysqli_real_escape_string($conn, $rid) . ")"; // Added the escape string, cant have people doing silly stuff..
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
         }
     }
     
@@ -1159,7 +1159,7 @@ class AnimeRequest extends Config{
     {
         if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             $query = "UPDATE `requests` SET `".$option."` = '" . mysqli_real_escape_string($conn, $value) . "' WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             $this->ModRecord("Updated an Anime Request ".$option." (ID: ".$arid.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
         }
     }
@@ -1185,15 +1185,15 @@ class AnimeRequest extends Config{
                 mysqli_real_escape_string($conn, $userIp));
             mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
             $query = 'UPDATE forums_threads SET tupdated=\'' . mysqli_escape_string($date) . '\'WHERE tid=' . $tid . '';
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             $query = 'UPDATE forums_threads SET tclosed=\'1\' WHERE tid=' . $tid . '';
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             
             //Request deletion
             $query = "DELETE FROM `requests` WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             $query = "DELETE FROM `request_votes` WHERE `voted_to` = " . mysqli_real_escape_string($conn, $arid);
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             $this->ModRecord("Deleted an Anime Request (ID: ".$arid.", reason: ".$reason.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
             
         }
@@ -1204,7 +1204,7 @@ class AnimeRequest extends Config{
         if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             $arid = $_GET["id"];
             $query = "UPDATE `requests` SET `status` = '2' WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             // grab the information about the series entry.
             $query = "SELECT `name`, `anidb`, `type`, `episodes` FROM `requests` WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
             $result = mysqli_query($conn, $query);
@@ -1212,10 +1212,10 @@ class AnimeRequest extends Config{
             // let's add a series to the claimed pile..
             $seriestype = array("----", "Series", "OVA", "Movie");
             $query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`) VALUES ('" . $seriesInfo['name'] . "', '" . str_replace(' ', '', strtolower($seriesInfo['name'])) . "', '" . $seriesInfo['episodes'] . "/" . $seriesInfo['episodes'] . "', '" . $seriestype[$seriesInfo['type']] . "', '--x--', 'Claimed', '" . $this->UserArray[1] . "', NOW(), '" . $seriesInfo['anidb'] . "', '0', '0', 0)";
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             $ueid = mysqli_insert_id();
             $query = "UPDATE `requests` SET `uid` = '".$ueid."' WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             
             $this->ModRecord("Marked an Anime Request (".$arid.") as Claimed."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
         }
@@ -1224,7 +1224,7 @@ class AnimeRequest extends Config{
     private function subtractVote($arid)
     {
         $query = "DELETE FROM `request_votes` WHERE `voted_to` = " . mysqli_real_escape_string($conn, $arid) . " AND voted_by = " . $this->UserArray[1] . " LIMIT 1";
-        mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        mysqli_query($conn, $query);
     }
     
     private function addRequest($name, $type, $episodes, $anidb, $description, $details)
@@ -1251,7 +1251,7 @@ class AnimeRequest extends Config{
         }
         $details = strip_tags($details, "<pre><blockquote><h1><h2><h3><h4><h5><p><ul><li><strong><em><del><b><i><a><ol><hr><table><thead><tr><td><tbody><img><br>");
         $query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=" . mysqli_real_escape_string($conn, $anidb) . ""; //check if it already exist
-        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        $result = mysqli_query($conn, $query);
         $res = mysqli_result($result, 0);
         //echo $res;
         
@@ -1268,7 +1268,7 @@ class AnimeRequest extends Config{
             mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
                 
             $query006 = "SELECT tid FROM forums_threads WHERE tdate='$date'";
-            $result006 = mysqli_query($conn, $query006) or die('Error : ' . mysqli_error());
+            $result006 = mysqli_query($conn, $query006);
             $row006 = mysqli_fetch_array($result006);
             $ptid3 = $row006['tid'];
             $pistopic = 1;
@@ -1284,7 +1284,7 @@ class AnimeRequest extends Config{
                 mysqli_real_escape_string($conn, $description),
                 mysqli_real_escape_string($conn, $details),
                 mysqli_real_escape_string($conn, $ptid3));
-            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query);
             $reqid = mysqli_insert_id();
             echo "Success ".$reqid;
             $details = "[animerequest]".$reqid."[/animerequest]"; //We change the details on the forum to the dynamic version
@@ -1315,7 +1315,7 @@ class AnimeRequest extends Config{
         foreach ($out[1] as $i) {
             //echo $i;
             $req_query = "SELECT Username, name, status, type, episodes, anidb, user_id, date, description, details FROM user_requests WHERE id='".$i."'";
-            $req_result = mysqli_query($conn, $req_query) or die('Error : ' . mysqli_error());
+            $req_result = mysqli_query($conn, $req_query);
             if (mysqli_num_rows($req_result) > 0) {
                 while (list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysqli_fetch_array($req_result)) {
                     if ($episodes == 0) {
@@ -1343,7 +1343,7 @@ class AnimeRequest extends Config{
     private function getVoters($id)
     {
         $query = "SELECT count(1) AS `votes`, `voted_by`, `voted_to` FROM `request_votes` WHERE `voted_to`=".$id." group by `voted_by`, `voted_to` ORDER BY votes DESC";
-        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+        $result = mysqli_query($conn, $query);
         return $result;
     }
     

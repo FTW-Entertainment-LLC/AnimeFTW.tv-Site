@@ -69,7 +69,7 @@ class AFTWTracker extends Config {
 
 	private function SQLQuery($query,$type)
 	{
-		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		if($type == 1){ //Needs results NAOW?!
 			$result = mysqli_result($result , 0);
 		}

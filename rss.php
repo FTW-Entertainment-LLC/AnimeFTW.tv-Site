@@ -31,7 +31,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
     </image>';
 
 $query = "SELECT forums_threads.tid, forums_threads.ttitle, forums_threads.tfid, forums_threads.tdate, forums_forum.fseo, users.Username FROM forums_threads, forums_forum, users WHERE (tfid='1' OR tfid='2' OR tfid='9') AND users.ID=tpid AND fid=tfid ORDER BY tid DESC LIMIT 0, 10";
-$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query);
 while(list($tid, $ttitle, $tfid, $tdate, $fseo, $Username) = mysqli_fetch_array($result))
 {
 	$pbody = strip_tags($pbody);

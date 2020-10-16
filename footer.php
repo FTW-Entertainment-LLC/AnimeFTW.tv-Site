@@ -1,6 +1,6 @@
 <?php
 if($_SERVER['PHP_SELF'] != '/error.php'){
-	
+
 include('includes/classes/footer.class.php');
 
 $footer = new AFTWFooter();

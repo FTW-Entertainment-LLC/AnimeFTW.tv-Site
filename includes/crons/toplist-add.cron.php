@@ -2,7 +2,7 @@
 include('/home/mainaftw/public_html/includes/global_functions.php');
 
 	$query = "SELECT id, fullSeriesName FROM series ORDER BY id";
-	$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+	$result = mysqli_query($conn, $query);
 	$startNumber = 1;
   	while(list($id,$fullSeriesName) = mysqli_fetch_array($result)){
 		$query2 = mysqli_query($conn, "SELECT id FROM site_topseries WHERE seriesID='".$id."'"); 
