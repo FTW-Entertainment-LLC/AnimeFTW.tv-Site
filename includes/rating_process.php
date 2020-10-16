@@ -27,27 +27,27 @@ function escape($val){
        	$val = stripslashes($val);
      }
 	 
-	 return mysql_real_escape_string($val);	 
+	 return mysqli_real_escape_string($val);	 
 }
 // IF JAVASCRIPT IS ENABLED
 if($_POST){
 	$id = escape($_POST['id']);
-	$id = mysql_real_escape_string($id);
+	$id = mysqli_real_escape_string($id);
 	$uid = escape($_POST['uid']);
-	$uid = mysql_real_escape_string($uid);
+	$uid = mysqli_real_escape_string($uid);
 	$rating = (int) $_POST['rating'];
-	$rating = mysql_real_escape_string($rating);
+	$rating = mysqli_real_escape_string($rating);
 	
 	if($rating <= 5 && $rating >= 1){
-		if(@mysql_fetch_assoc(mysql_query("SELECT id FROM ratings WHERE IP = '".$uid."' AND rating_id = '$id'")) || isset($_COOKIE['has_voted_'.$id])){
+		if(@mysqli_fetch_assoc(mysqli_query("SELECT id FROM ratings WHERE IP = '".$uid."' AND rating_id = '$id'")) || isset($_COOKIE['has_voted_'.$id])){
 			echo 'already_voted';
 		} else {
 			setcookie('has_voted_'.$id,$id,$expire,'/',$domain,false);
-			mysql_query("INSERT INTO ratings (rating_id,rating_num,IP) VALUES ('$id','$rating','".$uid."')") or die(mysql_error());
+			mysqli_query("INSERT INTO ratings (rating_id,rating_num,IP) VALUES ('$id','$rating','".$uid."')") or die(mysqli_error());
 			$total = 0;
 			$rows = 0;
-			$sel = mysql_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
-			while($data = mysql_fetch_assoc($sel)){
+			$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+			while($data = mysqli_fetch_assoc($sel)){
 				$total = $total + $data['rating_num'];
 				$rows++;
 			}
@@ -63,11 +63,11 @@ if($_GET){
 	$rating = (int) @$_GET['rating'];
 	// If you want people to be able to vote more than once, comment the entire if/else block block and uncomment the code below it.
 	if($rating <= 5 && $rating >= 1){
-		if(@mysql_fetch_assoc(mysql_query("SELECT id FROM ratings WHERE IP = '".$_SERVER['REMOTE_ADDR']."' AND rating_id = '$id'")) || isset($_COOKIE['has_voted_'.$id])){
+		if(@mysqli_fetch_assoc(mysqli_query("SELECT id FROM ratings WHERE IP = '".$_SERVER['REMOTE_ADDR']."' AND rating_id = '$id'")) || isset($_COOKIE['has_voted_'.$id])){
 			echo 'already_voted';
 		} else {
 			setcookie('has_voted_'.$id,$id,$expire,'/',$domain,false);
-			mysql_query("INSERT INTO ratings (rating_id,rating_num,IP) VALUES ('$id','$rating','".$_SERVER['REMOTE_ADDR']."')") or die(mysql_error());	
+			mysqli_query("INSERT INTO ratings (rating_id,rating_num,IP) VALUES ('$id','$rating','".$_SERVER['REMOTE_ADDR']."')") or die(mysqli_error());	
 		}
 		header("Location:".@$_SERVER['HTTP_REFERER']."");
 		die;

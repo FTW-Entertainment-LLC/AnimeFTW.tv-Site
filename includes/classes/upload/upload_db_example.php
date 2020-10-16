@@ -13,15 +13,15 @@ $my_upload->rename_file = true;
 
 
 // You need to modify the settings below...
-$conn = mysql_connect("localhost", "user", "pw") or die(mysql_error());
-mysql_select_db("database", $conn) or die(mysql_error());
+$conn = mysqli_connect("localhost", "user", "pw") or die(mysqli_error());
+mysqli_select_db("database", $conn) or die(mysqli_error());
 
 // the code to create the test table
-mysql_query("
+mysqli_query("
 	CREATE TABLE IF NOT EXISTS file_table (
 	id INT NOT NULL AUTO_INCREMENT,
 	file_name VARCHAR( 100 ) NOT NULL,
-	PRIMARY KEY (id))") or die(mysql_error());
+	PRIMARY KEY (id))") or die(mysqli_error());
 		
 if(isset($_POST['Submit'])) {
 	$my_upload->the_temp_file = $_FILES['upload']['tmp_name'];
@@ -30,7 +30,7 @@ if(isset($_POST['Submit'])) {
 	$my_upload->replace = "y";
 	$my_upload->do_filename_check = "n"; // use this boolean to check for a valid filename
 	if ($my_upload->upload()) { // new name is an additional filename information, use this to rename the uploaded file
-		mysql_query(sprintf("INSERT INTO file_table SET file_name = '%s'", $my_upload->file_copy));
+		mysqli_query(sprintf("INSERT INTO file_table SET file_name = '%s'", $my_upload->file_copy));
 	}
 }
 ?> 

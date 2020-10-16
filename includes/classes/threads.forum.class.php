@@ -32,12 +32,12 @@ class AFTWThreads extends Config {
 		}
 
 		$query4  = "SELECT tid, ttitle, tpid, tfid, tclosed, `hidden`, `tviews` FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='0'" . $restrictHiddenThreads . " ORDER BY tclosed ASC, tupdated DESC LIMIT ".$this->reqLimit.", 30";
-		$result4 = mysql_query($query4) or die('Error : ' . mysql_error());
+		$result4 = mysqli_query($query4) or die('Error : ' . mysqli_error());
 		echo "<tr>\n";
 		echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
 		echo "<td class='tbl2 forum-cap'><strong>Forum Topics</strong></td>\n";
 		echo "</tr>\n";
-		while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$hidden,$tviews) = mysql_fetch_array($result4)) {
+		while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$hidden,$tviews) = mysqli_fetch_array($result4)) {
 			$ttitle = stripslashes($ttitle);
 			$ttitle = htmlentities($ttitle); //HTML exploit fix, Zigbigidorlu was here =D
 			$subjectPreffix = '';
@@ -64,16 +64,16 @@ class AFTWThreads extends Config {
 			$thread_subject = $subjectPreffix . "<a id='topic-".$tid."' href='/forums/".$this->fseo."/topic-".$tid."/s-0' >".$ttitle."</a>";
 			echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$thread_image."</td>\n";
 			echo "<td width='100%' class='tbl1'>".$thread_subject."</td>\n";
-			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'");
-			$total_thread_posts = mysql_result($query3, 0);
+			$query3 = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'");
+			$total_thread_posts = mysqli_result($query3, 0);
 			$total_thread_posts2 = $total_thread_posts-1;
 			echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$total_thread_posts2."</td>\n";
 			echo "<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>" . $this->formatUsername($tpid)."</td>\n";
 			echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>".$tviews."</td>\n";
 			//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 1";
-			$result02 = mysql_query($query02) or die('Error : ' . mysql_error());
-			$row02 = mysql_fetch_array($result02);
+			$result02 = mysqli_query($query02) or die('Error : ' . mysqli_error());
+			$row02 = mysqli_fetch_array($result02);
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];
 			$pdate3 = $row02['pdate'];
@@ -94,22 +94,22 @@ class AFTWThreads extends Config {
 	}
 
 	private function DisplayPinnedTopics(){
-		$query05  = mysql_query("SELECT COUNT(tid) FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='1'");
-		$total_stickies = mysql_result($query05, 0);
+		$query05  = mysqli_query("SELECT COUNT(tid) FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='1'");
+		$total_stickies = mysqli_result($query05, 0);
 		if ($total_stickies == 0){}
 		else {
 			if($total_stickies < $this->reqLimit){
 			}
 			else {
 				$query04  = "SELECT tid, ttitle, tpid, tfid, tclosed, tviews FROM forums_threads WHERE tfid='".$this->fid."' AND tstickied='1' ORDER BY tclosed ASC, tupdated DESC LIMIT ".$this->reqLimit.", 30";
-				mysql_query("SET NAMES 'utf8'");
-				$result04 = mysql_query($query04) or die('Error : ' . mysql_error());
+				mysqli_query("SET NAMES 'utf8'");
+				$result04 = mysqli_query($query04) or die('Error : ' . mysqli_error());
 				echo "<tr>\n";
 				echo "<td class='tbl2 forum-cap' width='1%' style='white-space:nowrap'>&nbsp;</td>\n";
 				echo "<td class='tbl2 forum-cap'><strong>Pinned Topics</strong></td>\n";
 				echo "</tr>\n";
 
-				while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$tviews) = mysql_fetch_array($result04)) {
+				while(list($tid,$ttitle,$tpid,$tfid,$tclosed,$tviews) = mysqli_fetch_array($result04)) {
 					$ttitle = stripslashes($ttitle);
 					$ttitle = htmlentities($ttitle);				   
 					echo "<tr>\n";
@@ -123,8 +123,8 @@ class AFTWThreads extends Config {
 					echo "<td width='100%' class='tbl1'><span id='tid-span-$tid'><font color='red'>Read First: </font><a id=\"topic-$tid\" href=\"/forums/".$this->fseo."/topic-$tid/s-0\" >$ttitle</a></span></td>\n";
 
 					echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>\n";
-					$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'");
-					$total_thread_posts = mysql_result($query3, 0);
+					$query3 = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid'");
+					$total_thread_posts = mysqli_result($query3, 0);
 					$total_thread_posts2 = $total_thread_posts-1;
 					echo $total_thread_posts2;
 					echo "</td>\n";
@@ -133,8 +133,8 @@ class AFTWThreads extends Config {
 
 					//this would be a good time to make a mysql update for this topic.. for whever a person looks at it...
 					$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 1";
-					$result02 = mysql_query($query02) or die('Error : ' . mysql_error());
-					$row02 = mysql_fetch_array($result02);
+					$result02 = mysqli_query($query02) or die('Error : ' . mysqli_error());
+					$row02 = mysqli_fetch_array($result02);
 					$pid = $row02['pid'];
 					$puid = $row02['puid'];
 					$pdate3 = $row02['pdate'];

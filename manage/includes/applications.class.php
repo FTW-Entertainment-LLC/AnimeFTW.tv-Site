@@ -40,8 +40,8 @@ class Applications extends Config {
 	private function buildAppData()
 	{
 		$query = "SELECT `id`, `name`, `value` FROM `" . $this->MainDB . "`.`settings` WHERE `id` = 7 OR `id` = 8";
-		$result = mysql_query($query);
-		while($row = mysql_fetch_assoc($result))
+		$result = mysqli_query($query);
+		while($row = mysqli_fetch_assoc($result))
 		{
 			$this->AppSettings[$row['id']]['name'] = $row['name'];
 			$this->AppSettings[$row['id']]['value'] = $row['value'];
@@ -85,7 +85,7 @@ class Applications extends Config {
 	private function showCurrentApplications()
 	{
 		$query = "SELECT `applications_submissions`.`id`, `applications_submissions`.`positionID`, `applications_submissions`.`company`, `applications_submissions`.`Age`, `applications_submissions`.`Status`, `applications_submissions`.`reqInformation`, `users`.`ID` FROM `" . $this->MainDB . "`.`applications_submissions`, `" . $this->MainDB . "`.`users` WHERE `users`.`Username`= `applications_submissions`.`username` AND `applications_submissions`.`appRound` = " . $this->AppSettings[8]['value'] . " ORDER BY `applications_submissions`.`id`";
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 		
 		echo '<div>
 			<div class="table-row">
@@ -99,7 +99,7 @@ class Applications extends Config {
 					<div style="min-width:150px;display:inline-block;">Options</div>
 				</div>';
 		$i = 0;
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{	
 			if($i % 2)
 			{
@@ -168,12 +168,12 @@ class Applications extends Config {
 	private function displaySecurityTest($uid)
 	{
 		$query = "SELECT `id`, `date` FROM `" . $this->MainDB . "`.`applications_sectests` WHERE `uid` = " . $uid;
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 		
-		$count = mysql_num_rows($result);
+		$count = mysqli_num_rows($result);
 		if($count > 0)
 		{
-			$row = mysql_fetch_assoc($result);
+			$row = mysqli_fetch_assoc($result);
 			return '<span title="Test Uploaded on ' . date('F j, Y g:i',$row['date']) . '">Security Test</span>';
 		}
 		else

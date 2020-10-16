@@ -31,8 +31,8 @@ class Applications extends Config {
 	}
 	
 	private function ApplicationSettings(){
-		$query = mysql_query("SELECT name, value FROM settings WHERE name = 'applications_status' OR name = 'application_round'");
-		while($row = mysql_fetch_array($query, MYSQL_ASSOC)){
+		$query = mysqli_query("SELECT name, value FROM settings WHERE name = 'applications_status' OR name = 'application_round'");
+		while($row = mysqli_fetch_array($query, MYSQL_ASSOC)){
 			if($row['name'] == 'applications_status'){
 			$this->applications_status = $row['value'];
 			}
@@ -59,8 +59,8 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 			if(!isset($_GET['step']) || (isset($_GET['step']) && $_GET['step'] == 1)){
 				echo "<div align=\"center\">";
 				$query  = "SELECT COUNT(username) AS numrows FROM applications_submissions WHERE username='".$this->profileArray[5]."' AND appRound='".$this->application_round."'";
-				$result  = mysql_query($query);
-				$row     = mysql_fetch_array($result, MYSQL_ASSOC);
+				$result  = mysqli_query($query);
+				$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 				$numrows = $row['numrows'];
 				if ($numrows > 0 ){
 					echo '<h3>You have already submitted an application this round.  Please wait by while we try to gather more applications, new staff will be announced soon.</h3>';
@@ -242,9 +242,9 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						<td width="85%" align="center" valign="top"><span style="font-size:14px;">Requirements</span></td>
 					</tr>';
 					$query   = "SELECT id, position, duties, requirements FROM applications_positions WHERE online_offline='online' ORDER BY id";
-					$result  = mysql_query($query) or die('Error : ' . mysql_error());
+					$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
 	
-					while(list($id,$position,$duties,$requirements) = mysql_fetch_array($result)){
+					while(list($id,$position,$duties,$requirements) = mysqli_fetch_array($result)){
 					$position = stripslashes($position);
 					$duties = stripslashes($duties);
 					$requirements = stripslashes($requirements);
@@ -288,9 +288,9 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						document.forms.step3form.step3check.checked=false
 						</script>';
 					echo '<form method="post" action="/staff/applications/step-4" name="step3form" onSubmit="return defaultagree(this)">';
-					$query   = "SELECT position, duties, requirements FROM applications_positions WHERE position='".mysql_real_escape_string($_POST['positionticked'])."'";
-					$result  = mysql_query($query) or die('Error : ' . mysql_error()); 
-					$row     = mysql_fetch_array($result, MYSQL_ASSOC);
+					$query   = "SELECT position, duties, requirements FROM applications_positions WHERE position='".mysqli_real_escape_string($_POST['positionticked'])."'";
+					$result  = mysqli_query($query) or die('Error : ' . mysqli_error()); 
+					$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 				
 					$position = $row['position'];
 					$duties = $row['duties'];
@@ -368,7 +368,7 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 					$reqInformation = $_POST['userData'];
 					$reqInformation = htmlspecialchars($reqInformation);
 					$Ticked = $_POST['positionticked'];	
-					$query = mysql_query("INSERT INTO applications_submissions (positionID, username, reqInformation, appRound) VALUES ('".mysql_real_escape_string($Ticked)."', '".mysql_real_escape_string($this->profileArray[5])."', '".mysql_real_escape_string($reqInformation)."', '".mysql_real_escape_string($this->application_round)."')") or die('Error: ' . mysql_error());
+					$query = mysqli_query("INSERT INTO applications_submissions (positionID, username, reqInformation, appRound) VALUES ('".mysqli_real_escape_string($Ticked)."', '".mysqli_real_escape_string($this->profileArray[5])."', '".mysqli_real_escape_string($reqInformation)."', '".mysqli_real_escape_string($this->application_round)."')") or die('Error: ' . mysqli_error());
 						
 					
 					echo '<div align="center" style="padding:10px;font-size:14px;">Welcome to Step 5 in the application process.<br />Below is an option for you personally.  We have 2 options for forms of working.<br /><br />
@@ -408,8 +408,8 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 				}
 				else {
 					$company = $_POST['company'];
-					$query = 'UPDATE applications_submissions SET company=\'' . mysql_real_escape_string($company) . '\' WHERE appRound = \'' . $this->application_round . '\' AND username=\'' . $this->profileArray[5] . '\'';
-					mysql_query($query) or die('Error : ' . mysql_error());
+					$query = 'UPDATE applications_submissions SET company=\'' . mysqli_real_escape_string($company) . '\' WHERE appRound = \'' . $this->application_round . '\' AND username=\'' . $this->profileArray[5] . '\'';
+					mysqli_query($query) or die('Error : ' . mysqli_error());
 					if ($company == 'animeftw'){
 						echo '<div align="center">Thank You, you chose to apply for AnimeFTW for Your Staff application, it will be reviewed and handled as soon as possible, please expect a responce back by email AND site PM.</div>';
 					}
@@ -418,8 +418,8 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						echo '<div>Thank You, you chose to apply for FTW Entertainment LLC staff, Your Staff application will be reviewed by the admins then proccessed accordingly, we ask that you make your way over to our corperate site found <a href="http://ftwentertainment.com">here</a> and register on our forums.<br />Doing so allows us another place to contact you when you have passed and are in need of further information.<br /><br /> Before you leave, please enter your birthday if it does not show up:<br /><br />';
 						echo '	Please Enter your Age for our processing, this will ensure that everything goes smoothly on our end.<br /><br />Birthday:';
 						$query  = "SELECT ageMonth, ageDate, ageYear FROM users WHERE ID='".$this->profileArray[1]."'";
-						$result = mysql_query($query) or die('Error : ' . mysql_error());
-						list($ageMonth, $ageDate, $ageYear) = mysql_fetch_array($result, MYSQL_NUM);
+						$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+						list($ageMonth, $ageDate, $ageYear) = mysqli_fetch_array($result, MYSQL_NUM);
 						echo '<form method="post" action="/staff/applications/step-finish">
 						<br />
 						<select name="ageDate">
@@ -544,8 +544,8 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 					$ageMonth1 = $_POST['ageMonth'];
 					$ageYear1 = $_POST['ageYear'];
 					$finalDate = $ageMonth1.'/'.$ageDate1.'/'.$ageYear1;
-					$query = 'UPDATE applications_submissions SET Age=\'' . mysql_real_escape_string($finalDate) . '\' WHERE appRound = \'' . $this->application_round . '\' AND username=\'' . $this->profileArray[5] . '\'';
-					mysql_query($query) or die('Error : ' . mysql_error());
+					$query = 'UPDATE applications_submissions SET Age=\'' . mysqli_real_escape_string($finalDate) . '\' WHERE appRound = \'' . $this->application_round . '\' AND username=\'' . $this->profileArray[5] . '\'';
+					mysqli_query($query) or die('Error : ' . mysqli_error());
 					echo '<div align="center">Thank you for your application it is now finished, feel free to move to <a href="http://animeftw.tv">the main site</a> and watch some more anime as your application is processed and evaluated.</div>';
 				}
 			}
@@ -559,14 +559,14 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 	
 	private function BuildSecurityTest(){
 		if(isset($_POST['submit'])){
-			$query = "INSERT INTO applications_sectests (uid, date, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17) VALUES ('".mysql_real_escape_string($this->profileArray[1])."', '".mysql_real_escape_string(time())."', '".mysql_real_escape_string($_POST['q1'])."', '".mysql_real_escape_string($_POST['q2'])."', '".mysql_real_escape_string($_POST['q3'])."', '".mysql_real_escape_string($_POST['q4'])."', '".mysql_real_escape_string($_POST['q5'])."', '".mysql_real_escape_string($_POST['q6'])."', '".mysql_real_escape_string($_POST['q7'])."', '".mysql_real_escape_string($_POST['q8'])."', '".mysql_real_escape_string($_POST['q9'])."', '".mysql_real_escape_string($_POST['q10'])."', '".mysql_real_escape_string($_POST['q11'])."', '".mysql_real_escape_string($_POST['q12'])."', '".mysql_real_escape_string($_POST['q13'])."', '".mysql_real_escape_string($_POST['q14'])."', '".mysql_real_escape_string($_POST['q15'])."', '".mysql_real_escape_string($_POST['q16'])."', '".mysql_real_escape_string($_POST['q17'])."')";
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+			$query = "INSERT INTO applications_sectests (uid, date, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17) VALUES ('".mysqli_real_escape_string($this->profileArray[1])."', '".mysqli_real_escape_string(time())."', '".mysqli_real_escape_string($_POST['q1'])."', '".mysqli_real_escape_string($_POST['q2'])."', '".mysqli_real_escape_string($_POST['q3'])."', '".mysqli_real_escape_string($_POST['q4'])."', '".mysqli_real_escape_string($_POST['q5'])."', '".mysqli_real_escape_string($_POST['q6'])."', '".mysqli_real_escape_string($_POST['q7'])."', '".mysqli_real_escape_string($_POST['q8'])."', '".mysqli_real_escape_string($_POST['q9'])."', '".mysqli_real_escape_string($_POST['q10'])."', '".mysqli_real_escape_string($_POST['q11'])."', '".mysqli_real_escape_string($_POST['q12'])."', '".mysqli_real_escape_string($_POST['q13'])."', '".mysqli_real_escape_string($_POST['q14'])."', '".mysqli_real_escape_string($_POST['q15'])."', '".mysqli_real_escape_string($_POST['q16'])."', '".mysqli_real_escape_string($_POST['q17'])."')";
+			mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 			//echo $query;
 			$done = TRUE;
 			$msg = '<div><h2>Application submitted successfully, please contact your manager letting them know it was completed.</h2></div><br />';
 		}
-		$query = mysql_query("SELECT COUNT(id) FROM applications_sectests WHERE uid = ".$this->profileArray[1]); 
-		$total = mysql_result($query, 0);
+		$query = mysqli_query("SELECT COUNT(id) FROM applications_sectests WHERE uid = ".$this->profileArray[1]); 
+		$total = mysqli_result($query, 0);
 		echo "<div class='side-body-bg'>\n";
 		echo "<span class='scapmain'>AnimeFTW.tv Staff Applications - Security Test</span>\n";
 		echo "</div>\n";
@@ -652,12 +652,12 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 				echo '<div align="center">';
 				echo '<h2>Site Owners/Administrators</h2>';
 						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='1' ORDER BY Username";
-						$result = mysql_query($query) or die('Error : ' . mysql_error());
+						$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 						$a = 0; // variable for each user
 						$b = 5; // base multiple of 5 per row
 						$c = 1; // multiples times b so when A == B*C it makes another row
 						echo '<table cellpadding="10">';
-						while(list($ID,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
+						while(list($ID,$personalMsg,$avatarExtension) = mysqli_fetch_array($result))
 						{
 							if($avatarExtension == ''){ $avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="" border="0" width="100px" />';}
 							else {$avatar = '<img src="' . $this->Host . '/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}
@@ -680,12 +680,12 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						 <h2>Site Managers</h2>
 						';
 						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='2' ORDER BY Username";
-						$result = mysql_query($query) or die('Error : ' . mysql_error());
+						$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 						$e = 0; // variable for each user
 						$f = 5; // base multiple of 5 per row
 						$g = 1; // multiples times b so when A == B*C it makes another row
 						echo '<table cellpadding="10">';
-						while(list($ID,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
+						while(list($ID,$personalMsg,$avatarExtension) = mysqli_fetch_array($result))
 						{
 							if($avatarExtension == ''){ $avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="" border="0" width="100px" />';}
 							else {$avatar = '<img src="' . $this->Host . '/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}
@@ -708,12 +708,12 @@ function agreesubmit(a){checkobj=a;if(document.all||document.getElementById){for
 						 <h2>Site Staff</h2>
 						';
 						$query  = "SELECT ID, personalMsg, avatarExtension FROM users WHERE Level_access='4' OR Level_access='5' OR Level_access='6' ORDER BY Username";
-						$result = mysql_query($query) or die('Error : ' . mysql_error());
+						$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 						$a = 0; // variable for each user
 						$b = 5; // base multiple of 5 per row
 						$c = 1; // multiples times b so when A == B*C it makes another row
 						echo '<table cellpadding="10">';
-						while(list($ID,$personalMsg,$avatarExtension) = mysql_fetch_array($result))
+						while(list($ID,$personalMsg,$avatarExtension) = mysqli_fetch_array($result))
 						{
 							if($avatarExtension == ''){ $avatar = '<img src="' . $this->Host . '/avatars/default.gif" alt="" border="0" width="100px" />';}
 							else {$avatar = '<img src="' . $this->Host . '/avatars/user'.$ID.'.'.$avatarExtension.'" alt="" border="0" width="100px" />';}

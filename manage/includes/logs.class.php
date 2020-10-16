@@ -104,9 +104,9 @@ class Logs extends Config {
 	{
 		$query = "SELECT * FROM `paypal_logs` ORDER BY `submission_date` DESC LIMIT 0, 100";
 		
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{
 			if($row['txn_type'] == 'subscr_eot' || $row['txn_type'] == 'subscr_cancel')
 			{
@@ -213,9 +213,9 @@ class Logs extends Config {
 	{
 		$query = "SELECT * FROM `search` ORDER BY `date` DESC LIMIT 0, 300";
 		
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{
 			if($row['uid'] == NULL)
 			{

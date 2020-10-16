@@ -50,7 +50,7 @@ class Uploads extends Config {
 			{
 				if(isset($_GET['id']) && is_numeric($_GET['id']) && $this->ValidatePermission(78) == TRUE)
 				{
-					mysql_query("DELETE FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['id'])) or die(mysql_error());
+					mysqli_query("DELETE FROM `uestatus` WHERE `id` = " . mysqli_real_escape_string($_GET['id'])) or die(mysqli_error());
 					$this->Mod("Delete Upload entry, id: " . $_GET['id']);
 				}
 				else
@@ -65,7 +65,7 @@ class Uploads extends Config {
 				}
 				else
 				{
-					mysql_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_GET['id']));
+					mysqli_query("UPDATE uestatus SET `change` = 0 WHERE ID = " . mysqli_real_escape_string($_GET['id']));
 					$this->Mod("Removed Notifications for Entry " . $_GET['id'] . ' in the Uploads Board');
 				}
 			}
@@ -88,12 +88,12 @@ class Uploads extends Config {
 			// Checks if a video tech has 5 or more entries in the claimed/encoding/uploading boards at the same time..
 			if($this->UserArray[2] == 5 && (strtolower($Status) == 'claimed' || strtolower($Status) == 'encoding' || strtolower($Status) == 'uploading')){
 				$query = "SELECT COUNT(id) AS numrows FROM `uestatus` WHERE `user` = " . $this->UserArray[1] . " AND (`status` = 'claimed' OR `status` = 'uploading' OR `status` = 'encoding')";
-				$result = mysql_query($query);
+				$result = mysqli_query($query);
 				if(!$result){
 					echo "There was an error while running the query to count entries, please try again.";
 					exit;
 				}
-				$row = mysql_fetch_assoc($result);
+				$row = mysqli_fetch_assoc($result);
 				$Limited = TRUE;
 				if($row['numrows'] < 5){
 					// they can add a series.
@@ -132,12 +132,12 @@ class Uploads extends Config {
 				// Checks if a video tech has 5 or more entries in the claimed/encoding/uploading boards at the same time..
 				if($this->UserArray[2] == 5 && (strtolower($Status) == 'claimed' || strtolower($Status) == 'encoding' || strtolower($Status) == 'uploading')){
 					$query = "SELECT COUNT(id) AS numrows FROM `uestatus` WHERE `user` = " . $this->UserArray[1] . " AND (`status` = 'claimed' OR `status` = 'uploading' OR `status` = 'encoding')";
-					$result = mysql_query($query);
+					$result = mysqli_query($query);
 					if(!$result){
 						echo "There was an error while running the query to count entries, please try again.";
 						exit;
 					}
-					$row = mysql_fetch_assoc($result);
+					$row = mysqli_fetch_assoc($result);
 					$Limited = TRUE;
 					if($row['numrows'] < 5){
 						// they can add a series.
@@ -321,7 +321,7 @@ class Uploads extends Config {
 		{
 			if(is_numeric($_GET['showme']))
 			{
-				$option = ' AND user = ' . mysql_real_escape_string($_GET['showme']);
+				$option = ' AND user = ' . mysqli_real_escape_string($_GET['showme']);
 				$navOptions = '&showme=' . $_GET['showme'];
 			}
 			else
@@ -334,19 +334,19 @@ class Uploads extends Config {
 		{
 			if(isset($_GET['search']) && $_GET['search'] == 'encoder'){
 				if(isset($_GET['for']) && is_numeric($_GET['for'])){
-					$option = ' AND `user` = ' . mysql_real_escape_string($_GET['for']);
+					$option = ' AND `user` = ' . mysqli_real_escape_string($_GET['for']);
 					$navOptions = '&search=encoder&for=' . $_GET['for'];
 				}
 				else {
 					# it was not numeric, we will need to do a search of the system for the user.
-					$query = "SELECT `ID` FROM `users` WHERE `Username` LIKE '" . mysql_real_escape_string($_GET['for']) . "'";
-					$result = mysql_query($query);
+					$query = "SELECT `ID` FROM `users` WHERE `Username` LIKE '" . mysqli_real_escape_string($_GET['for']) . "'";
+					$result = mysqli_query($query);
 					if(!$result){
 					}
 					else {
-						$count = mysql_num_rows($result);
+						$count = mysqli_num_rows($result);
 						if($count > 0){
-							$row = mysql_fetch_assoc($result);
+							$row = mysqli_fetch_assoc($result);
 							$option = ' AND `user` = ' . $row['ID'];
 							$navOptions = '&search=encoder&for=' . $row['ID'];
 						}
@@ -355,7 +355,7 @@ class Uploads extends Config {
 			}
 			else if(isset($_GET['search']) && $_GET['search'] == 'series') {
 				if(isset($_GET['for'])){
-					$option = ' AND (`series` LIKE \'%' . mysql_real_escape_string($_GET['for']) . '%\' OR `prefix` LIKE \'%' . mysql_real_escape_string($_GET['for']) . '%\')';
+					$option = ' AND (`series` LIKE \'%' . mysqli_real_escape_string($_GET['for']) . '%\' OR `prefix` LIKE \'%' . mysqli_real_escape_string($_GET['for']) . '%\')';
 					$navOptions = '&search=series&for=' . $_GET['for'];
 				}
 			}
@@ -373,8 +373,8 @@ class Uploads extends Config {
 		}
 
 		$query = "SELECT `ID`, `series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `sid`, `change` FROM uestatus WHERE status='" . strtolower($Status) . "'" . $option . $sort . ' LIMIT ' . $page . ', ' . $limit;
-		$results = mysql_query($query);
-		$num_rows = mysql_num_rows($results);
+		$results = mysqli_query($query);
+		$num_rows = mysqli_num_rows($results);
 		if($num_rows == 0)
 		{
 			echo '<div class="uploads-message" style="padding-left:20px;font-size:12px;">There are no rows to display for ' . $Status . '</div>';
@@ -382,7 +382,7 @@ class Uploads extends Config {
 		else
 		{
 			$i = 0;
-			while($row = mysql_fetch_array($results, MYSQL_NUM))
+			while($row = mysqli_fetch_array($results, MYSQL_NUM))
 			{
 				$Project = stripslashes($row[1]);
 				$Preffix = $row[2];
@@ -494,9 +494,9 @@ class Uploads extends Config {
 		}
 
 		$query = "SELECT `ID` FROM `uestatus` WHERE `status`='" . strtolower($Status) . "'" . $option;
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 
-		$count = mysql_num_rows($result);
+		$count = mysqli_num_rows($result);
 		echo '<div style="padding:5px;">';
 		$this->pagingV1(strtolower($Status) . '-wrapper',$count,$limit,$page,'/manage/ajax.php?node=uploads' . $navOptions . '&subpage=load-more-entries&status=' . strtolower($Status));
 		echo '</div>';
@@ -509,9 +509,9 @@ class Uploads extends Config {
 		{
 			$ExtraSettings = '<input type="hidden" id="method" class="method" value="UploadsEdit" name="method" />';
 			$SubmitButtonTxt = 'Edit Entry';
-			$query = 'SELECT * FROM uestatus WHERE ID = ' . mysql_real_escape_string($_GET['id']);
-			$result = mysql_query($query);
-			$row = mysql_fetch_array($result);
+			$query = 'SELECT * FROM uestatus WHERE ID = ' . mysqli_real_escape_string($_GET['id']);
+			$result = mysqli_query($query);
+			$row = mysqli_fetch_array($result);
 			$episodes = split("/",$row['episodes']);
 			$resolution = split("x",$row['resolution']);
 			$episodesdoing = $episodes[0];
@@ -537,9 +537,9 @@ class Uploads extends Config {
 			$SubmitButtonTxt = 'Add Entry';
 			if(isset($_GET['add-type']) && $_GET['add-type'] == 1 && isset($_GET['to-reencode']))
 			{
-				$query = "SELECT `seriesName`, `fullSeriesName` FROM series WHERE id = " . mysql_real_escape_string($_GET['to-reencode']);
-				$result = mysql_query($query);
-				$row = mysql_fetch_array($result);
+				$query = "SELECT `seriesName`, `fullSeriesName` FROM series WHERE id = " . mysqli_real_escape_string($_GET['to-reencode']);
+				$result = mysqli_query($query);
+				$row = mysqli_fetch_array($result);
 				$Series = '[Reencode] ' . stripslashes($row[1]);
 				$Prefix = $row[0];$episodesdoing = '';$episodetotal = '';$width = '';$height = '';$SeriesType = 'series';$anidb = '';$Fansub = '';$sid = 0;$hdResolution=0;$seriesStatus=0;
 			}
@@ -564,10 +564,10 @@ class Uploads extends Config {
 			{
 				echo '<div align="center">Now that you have chosen to do a Reencode, please choose from the list below.</div><br />';
 				$query = "SELECT id, fullSeriesName FROM series ORDER BY fullSeriesName ASC";
-				$result = mysql_query($query);
+				$result = mysqli_query($query);
 				echo '<select id="to-reencode" name="to-reencode" style="color: #000000;">';
 				echo '<option id="0" value="0">Select a Series</option> ';
-				while(list($id, $fullSeriesName) = mysql_fetch_array($result, MYSQL_NUM))
+				while(list($id, $fullSeriesName) = mysqli_fetch_array($result, MYSQL_NUM))
 				{
 					$fullSeriesName = stripslashes($fullSeriesName);
 					echo '<option id="'.$id.'" value="'.$id.'">'.$fullSeriesName.'</option> ';
@@ -731,8 +731,8 @@ class Uploads extends Config {
 						<select id="uploader" name="uploader" style="color: #000000;">';
 						$query = "SELECT ID, Username FROM users WHERE (Level_access = 1 OR Level_access = 2 OR Level_access = 4 OR Level_access = 5 OR Level_access = 6) ORDER BY Username ASC";
 						echo '<option id="'.$user.'" value="'.$user.'">Encoder No longer with us.</option> ';
-						$result = mysql_query($query) or die('Error : ' . mysql_error());
-						while(list($ID, $Username) = mysql_fetch_array($result, MYSQL_NUM))
+						$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+						while(list($ID, $Username) = mysqli_fetch_array($result, MYSQL_NUM))
 						{
 							echo '<option id="'.$ID.'" value="'.$ID.'"'; if($ID == $user){echo' selected';} echo '>'.$Username.'</option> ';
 						}
@@ -877,14 +877,14 @@ class Uploads extends Config {
 	private function encodersListing()
 	{
 		$query = "SELECT ID, Username FROM users WHERE (Level_access = 1 OR Level_access = 2 OR Level_access = 5) AND ID != " . $this->UserArray[1] . " ORDER BY Username";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 
 		if(!$results)
 		{
 			echo 'There was an error with the query.';
 			exit;
 		}
-		$count = mysql_num_rows($results);
+		$count = mysqli_num_rows($results);
         echo '<div id="uploads-global-wrapper">';
 		echo '<div align="center"><b>Notices</b>:<br />- Encoders may ONLY have five(5) series at any one time under Claimed, Encoding or Uploading. To much claiming and not enough doing has resulted in this restriction.<br />- If you are working on an airing series, it is YOUR job to make sure it is up to date, if you cannot get the encode done a certain week, let management know, so we can cover it.</div>';
 		if (isset($_GET['subpage']) && $_GET['subpage'] == 'qc') {
@@ -904,7 +904,7 @@ class Uploads extends Config {
                     <select id="filter-by-encoder" style="color: #000000;">
                         <option value="home">All Encodes</option>
                         <option value="' . $this->UserArray[1] . '"'; if(isset($_GET['showme']) && $_GET['showme'] == $this->UserArray[1]){echo'selected="selected"';} echo '>My Encodes</option>';
-                while($row = mysql_fetch_assoc($results))
+                while($row = mysqli_fetch_assoc($results))
                 {
                     if(isset($_GET['showme']) && $_GET['showme'] == $row['ID']){
                         echo '<option value="' . $row['ID'] . '" selected="selected">' . $row['Username'] . '</option>';
@@ -1028,11 +1028,11 @@ class Uploads extends Config {
 	private function availableSeries($sid = 0)
 	{
 		$query = "SELECT id, fullSeriesName FROM series ORDER BY fullSeriesName";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 
 		if(!$results)
 		{
-			echo 'There was an error with the query ' . mysql_error();
+			echo 'There was an error with the query ' . mysqli_error();
 			exit;
 		}
 
@@ -1043,7 +1043,7 @@ class Uploads extends Config {
 			$data .= '<option value="0"> Add a Series </option>';
 		}
 
-		while($row = mysql_fetch_array($results))
+		while($row = mysqli_fetch_array($results))
 		{
 			if($row['id'] == $sid)
 			{
@@ -1060,15 +1060,15 @@ class Uploads extends Config {
 
 	private function Visit()
 	{
-		//mysql_query("UPDATE users SET UploadsVisit = '".time()."' WHERE ID = ".$this->UserArray[1]);
+		//mysqli_query("UPDATE users SET UploadsVisit = '".time()."' WHERE ID = ".$this->UserArray[1]);
 	}
 
 	private function array_entryStatus()
 	{
 		$dbname = $this->SingleVarQuery("SELECT DATABASE()","DATABASE()");
 		$query = "SELECT `value` FROM `".$dbname."`.`settings` WHERE `id` = 12";
-		$result = mysql_query($query);
-		$row = mysql_fetch_assoc($result);
+		$result = mysqli_query($query);
+		$row = mysqli_fetch_assoc($result);
 		$EntryStatus = explode("|", $row['value']);
 		return $EntryStatus;
 	}
@@ -1145,7 +1145,7 @@ class Uploads extends Config {
                 $entryIds = rtrim($entryIds,',');
                 $query .= $entryIds . ")";
 
-                $result = mysql_query($query);
+                $result = mysqli_query($query);
 
                 if (!$result) {
                     echo '<div align="center">ERROR: There was a problem executing the requested query.</div>';
@@ -1162,7 +1162,7 @@ class Uploads extends Config {
                 echo '  <div style="display:inline-block;width:15.99998%;">Video State</div>';
                 echo '</div>';
                 $i = 0;
-                while ($row = mysql_fetch_assoc($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
                     $hd = '480p';
                     if ($row['hd'] == 1) {
                         $hd = '720p';
@@ -1246,8 +1246,8 @@ class Uploads extends Config {
             } else {
                 if (isset($_GET['entries'])) {
                     if (isset($_GET['action']) && $_GET['action'] == 'generate-json-data') {
-                        $query = "SELECT `ID`, `series`, `prefix`, `fansub`, `hd` FROM `uestatus` WHERE `ID` in (" . mysql_real_escape_string($_GET['entries']) . ")";
-                        $result = mysql_query($query);
+                        $query = "SELECT `ID`, `series`, `prefix`, `fansub`, `hd` FROM `uestatus` WHERE `ID` in (" . mysqli_real_escape_string($_GET['entries']) . ")";
+                        $result = mysqli_query($query);
 
                         if (!$result) {
                             echo 'Error querying for entries.';
@@ -1256,7 +1256,7 @@ class Uploads extends Config {
                         echo '<textarea style="width:98.999%;min-height:250px;">';
                         $count = count(explode(',', $_GET['entries']));
                         $i=0;
-                        while ($row = mysql_fetch_assoc($result)) {
+                        while ($row = mysqli_fetch_assoc($result)) {
                             echo $this->generateJsonEntry($row);
                             $i++;
                             if ($i < $count) {
@@ -1266,8 +1266,8 @@ class Uploads extends Config {
                         echo '</textarea>';
                     } else if (isset($_GET['action']) && $_GET['action'] == 'change-quality-level') {
                         if (isset($_GET['option'])) {
-                            $query = "UPDATE `uestatus` SET `hd` = '" . mysql_real_escape_string($_GET['option']) . "' WHERE `ID` in (" . mysql_real_escape_string($_GET['entries']) . ")";
-                            $result = mysql_query($query);
+                            $query = "UPDATE `uestatus` SET `hd` = '" . mysqli_real_escape_string($_GET['option']) . "' WHERE `ID` in (" . mysqli_real_escape_string($_GET['entries']) . ")";
+                            $result = mysqli_query($query);
 
                             if (!$result) {
                                 echo 'There was an error executing the query.';
@@ -1280,8 +1280,8 @@ class Uploads extends Config {
                     } else if (isset($_GET['action']) && $_GET['action'] == 'change-status') {
                         if (isset($_GET['option'])) {
                             $option = urldecode($_GET['option']);
-                            $query = "UPDATE `uestatus` SET `status` = '" . mysql_real_escape_string($option) . "' WHERE `ID` in (" . mysql_real_escape_string($_GET['entries']) . ")";
-                            $result = mysql_query($query);
+                            $query = "UPDATE `uestatus` SET `status` = '" . mysqli_real_escape_string($option) . "' WHERE `ID` in (" . mysqli_real_escape_string($_GET['entries']) . ")";
+                            $result = mysqli_query($query);
 
                             if (!$result) {
                                 echo 'There was an error executing the update query.';
@@ -1305,14 +1305,14 @@ class Uploads extends Config {
 
     private function displayUploadsStatus() {
         $query = "SELECT `value` FROM `settings` WHERE `name` = 'all_upload_statuses'";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
         if (!$result) {
             echo "ERROR processing request for UploadsStatus.";
             exit;
         }
 
-        $row = mysql_fetch_assoc($result);
+        $row = mysqli_fetch_assoc($result);
 
         $statuses = explode('|', $row['value']);
         return $statuses;

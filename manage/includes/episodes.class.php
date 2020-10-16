@@ -55,7 +55,7 @@ class Episodes extends Config {
 			//	$link .= "&sname=".$_GET['sname'];
 			//}
 			//some small variable sets for this part of the function
-			$rowcount = mysql_num_rows(mysql_query("SELECT id FROM episode")); //grab the total amount of episodes!
+			$rowcount = mysqli_num_rows(mysqli_query("SELECT id FROM episode")); //grab the total amount of episodes!
 			if(isset($_GET['page']))
 			{
 				$start = $_GET['page'];
@@ -67,14 +67,14 @@ class Episodes extends Config {
 			if(isset($_GET['sname']))
 			{
 				$sname = htmlentities($_GET['sname']);
-				$query = "SELECT episode.id, episode.epnumber, episode.epname, episode.image, series.fullSeriesName, series.seoname FROM episode, series WHERE series.id = '" . mysql_real_escape_string($sname) . "' AND episode.sid = '" . mysql_real_escape_string($sname) . "' ORDER BY id DESC LIMIT ".$start.", ".$limit;
+				$query = "SELECT episode.id, episode.epnumber, episode.epname, episode.image, series.fullSeriesName, series.seoname FROM episode, series WHERE series.id = '" . mysqli_real_escape_string($sname) . "' AND episode.sid = '" . mysqli_real_escape_string($sname) . "' ORDER BY id DESC LIMIT ".$start.", ".$limit;
 			}
 			else
 			{
 				$query = "SELECT episode.id, episode.epnumber, episode.epname, episode.image, series.fullSeriesName, series.seoname FROM episode, series WHERE series.id=episode.sid ORDER BY id DESC LIMIT ".$start.", ".$limit;
 			}
-			$result = mysql_query($query);
-			$count = mysql_num_rows($result);
+			$result = mysqli_query($query);
+			$count = mysqli_num_rows($result);
 			echo '<div style="padding-top:5px;">';
 			echo '<div style="float:right;padding-right:80px;"><a href="#" onClick="$(\'#right-column\').load(\''.$link.'&page=add\'); return false;"><b>Add Episode</b></a></div>';
 			$this->pagingV1('right-column',$rowcount,$limit,$start,$link); //($count,$perpage,$start,$link)
@@ -98,7 +98,7 @@ class Episodes extends Config {
 			$i = 0;
 			$style1 = 'style="background-color:#E5E5E5;padding:2px;"';
 			$style2 = 'style="background-color:#B8EAFA;padding:2px;"';
-			while($r = mysql_fetch_array($result))
+			while($r = mysqli_fetch_array($result))
 			{
 				if($i % 2)
 				{
@@ -165,9 +165,9 @@ class Episodes extends Config {
 			}
 			else
 			{
-				$query  = "SELECT `id`, `sid`, `epnumber`, `seriesname`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `Movie`, `videotype`, `hd` FROM `episode` WHERE id= '" . mysql_real_escape_string($_GET['eid']) . "'";
-				$result = mysql_query($query) or die('Error : ' . mysql_error());
-				list($id, $sid, $epnumber, $seriesName, $epname, $vidheight, $vidwidth, $epprefix, $subGroup, $Movie, $videotype, $hd) = mysql_fetch_array($result, MYSQL_NUM);
+				$query  = "SELECT `id`, `sid`, `epnumber`, `seriesname`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `Movie`, `videotype`, `hd` FROM `episode` WHERE id= '" . mysqli_real_escape_string($_GET['eid']) . "'";
+				$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+				list($id, $sid, $epnumber, $seriesName, $epname, $vidheight, $vidwidth, $epprefix, $subGroup, $Movie, $videotype, $hd) = mysqli_fetch_array($result, MYSQL_NUM);
 				$FormMethod = '<input type="hidden" value="EditEpisode" name="method" />';
 				$options = '<input type="hidden" name="id" value="' . $id . '" />';
 				$SubmitTXT = " Edit Episode ";
@@ -179,10 +179,10 @@ class Episodes extends Config {
 		{
 			if(isset($_GET['ueid']))
 			{
-				$query = mysql_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix`, `anidbsid`, `hd` FROM `uestatus` WHERE `id` = " . mysql_real_escape_string($_GET['ueid']));
-				$row = mysql_fetch_assoc($query);
-				$query = mysql_query("SELECT `episode`.`sid`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`videotype`, `episode`.`vidwidth`, `episode`.`hd`, series.seriesname FROM episode, series WHERE episode.sid=series.id AND series.id = " . $row['sid'] . " ORDER BY epnumber DESC LIMIT 0, 1");
-				$row2 = mysql_fetch_assoc($query);
+				$query = mysqli_query("SELECT `type`, `fansub`, `sid`, `resolution`, `prefix`, `anidbsid`, `hd` FROM `uestatus` WHERE `id` = " . mysqli_real_escape_string($_GET['ueid']));
+				$row = mysqli_fetch_assoc($query);
+				$query = mysqli_query("SELECT `episode`.`sid`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`vidheight`, `episode`.`videotype`, `episode`.`vidwidth`, `episode`.`hd`, series.seriesname FROM episode, series WHERE episode.sid=series.id AND series.id = " . $row['sid'] . " ORDER BY epnumber DESC LIMIT 0, 1");
+				$row2 = mysqli_fetch_assoc($query);
 				$id = '';
 				$epnumber = $row2['epnumber']+1;
 
@@ -570,8 +570,8 @@ class Episodes extends Config {
 	}
 	private function SeriesList($sid, $uesid){
 		$query2 = "SELECT id, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
-		$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
-		while(list($id,$fullSeriesName) = mysql_fetch_array($result2, MYSQL_NUM))
+		$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+		while(list($id,$fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 		{
 			$fullSeriesName = stripslashes($fullSeriesName);
 			if(($id == $sid) || (isset($_GET['preseriesname']) && $_GET['preseriesname'] == $id) || ($uesid == $id))
@@ -593,8 +593,8 @@ class Episodes extends Config {
 		{
 			// first thing first, check to make sure no one is abusing the delte functions.. We wont actually do anything.. just alert the admins to someone deleting multiples of stuff..
 			$query = "SELECT * FROM `modlogs` WHERE `script` LIKE 'Delete Episode%' AND `date` >= " . (time()-(60*15));
-			$result = mysql_query($query);
-			$count = mysql_num_rows($result);
+			$result = mysqli_query($query);
+			$count = mysqli_num_rows($result);
 
 			// we need to count the rows, if there are more than 15 deletions in 15 minutes we need to send an email..
 			if($count > 15)
@@ -606,8 +606,8 @@ class Episodes extends Config {
 				// continue on..
 			}
 
-			$query = "DELETE FROM `episode` WHERE `id` = " . mysql_real_escape_string($_GET['id']);
-			mysql_query($query);
+			$query = "DELETE FROM `episode` WHERE `id` = " . mysqli_real_escape_string($_GET['id']);
+			mysqli_query($query);
 			$this->ModRecord('Delete Episode id ' . $_GET['id']);
 		}
 	}
@@ -630,12 +630,12 @@ class Episodes extends Config {
 			}
 			else
 			{
-				$epid = mysql_real_escape_string($_GET['epid']);
-				mysql_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
+				$epid = mysqli_real_escape_string($_GET['epid']);
+				mysqli_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
 
-				$spriteQuery = mysql_query("DELETE FROM `sprites`, `episode` WHERE `episode`.`id`='{$epid}' AND `sprites`.`id`=`episode`.`spriteId`");
+				$spriteQuery = mysqli_query("DELETE FROM `sprites`, `episode` WHERE `episode`.`id`='{$epid}' AND `sprites`.`id`=`episode`.`spriteId`");
 				if ($spriteQuery) {
-					mysql_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
+					mysqli_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$epid}'");
 				}
 
 				echo "<script>alert(\"Image has been queued for image creation. Please check back in ~15 minutes\");</script>";

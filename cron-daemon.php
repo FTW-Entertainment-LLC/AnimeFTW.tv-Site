@@ -34,8 +34,8 @@ class cron {
 	private function CronDaemon()
 	{
 		$query = "SELECT * FROM crons";
-		$result = mysql_query($query);
-		while($row = mysql_fetch_array($result))
+		$result = mysqli_query($query);
+		while($row = mysqli_fetch_array($result))
 		{
 			$this->BuildCMD($row['id'],$row['cron_name'],$row['script_location'],$row['last_run'],$row['status'],$row['interval']);
 		}
@@ -260,20 +260,20 @@ class cron {
 				// We pass all our initial checks.. we will build more later, but as it is, you may proceed with the script!
 					
 				// The first thing we do, is tell the database, that we have initiated this script, so down the road, if it is still running, we cannot start it again.
-				$result = mysql_query("UPDATE crons SET status = '1', last_run = '" . time() . "' WHERE id = " . $id);
+				$result = mysqli_query("UPDATE crons SET status = '1', last_run = '" . time() . "' WHERE id = " . $id);
 				if(!result)
 				{
 					// there was an issue with the update, let them know
-					return "While attempting to update cron id " . $id . " there was an issue: " . mysql_error();
+					return "While attempting to update cron id " . $id . " there was an issue: " . mysqli_error();
 					unset($result);
 				}
 				else
 				{
 					// we've updated the origin row, but we need to add logs for keeping track of things.
-					$result = mysql_query("INSERT INTO crons_log (id, cron_id, start_time, end_time) VALUES (NULL, '" . $id . "', '" . time() . "', '0')");
+					$result = mysqli_query("INSERT INTO crons_log (id, cron_id, start_time, end_time) VALUES (NULL, '" . $id . "', '" . time() . "', '0')");
 					if(!$result)
 					{
-						return "Failure to write to the Crons_log table for cron id " . $id . " there was an issue: " . mysql_error();						
+						return "Failure to write to the Crons_log table for cron id " . $id . " there was an issue: " . mysqli_error();						
 						unset($result);
 					}
 					else

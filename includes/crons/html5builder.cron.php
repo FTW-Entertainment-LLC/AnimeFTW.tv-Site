@@ -17,35 +17,35 @@ $currenttime = time();
 $today = md5(date("dmY"));
 
 $query = "SELECT `id`, `seriesname`, `epprefix`, `epnumber` FROM `episode` WHERE `html5` = 0 AND `videotype` = 'mkv' LIMIT 0, 50";
-$result = mysql_query($query);
+$result = mysqli_query($query);
 
-$count = mysql_num_rows($result);
+$count = mysqli_num_rows($result);
 
 if($count == 0)
 {
 	// if we receive zero rows, this job is done, should send an email as well, but who cares...
-	mysql_query("UPDATE `crons` SET `status` = 2 WHERE `id` = $CronID");
+	mysqli_query("UPDATE `crons` SET `status` = 2 WHERE `id` = $CronID");
 }
 else
 {
 	$reportback = '';
-	while($row = mysql_fetch_assoc($result))
+	while($row = mysqli_fetch_assoc($result))
 	{
 		$url = 'http://videos.animeftw.tv/convert-to-html5.php?remote=0c4c92f8ed2c06f44b39f14cd94e27e&seriesName=' . $row['seriesname'] . '&epprefix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'];
 		$contents = file_get_contents($url);
 		if(strtolower($contents) != 'success')
 		{
 			$reportback .= $row['seriesname'] . ', episode #' . $row['epnumber'] . ' did not create with error: ' . $contents . "\n";
-			mysql_query("UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
+			mysqli_query("UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
 		}
 		else
 		{
-			mysql_query("UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
+			mysqli_query("UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
 		}
 	}
 	
-	//mysql_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $currenttime . "', '" . time() . "');");
-	//mysql_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
+	//mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $currenttime . "', '" . time() . "');");
+	//mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
 	
 	if($reportback != '')
 	{

@@ -64,8 +64,8 @@ else{
 				if (move_uploaded_file($TName, $target)){
 					//TOTAL Success!
 					$result = 1;
-					$query = 'UPDATE users SET avatarExtension=\'' . mysql_escape_string($avatarExtension) . '\', avatarActivate=\'' . mysql_escape_string($avatarActivate) . '\'WHERE ID=\''.$profileArray[1].'\'';
-					mysql_query($query) or die('Error : ' . mysql_error());
+					$query = 'UPDATE users SET avatarExtension=\'' . mysqli_escape_string($avatarExtension) . '\', avatarActivate=\'' . mysqli_escape_string($avatarActivate) . '\'WHERE ID=\''.$profileArray[1].'\'';
+					mysqli_query($query) or die('Error : ' . mysqli_error());
 				}
 				else{
 					//File was invalid, was it?

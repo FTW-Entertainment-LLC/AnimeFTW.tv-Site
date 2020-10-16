@@ -24,9 +24,9 @@ class Review extends Config {
 	{
 		$query = "SELECT `reviews`.`id`, `reviews`.`sid`, `reviews`.`uid`, `reviews`.`date`, `reviews`.`review`, `reviews`.`approved`, `reviews`.`stars`, `reviews`.`approved`, `reviews`.`approvedby`, `reviews`.`approvaldate`, `users`.`Username`, `users`.`avatarActivate`, `users`.`avatarExtension` FROM `reviews`,`users` WHERE `reviews`.`sid` = $sid AND `users`.`ID`=`reviews`.`uid` ORDER BY `reviews`.`date` DESC";
 		
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 		
-		$count = mysql_num_rows($result);
+		$count = mysqli_num_rows($result);
 		echo '<div style="padding-top:10px;border-top:1px solid #d8d8d8;">';
 		echo '<div style="font-size:10px;color:#c0c0c0;">Reviews:</div><a name="series-reviews"></a>';
 		echo '<div id="hidden-entry-point" style="display:none;"></div>';
@@ -43,7 +43,7 @@ class Review extends Config {
 		}
 		else
 		{
-			while($row = mysql_fetch_assoc($result))
+			while($row = mysqli_fetch_assoc($result))
 			{
 				// Build the users avatar
 				if($row['avatarActivate'] == 'no')
@@ -129,11 +129,11 @@ class Review extends Config {
 		if($this->UserArray[0] == 1)
 		{
 			$query = "SELECT `id`, `approved` FROM `reviews` WHERE `uid` = " . $this->UserArray[1] . " AND `sid` = $sid";
-			$result = mysql_query($query);
+			$result = mysqli_query($query);
 			
-			if(mysql_num_rows($result) > 0)
+			if(mysqli_num_rows($result) > 0)
 			{
-				$row = mysql_fetch_assoc($result);
+				$row = mysqli_fetch_assoc($result);
 				if($row['approved'] == 2){
 					// denied review
 					echo '<div style="font-size:20px;margin:10px;color:#d0d0d0;" align="center" id="missing-reviews-placeholder">We\'re sorry, but your review was rejected.<br />Please PM a staff member for further information.</div>';
@@ -226,16 +226,16 @@ class Review extends Config {
 		else
 		{
 			// so they pass the data check, let's make sure there are no reviews waiting to be processed, or already approved.
-			$query = "SELECT * FROM `reviews` WHERE `sid` = " . mysql_real_escape_string($_POST['id']) . " AND `uid` = " . $this->UserArray[1];
-			$result = mysql_query($query);
+			$query = "SELECT * FROM `reviews` WHERE `sid` = " . mysqli_real_escape_string($_POST['id']) . " AND `uid` = " . $this->UserArray[1];
+			$result = mysqli_query($query);
 			
-			$count = mysql_num_rows($result);
+			$count = mysqli_num_rows($result);
 			
 			if($count < 1)
 			{
 				// nothing here, let's submit the review!
-				mysql_query("INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`, `approved`, `approvedby`, `approvaldate`) VALUES (NULL, '" . mysql_real_escape_string($_POST['id']) . "', '" . $this->UserArray[1] . "', " . time() . ", '" . mysql_real_escape_string($_POST['review-textarea']) . "', '" . mysql_real_escape_string($_POST['rating-rated-select']) . "', 0, 0, 0)");
-				$reviewid = mysql_insert_id();
+				mysqli_query("INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`, `approved`, `approvedby`, `approvaldate`) VALUES (NULL, '" . mysqli_real_escape_string($_POST['id']) . "', '" . $this->UserArray[1] . "', " . time() . ", '" . mysqli_real_escape_string($_POST['review-textarea']) . "', '" . mysqli_real_escape_string($_POST['rating-rated-select']) . "', 0, 0, 0)");
+				$reviewid = mysqli_insert_id();
 				$slackData = "*New Review Posted*: \n ```" . $_POST['review-textarea'] . "``` <https://www.animeftw.tv/manage/#reviews>";
 				$slack = $this->postToSlack($slackData);
 				echo '<!-- Success -->';

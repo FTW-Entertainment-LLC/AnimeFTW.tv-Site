@@ -13,14 +13,14 @@ else
 }
 
 $query = "SELECT epnumber, epprefix, seriesname, videotype FROM episode WHERE html5 = 1 ORDER BY id LIMIT $limit, 5000";
-$result = mysql_query($query);
+$result = mysqli_query($query);
 if(!$result)
 {
 	echo 'There were no results to display';
 	exit;
 }
 $i = 0;
-while(list($epnumber,$epprefix,$seriesname,$videotype) = mysql_fetch_array($result)){
+while(list($epnumber,$epprefix,$seriesname,$videotype) = mysqli_fetch_array($result)){
 	$base = "http://videos.animeftw.tv/" . $seriesname ."/" . $epprefix ."_" . $epnumber ."_ns.mp4";
 	
 	$file_headers = @get_headers($base);

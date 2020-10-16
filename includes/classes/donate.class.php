@@ -75,9 +75,9 @@ class AFTWDonate
     private function ProgressBox()
     {
         $goal = $this->donation_goal;
-        $query = mysql_query("SELECT mc_gross FROM donation_paypal WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay);
+        $query = mysqli_query("SELECT mc_gross FROM donation_paypal WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay);
         $total = 0;
-        while (list($mc_gross) = mysql_fetch_array($query)) {
+        while (list($mc_gross) = mysqli_fetch_array($query)) {
             $total = $total+$mc_gross;
         }
         $current = $total;
@@ -114,16 +114,16 @@ class AFTWDonate
             echo "<div class='side-body-bg'>";
             echo "<div class='scapmain'>Donation Tiers</div>\n";
             echo '<div style="font-size:10px;" align="center">(Click a box to proceed)</div>';
-            $query = mysql_query("SELECT COUNT(id) FROM donation_tiers WHERE donation_round = ".$this->donation_round);
-            $total = mysql_result($query, 0);
+            $query = mysqli_query("SELECT COUNT(id) FROM donation_tiers WHERE donation_round = ".$this->donation_round);
+            $total = mysqli_result($query, 0);
             if($total == 0){ // we need to be able to display nothing if an error occours.. gogo awesomesauce
                 echo "<div class='side-body floatfix' align='center'>\n";
                 echo "<h4>The donations are either closed or misconfigured.</h4>";
                 echo "</div>";
             } else {
                 $query = "SELECT id, name, donate, donate_limit, details FROM donation_tiers WHERE donation_round = ".$this->donation_round." ORDER BY level ASC";
-                $results = mysql_query($query);
-                while(list($id,$name,$donate,$donate_limit,$details) = mysql_fetch_array($results)){
+                $results = mysqli_query($query);
+                while(list($id,$name,$donate,$donate_limit,$details) = mysqli_fetch_array($results)){
                     echo '<div id="tieritem" class="floatfix">
                         <a href="#" rel="#donate" onClick="javascript:ajax_loadContent(\'donatediv\',\'/scripts.php?view=donate&id='.$id.'\');">
                         <div class="tiertitle">'.$name.'</div>
@@ -178,11 +178,11 @@ class AFTWDonate
         // This is basically going to check all the donation records and let us know if it falls under the specifications
         if($dlimit != 0){$limit = ' AND mc_gross <= '.$dlimit;}else{$limit = '';} //if the tier is the top tier theres nothing to compare it with, so don't give it the limit..
         $query = "SELECT `first_name` FROM `donation_paypal` WHERE `date` >= " . $this->firstDay . " AND `date` <= " . $this->lastDay;
-        $result = mysql_query($query);
-        $count = mysql_num_rows($result);
+        $result = mysqli_query($query);
+        $count = mysqli_num_rows($result);
         if ($count > 0) {
             $i = 0; $first_name1 = '';
-            while (list($first_name) = mysql_fetch_array($result)) {
+            while (list($first_name) = mysqli_fetch_array($result)) {
                 $first_name1 .= $first_name;
                 if ($i < ($count-1)) {
                     $first_name1 .= ', ';
@@ -200,14 +200,14 @@ class AFTWDonate
     {
         // We check to see if donations are active.
         $query = "SELECT name, value FROM settings WHERE name = 'donation_active'";
-        $result = mysql_query($query);
-        $count = mysql_num_rows($result);
+        $result = mysqli_query($query);
+        $count = mysqli_num_rows($result);
         if ($count == 1) {
             // We confirmed we have an active donation drive.
-            $row = mysql_fetch_assoc($result);
+            $row = mysqli_fetch_assoc($result);
             $query = "SELECT `goal`, `round_name`, `description` FROM `donation_settings` WHERE `active` = 1";
-            $result = mysql_query($query);
-            $row = mysql_fetch_assoc($result);
+            $result = mysqli_query($query);
+            $row = mysqli_fetch_assoc($result);
 
             $this->donation_active = 1;
             $this->donation_name = $row['round_name'];
@@ -229,8 +229,8 @@ class AFTWDonate
             if (isset($_GET['step']) && $_GET['step'] == 'after') {
             } else {
                 $tid = $_GET['id'];
-                $query = mysql_query("SELECT name, donate, details FROM donation_tiers WHERE id = ".mysql_real_escape_string($tid));
-                $row = mysql_fetch_array($query);
+                $query = mysqli_query("SELECT name, donate, details FROM donation_tiers WHERE id = ".mysqli_real_escape_string($tid));
+                $row = mysqli_fetch_array($query);
                 echo '<form method="GET" name="fd4" id="fd4">
                 <input type="hidden" name="rid" value="1">
                 <br /><br /><div class="donatestep1" align="center">';
@@ -260,8 +260,8 @@ class AFTWDonate
             if (!isset($tid)) {
                 echo 'error';
             } else {
-                $query = mysql_query("SELECT name, details FROM donation_tiers WHERE id = ".mysql_real_escape_string($tid));
-                $row = mysql_fetch_array($query);
+                $query = mysqli_query("SELECT name, details FROM donation_tiers WHERE id = ".mysqli_real_escape_string($tid));
+                $row = mysqli_fetch_array($query);
                 echo '<br /><div class="donatestep2" align="center"><label class="left" for="amount" style="margin: 0px 0px 0px 0px;color:#555555;">Confirmation:</label>';
                 echo '<div class="pricedetails" align="left">You have chosen to donate $<b>'.$_GET['amount'].'</b>, the prize package is <b>'.$row['name'].'</b>, it entails the following:<br />'.$row['details'].'</div>';
                 echo '</div><br />';
@@ -310,7 +310,7 @@ class AFTWDonate
 
     private function UpdateViews()
     {
-        mysql_query("UPDATE donation_settings SET views = views+1 WHERE round_id = ".$this->donation_round);
+        mysqli_query("UPDATE donation_settings SET views = views+1 WHERE round_id = ".$this->donation_round);
     }
 
     private function donors()

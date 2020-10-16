@@ -19,13 +19,13 @@ $PastDate = $CurrentDate - (60*60*$GracePeriod);
 
 $query = "SELECT store_orders_items.id FROM store_orders_items, store_cart WHERE store_orders_items.cart_id=store_cart.id AND store_cart.active = 0 AND store_cart.date <= $PastDate";
 
-$results = mysql_query($query);
-$numrow = mysql_num_rows($results);
+$results = mysqli_query($query);
+$numrow = mysqli_num_rows($results);
 if($numrow > 0)
 {
-	while($row = mysql_fetch_array($results))
+	while($row = mysqli_fetch_array($results))
 	{
-		mysql_query("DELETE FROM store_orders_items WHERE id = " . $row['id']);
+		mysqli_query("DELETE FROM store_orders_items WHERE id = " . $row['id']);
 		
 	}
 }
@@ -34,7 +34,7 @@ else
 	// nothing to see here.
 }
 // Update the logs, and then make sure the cron is reset.
-mysql_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $CurrentDate . "', '" . time() . "');");
-mysql_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
+mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $CurrentDate . "', '" . time() . "');");
+mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
 
 ?>

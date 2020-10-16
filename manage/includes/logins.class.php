@@ -19,13 +19,13 @@ class Logins extends Config {
 	public function processLogins()
 	{
 		// we need to get the email to make the process work.
-		$query = mysql_query("SELECT Email FROM users WHERE Username = '" . mysql_real_escape_string($_POST['logname']) . "'");
-		$row = mysql_fetch_assoc($query);
+		$query = mysqli_query("SELECT Email FROM users WHERE Username = '" . mysqli_real_escape_string($_POST['logname']) . "'");
+		$row = mysqli_fetch_assoc($query);
 		$UserEmail = $row['Email'];
 		// now for the real login
 		$PhaseTwo = $this->Build($_POST['passw0rd'],$UserEmail);
 		$query = "SELECT ID, Username FROM users WHERE Email = '" . $UserEmail . "' AND phasetwo = '" . $PhaseTwo . "'";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		if(!$results)
 		{
 			echo 'Error in the MySQL Query:' . $PhaseTwo;
@@ -33,7 +33,7 @@ class Logins extends Config {
 		}
 		else
 		{
-			$count = mysql_num_rows($results);
+			$count = mysqli_num_rows($results);
 			if($count < 1)
 			{
 				include("../includes/classes/email.class.php");
@@ -66,7 +66,7 @@ class Logins extends Config {
 			else
 			{
 				echo 'Success';
-				$row = mysql_fetch_assoc($results);
+				$row = mysqli_fetch_assoc($results);
 				$this->setSessions($row['ID']);
 			}
 		}

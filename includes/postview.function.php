@@ -17,8 +17,8 @@ else {
 	{
 		$CODE = 1;
 		$query9 = "SELECT fid, fseo, ftitle FROM forums_forum WHERE fid='$tstart'";
-		$result9 = mysql_query($query9) or die('Error : ' . mysql_error());
-		$row9 = mysql_fetch_array($result9);
+		$result9 = mysqli_query($query9) or die('Error : ' . mysqli_error());
+		$row9 = mysqli_fetch_array($result9);
 		$fid = $row9['fid'];
 		$tfid = $fid;
 		$fseo = $row9['fseo'];
@@ -29,8 +29,8 @@ else {
 	{
 		$CODE = 2;
 		$query005 = "SELECT tid, tfid, ttitle, tpid, tdate FROM forums_threads WHERE tid='$treply'";
-		$result005 = mysql_query($query005) or die('Error : ' . mysql_error());
-		$row005 = mysql_fetch_array($result005);
+		$result005 = mysqli_query($query005) or die('Error : ' . mysqli_error());
+		$row005 = mysqli_fetch_array($result005);
 		$tid = $row005['tid'];
 		$tfid = $row005['tfid'];
 		$ttitle = $row005['ttitle'];
@@ -38,8 +38,8 @@ else {
 		$tdate = $row005['tdate'];
 		$ttitle = stripslashes($ttitle);
 		$query9 = "SELECT fid, fseo, ftitle FROM forums_forum WHERE fid='$tfid'";
-		$result9 = mysql_query($query9) or die('Error : ' . mysql_error());
-		$row9 = mysql_fetch_array($result9);
+		$result9 = mysqli_query($query9) or die('Error : ' . mysqli_error());
+		$row9 = mysqli_fetch_array($result9);
 		$fid = $row9['fid'];
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
@@ -50,8 +50,8 @@ else {
 	{
 		$CODE = 3;
 		$query00 = "SELECT puid, pfid, ptitle, ptid, puid, pbody FROM forums_post WHERE pid='$pedit'";
-		$result00 = mysql_query($query00) or die('Error : ' . mysql_error());
-		$row00 = mysql_fetch_array($result00);
+		$result00 = mysqli_query($query00) or die('Error : ' . mysqli_error());
+		$row00 = mysqli_fetch_array($result00);
 		$puid00 = $row00['puid'];
 		$tfid = $row00['pfid'];
 		$ptitle = $row00['ptitle'];
@@ -61,8 +61,8 @@ else {
 		$pbody = $row00['pbody'];
 		$pbody = stripslashes($pbody);
 		$query9 = "SELECT fid, fseo, ftitle FROM forums_forum WHERE fid='$tfid'";
-		$result9 = mysql_query($query9) or die('Error : ' . mysql_error());
-		$row9 = mysql_fetch_array($result9);
+		$result9 = mysqli_query($query9) or die('Error : ' . mysqli_error());
+		$row9 = mysqli_fetch_array($result9);
 		$fid = $row9['fid'];
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
@@ -74,8 +74,8 @@ else {
 	{
 	echo "&gt;&nbsp;Editing thread <a href='/forums/index.php?forum=$fid&amp;thread=$tid1&amp;s=0'>$ttitle</a></div>";
 	$query00 = "SELECT pbody FROM forums_post WHERE pid='$pid2'";
-		$result00 = mysql_query($query00) or die('Error : ' . mysql_error());
-		$row00 = mysql_fetch_array($result00);
+		$result00 = mysqli_query($query00) or die('Error : ' . mysqli_error());
+		$row00 = mysqli_fetch_array($result00);
 		$tbody = $row00['pbody'];
 		$tbody = stripslashes($tbody);
 	}
@@ -215,10 +215,10 @@ else {
 		<div style=\"height:300px;overflow-y:scroll;overflow-x:none;\">";
 				$query = "SELECT puid, pdate, pbody FROM forums_post WHERE ptid='".$tid."' ORDER BY pdate DESC LIMIT 0, 10";
 				//echo 'Query: '.$query.'<br /> Start: '.$this->start.', tid: '.$this->tid.', fseo: '.$this->fseo.', paging: '.$this->paging;
-				$result001 = mysql_query($query) or die('Error : ' . mysql_error());
+				$result001 = mysqli_query($query) or die('Error : ' . mysqli_error());
 				$i = 0;
 				echo "<table>";
-				while(list($puid,$pdate,$pbody) = mysql_fetch_array($result001)){
+				while(list($puid,$pdate,$pbody) = mysqli_fetch_array($result001)){
 					$pbody = stripslashes($pbody);
 					$pdate = $this->timeZoneChange($pdate,$this->profileArray[3]);
 					$pdate = date("M j Y, h:i A",$pdate);

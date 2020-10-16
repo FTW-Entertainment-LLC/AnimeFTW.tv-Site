@@ -3,12 +3,12 @@ exit;
 include('../siteroot.php');
 
 $query = "SELECT id, category FROM mainaftw_anime.series";
-$result = mysql_query($query) or die('Error : ' . mysql_error());
+$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 
-while(list($id,$category) = mysql_fetch_array($result))
+while(list($id,$category) = mysqli_fetch_array($result))
 {
 	$update = "UPDATE series SET category = '" . $category . ", ' WHERE id = '" . $id . "';";
-	mysql_query($update);
+	mysqli_query($update);
 	//echo $update."\n";
 }
 echo "Done";

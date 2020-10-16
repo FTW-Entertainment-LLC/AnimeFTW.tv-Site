@@ -86,10 +86,10 @@ class AFTWVideos extends Config{
 	public function tagCloud($list){
 		include_once('wordcloud.class.php');
 		$cloud = new wordcloud();
-		$getBooks = mysql_query("SELECT name FROM categories ORDER BY name DESC");
+		$getBooks = mysqli_query("SELECT name FROM categories ORDER BY name DESC");
 		if ($getBooks)
 		{
-			while ($rowBooks = mysql_fetch_assoc($getBooks))
+			while ($rowBooks = mysqli_fetch_assoc($getBooks))
 			{
 				//$getTags = explode(' ', $rowBooks['category']);
 				$getTags = split(", ", $rowBooks['name']);
@@ -166,7 +166,7 @@ class AFTWVideos extends Config{
 				$sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."ORDER BY fullSeriesName";
 			}
 			else {
-				$sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."AND ratingLink LIKE '%".mysql_real_escape_string($sort)."%' ORDER BY seriesName";
+				$sql = "SELECT UPPER(SUBSTRING(fullSeriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' AND active='yes' ".$aonly."AND ratingLink LIKE '%".mysqli_real_escape_string($sort)."%' ORDER BY seriesName";
 			}
 		}
 
@@ -174,9 +174,9 @@ class AFTWVideos extends Config{
 				echo '<div align="center"><a href="/anime/age/e"><img src="//i.animeftw.tv/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="" /></a></div><br />';
 		}
 		error_reporting(E_ALL & ~E_NOTICE);
-		$query = mysql_query ($sql) or die (mysql_error());
-		$total_rows = mysql_num_rows($query) or die("<br />Error: No results found");
-		while ($records = @mysql_fetch_array ($query))
+		$query = mysqli_query ($sql) or die (mysqli_error());
+		$total_rows = mysqli_num_rows($query) or die("<br />Error: No results found");
+		while ($records = @mysqli_fetch_array ($query))
 		{
 			$alpha[$records['letter']] += 1;
 			${$records['letter']}[$records['id']] = $records['fullSeriesName'];
@@ -272,13 +272,13 @@ class AFTWVideos extends Config{
 		else if($mov == 'ova'){$movvar = "AND Movie='0' AND ova='1'";}
 		else {$movvar = NULL;}
 		$query   = "SELECT `id`, `sid`, `spriteId`, `epnumber`, `epname`, `vidheight`, `vidwidth`, `epprefix`, `subGroup`, `date`, `uid`, `report`, `videotype`, `hd`, `views`, `Movie` FROM episode WHERE sid='".$sid."' AND epnumber='".$epnum."' ".$movvar;
-		$result  = mysql_query($query) or die('Error : ' . mysql_error());
-		$numEpisodes = mysql_num_rows($result);
+		$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$numEpisodes = mysqli_num_rows($result);
 		if($numEpisodes == 0){
 			$episodeArray = array($epnum,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null);
 		}
 		else {
-			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
+			$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 			$episodeArray = array($row['epnumber'],$row['epname'],$row['vidheight'],$row['vidwidth'],$row['epprefix'],$row['subGroup'],$row['date'],$row['uid'],$row['report'],$row['videotype'],$row['id'],1,$row['hd'],1,$row['sid'],$row['id'],$row['views'],$row['Movie'],$row['spriteId']);
 		}
 		return $episodeArray;
@@ -292,17 +292,17 @@ class AFTWVideos extends Config{
 
 	private function showSeriesInfo($seoname)
 	{
-		mysql_query("SET NAMES 'utf8'");
+		mysqli_query("SET NAMES 'utf8'");
 		$query   = "SELECT id, seriesName, synonym, seoname, fullSeriesName, videoServer, description, ratingLink, noteReason, aonly, prequelto, sequelto, category, total_reviews, hd, kanji, romaji FROM series WHERE seoname='".$seoname."'";
-		$result  = mysql_query($query) or die('Error : ' . mysql_error());
-		$numSeries = mysql_num_rows($result);
+		$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$numSeries = mysqli_num_rows($result);
 
 		if($numSeries == 0)
 		{
 			$seriesArray = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		}
 		else {
-			$row     = mysql_fetch_array($result, MYSQL_ASSOC);
+			$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 			$seriesArray = array($row['id'],$row['seriesName'],$row['seoname'],stripslashes($row['fullSeriesName']),$row['videoServer'],0,$row['description'],$row['ratingLink'],0,0,$row['noteReason'],$row['aonly'],$row['prequelto'],$row['sequelto'],$row['category'],$row['total_reviews'],1,$row['synonym'],1,$row['hd'],$row['kanji'],$row['romaji']);
 		}
 		return $seriesArray;
@@ -319,13 +319,13 @@ class AFTWVideos extends Config{
 			return false;
 
 		$sql	= "SELECT width, height, totalWidth, rate, count FROM sprites WHERE id='{$spriteId}'";
-		$query	= mysql_query($sql) or die('Error : ' . mysql_error());
-		$count	= mysql_num_rows($query);
+		$query	= mysqli_query($sql) or die('Error : ' . mysqli_error());
+		$count	= mysqli_num_rows($query);
 
 		if ($count == 0)
 			return false;
 
-		return mysql_fetch_array($query); // TODO: Switch to mysql_fetch_assoc and use Integer based indexing? -Nikey
+		return mysqli_fetch_array($query); // TODO: Switch to mysqli_fetch_assoc and use Integer based indexing? -Nikey
 	}
 
 	#-------------------------------------------------------------
@@ -340,20 +340,20 @@ class AFTWVideos extends Config{
 		$midnight = strtotime($currentDay);
 		$elevenfiftynine = $midnight+86399;
 		//check for any rows that were done today...
-		$query20  = mysql_query("SELECT * FROM episodestats WHERE ip='".$ip."' AND epSeriesId='".$seriesId."' AND epNumber='".$epNumber."' AND date>='".$midnight."'");
-		$Countrows = mysql_num_rows($query20);
+		$query20  = mysqli_query("SELECT * FROM episodestats WHERE ip='".$ip."' AND epSeriesId='".$seriesId."' AND epNumber='".$epNumber."' AND date>='".$midnight."'");
+		$Countrows = mysqli_num_rows($query20);
 		if($Countrows == 0){
 			$query = "INSERT INTO episodestats (`eid`, `epSeriesId`, `ip`, `date`, `epnumber`)
 	VALUES ('$epid', '$seriesId', '$ip', '".time()."', '$epNumber')";
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+			mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 		}
 	}
 
 	private function DisplayLinks($SeriesId,$type,$alevel)
 	{
 		$query = "SELECT id, fullSeriesName, seoname, description, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$SeriesId'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
 		$fullSeriesName = $row['fullSeriesName'];
 		$fullSeriesName = stripslashes($fullSeriesName);
 		$seoname = $row['seoname'];
@@ -444,10 +444,10 @@ class AFTWVideos extends Config{
 	private function array_buildWatchListEntries()
 	{
 		$query = 'SELECT `id`, `sid`, `status` FROM `watchlist` WHERE `uid` = ' . $this->UserArray[1];
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 
 		$dataarray = array();
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{
 			$dataarray[$row['sid']]['id'] = $row['id'];
 			$dataarray[$row['sid']]['sid'] = $row['sid'];
@@ -680,8 +680,8 @@ class AFTWVideos extends Config{
 			if($this->SettingsArray[16]['value'] == 33)
 			{
 				$query = "SELECT `id` FROM `episode` WHERE `sid` = " . $SeriesArray[0] . " AND `epnumber` > " . $EpisodeArray[0] . " LIMIT 0, 1";
-				$result = mysql_query($query);
-				$count = mysql_num_rows($result);
+				$result = mysqli_query($query);
+				$count = mysqli_num_rows($result);
 				if($count > 0)
 				{
 					if($EpisodeArray[17] == 0)
@@ -1245,7 +1245,7 @@ HDOC;
 			$sid = $_GET['sid'];
 			$EpisodesTitle = '
 											<div class="video-episodes">Episodes:</div>';
-			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysql_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysql_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysql_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
+			$query = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`image`, `episode`.`hd`, `episode`.`views`, `episode`.`Movie`, `series`.`seoname` FROM `episode`, `series` WHERE `episode`.`sid` = " . mysqli_real_escape_string($_GET['sid']) . " AND `series`.`id` = " . mysqli_real_escape_string($_GET['sid']) . " AND `epnumber` >= " . mysqli_real_escape_string($_GET['epnumber']) . " AND `Movie` = 0 ORDER BY `epnumber` ASC LIMIT $page, $AvailableRows";
 
 		}
 		else
@@ -1270,8 +1270,8 @@ HDOC;
 
 		// 18
 
-		$result = mysql_query($query);
-		$count = mysql_num_rows($result);
+		$result = mysqli_query($query);
+		$count = mysqli_num_rows($result);
 		if($ajax == 0)
 		{
 			echo $EpisodesTitle;
@@ -1300,7 +1300,7 @@ HDOC;
 			// it's not greater than 20 so there shouldn't be a need for previous episodes.
 			echo '<div class="end-beginning-dynamic-data"></div>';
 		}
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{
 			if($row['image'] == 0)
 			{
@@ -1443,8 +1443,8 @@ HDOC;
 			}
 		}
 		$query = "SELECT `series`.`id`, `series`.`seoname`, `series`.`fullSeriesName`, `series`.`category`, (SELECT COUNT(id) FROM `episode` WHERE `sid`=`series`.`id`) as NumEps, `site_topseries`.`currentPosition` FROM `series`, `site_topseries` WHERE `site_topseries`.`seriesID`=`series`.`id` AND `series`.`active` = 'yes' AND `series`.`id` != " . $SeriesArray[0] . " AND (" . $SQLAddon . ")  ORDER BY `site_topseries`.`currentPosition` ASC LIMIT 10";
-		$result = mysql_query($query);
-		while($row = mysql_fetch_assoc($result))
+		$result = mysqli_query($query);
+		while($row = mysqli_fetch_assoc($result))
 		{
 			$exploded = explode(" , ",$row['category']);
 			$category = '';
@@ -1490,9 +1490,9 @@ HDOC;
 
 	private function checkBanned()
 	{
-		$query = "SELECT id FROM `banned` WHERE `ip` = '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "'";
-		$result = mysql_query($query);
-		$count = mysql_num_rows($result);
+		$query = "SELECT id FROM `banned` WHERE `ip` = '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "'";
+		$result = mysqli_query($query);
+		$count = mysqli_num_rows($result);
 
 		if($count > 0)
 		{
@@ -1555,9 +1555,9 @@ HDOC;
 
 		$query  = "SELECT `episode`.`id`, `episode`.`epnumber`, `episode`.`epname`, `episode`.`epprefix`, `episode`.`videotype`, `episode`.`image`, `episode`.`Movie`, `series`.`seriesname`, `series`.`seoname` FROM `episode`, `series` WHERE  `episode`.`sid`='$sid' AND `episode`.`Movie`='$MovieAllowed' AND `episode`.`ova`='$OvaAllowed' AND `series`.`id`=`episode`.`sid` ORDER BY `episode`.`epnumber` ASC" . $LimitBy;
 
-		$result  = mysql_query($query) or die('Error : ' . mysql_error());
+		$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
 
-		$count = mysql_num_rows($result);
+		$count = mysqli_num_rows($result);
 
 		if($count > 0)
 		{
@@ -1576,7 +1576,7 @@ HDOC;
 			else
 			{
 			}
-			while(list($id,$epnumber,$epname,$epPrefix,$videotype,$image,$Movie,$seriesname,$seoname) = mysql_fetch_array($result))
+			while(list($id,$epnumber,$epname,$epPrefix,$videotype,$image,$Movie,$seriesname,$seoname) = mysqli_fetch_array($result))
 			{
 				if($image == 0)
 				{
@@ -1749,7 +1749,7 @@ HDOC;
 
 	public function searchSeries2($input)
 	{
-		$input = mysql_real_escape_string($input);
+		$input = mysqli_real_escape_string($input);
 		$dualarray = array('2','5','8','11','14','17','20','23','26','29','32','35','38','41','44','47','50','53','56','59','62','65','68','71','74','77','80','83','86','89','92','95','98','101');
 		if($this->UserArray[1] == 0){$aonly = " AND aonly='0'";}
 		else if ($this->UserArray[1] == 3){$aonly = " AND aonly<='1'";}
@@ -1788,13 +1788,13 @@ HDOC;
 
 		$query   = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews`, `romaji`, `kanji` FROM series WHERE active='yes'".$aonly." AND ( " . $subsearch . " ) ORDER BY seriesName ASC LIMIT 100";
 
-		mysql_query("SET NAMES 'utf8'");
-		$result  = mysql_query($query) or die('Error : ' . mysql_error());
-		$ts = mysql_num_rows($result);
+		mysqli_query("SET NAMES 'utf8'");
+		$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$ts = mysqli_num_rows($result);
 		if($ts > 0)
 		{
 			$i=0;
-			while(list($id,$seriesName,$fullSeriesName,$seoname,$ratingLink,$category,$total_reviews,$romaji,$kanji) = mysql_fetch_array($result))
+			while(list($id,$seriesName,$fullSeriesName,$seoname,$ratingLink,$category,$total_reviews,$romaji,$kanji) = mysqli_fetch_array($result))
 			{
 				$fullSeriesName = stripslashes($fullSeriesName);
 				echo '<div class="item">'."\n";
@@ -1850,9 +1850,9 @@ HDOC;
 	private function seriesTopSeriesRank($SeriesArray)
 	{
 		$query = "SELECT lastPosition, currentPosition FROM site_topseries WHERE seriesId='".$SeriesArray[0]."' ORDER BY currentPosition ASC ";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
-		$count = mysql_num_rows($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
+		$count = mysqli_num_rows($result);
 		$lastPosition = $row['lastPosition'];
 		$currentPosition = $row['currentPosition'];
 		$singleRank = '';
@@ -1891,8 +1891,8 @@ HDOC;
 	private function checkSeriesSid($sid)
 	{
 		$query = "SELECT `seoname`, `fullSeriesName`, `active`, `aonly` FROM `series` WHERE `id` = '$sid'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
 		$seoname = $row['seoname'];
 		$fullSeriesName = $row['fullSeriesName'];
 		$fullSeriesName = stripslashes($fullSeriesName);
@@ -1924,11 +1924,11 @@ HDOC;
 
 	public function showEpisodeTooltip($id,$type = 0)
 	{
-		$id = mysql_real_escape_string($id);
+		$id = mysqli_real_escape_string($id);
 		$query = "SELECT `id`, `sid`, `epnumber`, `epprefix`, `epname`, `subGroup`, `hd`, `views`, `Movie`, `image`, (SELECT COUNT(id) FROM `episode_tracker` WHERE `eid` = '$id' AND `uid` = " . $this->UserArray[1] . ") AS `tracker_entry` FROM `episode` WHERE `id` = '$id'";
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 
-		$row = mysql_fetch_assoc($result);
+		$row = mysqli_fetch_assoc($result);
 
 		if($row['Movie'] == 0)
 		{
@@ -2054,9 +2054,9 @@ HDOC;
 		if($CanDownload == TRUE)
 		{
 			$query = "SELECT `series`.`seriesName`, `series`.`fullSeriesName`, `episode`.`id`, `episode`.`epprefix`, `episode`.`epnumber`, `episode`.`videotype`, `episode`.`hd` FROM `episode`,`series` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
-			$result = mysql_query($query);
+			$result = mysqli_query($query);
 
-			$row = mysql_fetch_assoc($result);
+			$row = mysqli_fetch_assoc($result);
 			if($disk == TRUE)
 			{
 				$DLIcon = 'disk.png';

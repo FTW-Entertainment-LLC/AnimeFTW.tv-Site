@@ -7,10 +7,10 @@ if(!isset($_GET['start'])){
 else {
 	$start = $_GET['start'];
 	$query = "SELECT epid, uid, rating FROM page_comments WHERE epid != '' AND rating != 0";
-	$results = mysql_query($query);
-	while($row = mysql_fetch_array($results)){
+	$results = mysqli_query($query);
+	while($row = mysqli_fetch_array($results)){
 		$epid = "v".$row['epid'];
-		mysql_query("INSERT INTO ratings (rating_id,rating_num,IP) VALUES ('$epid','".$row['rating']."','".$row['uid']."')") or die(mysql_error());
+		mysqli_query("INSERT INTO ratings (rating_id,rating_num,IP) VALUES ('$epid','".$row['rating']."','".$row['uid']."')") or die(mysqli_error());
 	}
 }
 ?>

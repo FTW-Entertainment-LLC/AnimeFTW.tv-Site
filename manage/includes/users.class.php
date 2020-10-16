@@ -114,7 +114,7 @@ class Users extends Config {
 			// we check to make sure they are logged in.
 			if($this->UserArray[0] == 1)
 			{
-				$cid = mysql_real_escape_string($_GET['id']);
+				$cid = mysqli_real_escape_string($_GET['id']);
 				if(isset($_GET['modaction']) && $_GET['modaction'] == 'delete')
 				{
 					$error = "<div class=\"redmsg\">$cid 's account was deleted successfully (NOT!)- This function will never work.. Super Failsafe!</div><br />";
@@ -189,7 +189,7 @@ class Users extends Config {
 				}
 				else 
 				{
-					mysql_query($query) or die('Error : ' . mysql_error());
+					mysqli_query($query) or die('Error : ' . mysqli_error());
 					$this->ModRecord($fscript);
 					echo 'Success';
 				}
@@ -281,13 +281,13 @@ class Users extends Config {
 		if($go >= 1 && $go <= 3)
 		{
 			echo '<div>';	
-			$result  = mysql_query($query) or die('Error : ' . mysql_error());
+			$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
 			$paging = $this->pagingV1('right-column',$rowcount,30,$count,$link);
 			if($go == 1)
 			{
 				echo $paging;
 				$i = 0;
-				while(list($ID,$username,$registrationDate,$staticip,$active) = mysql_fetch_array($result))
+				while(list($ID,$username,$registrationDate,$staticip,$active) = mysqli_fetch_array($result))
 				{
 					$this->buildList($ID,$username,$registrationDate,$staticip,$active,$go,$link,$i);
 					$i++;
@@ -297,7 +297,7 @@ class Users extends Config {
 			{
 				echo $paging;
 				$i = 0;
-				while(list($id,$name,$password,$ip,$date) = mysql_fetch_array($result))
+				while(list($id,$name,$password,$ip,$date) = mysqli_fetch_array($result))
 				{
 					$this->buildList($id,$name,$password,$ip,$date,$go,$link,$i);
 					$i++;
@@ -307,7 +307,7 @@ class Users extends Config {
 			{
 				echo $paging;
 				$i = 0;
-				while(list($id,$ip,$date,$uid,$agent) = mysql_fetch_array($result))
+				while(list($id,$ip,$date,$uid,$agent) = mysqli_fetch_array($result))
 				{
 					$this->buildList($id,$ip,$date,$uid,$agent,$go,$link,$i);
 					$i++;
@@ -335,9 +335,9 @@ class Users extends Config {
 				</td></tr></table></form></div></div>';
 				if($_GET['part'] == 'after')
 				{					
-					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysql_escape_string($_GET['username'])."%'";
-					$result  = mysql_query($query) or die('Error : ' . mysql_error());
-					$count = mysql_num_rows($result);
+					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysqli_escape_string($_GET['username'])."%'";
+					$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+					$count = mysqli_num_rows($result);
 					if($count > 24)
 					{
 						echo '<div style="height:940px;overflow-y:scroll;overflow-x:none;">';
@@ -347,7 +347,7 @@ class Users extends Config {
 						echo '<div>';
 					}
 					$i = 0;
-					while(list($ID,$Username,$Email,$lastActivity,$staticip,$Active,$Level_access,$forumBan,$messageBan,$postBan) = mysql_fetch_array($result))
+					while(list($ID,$Username,$Email,$lastActivity,$staticip,$Active,$Level_access,$forumBan,$messageBan,$postBan) = mysqli_fetch_array($result))
 					{
 						$this->buildList($ID,$Username,NULL,$staticip,$Active,$go,$link,$i,$Email,$lastActivity,$Level_access,$forumBan,$messageBan,$postBan);
 						$i++;
@@ -426,8 +426,8 @@ class Users extends Config {
 			$iquery = "SELECT COUNT(id) FROM series";
 		}
 		else {}
-		$query = mysql_query($iquery); 
-		$total = mysql_result($query, 0);
+		$query = mysqli_query($iquery); 
+		$total = mysqli_result($query, 0);
 		return $total;
 		//unset $query;
 	}

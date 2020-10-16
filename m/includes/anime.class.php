@@ -62,7 +62,7 @@ class Anime extends Config {
 		
 		if(!$results)
 		{
-			echo '<div align="center" style="padding:5px;font-weight:bold;">There was an issue with the request. ' . mysql_error() . '</div>';
+			echo '<div align="center" style="padding:5px;font-weight:bold;">There was an issue with the request. ' . mysqli_error() . '</div>';
 			exit;
 		}
 		$row = $results->fetch_assoc();
@@ -122,7 +122,7 @@ class Anime extends Config {
 		
 		if(!$results)
 		{
-			echo '<div align="center" style="padding:5px;font-weight:bold;">There was an issue with the request. ' . mysql_error() . '</div>';
+			echo '<div align="center" style="padding:5px;font-weight:bold;">There was an issue with the request. ' . mysqli_error() . '</div>';
 			exit;
 		}
 		$numrow = mysqli_num_rows($results);
@@ -168,7 +168,7 @@ class Anime extends Config {
 		if(!$results)
 		{
 			// there are no results, due to an error somewhere, we must tell them!
-			echo 'There was an error with your MySQL Query, the error was: ' . mysql_error();
+			echo 'There was an error with your MySQL Query, the error was: ' . mysqli_error();
 			exit;
 		}
 		
@@ -255,7 +255,7 @@ class Anime extends Config {
 		if(!$results)
 		{
 			// there are no results, due to an error somewhere, we must tell them!
-			echo 'There was an error with your MySQL Query, the error was: ' . mysql_error();
+			echo 'There was an error with your MySQL Query, the error was: ' . mysqli_error();
 			exit;
 		}
 		$numrows = mysqli_num_rows($results);

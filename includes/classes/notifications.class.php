@@ -43,9 +43,9 @@ class AFTWNotifications extends Config {
 		$ctime = time();
 		$past = $ctime-(4*$this->darray[7]); //we want the date 4 weeks in the past
 		//build the query, straight forward stuff
-		mysql_query("DELETE FROM notifications WHERE date <= $past");
-		mysql_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '13', '" . time() . "', '" . time() . "');");
-		mysql_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = 13");
+		mysqli_query("DELETE FROM notifications WHERE date <= $past");
+		mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '13', '" . time() . "', '" . time() . "');");
+		mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = 13");
 	}
 
 	public function ShowSprite()
@@ -53,13 +53,13 @@ class AFTWNotifications extends Config {
 		if($this->UserArray[0] == 1)
 		{
             $query = "SELECT COUNT(id) as Total FROM notifications WHERE notifications.date > ".$this->UserArray[12]." AND (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1].")))";
-			$result = mysql_query($query);
+			$result = mysqli_query($query);
 			if(!$result)
 			{
 			}
 			else
 			{
-				$CountNotes = mysql_result($result,0);
+				$CountNotes = mysqli_result($result,0);
 				if($CountNotes > 0)
 				{
 					return '<span class="JewelNotif2 disBlock" id="requestJewelNotif">'.$CountNotes.'</span>';
@@ -79,14 +79,14 @@ class AFTWNotifications extends Config {
 		if($this->UserArray[0] == 1)
 		{
 			$query = "SELECT COUNT(notifications.id) FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ";
-			$result = mysql_query($query);
+			$result = mysqli_query($query);
 			if(!$result)
 			{
 				echo 'There was an error executing the query.';
 			}
 			else
 			{
-				$CountNotes = mysql_result($result,0);
+				$CountNotes = mysqli_result($result,0);
 				echo '<div class="fds">My Site notifications</div><br />';
 				if($CountNotes > 0)
 				{
@@ -108,7 +108,7 @@ class AFTWNotifications extends Config {
 
 	# function Query
 	private function Query($q){
-		$query = mysql_query($q);
+		$query = mysqli_query($q);
 		return $query;
 	}
 
@@ -126,7 +126,7 @@ class AFTWNotifications extends Config {
 			$queryLimit = " LIMIT 0, 30";
 		}
 
-		mysql_query("SET NAMES 'utf8'");
+		mysqli_query("SET NAMES 'utf8'");
 		$query = "SELECT notifications.* FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ORDER BY notifications.date DESC" . $queryLimit;
 		$result = $this->Query($query);
 		//echo '<ul>';
@@ -134,7 +134,7 @@ class AFTWNotifications extends Config {
 		{
 			echo '<li><div align="left" class="notificationHeader">AnimeFTW.tv Site Notifications</div></li>';
 		}
-		$count = mysql_num_rows($result);
+		$count = mysqli_num_rows($result);
 
 		if($count < 1)
 		{
@@ -149,7 +149,7 @@ class AFTWNotifications extends Config {
 		}
 		else
 		{
-			while(list($id,$uid,$date,$type,$d1,$d2,$d3) = mysql_fetch_array($result)){
+			while(list($id,$uid,$date,$type,$d1,$d2,$d3) = mysqli_fetch_array($result)){
 				$this->PopulateRow($id,$uid,$date,$type,$spriteMode,$d1,$d2,$d3);
 				//echo 'id: '.$id.', uid: '.$uid.', date: '.$date.', type: '.$type.', d1: '.$d1.', d2: '.$d2.', d3: '.$d3.'<br />';
 			}
@@ -197,7 +197,7 @@ class AFTWNotifications extends Config {
 		if($uid == NULL)
 		{ //uid is null, means it's global (aka an episode addition)
 			$result = $this->Query("SELECT series.fullSeriesName, series.seoname, episode.id, episode.epnumber, episode.epname FROM series, episode WHERE episode.id=$d2 AND series.id=$d1");
-			$row = mysql_fetch_array($result);
+			$row = mysqli_fetch_array($result);
 			$eimage = '';
 			if($spriteMode == TRUE)
 			{
@@ -224,7 +224,7 @@ class AFTWNotifications extends Config {
 			if($type == 1)
 			{ //Friend request SENT, display the goodies				
 				$result = $this->Query("SELECT users.ID, users.Username, users.avatarActivate, users.avatarExtension, friends.reqDate FROM users, friends WHERE friends.id = ".$d1." AND users.ID=friends.Asker");
-				$row = mysql_fetch_array($result);
+				$row = mysqli_fetch_array($result);
 				if($row['avatarActivate'] == 'no')
 				{
 					$userimage = $this->Host . "/avatars/default.gif";
@@ -260,10 +260,10 @@ class AFTWNotifications extends Config {
 			{ // type == 2, post on profile, uid is for the user that is being posted on, and d1 is the comment id to map everything together
 				// build the main query
 				$result = $this->Query("SELECT users.ID, users.Username, users.avatarActivate, users.avatarExtension, page_comments.id AS cid, page_comments.comments FROM users, page_comments WHERE page_comments.id = ".$d1." AND users.ID=page_comments.uid");
-				$row = mysql_fetch_array($result);
+				$row = mysqli_fetch_array($result);
 				//sub query.. for the username of the receiver..
 				$result1 = $this->Query("SELECT Username FROM users WHERE ID = ".$uid);
-				$row1 = mysql_fetch_array($result1);
+				$row1 = mysqli_fetch_array($result1);
 				if($row['avatarActivate'] == 'no'){
 					$userimage = $this->Host . "/avatars/default.gif";
 				}
@@ -334,7 +334,7 @@ class AFTWNotifications extends Config {
 
 	# function RecordView
 	private function RecordView(){
-		mysql_query("UPDATE users SET viewNotifications = '".time()."' WHERE ID = '".$this->UserArray[1]."'");
+		mysqli_query("UPDATE users SET viewNotifications = '".time()."' WHERE ID = '".$this->UserArray[1]."'");
 	}
 }
 

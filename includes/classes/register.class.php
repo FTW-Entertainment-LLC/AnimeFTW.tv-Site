@@ -65,12 +65,12 @@ class Register extends Config {
 												else
 												{
 													$query = "INSERT INTO users (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $this->sanitizeInput($_POST['email'] ) . ", '" . $this->generateRandomString(32) . "', " . $this->sanitizeInput(@$_POST['firstname']) . ", " . $this->sanitizeInput(@$_POST['gender']) . ", " . $this->sanitizeInput(@$_POST['ageDate']) . ", " . $this->sanitizeInput(@$_POST['ageMonth']) . ", " . $this->sanitizeInput(@$_POST['ageYear']) . ", '".$_SERVER['REMOTE_ADDR']."', ".$this->sanitizeInput($_POST['timeZone']).")";
-													$result = mysql_query($query);
+													$result = mysqli_query($query);
 													$getUser = "SELECT `ID`, `Username`, `Email`, `Random_key` FROM `users` WHERE `Username` = " . $this->sanitizeInput($this->makeUrlFriendly("$postUsername") ) . "";
-													$results = mysql_query($getUser);
-													if(mysql_num_rows($results) == 1)
+													$results = mysqli_query($getUser);
+													if(mysqli_num_rows($results) == 1)
 													{
-														$row = mysql_fetch_assoc($results);
+														$row = mysqli_fetch_assoc($results);
 														$message = "Dear ".$row['Username'].", this is your activation link to join our website at animeftw.tv. \n\nIn order to confirm your membership please click on the following link: https://www.animeftw.tv/confirm?ID=" . $row['ID'] . "&key=" . $row['Random_key'] . "\n\nAfter you confirm your status with us, please go visit https://www.animeftw.tv/rules - our Rules and https://www.animeftw.tv/faq - our FAQ and become associated with the basics of the site, we try to keep order as best as we can so we have some rules in place. \n\nThank you for joining, please go and visit our rules after you have logged in to familiarize yourself with our site policies! https://www.animeftw.tv/rules - Found here \n\n When you are settled in, come join us in Discord! https://discord.gg/JCm5b5E \n\nRegards, \n\nFTW Entertainment LLC & AnimeFTW Staff.";
 														
 														// First check to see if they want to recieve notifications from site pms
@@ -81,7 +81,7 @@ class Register extends Config {
 														else
 														{
 															// they don't want to receive our emails :(
-															$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
+															$suplementalquery = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
 														}
 														// check to see if they want to receive admin emails
 														if(isset($_POST['notifications']) && $_POST['notifications'] == 1)
@@ -91,7 +91,7 @@ class Register extends Config {
 														else
 														{
 															// sandpanda..
-															$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
+															$suplementalquery = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
 														}
 														include_once("email.class.php");
 														$Email = new Email($row['Email']);
@@ -156,11 +156,11 @@ class Register extends Config {
 		$OutputArray = array('error' => NULL, 'msg' => NULL);
 		if ( $_GET['ID'] != '' && is_numeric ( $_GET['ID'] ) == TRUE && strlen ( $_GET['key'] ) == 32 && ctype_alnum( $_GET['key'] ) == TRUE ) {
 			$query = "SELECT ID, Password, Random_key, Active FROM `users` WHERE ID = " . $this->sanitizeInput($_GET['ID']);
-			$result = mysql_query($query);
+			$result = mysqli_query($query);
 			
-			if(mysql_num_rows($result) == 1)
+			if(mysqli_num_rows($result) == 1)
 			{
-				$row = mysql_fetch_assoc($result);
+				$row = mysqli_fetch_assoc($result);
 				if( $row['Active'] == 1 ) {
 					$OutputArray['error'] = 'This member is already active ! Please login to your account.';
 				}
@@ -168,7 +168,7 @@ class Register extends Config {
 					$OutputArray['error'] = 'The confirmation key that was generated for this member does not match with the one entered !';
 				}
 				else {
-					$update = mysql_query("UPDATE `users` SET Active = 1 WHERE ID=" . $this->sanitizeInput($row['ID']));
+					$update = mysqli_query("UPDATE `users` SET Active = 1 WHERE ID=" . $this->sanitizeInput($row['ID']));
 					include_once('sessions.class.php');
 					$Session = new Sessions();
 					$Session->setUserSessionData($row['ID'],$row['Username'],TRUE);
@@ -189,9 +189,9 @@ class Register extends Config {
 	{
 		$query = "SELECT COUNT(*) as total FROM `users` WHERE `" . $field . "` = " . $this->sanitizeInput($compared);
 		
-		$query = mysql_query($query);
+		$query = mysqli_query($query);
 		
-		$query = mysql_fetch_assoc($query);
+		$query = mysqli_fetch_assoc($query);
 		
 		if($query['total'] == 0){
 			return TRUE;
@@ -227,7 +227,7 @@ class Register extends Config {
 	{
 		if (!$magic_quotes) {
 			if (strnatcmp(PHP_VERSION, '4.3.0') >= 0) {
-				return "'" . mysql_real_escape_string($string) . "'";
+				return "'" . mysqli_real_escape_string($string) . "'";
 			}
 			$string = str_replace("'", "\\'" , str_replace('\\', '\\\\', str_replace("\0", "\\\0", $string)));
 			return  "'" . $string . "'"; 

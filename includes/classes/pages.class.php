@@ -186,14 +186,14 @@ class AFTWpage{
 	}
 
 	public function LatestNews($profileArray){
-		mysql_query("SET NAMES 'utf8'");
+		mysqli_query("SET NAMES 'utf8'");
         if ($profileArray[2] != 0 && $profileArray[2] != 3) {
             $showForumPosts = "'1','2','9', '14'";
         } else {
             $showForumPosts = "'1','2','9'";
         }
-		$query = mysql_query("SELECT `tid`, `ttitle`, `tpid`, `tfid`, `tdate`, `fseo` FROM `forums_threads` INNER JOIN `forums_forum` ON `forums_forum`.`fid`=`forums_threads`.`tfid` WHERE `forums_threads`.`tfid` in (" . $showForumPosts . ") ORDER BY `tid` DESC LIMIT 0, 1");
-		$row = mysql_fetch_array($query);
+		$query = mysqli_query("SELECT `tid`, `ttitle`, `tpid`, `tfid`, `tdate`, `fseo` FROM `forums_threads` INNER JOIN `forums_forum` ON `forums_forum`.`fid`=`forums_threads`.`tfid` WHERE `forums_threads`.`tfid` in (" . $showForumPosts . ") ORDER BY `tid` DESC LIMIT 0, 1");
+		$row = mysqli_fetch_array($query);
 		$ttitle = stripslashes($row['ttitle']);
 		$ttitle = htmlspecialchars($ttitle);
 		echo "<a href=\"/forums/".$row['fseo']."/topic-".$row['tid']."/s-0\"><img src=\"//i.animeftw.tv/latest-news.png\" alt=\"\" title=\"Posted on: ".date("M j Y, h:i A",$row['tdate'])."\" /></a><span class=\"search-text-pre\">News: </span><span class=\"search-text-post\" title=\"$ttitle\">";

@@ -65,8 +65,8 @@ class AFTWUserNav extends Config {
             echo '</div>';
             if($this->UserArray[2] != 0 && $this->UserArray[2] != 3 && $this->UserArray[2] != 7){
                 if($this->UserArray[2] == 1 || $this->UserArray[2] == 2){
-                    $query = mysql_query("SELECT ID FROM uestatus WHERE `change` = 1");
-                    $CountUpdated = mysql_num_rows($query);
+                    $query = mysqli_query("SELECT ID FROM uestatus WHERE `change` = 1");
+                    $CountUpdated = mysqli_num_rows($query);
                     if($CountUpdated > 0){
                         $display2 = " disBlock";
                     }
@@ -147,8 +147,8 @@ class AFTWUserNav extends Config {
 
     private function Messages($uid){
         $query   = "SELECT COUNT(id) AS unreadMsgs FROM messages WHERE rid='".$uid."' AND viewed='1' AND sent = '0'";
-        $result  = mysql_query($query) or die('Error, query failed:' . mysql_error());
-        $row     = mysql_fetch_array($result, MYSQL_ASSOC);
+        $result  = mysqli_query($query) or die('Error, query failed:' . mysqli_error());
+        $row     = mysqli_fetch_array($result, MYSQL_ASSOC);
         $unreadMsgs = $row['unreadMsgs'];
         return $unreadMsgs;
     }

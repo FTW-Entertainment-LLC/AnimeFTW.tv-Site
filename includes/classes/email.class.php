@@ -52,11 +52,11 @@ class Email extends Config {
 		// if the type is 0, it's a notification about an order being submitted, we need the Type and the Order ID
 		if($Type == 0 || $Type == 1 || $Type == 4)
 		{
-			$query = "SELECT store_orders.id, store_orders.total_price, store_orders.date_submitted, store_orders.status, store_orders.tracking_num, store_orders.payment_method, store_orders.payment_id, store_order_paypallogs.shipping, store_order_paypallogs.first_name, store_order_paypallogs.last_name, store_order_paypallogs.address_street, store_order_paypallogs.address_city, store_order_paypallogs.address_state, store_order_paypallogs.address_zip, store_order_paypallogs.address_country FROM store_orders, store_order_paypallogs WHERE store_order_paypallogs.txn_id=payment_id AND store_orders.cart_id=" . mysql_real_escape_string($Var1);
-			$results = mysql_query($query);
-			$row = mysql_fetch_array($results);
+			$query = "SELECT store_orders.id, store_orders.total_price, store_orders.date_submitted, store_orders.status, store_orders.tracking_num, store_orders.payment_method, store_orders.payment_id, store_order_paypallogs.shipping, store_order_paypallogs.first_name, store_order_paypallogs.last_name, store_order_paypallogs.address_street, store_order_paypallogs.address_city, store_order_paypallogs.address_state, store_order_paypallogs.address_zip, store_order_paypallogs.address_country FROM store_orders, store_order_paypallogs WHERE store_order_paypallogs.txn_id=payment_id AND store_orders.cart_id=" . mysqli_real_escape_string($Var1);
+			$results = mysqli_query($query);
+			$row = mysqli_fetch_array($results);
 			
-			//list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysql_fetch_array($results)
+			//list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysqli_fetch_array($results)
 			// $Var1 is going to be the cart_id, since the email is going out, it means that we are to send based on the cart which has been moved to inactive, and has created an entry in the orders tab.
 			$this->Subject = "AnimeFTW.tv Store Order Update, Order ID #" . str_pad($row['id'], 8, '0', STR_PAD_LEFT);
 
@@ -91,9 +91,9 @@ Order Status: " . $OrderStatus . "
 Products
 ------------------------------------------------------\n";
 
-$subresults = mysql_query("SELECT (SELECT item_size FROM store_inventory WHERE id=store_orders_items.inventory_id) AS item_size, store_orders_items.quantity, store_items.name, store_items.price FROM store_orders_items, store_items WHERE store_orders_items.cart_id=" . $Var1 . " AND store_items.id=store_orders_items.item_id");		
+$subresults = mysqli_query("SELECT (SELECT item_size FROM store_inventory WHERE id=store_orders_items.inventory_id) AS item_size, store_orders_items.quantity, store_items.name, store_items.price FROM store_orders_items, store_items WHERE store_orders_items.cart_id=" . $Var1 . " AND store_items.id=store_orders_items.item_id");		
 
-while(list($item_size,$quantity,$name,$price,) = mysql_fetch_array($subresults))
+while(list($item_size,$quantity,$name,$price,) = mysqli_fetch_array($subresults))
 {
 	$this->Body .= "$quantity x $name = " . ($quantity*$price) . " \nSize $item_size\n";
 }			
@@ -124,21 +124,21 @@ Billing Address:
 ------------------------------------------------------
 This is not a receipt! For questions or comments, please post on the forums or contact support@animeftw.tv, referencing order id " . str_pad($row['id'], 8, '0', STR_PAD_LEFT);
 
-mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Store Update for Cart " . $row['id'] . "');");
+mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Store Update for Cart " . $row['id'] . "');");
 		}
 		else if($Type == 2)
 		{
 			$this->Subject = 'Video Image Creation Errors.';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'Video Image Creation Error Email');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'Video Image Creation Error Email');");
 		} 
 		else if($Type == 3)
 		{
 			$this->Subject = 'Advanced Member Check';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'Advanced Member Check');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'Advanced Member Check');");
 		} 
 		else if($Type == 5)
 		{
@@ -146,7 +146,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'AnimeFTW.tv Management - Login Failure';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'Failed Login Attempt AFTW Management');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'Failed Login Attempt AFTW Management');");
 		}
 		else if($Type == 6)
 		{
@@ -154,7 +154,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'AnimeFTW.tv Management - Password Change Request';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management Password Change Request');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management Password Change Request');");
 		}
 		else if($Type == 7)
 		{
@@ -162,7 +162,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'AnimeFTW.tv Automated Video Muxing Process';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management Password Change Request');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management Password Change Request');");
 		}
 		else if($Type == 8)
 		{
@@ -177,7 +177,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			
 			$this->Body = $variable;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management New Series Notification');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Management New Series Notification');");
 		}
 		else if($Type == 9)
 		{
@@ -185,7 +185,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'New Session at AnimeFTW.tv!';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
 		}
 		else if($Type == 10)
 		{
@@ -193,7 +193,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'AnimeFTW.tv Session Removal!';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Session Removed.');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Session Removed.');");
 		}
 		else if($Type == 11)
 		{
@@ -201,7 +201,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'Activation email from AnimeFTW.tv';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Account Registration');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Account Registration');");
 		}
 		else if($Type == 12)
 		{
@@ -209,7 +209,7 @@ mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (N
 			$this->Subject = 'Failed Registration - AnimeFTW.tv';
 			$this->Body = $Var1;
 			
-			mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Account Registration Failure Notice');");
+			mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'AnimeFTW.tv Account Registration Failure Notice');");
 		}
 		else
 		{

@@ -35,13 +35,13 @@ class processData extends Config {
 				{
 					$permissionsid = substr($name, 4);
 					$query = "SELECT groupID FROM site_groups";
-					$results = mysql_query($query);
+					$results = mysqli_query($query);
 					$i = 0;
 					// we want to query the database, to get a full list of groups, that way we can delete objects where need be..
-					while($row = mysql_fetch_array($results))
+					while($row = mysqli_fetch_array($results))
 					{
-						$query = mysql_query("SELECT id FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
-						$count = mysql_num_rows($query);
+						$query = mysqli_query("SELECT id FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
+						$count = mysqli_num_rows($query);
 						if(in_array($row[0],$value))
 						{
 							//if the presented valiable is IN the array, that means it needs to be added
@@ -51,14 +51,14 @@ class processData extends Config {
 							}
 							else
 							{ //for everything else you need to add it.
-								mysql_query("INSERT INTO permissions_objects (id, oid, type, permission_id) VALUES (NULL, '".mysql_real_escape_string($row[0])."', '1', '".mysql_real_escape_string($permissionsid)."')") or die(mysql_error());
+								mysqli_query("INSERT INTO permissions_objects (id, oid, type, permission_id) VALUES (NULL, '".mysqli_real_escape_string($row[0])."', '1', '".mysqli_real_escape_string($permissionsid)."')") or die(mysqli_error());
 							}
 						}
 						else
 						{ //its not in the array, it can be deleted
 							if($count == 1)
 							{ // the package was found in the DB, but we dont need it, so it can be deleted
-								mysql_query("DELETE FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
+								mysqli_query("DELETE FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
 							}
 							else
 							{
@@ -78,27 +78,27 @@ class processData extends Config {
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$this->uid = $_POST['uid'];
-				$sid = mysql_real_escape_string($_POST['sid']);
-				$seriesName = mysql_real_escape_string($_POST['seriesName']);
-				$fullSeriesName = mysql_real_escape_string($_POST['fullSeriesName']);
-				$kanji = mysql_real_escape_string($_POST['kanji']);
-				$romaji = mysql_real_escape_string($_POST['romaji']);
-				$synonym = mysql_real_escape_string($_POST['synonym']);
-				$seoname = mysql_real_escape_string($_POST['seoname']);
-				$videoServer = mysql_real_escape_string($_POST['videoServer']);
-				$active = mysql_real_escape_string($_POST['active']);
-				$description = mysql_real_escape_string($_POST['description2']);
-				$ratingLink = mysql_real_escape_string($_POST['ratingLink']);
-				$stillRelease = mysql_real_escape_string($_POST['stillRelease']);
-				$Movies = mysql_real_escape_string($_POST['Movies']);
-				$moviesOnly = mysql_real_escape_string($_POST['moviesOnly']);
-				$OVA = mysql_real_escape_string($_POST['OVA']);
-				$noteReason = mysql_real_escape_string($_POST['noteReason']);
-				$aonly = mysql_real_escape_string($_POST['aonly']);
-				$prequelto = mysql_real_escape_string($_POST['prequelto']);
-				$sequelto = mysql_real_escape_string($_POST['sequelto']);
-				$hd = mysql_real_escape_string($_POST['hd']);
-				$license = mysql_real_escape_string($_POST['license']);
+				$sid = mysqli_real_escape_string($_POST['sid']);
+				$seriesName = mysqli_real_escape_string($_POST['seriesName']);
+				$fullSeriesName = mysqli_real_escape_string($_POST['fullSeriesName']);
+				$kanji = mysqli_real_escape_string($_POST['kanji']);
+				$romaji = mysqli_real_escape_string($_POST['romaji']);
+				$synonym = mysqli_real_escape_string($_POST['synonym']);
+				$seoname = mysqli_real_escape_string($_POST['seoname']);
+				$videoServer = mysqli_real_escape_string($_POST['videoServer']);
+				$active = mysqli_real_escape_string($_POST['active']);
+				$description = mysqli_real_escape_string($_POST['description2']);
+				$ratingLink = mysqli_real_escape_string($_POST['ratingLink']);
+				$stillRelease = mysqli_real_escape_string($_POST['stillRelease']);
+				$Movies = mysqli_real_escape_string($_POST['Movies']);
+				$moviesOnly = mysqli_real_escape_string($_POST['moviesOnly']);
+				$OVA = mysqli_real_escape_string($_POST['OVA']);
+				$noteReason = mysqli_real_escape_string($_POST['noteReason']);
+				$aonly = mysqli_real_escape_string($_POST['aonly']);
+				$prequelto = mysqli_real_escape_string($_POST['prequelto']);
+				$sequelto = mysqli_real_escape_string($_POST['sequelto']);
+				$hd = mysqli_real_escape_string($_POST['hd']);
+				$license = mysqli_real_escape_string($_POST['license']);
 
 				// ADDED 10/11/2014 by robotman321
 				// will count the amount of categories to make sure everything is added right.
@@ -114,45 +114,45 @@ class processData extends Config {
 					}
 					$i++;
 				}
-				$seriesType = mysql_real_escape_string($_POST['seriesType']);
-				$seriesList = mysql_real_escape_string($_POST['seriesList']);
-				$ueid = mysql_real_escape_string($_POST['uploadsEntry']);
+				$seriesType = mysqli_real_escape_string($_POST['seriesType']);
+				$seriesList = mysqli_real_escape_string($_POST['seriesList']);
+				$ueid = mysqli_real_escape_string($_POST['uploadsEntry']);
 
 				$fullSeriesName = htmlspecialchars($fullSeriesName);
 				$kanji = htmlspecialchars($kanji);
 				$description = nl2br($description);
 				$noteReason = nl2br($noteReason);
 				//echo $description;
-				mysql_query("SET NAMES 'utf8'");
+				mysqli_query("SET NAMES 'utf8'");
 				$query = 'UPDATE series
-					SET seriesName=\'' . mysql_real_escape_string($seriesName) .'\',
+					SET seriesName=\'' . mysqli_real_escape_string($seriesName) .'\',
 					fullSeriesName=\'' . $fullSeriesName . '\',
-					romaji=\'' . mysql_real_escape_string($romaji) . '\',
-					kanji=\'' . mysql_real_escape_string($kanji) . '\',
+					romaji=\'' . mysqli_real_escape_string($romaji) . '\',
+					kanji=\'' . mysqli_real_escape_string($kanji) . '\',
 					synonym=\'' . $synonym . '\',
-					seoname=\'' . mysql_real_escape_string($seoname) . '\',
-					videoServer=\'' . mysql_real_escape_string($videoServer) . '\',
-					active=\'' . mysql_real_escape_string($active) . '\',
+					seoname=\'' . mysqli_real_escape_string($seoname) . '\',
+					videoServer=\'' . mysqli_real_escape_string($videoServer) . '\',
+					active=\'' . mysqli_real_escape_string($active) . '\',
 					description=\'' . $description . '\',
-					ratingLink=\'' . mysql_real_escape_string($ratingLink) . '\',
-					stillRelease=\'' . mysql_real_escape_string($stillRelease) . '\',
-					Movies=\'' . mysql_real_escape_string($Movies) . '\',
-					moviesOnly=\'' . mysql_real_escape_string($moviesOnly) . '\',
-					OVA=\'' . mysql_real_escape_string($OVA) . '\',
+					ratingLink=\'' . mysqli_real_escape_string($ratingLink) . '\',
+					stillRelease=\'' . mysqli_real_escape_string($stillRelease) . '\',
+					Movies=\'' . mysqli_real_escape_string($Movies) . '\',
+					moviesOnly=\'' . mysqli_real_escape_string($moviesOnly) . '\',
+					OVA=\'' . mysqli_real_escape_string($OVA) . '\',
 					noteReason=\'' . $noteReason . '\',
-					aonly=\'' . mysql_real_escape_string($aonly) . '\',
-					prequelto=\'' . mysql_real_escape_string($prequelto) . '\',
-					sequelto=\'' . mysql_real_escape_string($sequelto) . '\',
+					aonly=\'' . mysqli_real_escape_string($aonly) . '\',
+					prequelto=\'' . mysqli_real_escape_string($prequelto) . '\',
+					sequelto=\'' . mysqli_real_escape_string($sequelto) . '\',
 					category=\'' . $category . '\',
-					seriesType=\'' . mysql_real_escape_string($seriesType) . '\',
-					seriesList=\'' . mysql_real_escape_string($seriesList) . '\',
-					hd=\'' . mysql_real_escape_string($hd) . '\',
+					seriesType=\'' . mysqli_real_escape_string($seriesType) . '\',
+					seriesList=\'' . mysqli_real_escape_string($seriesList) . '\',
+					hd=\'' . mysqli_real_escape_string($hd) . '\',
 					ueid=\'' . $ueid . '\',
 					`license`=\'' . $license . '\',
 					`updated`=\'' . time() . '\'
 					WHERE id=' . $sid . '';
-				mysql_query($query) or die('Error : ' . mysql_error());
-				$euidd = mysql_query("UPDATE uestatus SET sid = $sid WHERE ID = $ueid");
+				mysqli_query($query) or die('Error : ' . mysqli_error());
+				$euidd = mysqli_query("UPDATE uestatus SET sid = $sid WHERE ID = $ueid");
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
 
 				$this->ModRecord('Edit series, ' . $fullSeriesName);
@@ -168,26 +168,26 @@ class processData extends Config {
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$this->uid = $_POST['uid'];
-				$seriesName = mysql_real_escape_string($_POST['seriesName']);
-				$fullSeriesName = mysql_real_escape_string($_POST['fullSeriesName']);
-				$kanji = mysql_real_escape_string($_POST['kanji']);
-				$romaji = mysql_real_escape_string($_POST['romaji']);
-				$synonym = mysql_real_escape_string($_POST['synonym']);
-				$seoname = mysql_real_escape_string($_POST['seoname']);
-				$videoServer = mysql_real_escape_string($_POST['videoServer']);
-				$active = mysql_real_escape_string($_POST['active']);
-				$description = mysql_real_escape_string($_POST['description2']);
-				$ratingLink = mysql_real_escape_string($_POST['ratingLink']);
-				$stillRelease = mysql_real_escape_string($_POST['stillRelease']);
-				$Movies = mysql_real_escape_string($_POST['Movies']);
-				$moviesOnly = mysql_real_escape_string($_POST['moviesOnly']);
-				$OVA = mysql_real_escape_string($_POST['OVA']);
-				$noteReason = mysql_real_escape_string($_POST['noteReason']);
-				$aonly = mysql_real_escape_string($_POST['aonly']);
-				$prequelto = mysql_real_escape_string($_POST['prequelto']);
-				$sequelto = mysql_real_escape_string($_POST['sequelto']);
-				$hd = mysql_real_escape_string($_POST['hd']);
-				$license = mysql_real_escape_string($_POST['license']);
+				$seriesName = mysqli_real_escape_string($_POST['seriesName']);
+				$fullSeriesName = mysqli_real_escape_string($_POST['fullSeriesName']);
+				$kanji = mysqli_real_escape_string($_POST['kanji']);
+				$romaji = mysqli_real_escape_string($_POST['romaji']);
+				$synonym = mysqli_real_escape_string($_POST['synonym']);
+				$seoname = mysqli_real_escape_string($_POST['seoname']);
+				$videoServer = mysqli_real_escape_string($_POST['videoServer']);
+				$active = mysqli_real_escape_string($_POST['active']);
+				$description = mysqli_real_escape_string($_POST['description2']);
+				$ratingLink = mysqli_real_escape_string($_POST['ratingLink']);
+				$stillRelease = mysqli_real_escape_string($_POST['stillRelease']);
+				$Movies = mysqli_real_escape_string($_POST['Movies']);
+				$moviesOnly = mysqli_real_escape_string($_POST['moviesOnly']);
+				$OVA = mysqli_real_escape_string($_POST['OVA']);
+				$noteReason = mysqli_real_escape_string($_POST['noteReason']);
+				$aonly = mysqli_real_escape_string($_POST['aonly']);
+				$prequelto = mysqli_real_escape_string($_POST['prequelto']);
+				$sequelto = mysqli_real_escape_string($_POST['sequelto']);
+				$hd = mysqli_real_escape_string($_POST['hd']);
+				$license = mysqli_real_escape_string($_POST['license']);
 
 				// ADDED 10/11/2014 by robotman321
 				// will count the amount of categories to make sure everything is added right.
@@ -203,16 +203,16 @@ class processData extends Config {
 					}
 					$i++;
 				}
-				$seriesType = mysql_real_escape_string($_POST['seriesType']);
-				$seriesList = mysql_real_escape_string($_POST['seriesList']);
-				$ueid = mysql_real_escape_string($_POST['uploadsEntry']);
+				$seriesType = mysqli_real_escape_string($_POST['seriesType']);
+				$seriesList = mysqli_real_escape_string($_POST['seriesList']);
+				$ueid = mysqli_real_escape_string($_POST['uploadsEntry']);
 
-				mysql_query("SET NAMES 'utf8'");
+				mysqli_query("SET NAMES 'utf8'");
 				$query = "INSERT INTO series (`seriesName`, `fullSeriesName`, `romaji`, `kanji`, `synonym`, `seoname`, `videoServer`, `active`, `description`, `ratingLink`, `stillRelease`, `Movies`, `moviesOnly`, `OVA`, `noteReason`, `aonly`, `prequelto`, `sequelto`, `category`, `seriesType`, `seriesList`, `ueid`, `hd`, `license`, `added`, `updated`) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList', '$ueid', '$hd', '$license', '" . time() . "', '" . time() . "')";
-				mysql_query($query) or die('There was an error adding the series: ' . mysql_error() . ', here was the query: ' . $query);
+				mysqli_query($query) or die('There was an error adding the series: ' . mysqli_error() . ', here was the query: ' . $query);
 
 				$sid = $this->SingleVarQuery("SELECT id FROM series WHERE seriesName = '" . $seriesName . "'",'id'); //Get the Series ID through seriesName
-				$euidd = mysql_query("UPDATE uestatus SET sid = $sid WHERE ID = $ueid");
+				$euidd = mysqli_query("UPDATE uestatus SET sid = $sid WHERE ID = $ueid");
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
 				$this->ModRecord('Add Series, ' . $FullSeriesName);
 				//Send an email to mimby cause she wants to be in teh know
@@ -231,20 +231,20 @@ class processData extends Config {
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$this->uid = $_POST['uid'];
-				$sid = mysql_real_escape_string($_POST['sid']);
-				$fullSeriesName = mysql_real_escape_string($_POST['fullSeriesName']);
-				$old_vidwidth = mysql_real_escape_string($_POST['old_vidwidth']);
-				$old_vidheight = mysql_real_escape_string($_POST['old_vidheight']);
-				$old_epprefix = mysql_real_escape_string($_POST['old_epprefix']);
-				$old_subGroup = mysql_real_escape_string($_POST['old_subGroup']);
-				$old_videotype = mysql_real_escape_string($_POST['old_videotype']);
-				$old_hd = mysql_real_escape_string($_POST['old_hd']);
-				$vidwidth = mysql_real_escape_string($_POST['vidwidth']);
-				$vidheight = mysql_real_escape_string($_POST['vidheight']);
-				$epprefix = mysql_real_escape_string($_POST['epprefix']);
-				$subGroup = mysql_real_escape_string($_POST['subGroup']);
-				$videotype = mysql_real_escape_string($_POST['videotype']);
-				$hd = mysql_real_escape_string($_POST['hd']);
+				$sid = mysqli_real_escape_string($_POST['sid']);
+				$fullSeriesName = mysqli_real_escape_string($_POST['fullSeriesName']);
+				$old_vidwidth = mysqli_real_escape_string($_POST['old_vidwidth']);
+				$old_vidheight = mysqli_real_escape_string($_POST['old_vidheight']);
+				$old_epprefix = mysqli_real_escape_string($_POST['old_epprefix']);
+				$old_subGroup = mysqli_real_escape_string($_POST['old_subGroup']);
+				$old_videotype = mysqli_real_escape_string($_POST['old_videotype']);
+				$old_hd = mysqli_real_escape_string($_POST['old_hd']);
+				$vidwidth = mysqli_real_escape_string($_POST['vidwidth']);
+				$vidheight = mysqli_real_escape_string($_POST['vidheight']);
+				$epprefix = mysqli_real_escape_string($_POST['epprefix']);
+				$subGroup = mysqli_real_escape_string($_POST['subGroup']);
+				$videotype = mysqli_real_escape_string($_POST['videotype']);
+				$hd = mysqli_real_escape_string($_POST['hd']);
 				$UpdateType = $_POST['UpdateType'];
 
 				if($old_epprefix != $epprefix) // if the episode prefix changed, then it nullifies the episodes images..
@@ -275,7 +275,7 @@ class processData extends Config {
 
 				$fullSeriesName = stripslashes($fullSeriesName);
 				//echo $description;
-				mysql_query("SET NAMES 'utf8'");
+				mysqli_query("SET NAMES 'utf8'");
 				$query = 'UPDATE episode
 					SET vidwidth=\'' . $vidwidth .'\',
 					vidheight=\'' . $vidheight . '\',
@@ -284,7 +284,7 @@ class processData extends Config {
 					videotype=\'' . $videotype . '\',
 					hd=\'' . $hd . '\''.$QuerySet.'
 					WHERE sid=\'' . $sid . '\'' . $QueryAddon;
-				mysql_query($query) or die('Error : ' . mysql_error());
+				mysqli_query($query) or die('Error : ' . mysqli_error());
 				$this->ModRecord('Mass Episode Edit for Series ' . $fullSeriesName . ', old -vh:' . $old_vidheight . ', -vw:' . $old_vidwidth . ', -pref:' . $old_epprefix . ', -sg:' . $old_subGroup . ', -vt:' . $old_videotype . '');
 				echo 'Success';
 			}
@@ -325,12 +325,12 @@ class processData extends Config {
 
                 // We work on the Series block first
                 $query = "SELECT `id`, `seoname`, `fullSeriesName`, `stillRelease`, `hd` FROM `series` WHERE `added` >= ${startDate} AND `added` <= ${endDate}";
-                $result = mysql_query($query);
+                $result = mysqli_query($query);
                 $seriesArray = [];
-                while ($row = mysql_fetch_assoc($result)) {
+                while ($row = mysqli_fetch_assoc($result)) {
                     $seriesArray[] = $row;
                 }
-                $numSeriesRows = mysql_num_rows($result);
+                $numSeriesRows = mysqli_num_rows($result);
                 $totalTemplateRows = ceil($numSeriesRows/3);
 
                 $seriesLayout = new Template("../template/eblast/anime-update-block.tpl");
@@ -388,12 +388,12 @@ class processData extends Config {
                             `episode`.`updated` >= ${startDate} AND
                             `episode`.`updated` <= ${endDate}";
                             echo $query;
-                $result = mysql_query($query);
-                $numEpRows = mysql_num_rows($result);
+                $result = mysqli_query($query);
+                $numEpRows = mysqli_num_rows($result);
 
                 if ($numEpRows != 0) {
                     $episodeArray = [];
-                    while ($row = mysql_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($result)) {
                         $episodeArray[] = $row;
                     }
                     $totalTemplateRows = ceil($numEpRows/3);
@@ -422,8 +422,8 @@ class processData extends Config {
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
-				$episodes = mysql_real_escape_string($_POST['episodesdoing'])."/".mysql_real_escape_string($_POST['episodetotal']);
-				$dimmensions = mysql_real_escape_string($_POST['width'])."x".mysql_real_escape_string($_POST['height']);
+				$episodes = mysqli_real_escape_string($_POST['episodesdoing'])."/".mysqli_real_escape_string($_POST['episodetotal']);
+				$dimmensions = mysqli_real_escape_string($_POST['width'])."x".mysqli_real_escape_string($_POST['height']);
 				if(isset($_POST['Status']) && ($_POST['Status'] == 'ongoing' || $_POST['Status'] == 'done'))
 				{
 					$Change = 1;
@@ -432,10 +432,10 @@ class processData extends Config {
 				{
 					$Change = 0;
 				}
-				$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`, `hd`, `airing`) VALUES ('" . mysql_real_escape_string($_POST['Series']) . "', '" . mysql_real_escape_string($_POST['Prefix']) . "', '" . $episodes . "', '" . mysql_real_escape_string($_POST['Type']) . "', '" . $dimmensions . "', '" . mysql_real_escape_string($_POST['Status']) . "', '" . mysql_real_escape_string($_POST['user']) . "', NOW(), '" . mysql_real_escape_string($_POST['anidb']) . "', '" . mysql_real_escape_string($_POST['fansub']) . "', '" . mysql_real_escape_string($_POST['sid']) . "', " . $Change . ", '" . mysql_real_escape_string($_POST['hdresolution']) . "', '" . mysql_real_escape_string($_POST['seriesstatus']) . "')";
-				mysql_query($query) or die(mysql_error());
+				$query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`, `hd`, `airing`) VALUES ('" . mysqli_real_escape_string($_POST['Series']) . "', '" . mysqli_real_escape_string($_POST['Prefix']) . "', '" . $episodes . "', '" . mysqli_real_escape_string($_POST['Type']) . "', '" . $dimmensions . "', '" . mysqli_real_escape_string($_POST['Status']) . "', '" . mysqli_real_escape_string($_POST['user']) . "', NOW(), '" . mysqli_real_escape_string($_POST['anidb']) . "', '" . mysqli_real_escape_string($_POST['fansub']) . "', '" . mysqli_real_escape_string($_POST['sid']) . "', " . $Change . ", '" . mysqli_real_escape_string($_POST['hdresolution']) . "', '" . mysqli_real_escape_string($_POST['seriesstatus']) . "')";
+				mysqli_query($query) or die(mysqli_error());
 
-				$this->ModRecord('Added a Series to the Tracker, ' . mysql_real_escape_string($_POST['Series']));
+				$this->ModRecord('Added a Series to the Tracker, ' . mysqli_real_escape_string($_POST['Series']));
                 if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv' && (isset($_POST['Status']) && isset($_POST['Previous-Status']) && $_POST['Status'] != $_POST['Previous-Status'] && ($_POST['Status'] == 'done' || $_POST['Status'] == 'ongoing'))){
                     $slackData = "*New Series added to the tracker by " . $this->string_fancyUsername($_POST['uploader'],NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \nTitled: " . $_POST['Series'] . "\nPosted in the " . $_POST['Status'] . " Section. <https://www.animeftw.tv/manage/#uploads>";
                     $slack = $this->postToSlack($slackData,1);
@@ -461,42 +461,42 @@ class processData extends Config {
 				{
 					$Change = 0;
 				}
-				$episodes = mysql_real_escape_string($_POST['episodesdoing'])."/".mysql_real_escape_string($_POST['episodetotal']);
-				$dimmensions = mysql_real_escape_string($_POST['width'])."x".mysql_real_escape_string($_POST['height']);
+				$episodes = mysqli_real_escape_string($_POST['episodesdoing'])."/".mysqli_real_escape_string($_POST['episodetotal']);
+				$dimmensions = mysqli_real_escape_string($_POST['width'])."x".mysqli_real_escape_string($_POST['height']);
 				$query = "UPDATE `uestatus` SET
-				`series` = '" . mysql_real_escape_string($_POST['Series']) . "',
-				`prefix` = '" . mysql_real_escape_string($_POST['Prefix']) . "',
+				`series` = '" . mysqli_real_escape_string($_POST['Series']) . "',
+				`prefix` = '" . mysqli_real_escape_string($_POST['Prefix']) . "',
 				`episodes` = '" . $episodes . "',
-				`type` = '" . mysql_real_escape_string($_POST['Type']) . "',
+				`type` = '" . mysqli_real_escape_string($_POST['Type']) . "',
 				`resolution` = '" . $dimmensions . "',
-				`status` = '" . mysql_real_escape_string($_POST['Status']) . "',
-				`user` = '" . mysql_real_escape_string($_POST['uploader']) . "',
+				`status` = '" . mysqli_real_escape_string($_POST['Status']) . "',
+				`user` = '" . mysqli_real_escape_string($_POST['uploader']) . "',
 				`updated` = NOW(),
-				`anidbsid` = '" . mysql_real_escape_string($_POST['anidb']) . "',
-				`fansub` = '" . mysql_real_escape_string($_POST['fansub']) . "',
-				`sid` = '" . mysql_real_escape_string($_POST['sid']) . "',
+				`anidbsid` = '" . mysqli_real_escape_string($_POST['anidb']) . "',
+				`fansub` = '" . mysqli_real_escape_string($_POST['fansub']) . "',
+				`sid` = '" . mysqli_real_escape_string($_POST['sid']) . "',
 				`change` = " . $Change. ",
-				`hd` = '" . mysql_real_escape_string($_POST['hdresolution']) . "',
-				`airing` = '" . mysql_real_escape_string($_POST['seriesstatus']) . "'
-				WHERE `uestatus`.`ID` = " . mysql_real_escape_string($_POST['ueid']);
-				mysql_query($query) or die(mysql_error());
+				`hd` = '" . mysqli_real_escape_string($_POST['hdresolution']) . "',
+				`airing` = '" . mysqli_real_escape_string($_POST['seriesstatus']) . "'
+				WHERE `uestatus`.`ID` = " . mysqli_real_escape_string($_POST['ueid']);
+				mysqli_query($query) or die(mysqli_error());
 
 				// ADDED: 27/03/15 by Robotman321
 				// will update the Requests entry to ensure things are kept up to date.
                 // UPDATED: 06/05/2016 by Robotman321
                 // Uses Database value to verify status.
                 $query = "SELECT `value` FROM `settings` WHERE `name` = 'all_upload_statuses' LIMIT 1";
-                $result = mysql_query($query);
+                $result = mysqli_query($query);
 
-                $row = mysql_fetch_assoc($result);
+                $row = mysqli_fetch_assoc($result);
 
 				$EntryStatuses = explode('|', $row['value']);
 
 				// we will want to map the request to the uploads entry down the line, it will keep things working correctly..
-				$query = "UPDATE `requests` SET `status` = '" . array_search($_POST['Status'], $EntryStatuses) . "' WHERE `anidb` = " . mysql_real_escape_string($_POST['anidb']);
-				mysql_query($query) or die(mysql_error());
+				$query = "UPDATE `requests` SET `status` = '" . array_search($_POST['Status'], $EntryStatuses) . "' WHERE `anidb` = " . mysqli_real_escape_string($_POST['anidb']);
+				mysqli_query($query) or die(mysqli_error());
 
-				$this->ModRecord('Editted Tracker entry ' . mysql_real_escape_string($_POST['ueid']));
+				$this->ModRecord('Editted Tracker entry ' . mysqli_real_escape_string($_POST['ueid']));
                 if($_SERVER['HTTP_HOST'] == 'www.animeftw.tv' && (isset($_POST['Status']) && isset($_POST['Previous-Status']) && ($_POST['Status'] != $_POST['Previous-Status'] || ($_POST['Status'] == $_POST['Previous-Status'] && $_POST['Status'] == 'ongoing')) && ($_POST['Status'] == 'done' || $_POST['Status'] == 'ongoing'))){
                     $slackData = "*New Series updated on the tracker by " . $this->string_fancyUsername($_POST['uploader'],NULL,NULL,NULL,NULL,NULL,TRUE,FALSE) . "*: \nTitled: " . $_POST['Series'] . "\nPosted in the " . $_POST['Status'] . " Section. <https://www.animeftw.tv/manage/#uploads>";
                     $slack = $this->postToSlack($slackData,1);
@@ -517,9 +517,9 @@ class processData extends Config {
 			}
 			else
 			{
-				$query = "SELECT Password, Level_access FROM users WHERE ID = " . mysql_real_escape_string($_POST['s']);
-				$result = mysql_query($query);
-				$row = mysql_fetch_array($result);
+				$query = "SELECT Password, Level_access FROM users WHERE ID = " . mysqli_real_escape_string($_POST['s']);
+				$result = mysqli_query($query);
+				$row = mysqli_fetch_array($result);
 				if((isset($_POST['Authorization']) && $_POST['Authorization'] == md5($_SERVER['REMOTE_ADDR'].$row['Password'].$_SERVER['HTTP_USER_AGENT']) && ($row['Level_access'] != 1 && $row['Level_access'] != 2)) || ((isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001') && ($row['Level_access'] == 1 || $row['Level_access'] == 2)))
 				{
 					$rid = @$_POST['id'];
@@ -552,17 +552,17 @@ class processData extends Config {
 					$showChat = urldecode(@$_POST['showChat']);
 					$theme = urldecode(@$_POST['theme']);
 					if($row['Level_access'] == 1 || $row['Level_access'] == 2){
-						$additional = ', avatarActivate=\'' . mysql_real_escape_string($avataractive) . '\', avatarExtension=\'' . mysql_real_escape_string($avatarextension) . '\', personalMsg=\'' . mysql_real_escape_string($personalmsg) . '\', memberTitle=\'' . mysql_real_escape_string($membertitle) . '\', aboutMe=\'' . mysql_real_escape_string($aboutme) . '\', interests=\'' . mysql_real_escape_string($interests) . '\', signatureActive=\'' . mysql_real_escape_string($sigactive) . '\', Signature=\'' . mysql_real_escape_string($Signature) . '\'';
+						$additional = ', avatarActivate=\'' . mysqli_real_escape_string($avataractive) . '\', avatarExtension=\'' . mysqli_real_escape_string($avatarextension) . '\', personalMsg=\'' . mysqli_real_escape_string($personalmsg) . '\', memberTitle=\'' . mysqli_real_escape_string($membertitle) . '\', aboutMe=\'' . mysqli_real_escape_string($aboutme) . '\', interests=\'' . mysqli_real_escape_string($interests) . '\', signatureActive=\'' . mysqli_real_escape_string($sigactive) . '\', Signature=\'' . mysqli_real_escape_string($Signature) . '\'';
 					}
 					else if($row['Level_access'] != 3 && $row['Level_access'] != 1 && $row['Level_access'] != 2){
 					//AMs and staff can see these...
 						if($Signature != '')
 						{
-							$additional = ', aboutMe=\'' . mysql_real_escape_string($aboutme) . '\', interests=\'' . mysql_real_escape_string($interests) . '\', Signature=\'' . mysql_real_escape_string($Signature).'\', signatureActive=\'yes\'';
+							$additional = ', aboutMe=\'' . mysqli_real_escape_string($aboutme) . '\', interests=\'' . mysqli_real_escape_string($interests) . '\', Signature=\'' . mysqli_real_escape_string($Signature).'\', signatureActive=\'yes\'';
 						}
 						else
 						{
-							$additional = ', aboutMe=\'' . mysql_real_escape_string($aboutme) . '\', interests=\'' . mysql_real_escape_string($interests) . '\', Signature=\'' . mysql_real_escape_string($Signature).'\'';
+							$additional = ', aboutMe=\'' . mysqli_real_escape_string($aboutme) . '\', interests=\'' . mysqli_real_escape_string($interests) . '\', Signature=\'' . mysqli_real_escape_string($Signature).'\'';
 						}
 					}
 					else {
@@ -570,26 +570,26 @@ class processData extends Config {
 						$additional = '';
 					}
 					$query = 'UPDATE users SET
-					firstName=\'' . mysql_real_escape_string($firstname) . '\',
-					lastName=\'' . mysql_real_escape_string($lastname) . '\',
-					gender=\'' . mysql_real_escape_string($gender) . '\',
-					ageDate=\'' . mysql_real_escape_string($ageday) . '\',
-					ageMonth=\'' . mysql_real_escape_string($agemonth) . '\',
-					ageYear=\'' . mysql_real_escape_string($ageyear) . '\',
-					country=\'' . mysql_real_escape_string($country) . '\',
-					msnAddress=\'' . mysql_real_escape_string($msn) . '\',
-					aimName=\'' . mysql_real_escape_string($aim) . '\',
-					yahooName=\'' . mysql_real_escape_string($yim) . '\',
-					skypeName=\'' . mysql_real_escape_string($skype) . '\',
-					icqNumber=\'' . mysql_real_escape_string($icq) . '\',
-					showEmail=\'' . mysql_real_escape_string($showemail) . '\',
-					showChat=\'' . mysql_real_escape_string($showChat) . '\',
-					theme=\'' . mysql_real_escape_string($theme) . '\'
+					firstName=\'' . mysqli_real_escape_string($firstname) . '\',
+					lastName=\'' . mysqli_real_escape_string($lastname) . '\',
+					gender=\'' . mysqli_real_escape_string($gender) . '\',
+					ageDate=\'' . mysqli_real_escape_string($ageday) . '\',
+					ageMonth=\'' . mysqli_real_escape_string($agemonth) . '\',
+					ageYear=\'' . mysqli_real_escape_string($ageyear) . '\',
+					country=\'' . mysqli_real_escape_string($country) . '\',
+					msnAddress=\'' . mysqli_real_escape_string($msn) . '\',
+					aimName=\'' . mysqli_real_escape_string($aim) . '\',
+					yahooName=\'' . mysqli_real_escape_string($yim) . '\',
+					skypeName=\'' . mysqli_real_escape_string($skype) . '\',
+					icqNumber=\'' . mysqli_real_escape_string($icq) . '\',
+					showEmail=\'' . mysqli_real_escape_string($showemail) . '\',
+					showChat=\'' . mysqli_real_escape_string($showChat) . '\',
+					theme=\'' . mysqli_real_escape_string($theme) . '\'
 					'.$additional.'
 					WHERE ID=\'' . $rid . '\'';
 					//echo $query;
 					//echo $_SERVER['REQUEST_URI'];
-   					mysql_query($query) or die('Error : ' . mysql_error());
+   					mysqli_query($query) or die('Error : ' . mysqli_error());
 					echo 'Success';
 
 				}
@@ -611,10 +611,10 @@ class processData extends Config {
 				{
 					$this->uid = $_POST['uid'];
 					$this->ModRecord('Edit Item to the Store');
-					$results = mysql_query("UPDATE store_items SET category = '" . mysql_real_escape_string($_POST['item-categories']) . "', name = '" . mysql_real_escape_string($_POST['name']) . "', price = '" . mysql_real_escape_string($_POST['price']) . "', availability = '" . mysql_real_escape_string($_POST['availability']) . "', description = '" . mysql_real_escape_string($_POST['description']) . "', productnum = '" . mysql_real_escape_string($_POST['productnum']) . "', pictures = '" . mysql_real_escape_string($_POST['pictures']) . "', picturetype = '" . mysql_real_escape_string($_POST['picturetype']) . "', weight = '" . mysql_real_escape_string($_POST['weight']) . "' WHERE id = " . mysql_real_escape_string($_POST['id']));
+					$results = mysqli_query("UPDATE store_items SET category = '" . mysqli_real_escape_string($_POST['item-categories']) . "', name = '" . mysqli_real_escape_string($_POST['name']) . "', price = '" . mysqli_real_escape_string($_POST['price']) . "', availability = '" . mysqli_real_escape_string($_POST['availability']) . "', description = '" . mysqli_real_escape_string($_POST['description']) . "', productnum = '" . mysqli_real_escape_string($_POST['productnum']) . "', pictures = '" . mysqli_real_escape_string($_POST['pictures']) . "', picturetype = '" . mysqli_real_escape_string($_POST['picturetype']) . "', weight = '" . mysqli_real_escape_string($_POST['weight']) . "' WHERE id = " . mysqli_real_escape_string($_POST['id']));
 					if(!$results)
 					{
-						echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysql_error() . '</div>';
+						echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysqli_error() . '</div>';
 						exit;
 					}
 					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;">Item Update Completed.</div>';
@@ -631,13 +631,13 @@ class processData extends Config {
 			{
 				$this->uid = $_POST['uid'];
 				$this->ModRecord('Add Item to the Store');
-				$results = mysql_query("INSERT INTO `mainaftw_anime`.`store_items` (`id` ,`category` ,`name` ,`price` ,`availability` ,`description` ,`productnum` ,`pictures` ,`picturetype` ,`weight`) VALUES (NULL , '" . mysql_real_escape_string($_POST['item-categories']) . "', '" . mysql_real_escape_string($_POST['name']) . "', '" . mysql_real_escape_string($_POST['price']) . "', '" . mysql_real_escape_string($_POST['availability']) . "', '" . mysql_real_escape_string($_POST['description']) . "', '" . mysql_real_escape_string($_POST['productnum']) . "', '" . mysql_real_escape_string($_POST['pictures']) . "', '" . mysql_real_escape_string($_POST['picturetype']) . "', '" . mysql_real_escape_string($_POST['weight']) . "');");
+				$results = mysqli_query("INSERT INTO `mainaftw_anime`.`store_items` (`id` ,`category` ,`name` ,`price` ,`availability` ,`description` ,`productnum` ,`pictures` ,`picturetype` ,`weight`) VALUES (NULL , '" . mysqli_real_escape_string($_POST['item-categories']) . "', '" . mysqli_real_escape_string($_POST['name']) . "', '" . mysqli_real_escape_string($_POST['price']) . "', '" . mysqli_real_escape_string($_POST['availability']) . "', '" . mysqli_real_escape_string($_POST['description']) . "', '" . mysqli_real_escape_string($_POST['productnum']) . "', '" . mysqli_real_escape_string($_POST['pictures']) . "', '" . mysqli_real_escape_string($_POST['picturetype']) . "', '" . mysqli_real_escape_string($_POST['weight']) . "');");
 				if(!$results)
 				{
-					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysql_error() . '</div>';
+					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysqli_error() . '</div>';
 					exit;
 				}
-				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;">Item Addition Compelted. <a href="#" onClick="AdminFunction(\'manage-stock\',\'edit\',\'' . mysql_insert_id() . '\'); return false;">Add Inventory for this Item.</a></div>';
+				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;">Item Addition Compelted. <a href="#" onClick="AdminFunction(\'manage-stock\',\'edit\',\'' . mysqli_insert_id() . '\'); return false;">Add Inventory for this Item.</a></div>';
 			}
 			else
 			{
@@ -656,10 +656,10 @@ class processData extends Config {
 				{
 					$this->uid = $_POST['uid'];
 					$this->ModRecord('Edit Item to the Store');
-					$results = mysql_query("UPDATE store_items SET category = '" . mysql_real_escape_string($_POST['item-categories']) . "', name = '" . mysql_real_escape_string($_POST['name']) . "', price = '" . mysql_real_escape_string($_POST['price']) . "', availability = '" . mysql_real_escape_string($_POST['availability']) . "', description = '" . mysql_real_escape_string($_POST['description']) . "', productnum = '" . mysql_real_escape_string($_POST['productnum']) . "', pictures = '" . mysql_real_escape_string($_POST['pictures']) . "', picturetype = '" . mysql_real_escape_string($_POST['picturetype']) . "', weight = '" . mysql_real_escape_string($_POST['weight']) . "' WHERE id = " . mysql_real_escape_string($_POST['id']));
+					$results = mysqli_query("UPDATE store_items SET category = '" . mysqli_real_escape_string($_POST['item-categories']) . "', name = '" . mysqli_real_escape_string($_POST['name']) . "', price = '" . mysqli_real_escape_string($_POST['price']) . "', availability = '" . mysqli_real_escape_string($_POST['availability']) . "', description = '" . mysqli_real_escape_string($_POST['description']) . "', productnum = '" . mysqli_real_escape_string($_POST['productnum']) . "', pictures = '" . mysqli_real_escape_string($_POST['pictures']) . "', picturetype = '" . mysqli_real_escape_string($_POST['picturetype']) . "', weight = '" . mysqli_real_escape_string($_POST['weight']) . "' WHERE id = " . mysqli_real_escape_string($_POST['id']));
 					if(!$results)
 					{
-						echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysql_error() . '</div>';
+						echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysqli_error() . '</div>';
 						exit;
 					}
 					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;">Item Update Completed.</div>';
@@ -676,13 +676,13 @@ class processData extends Config {
 			{
 				$this->uid = $_POST['uid'];
 				$this->ModRecord('Add Item to the Store');
-				$results = mysql_query("INSERT INTO `mainaftw_anime`.`store_items` (`id` ,`category` ,`name` ,`price` ,`availability` ,`description` ,`productnum` ,`pictures` ,`picturetype` ,`weight`) VALUES (NULL , '" . mysql_real_escape_string($_POST['item-categories']) . "', '" . mysql_real_escape_string($_POST['name']) . "', '" . mysql_real_escape_string($_POST['price']) . "', '" . mysql_real_escape_string($_POST['availability']) . "', '" . mysql_real_escape_string($_POST['description']) . "', '" . mysql_real_escape_string($_POST['productnum']) . "', '" . mysql_real_escape_string($_POST['pictures']) . "', '" . mysql_real_escape_string($_POST['picturetype']) . "', '" . mysql_real_escape_string($_POST['weight']) . "');");
+				$results = mysqli_query("INSERT INTO `mainaftw_anime`.`store_items` (`id` ,`category` ,`name` ,`price` ,`availability` ,`description` ,`productnum` ,`pictures` ,`picturetype` ,`weight`) VALUES (NULL , '" . mysqli_real_escape_string($_POST['item-categories']) . "', '" . mysqli_real_escape_string($_POST['name']) . "', '" . mysqli_real_escape_string($_POST['price']) . "', '" . mysqli_real_escape_string($_POST['availability']) . "', '" . mysqli_real_escape_string($_POST['description']) . "', '" . mysqli_real_escape_string($_POST['productnum']) . "', '" . mysqli_real_escape_string($_POST['pictures']) . "', '" . mysqli_real_escape_string($_POST['picturetype']) . "', '" . mysqli_real_escape_string($_POST['weight']) . "');");
 				if(!$results)
 				{
-					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysql_error() . '</div>';
+					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysqli_error() . '</div>';
 					exit;
 				}
-				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;">Item Addition Compelted. <a href="#" onClick="AdminFunction(\'manage-stock\',\'edit\',\'' . mysql_insert_id() . '\'); return false;">Add Inventory for this Item.</a></div>';
+				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;">Item Addition Compelted. <a href="#" onClick="AdminFunction(\'manage-stock\',\'edit\',\'' . mysqli_insert_id() . '\'); return false;">Add Inventory for this Item.</a></div>';
 			}
 			else
 			{
@@ -720,8 +720,8 @@ class processData extends Config {
 				$epname = stripslashes($epname);
 				$epprefix    = stripslashes($epprefix);
 				// update the item in the database
-				$query = 'UPDATE episode SET epnumber=\'' . mysql_real_escape_string($epnumber) . '\', sid=\'' . mysql_real_escape_string($sid) .'\', epname=\'' . mysql_real_escape_string($epname) . '\', vidheight=\'' . mysql_real_escape_string($vidheight) . '\', vidwidth=\'' . mysql_real_escape_string($vidwidth) . '\', epprefix=\'' . mysql_real_escape_string($epprefix) . '\', subGroup=\'' . mysql_real_escape_string($subGroup) . '\', Movie=\'' . mysql_real_escape_string($Movie) . '\', videotype=\'' . mysql_real_escape_string($videotype) . '\', `hd`=\'' . mysql_real_escape_string($hd) . '\' WHERE id=' . $id . '';
-				mysql_query($query) or die('Error : ' . mysql_error());
+				$query = 'UPDATE episode SET epnumber=\'' . mysqli_real_escape_string($epnumber) . '\', sid=\'' . mysqli_real_escape_string($sid) .'\', epname=\'' . mysqli_real_escape_string($epname) . '\', vidheight=\'' . mysqli_real_escape_string($vidheight) . '\', vidwidth=\'' . mysqli_real_escape_string($vidwidth) . '\', epprefix=\'' . mysqli_real_escape_string($epprefix) . '\', subGroup=\'' . mysqli_real_escape_string($subGroup) . '\', Movie=\'' . mysqli_real_escape_string($Movie) . '\', videotype=\'' . mysqli_real_escape_string($videotype) . '\', `hd`=\'' . mysqli_real_escape_string($hd) . '\' WHERE id=' . $id . '';
+				mysqli_query($query) or die('Error : ' . mysqli_error());
 				$this->ModRecord('Edit Episode #' . $epnumber . ' of id ' . $id);
 				echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;width:100%;">Episode Update Completed Successfully.</div>';
 			}
@@ -747,25 +747,25 @@ class processData extends Config {
 		$anidbid = $_POST['anidbid'];
 		$fromep = $_POST['fromep'];
 		$toep = $_POST['toep'];
-		$epnumber = mysql_real_escape_string($_POST['epnumber']);
-		$sid = mysql_real_escape_string($_POST['sid']);
-		$epname = mysql_real_escape_string(urldecode($_POST['epname']));
-		$vidheight = mysql_real_escape_string($_POST['vidheight']);
-		$vidwidth = mysql_real_escape_string($_POST['vidwidth']);
-		$epprefix = mysql_real_escape_string($_POST['epprefix']);
-		$subGroup = mysql_real_escape_string($_POST['subGroup']);
-		$Movie = mysql_real_escape_string($_POST['Movie']);
+		$epnumber = mysqli_real_escape_string($_POST['epnumber']);
+		$sid = mysqli_real_escape_string($_POST['sid']);
+		$epname = mysqli_real_escape_string(urldecode($_POST['epname']));
+		$vidheight = mysqli_real_escape_string($_POST['vidheight']);
+		$vidwidth = mysqli_real_escape_string($_POST['vidwidth']);
+		$epprefix = mysqli_real_escape_string($_POST['epprefix']);
+		$subGroup = mysqli_real_escape_string($_POST['subGroup']);
+		$Movie = mysqli_real_escape_string($_POST['Movie']);
 		$Remember = NULL; //This gave an annoying undefined index error everytime these fields were unchecked.
 		if(isset($_POST['Remember'])){
-			$Remember = mysql_real_escape_string($_POST['Remember']);
+			$Remember = mysqli_real_escape_string($_POST['Remember']);
 		}
 		$Changed = NULL;
 		if(isset($_POST['Changed'])){
-			$Changed = mysql_real_escape_string($_POST['Changed']);
+			$Changed = mysqli_real_escape_string($_POST['Changed']);
 		}
-		$addtime = mysql_real_escape_string($_POST['date']);
-		$videotype =mysql_real_escape_string( $_POST['videotype']);
-		$hd = mysql_real_escape_string($_POST['hd']);
+		$addtime = mysqli_real_escape_string($_POST['date']);
+		$videotype =mysqli_real_escape_string( $_POST['videotype']);
+		$hd = mysqli_real_escape_string($_POST['hd']);
 		if($auto){
 			if(!is_numeric($anidbid)){
 				echo 'Error: Anidb value is not numeric.';
@@ -799,7 +799,7 @@ class processData extends Config {
 		}
 
 		for($i=$fromep;$i<=$toep;$i++){
-			$epnumber = mysql_real_escape_string($i);
+			$epnumber = mysqli_real_escape_string($i);
 			if($auto){ //If it's auto, we know that $eptitles is initialized
 				$epname = $eptitles[$i];
 			}
@@ -808,16 +808,16 @@ class processData extends Config {
 			// Queries the database to make sure that
 			$query = "INSERT INTO `episode` (`sid`, `epnumber`, `epname`, `seriesname`, `vidheight`, `vidwidth`, `subGroup`, `epprefix`, `Movie`, `date`, `videotype`, `uid`, `hd`) VALUES ('$sid', '$epnumber', '$epname', 'unknown', '$vidheight', '$vidwidth', '$subGroup', '$epprefix', '$Movie', '$addtime', '$videotype', '" . $this->UserArray[1] . "', '" . $hd . "')";
 			$query;
-			$results = mysql_query($query);
+			$results = mysqli_query($query);
 			if(!$results)
 			{
-				echo 'There was an error processing that request, error num #1001: ' . mysql_error();
+				echo 'There was an error processing that request, error num #1001: ' . mysqli_error();
 				exit;
 			}
 			echo '<!--Success--><div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#14C400;padding:2px;width:100%;">Episode #' . $epnumber . ' Added, titled: ' . $epname . ' Added Successfully.<div>';
 			// now we check to see if we can use: RecordNotification($sid,$eid)
-			$airingCheck = mysql_query("SELECT episode.id AS epid, series.id AS sid, series.stillRelease, series.fullSeriesName FROM series, episode WHERE series.id = '".$sid."' AND episode.sid = series.id AND episode.epnumber = '".$epnumber."'");
-			$ar = mysql_fetch_array($airingCheck);
+			$airingCheck = mysqli_query("SELECT episode.id AS epid, series.id AS sid, series.stillRelease, series.fullSeriesName FROM series, episode WHERE series.id = '".$sid."' AND episode.sid = series.id AND episode.epnumber = '".$epnumber."'");
+			$ar = mysqli_fetch_array($airingCheck);
 			if($ar['stillRelease'] == 'yes')
 			{
 				// put the notification in the system that the end user needs to check their notifications!
@@ -825,15 +825,15 @@ class processData extends Config {
 
 				//If a series is still releasing, add the entry to the email database.
 				// v1 is the episode id, for matching in the system when an email needs to go out.
-				mysql_query("INSERT INTO email (`id`, `date`, `sid`, `v1`, `v2`) VALUES (NULL,'" . time() . "', '" . $ar['sid'] . "', '" . $ar['epid'] . "', '1');");
+				mysqli_query("INSERT INTO email (`id`, `date`, `sid`, `v1`, `v2`) VALUES (NULL,'" . time() . "', '" . $ar['sid'] . "', '" . $ar['epid'] . "', '1');");
 			}
 			$this->ModRecord('Add Episode #'.$epnumber.' to  '.$ar['fullSeriesName']);
 
 			if($Changed == 'on')
 			{
 				// changed entry is on, we need to update the uploads board
-                $query = "UPDATE uestatus SET `change` = 0 WHERE ID = " . mysql_real_escape_string($_POST['ueid']);
-				mysql_query($query);
+                $query = "UPDATE uestatus SET `change` = 0 WHERE ID = " . mysqli_real_escape_string($_POST['ueid']);
+				mysqli_query($query);
 				$this->ModRecord("Removed Notifications for Entry " . $_POST['ueid'] . ' in the Uploads Board');
 			}
 		}
@@ -842,18 +842,18 @@ class processData extends Config {
 	{
 		if($prequelto != 0)//If the prequel is updated, we update that series sequel to this one.
 		{
-			$query = 'UPDATE series SET sequelto=\'' . mysql_real_escape_string($sid) . '\' WHERE id=' . mysql_real_escape_string($prequelto) . '';
-			mysql_query($query) or die('Error : ' . mysql_error());
+			$query = 'UPDATE series SET sequelto=\'' . mysqli_real_escape_string($sid) . '\' WHERE id=' . mysqli_real_escape_string($prequelto) . '';
+			mysqli_query($query) or die('Error : ' . mysqli_error());
 		}
 		if($sequelto != 0)//If the sequel is, or also was updated with the prequel, we update that series prequel to this one.
 		{
-			$query = 'UPDATE series SET prequelto=\'' . mysql_real_escape_string($sid) . '\' WHERE id=' . mysql_real_escape_string($sequelto) . '';
-			mysql_query($query) or die('Error : ' . mysql_error());
+			$query = 'UPDATE series SET prequelto=\'' . mysqli_real_escape_string($sid) . '\' WHERE id=' . mysqli_real_escape_string($sequelto) . '';
+			mysqli_query($query) or die('Error : ' . mysqli_error());
 		}
 	}
 
 	private function recordNotification($sid,$eid)
 	{
-		mysql_query("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES (NULL, '".time()."', '0', '".$sid."', '".$eid."', 'NULL')");
+		mysqli_query("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES (NULL, '".time()."', '0', '".$sid."', '".$eid."', 'NULL')");
 	}
 }

@@ -26,10 +26,10 @@ class AFTWtoplist extends Config {
 	#displays a given amount of toseries based on the $num param
 	function TopAnime(){
 		$query = "SELECT seriesId, lastPosition, currentPosition FROM site_topseries ORDER BY currentPosition ASC LIMIT 0, ".$this->num;
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		if($this->num == 10){$topTen = '<ol class="top10">'."\n";}
 		else{$topTen = '<ol>'."\n";}
-  		while(list($seriesId,$lastPosition,$currentPosition) = mysql_fetch_array($result)){
+  		while(list($seriesId,$lastPosition,$currentPosition) = mysqli_fetch_array($result)){
 			$listedName = $this->ShowData2($seriesId);
 			if($currentPosition < $lastPosition){
 				$Rank = '&nbsp;<img src="' . $this->Host . '/arrow_up.gif"  alt="" title="Rank Went up, Previous Rank: '.$lastPosition.'" />';
@@ -61,8 +61,8 @@ class AFTWtoplist extends Config {
 	}
 	function ShowData2($seriesId){
 		$query = "SELECT id, seoname, fullSeriesName FROM series WHERE id='$seriesId'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
 		return "<a class='side tooltip-overlay' href='/anime/".$row['seoname']."/' data-node=\"/scripts.php?view=profiles&show=tooltips&id=".$row['id']."\">".stripslashes($row['fullSeriesName'])."</a>\n";
 	}
 }

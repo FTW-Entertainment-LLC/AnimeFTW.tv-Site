@@ -2,9 +2,9 @@
 include('../classes/config.class.php');
 
 $query = "SELECT `first_name`, `last_name`, `address_name`, `address_street`, `address_city`, `address_state`, `address_zip`, `address_country` FROM `paypal_logs` WHERE submission_date >= 1412121600 AND txn_type = 'subscr_signup' AND address_status != '' LIMIT 0, 25";
-$result = mysql_query($query);
+$result = mysqli_query($query);
 
-while($row = mysql_fetch_assoc($result))
+while($row = mysqli_fetch_assoc($result))
 {
 	echo '<div style="margin-bottom:15px;">';
 	echo '<div>' . $row['first_name'] . ' ' . $row['last_name'] . '</div>';

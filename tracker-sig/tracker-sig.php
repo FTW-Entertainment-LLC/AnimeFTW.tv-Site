@@ -10,8 +10,8 @@ if(isset($_GET['background']))
 	$Background = $_GET['background'];
 }
 					$query003 = "SELECT ID FROM users WHERE Username='".$Username."'";
-							$result003 = mysql_query($query003) or die('Error : ' . mysql_error());
-							$row003 = mysql_fetch_array($result003);
+							$result003 = mysqli_query($query003) or die('Error : ' . mysqli_error());
+							$row003 = mysqli_fetch_array($result003);
 							$ID003 = $row003['ID'];
 							//query1
 				

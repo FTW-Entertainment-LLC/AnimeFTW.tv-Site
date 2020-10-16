@@ -1,8 +1,8 @@
 <?php
 include('../siteroot.php');
 $query = "SELECT id, fullSeriesName FROM series ORDER BY id ASC";
-$result = mysql_query($query) or die('Error : ' . mysql_error());
-while($row = mysql_fetch_array($result, MYSQL_ASSOC))
+$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+while($row = mysqli_fetch_array($result, MYSQL_ASSOC))
 {
 	
 	$file = 'http://images.animeftw.tv/seriesimages/'.$row['id'].'.jpg';

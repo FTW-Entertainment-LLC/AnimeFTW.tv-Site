@@ -31,8 +31,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
     </image>';
 
 $query = "SELECT forums_threads.tid, forums_threads.ttitle, forums_threads.tfid, forums_threads.tdate, forums_forum.fseo, users.Username FROM forums_threads, forums_forum, users WHERE (tfid='1' OR tfid='2' OR tfid='9') AND users.ID=tpid AND fid=tfid ORDER BY tid DESC LIMIT 0, 10";
-$result = mysql_query($query) or die('Error : ' . mysql_error());
-while(list($tid, $ttitle, $tfid, $tdate, $fseo, $Username) = mysql_fetch_array($result))
+$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+while(list($tid, $ttitle, $tfid, $tdate, $fseo, $Username) = mysqli_fetch_array($result))
 {
 	$pbody = strip_tags($pbody);
 	echo '<item>
@@ -84,8 +84,8 @@ else
 			// logged in, let them see all episodes episodes..
 			$query = "SELECT `episode`.`epname`, `episode`.`epnumber`, `episode`.`Movie`, `episode`.`date`, `series`.`fullSeriesName`, `series`.`seoname` FROM `series`, `episode` WHERE `series`.`id`=`episode`.`sid` ORDER BY `episode`.`id` DESC LIMIT 0, 50";
 		}
-		$result = mysql_query($query);
-		while($row = mysql_fetch_assoc($result))
+		$result = mysqli_query($query);
+		while($row = mysqli_fetch_assoc($result))
 		{
 			if($row['Movie'] != 0)
 			{
@@ -151,8 +151,8 @@ echo '
 		{
 			// logged in, let them see episodes..
 			$query = "SELECT `fullSeriesName`, `seoname`, `description` FROM `series` WHERE `active` = 'yes' ORDER BY `id` DESC LIMIT 0, 20";
-			$result = mysql_query($query);
-			while($row = mysql_fetch_assoc($result))
+			$result = mysqli_query($query);
+			while($row = mysqli_fetch_assoc($result))
 			{
 				echo '
 	<item>

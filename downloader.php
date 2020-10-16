@@ -9,9 +9,9 @@ $fullPath = $dir.$_GET['f'];
 $filedata = @file_get_contents($fullPath);
 
 //id 	name 	count 	permissions 	active 
-$query = "SELECT `id`, `name`, `permissions`, `active` FROM downloads WHERE `name` = '" . mysql_real_escape_string($_GET['f']) . "' AND `permissions` LIKE '%" . $Config->UserArray[2] . "%'";
-$results = mysql_query($query);
-$count = mysql_num_rows($results);
+$query = "SELECT `id`, `name`, `permissions`, `active` FROM downloads WHERE `name` = '" . mysqli_real_escape_string($_GET['f']) . "' AND `permissions` LIKE '%" . $Config->UserArray[2] . "%'";
+$results = mysqli_query($query);
+$count = mysqli_num_rows($results);
 
 if($count < 1)
 {
@@ -19,7 +19,7 @@ if($count < 1)
 }
 else
 {
-	$row = mysql_fetch_assoc($results);
+	$row = mysqli_fetch_assoc($results);
 	// SUCCESS
 	if($row['active'] == 1)
 	{
@@ -49,8 +49,8 @@ else
 		ob_start();
 		echo $filedata;
 			
-		$results = mysql_query("UPDATE downloads SET `count` = `count`+1 WHERE id = " . $row['id']);
-		$results = mysql_query("INSERT INTO `downloads_log` (`id`, `download_id`, `useragent`, `date`, `ip`) VALUES (NULL, '" . $row['id'] . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "');");
+		$results = mysqli_query("UPDATE downloads SET `count` = `count`+1 WHERE id = " . $row['id']);
+		$results = mysqli_query("INSERT INTO `downloads_log` (`id`, `download_id`, `useragent`, `date`, `ip`) VALUES (NULL, '" . $row['id'] . "', '" . $_SERVER['HTTP_USER_AGENT'] . "', '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "');");
 	}
 	else 
 	{

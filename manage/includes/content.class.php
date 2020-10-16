@@ -48,12 +48,12 @@ class Content extends Config {
 	private function displaySitePages()
 	{
 		$query = "SELECT `id`, `full_page_name` FROM `content` ORDER BY `full_page_name`";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		
 		echo '<div id="site-content-wrapper">';
 		echo '<div style="margin:2px;font-size:16px;">Choose a page to Edit:</div>';
 		echo '<div align="center">';
-		while($row = mysql_fetch_array($results))
+		while($row = mysqli_fetch_array($results))
 		{
 			if(isset($_GET['page_id']) && $_GET['page_id'] == $row['id'])
 			{
@@ -96,10 +96,10 @@ class Content extends Config {
 		if($Type == "edit")
 		{
 			// We need to edit the page content
-			$query = "SELECT `id`, `permissions`, `node`, `sub_node`, `full_page_name`, `body` FROM `content` WHERE id = " . mysql_real_escape_string($_GET['page_id']);
-			$results = mysql_query($query);
+			$query = "SELECT `id`, `permissions`, `node`, `sub_node`, `full_page_name`, `body` FROM `content` WHERE id = " . mysqli_real_escape_string($_GET['page_id']);
+			$results = mysqli_query($query);
 			
-			$row = mysql_fetch_array($results);
+			$row = mysqli_fetch_array($results);
 			$ExtraFormData = '<input type="hidden" name="method" value="EditSitePage" /><input type="hidden" name="page_id" value="' . $row['id'] . '" />';
 			$FormHeader = '<div style="margin:10px 2px 2px 2px;font-size:16px;">Editing: <i>' . $row['full_page_name'] . '</i></div>';
 			$permissions 		= $row['permissions'];

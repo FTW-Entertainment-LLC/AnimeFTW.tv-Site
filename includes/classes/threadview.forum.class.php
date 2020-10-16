@@ -25,8 +25,8 @@ class AFTWThreadView extends Forum{
 
 	public function DisplayThread(){
 		$query7 = "SELECT f.fid, f.ftitle, f.fseo, t.tid, t.tclosed, t.ttitle FROM forums_forum AS f, forums_threads AS t WHERE f.fseo = '".$this->fseo."' AND t.tid = '".$this->tid."'";
-		$result7 = mysql_query($query7) or die('Error : ' . mysql_error());
-		$row7 = mysql_fetch_array($result7);
+		$result7 = mysqli_query($query7) or die('Error : ' . mysqli_error());
+		$row7 = mysqli_fetch_array($result7);
 		$fid = $row7['fid'];
 		$ftitle = $row7['ftitle'];
 		$fseo = $row7['fseo'];
@@ -41,8 +41,8 @@ class AFTWThreadView extends Forum{
 			</div><br />";
 		}
 		else {
-			$query009 = mysql_query("SELECT COUNT(fid) FROM forums_forum WHERE fid='$fid' AND fpermission LIKE '%".$this->profileArray[2]."%'");
-			$total_forum = mysql_result($query009, 0);
+			$query009 = mysqli_query("SELECT COUNT(fid) FROM forums_forum WHERE fid='$fid' AND fpermission LIKE '%".$this->profileArray[2]."%'");
+			$total_forum = mysqli_result($query009, 0);
 			if ($total_forum == 0){
 				echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 				echo "<div class='errorwrap'>
@@ -58,8 +58,8 @@ class AFTWThreadView extends Forum{
 				<td style='padding-left:0px' width='40%' valign='middle' nowrap='nowrap'><div>";
 				// get posts in this topic
 				$query   = "SELECT COUNT(pid) AS numrows FROM forums_post WHERE ptid='".$this->tid."'";
-				$result  = mysql_query($query) or die('Error, query failed');
-				$row     = mysql_fetch_array($result, MYSQL_ASSOC);
+				$result  = mysqli_query($query) or die('Error, query failed');
+				$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 				$numrows = $row['numrows'];
 				//BEGIN PAGING Class
 				$pagin = new AFTWForumPageing();
@@ -84,10 +84,10 @@ class AFTWThreadView extends Forum{
 				// The end all be-all query...
 				$query = "SELECT pid, ptid, puid, pfid, ptitle, pdate, pbody, pip FROM forums_post WHERE ptid='".$this->tid."' ORDER BY pdate LIMIT ".$this->start.", ".$this->paging;
 				//echo 'Query: '.$query.'<br /> Start: '.$this->start.', tid: '.$this->tid.', fseo: '.$this->fseo.', paging: '.$this->paging;
-				$result001 = mysql_query($query) or die('Error : ' . mysql_error());
+				$result001 = mysqli_query($query) or die('Error : ' . mysqli_error());
 				$i = 0;
 				if($this->start == 0){$c = 1;}else {$c = $this->start;}
-				while(list($pid,$ptid,$puid,$pfid,$ptitle,$pdate,$pbody,$pip) = mysql_fetch_array($result001))
+				while(list($pid,$ptid,$puid,$pfid,$ptitle,$pdate,$pbody,$pip) = mysqli_fetch_array($result001))
 				{
 					$pbody = stripslashes($pbody);
 
@@ -107,8 +107,8 @@ class AFTWThreadView extends Forum{
 
 					//get the user who posted this...
 					$query003 = "SELECT Level_access, firstName, gender, country, personalMsg, memberTitle, signatureActive, Signature FROM users WHERE ID='$puid'";
-					$result003 = mysql_query($query003) or die('Error : ' . mysql_error());
-					$row003 = mysql_fetch_array($result003);
+					$result003 = mysqli_query($query003) or die('Error : ' . mysqli_error());
+					$row003 = mysqli_fetch_array($result003);
 
 					if ($row003['firstName'] == '') {
 	    				$firstName003 = "Unknown";
@@ -140,8 +140,8 @@ class AFTWThreadView extends Forum{
 					else {$IpAddress1 = '';}
 
     				//check user post posts and count them
-					$query006 = mysql_query("SELECT pid FROM forums_post WHERE puid='$puid'");
-					$total_user_post_posts1 = mysql_num_rows($query006);
+					$query006 = mysqli_query("SELECT pid FROM forums_post WHERE puid='$puid'");
+					$total_user_post_posts1 = mysqli_num_rows($query006);
 					$total_posts2 = $total_user_post_posts1;
 
 					///START POST VIEW!
@@ -297,8 +297,8 @@ class AFTWThreadView extends Forum{
 				echo "<span><a>Closed</a></span>&nbsp;&nbsp;";
 			}
 			$query = "SELECT fid FROM forums_forum WHERE fid='$fid' AND fpermpost LIKE '%".$this->profileArray[2]."%'";
-			$result = mysql_query($query) or die('Error : ' . mysql_error());
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$row = mysqli_fetch_array($result);
 			$allowedToMakeNewTopic2 = $row['fid'];
 			if ($allowedToMakeNewTopic2 ==''){}
 			else {
@@ -308,8 +308,8 @@ class AFTWThreadView extends Forum{
 		else {
 			echo $fastreply."<a href='/forums/post/reply-".$this->tid."'>Post a Reply</a>&nbsp;&nbsp;";
 			$query = "SELECT fid FROM forums_forum WHERE fid='$fid' AND fpermpost LIKE '%".$this->profileArray[2]."%'";
-			$result = mysql_query($query) or die('Error : ' . mysql_error());
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$row = mysqli_fetch_array($result);
 			$allowedToMakeNewTopic2 = $row['fid'];
 			if ($allowedToMakeNewTopic2 == ''){}
 			else {

@@ -29,11 +29,11 @@ class Stats extends Config {
 		$thirtydaysago = time()-(30*86400);
 		
 		$query = "SELECT `id`, `var1`, `var2` FROM  `mainaftw_stats`.`user_stats` WHERE `type` = 1 AND `var1` >= " . $thirtydaysago;
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 		$data = '';
-		$count = mysql_num_rows($result);
+		$count = mysqli_num_rows($result);
 		$i = 1;
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{
 			$data .= '[\'' . date("Y-m-d",$row['var1']) . ' 8:00AM\',' . $row['var2'] . ']';
 			if($i < $count)

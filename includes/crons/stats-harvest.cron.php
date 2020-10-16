@@ -51,30 +51,30 @@ class StatsHarvest extends Config {
 	private function usersOnlineLast24Hours()
 	{
 		$twentyfourhorusago = time()-86400;
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `lastActivity` >= " . $twentyfourhorusago . ") WHERE `id` = 1");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `lastActivity` >= " . $twentyfourhorusago . ") WHERE `id` = 1");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the update last online user count: ' . mysql_error();
+			echo 'An error was found when trying to run the update last online user count: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalComments()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) AS NumRows FROM `" . $this->MainDatabase . "`.`page_comments` WHERE `page_id` = 0) WHERE `id` = 2");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) AS NumRows FROM `" . $this->MainDatabase . "`.`page_comments` WHERE `page_id` = 0) WHERE `id` = 2");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total comments update: ' . mysql_error();
+			echo 'An error was found when trying to run the total comments update: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalSeries()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`series`) WHERE `id` = 3");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`series`) WHERE `id` = 3");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total series update: ' . mysql_error();
+			echo 'An error was found when trying to run the total series update: ' . mysqli_error();
 			exit;
 		}
 	}
@@ -83,44 +83,44 @@ class StatsHarvest extends Config {
 	{
 		// first thing we need to do, is get the count of total episodes on the site.
 		$query = "SELECT COUNT(id) AS total FROM `" . $this->MainDatabase . "`.`episode`";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		if(!$results)
 		{
-			echo 'An error was found when trying to get the total episodes: ' . mysql_error();
+			echo 'An error was found when trying to get the total episodes: ' . mysqli_error();
 			exit;
 		}
 		
-		$row = mysql_fetch_array($results);		
+		$row = mysqli_fetch_array($results);		
 		
 		// first thing first, update the total number of episodes.
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . $row['total'] . " WHERE `id` = 4");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . $row['total'] . " WHERE `id` = 4");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the episode stats, videos: ' . mysql_error();
+			echo 'An error was found when trying to run the episode stats, videos: ' . mysqli_error();
 			exit;
 		}
 		
 		// second, how many minutes of video is this.
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . ($row['total']*30) . " WHERE `id` = 5");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . ($row['total']*30) . " WHERE `id` = 5");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total minutes of videos update: ' . mysql_error();
+			echo 'An error was found when trying to run the total minutes of videos update: ' . mysqli_error();
 			exit;
 		}
 		
 		// third, how many hours of video are these.
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . (($row['total']*30)/60) . " WHERE `id` = 6");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . (($row['total']*30)/60) . " WHERE `id` = 6");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total hours of videos update: ' . mysql_error();
+			echo 'An error was found when trying to run the total hours of videos update: ' . mysqli_error();
 			exit;
 		}
 		
 		// fourth, how BIG is the sum total of the videos
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . ($row['total']*130) . " WHERE `id` = 7");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = " . ($row['total']*130) . " WHERE `id` = 7");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total size of videos update: ' . mysql_error();
+			echo 'An error was found when trying to run the total size of videos update: ' . mysqli_error();
 			exit;
 		}
 		
@@ -128,118 +128,118 @@ class StatsHarvest extends Config {
 	
 	private function totalStatusUpdates()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`status`) WHERE `id` = 8");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`status`) WHERE `id` = 8");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total status updates: ' . mysql_error();
+			echo 'An error was found when trying to run the total status updates: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalMyWatchListEntries()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`watchlist`) WHERE `id` = 9");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`watchlist`) WHERE `id` = 9");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total mywatchlist entries: ' . mysql_error();
+			echo 'An error was found when trying to run the total mywatchlist entries: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalMaleUsers()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `gender` = 'male') WHERE `id` = 10");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `gender` = 'male') WHERE `id` = 10");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total male users: ' . mysql_error();
+			echo 'An error was found when trying to run the total male users: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalFemaleUsers()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `gender` = 'female') WHERE `id` = 11");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `gender` = 'female') WHERE `id` = 11");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total female users: ' . mysql_error();
+			echo 'An error was found when trying to run the total female users: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalAvatarsSet()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes') WHERE `id` = 12");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes') WHERE `id` = 12");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total avatars set: ' . mysql_error();
+			echo 'An error was found when trying to run the total avatars set: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalAvatarsGif()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes' AND `avatarExtension` = 'gif') WHERE `id` = 13");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes' AND `avatarExtension` = 'gif') WHERE `id` = 13");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total avatars gif: ' . mysql_error();
+			echo 'An error was found when trying to run the total avatars gif: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalAvatarsJpg()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes' AND `avatarExtension` = 'jpg') WHERE `id` = 14");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes' AND `avatarExtension` = 'jpg') WHERE `id` = 14");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total avatars jpg: ' . mysql_error();
+			echo 'An error was found when trying to run the total avatars jpg: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalAvatarsPNG()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes' AND `avatarExtension` = 'png') WHERE `id` = 15");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `avatarActivate` = 'yes' AND `avatarExtension` = 'png') WHERE `id` = 15");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total avatars png: ' . mysql_error();
+			echo 'An error was found when trying to run the total avatars png: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalUsers()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `active` = 1) WHERE `id` = 16");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(ID) FROM `" . $this->MainDatabase . "`.`users` WHERE `active` = 1) WHERE `id` = 16");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total users: ' . mysql_error();
+			echo 'An error was found when trying to run the total users: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalProfileComments()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) AS NumRows FROM `" . $this->MainDatabase . "`.`page_comments` WHERE `page_id` != 0) WHERE `id` = 17");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) AS NumRows FROM `" . $this->MainDatabase . "`.`page_comments` WHERE `page_id` != 0) WHERE `id` = 17");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total profile comments: ' . mysql_error();
+			echo 'An error was found when trying to run the total profile comments: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function totalTrackerRows()
 	{
-		$results = mysql_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`episode_tracker`) WHERE `id` = 18");
+		$results = mysqli_query("UPDATE `" . $this->MainDatabase . "`.`stats` SET `content` = (SELECT COUNT(id) FROM `" . $this->MainDatabase . "`.`episode_tracker`) WHERE `id` = 18");
 		if(!$results)
 		{
-			echo 'An error was found when trying to run the total tracker rows: ' . mysql_error();
+			echo 'An error was found when trying to run the total tracker rows: ' . mysqli_error();
 			exit;
 		}
 	}
 	
 	private function updateCronEntry()
 	{
-		mysql_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $this->CronID . "', '" . time() . "', '" . time() . "');");
-		mysql_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $this->CronID);
+		mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $this->CronID . "', '" . time() . "', '" . time() . "');");
+		mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $this->CronID);
 	}
 }
 

@@ -2,9 +2,9 @@
 include('../classes/config.class.php');
 exit;
 $query = "SELECT `ID`, `sitepmnote`, `notifications` FROM `mainaftw_anime`.`users` WHERE `Active` = 1";
-$result = mysql_query($query);
+$result = mysqli_query($query);
 
-while($row = mysql_fetch_assoc($result))
+while($row = mysqli_fetch_assoc($result))
 {
 	// First check to see if they want to recieve notifications from site pms
 	if($row['sitepmnote'] == 1)
@@ -14,7 +14,7 @@ while($row = mysql_fetch_assoc($result))
 	else
 	{
 		// they don't want to receive our emails :(
-		$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row['ID'] . "', " . time() . ", " . time() . ", '2', '4', '0');");
+		$suplementalquery = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row['ID'] . "', " . time() . ", " . time() . ", '2', '4', '0');");
 	}
 	// check to see if they want to receive admin emails
 	if($row['notifications'] == 1)
@@ -24,6 +24,6 @@ while($row = mysql_fetch_assoc($result))
 	else
 	{
 		// sandpanda..
-		$suplementalquery = mysql_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row['ID'] . "', " . time() . ", " . time() . ", '7', '14', '0');");
+		$suplementalquery = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row['ID'] . "', " . time() . ", " . time() . ", '7', '14', '0');");
 	}
 }

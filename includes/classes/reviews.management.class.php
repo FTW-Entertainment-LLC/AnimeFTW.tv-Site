@@ -29,24 +29,24 @@ class Reviews extends Config {
 		$modtype = $_GET['mod'];
 		if($modtype == 'approve')
 		{
-			$query = "UPDATE reviews SET approved = '1', approvedby = '" . mysql_real_escape_string($_GET['u']) . "', approvaldate = '" . time() . "' WHERE id = " . mysql_real_escape_string($_GET['rid']);
-			$results = mysql_query($query);
+			$query = "UPDATE reviews SET approved = '1', approvedby = '" . mysqli_real_escape_string($_GET['u']) . "', approvaldate = '" . time() . "' WHERE id = " . mysqli_real_escape_string($_GET['rid']);
+			$results = mysqli_query($query);
 			if(!$results)
 			{
-				echo 'There was an issue with the request: ' .mysql_error();
+				echo 'There was an issue with the request: ' .mysqli_error();
 				exit;
 			}
-			$query = "UPDATE series SET total_reviews=total_reviews+1 WHERE id = (SELECT sid FROM reviews WHERE id = " . mysql_real_escape_string($_GET['rid']) . ")";
+			$query = "UPDATE series SET total_reviews=total_reviews+1 WHERE id = (SELECT sid FROM reviews WHERE id = " . mysqli_real_escape_string($_GET['rid']) . ")";
 			$this->ModRecord("Approved Review for #" . $_GET['rid']);
 			echo 'success';
 		}
 		else if($modtype == 'deny')
 		{
-			$query = "UPDATE reviews SET approved = '2', approvedby = '" . mysql_real_escape_string($_GET['u']) . "', approvaldate = '" . time() . "' WHERE id = " . mysql_real_escape_string($_GET['rid']);
-			$results = mysql_query($query);
+			$query = "UPDATE reviews SET approved = '2', approvedby = '" . mysqli_real_escape_string($_GET['u']) . "', approvaldate = '" . time() . "' WHERE id = " . mysqli_real_escape_string($_GET['rid']);
+			$results = mysqli_query($query);
 			if(!$results)
 			{
-				echo 'There was an issue with the request: ' .mysql_error();
+				echo 'There was an issue with the request: ' .mysqli_error();
 				exit;
 			}
 			$this->ModRecord("Deny Review for #" . $_GET['rid']);
@@ -68,14 +68,14 @@ class Reviews extends Config {
 		$perpage 		= 20;
 		$currentpage 	= isset($_GET['page'])?$_GET['page']:0;
 		$link 			= '/scripts.php?view=management&u=' . $this->UserArray[1] . '&node=reviews';
-		$count 			= mysql_num_rows(mysql_query("SELECT id FROM reviews"));
+		$count 			= mysqli_num_rows(mysqli_query("SELECT id FROM reviews"));
 		
 		$query = "SELECT reviews.id, series.fullSeriesName, series.seoname, users.Username, reviews.date, reviews.review, reviews.stars, reviews.approved, reviews.approvedby, reviews.approvaldate FROM reviews, users, series WHERE users.ID=reviews.uid AND series.id=reviews.sid ORDER BY id DESC LIMIT $currentpage, $perpage";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		echo '<div style="padding:5px 5px 0 5px;">Navigate:</div>';
 		$this->internalPaging($DivID,$count,$perpage,$currentpage,$link);
 		
-		while($row = mysql_fetch_array($results))
+		while($row = mysqli_fetch_array($results))
 		{
 			echo '<div class="reviews-row-wrapper" style="padding:5px;border-bottom:1px solid #ccc;">';
 			echo '<div class="review-header">

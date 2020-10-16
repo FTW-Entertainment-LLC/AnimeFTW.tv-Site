@@ -19,23 +19,23 @@ $epid = $_GET['epid'];
 $from = $comm_page * $comment_limit - $comment_limit;
 
 //include("includes/db_conn.php"); // connect to host and select db
-mysql_connect($newsdbhost, $newsdbuser, $newsdbpass) or die("Connection Error: ". mysql_error());
-mysql_select_db($newsdbname);
+$conn = mysqli_connect($newsdbhost, $newsdbuser, $newsdbpass, $newsdbname);
+# mysqli_select_db($newsdbname);
 
 // construct page query to find out how many matches
-$result=mysql_db_query($newsdbname,"select count(*) from $db_table WHERE epid='$epid' AND is_approved = '1'");
-$count=mysql_result($result,0,"count(*)");
+$result=mysqli_query($conn,"select count(*) from $db_table WHERE epid='$epid' AND is_approved = '1'");
+$count=mysqli_result($result,0,"count(*)");
 $total_pages = ceil($count / $comment_limit);
 
 // and the average rating is ...
 $query = "SELECT AVG(rating) from $db_table WHERE epid='$epid' AND is_approved = '1' AND rating>'0'";
-$result = mysql_query($query) or die("error ". mysql_error(). " with query ".$query);
-$row = mysql_fetch_array($result);
+$result = mysqli_query($conn, $query) or die("error ". mysqli_error(). " with query ".$query);
+$row = mysqli_fetch_array($result);
 $av_rating = number_format($row['AVG(rating)'],2);
 
 // construct page query to find out how many matches
 $query = "SELECT * from $db_table WHERE epid = '$epid' AND is_approved = '1' ORDER by dated DESC LIMIT $from, $comment_limit";// what matches THIS page?
-$result = mysql_query($query) or die("Error: ". mysql_error(). " with query ". $query); 
+$result = mysqli_query($conn, $query) or die("Error: ". mysqli_error(). " with query ". $query); 
 
 // skip output if no comments exist
 if (!$count) {
@@ -47,7 +47,7 @@ if (!$count) {
 	// output comments
 	echo '<span name="myspan" id="myspan"></span>';
 	echo "<table cellpadding='0' cellspacing='0' width='100%' border='0' align='center' style='border:1px solid #EAEAEA'>";
-	while ($myrow = mysql_fetch_array($result)) // loop through all results
+	while ($myrow = mysqli_fetch_array($result)) // loop through all results
 	{ 
 		$style = $style == $ro1 ? $ro2 : $ro1; 
 		echo "<tr bgcolor='". $style. "'>";

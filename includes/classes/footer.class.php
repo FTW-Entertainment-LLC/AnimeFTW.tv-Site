@@ -59,12 +59,12 @@ class AFTWFooter extends Config {
 	# function latestnews
 	private function LatestNews(){
 		$query = "SELECT tid, ttitle, tpid, tfid, tdate FROM forums_threads WHERE tfid='1' OR tfid='2' OR tfid='9' ORDER BY tid DESC LIMIT 0, 5";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		$i = 0;
-		while(list($tid, $ttitle, $tpid, $tfid, $tdate) = mysql_fetch_array($result)) {
+		while(list($tid, $ttitle, $tpid, $tfid, $tdate) = mysqli_fetch_array($result)) {
 			$query1  = "SELECT fseo FROM forums_forum WHERE fid='$tfid'";
-			$result1 = mysql_query($query1) or die('Error : ' . mysql_error());
-			$row1 = mysql_fetch_array($result1);
+			$result1 = mysqli_query($query1) or die('Error : ' . mysqli_error());
+			$row1 = mysqli_fetch_array($result1);
 			echo "<a href='/forums/".$row1['fseo']."/topic-".$tid."/s-0' class='side'>".stripslashes($ttitle)."</a>\n";
 			echo "<br />\n";
 			if($i < 4){echo "<div class='panel-line'></div>\n";}
@@ -74,9 +74,9 @@ class AFTWFooter extends Config {
 
 	private function RandomAnime($v){
 		$query = "SELECT id FROM series WHERE active='yes' ORDER BY RAND() LIMIT $v";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		$i = 0;
-		while(list($id) = mysql_fetch_array($result)) {
+		while(list($id) = mysqli_fetch_array($result)) {
 			echo $this->BuildSeriesList($id);
 			echo "<br />\n";
 			if($i < 4){echo "<div class='panel-line'></div>\n";}
@@ -86,10 +86,10 @@ class AFTWFooter extends Config {
 
 	private function TopAnime($amount,$location) {
 		$query = "SELECT seriesId, lastPosition, currentPosition FROM site_topseries ORDER BY currentPosition ASC LIMIT 0, ".$amount."";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		$i = 0;
 		echo "<br />\n";
-		while(list($id,$lastPosition,$currentPosition) = mysql_fetch_array($result)){
+		while(list($id,$lastPosition,$currentPosition) = mysqli_fetch_array($result)){
 			echo $this->BuildSeriesList($id);
 			echo "<br />\n";
 			if($i < 4){echo "<div class='panel-line'></div>\n";}
@@ -98,8 +98,8 @@ class AFTWFooter extends Config {
 	}
 
 	private function BuildSeriesList($id){
-		$query = mysql_query("SELECT seoname, fullSeriesName FROM series WHERE id = ".$id);
-		$row = mysql_fetch_array($query);
+		$query = mysqli_query("SELECT seoname, fullSeriesName FROM series WHERE id = ".$id);
+		$row = mysqli_fetch_array($query);
 		return "<a class='side tooltip-overlay' href='/anime/".$row['seoname']."/' data-node='/scripts.php?view=profiles&show=tooltips&id=" . $id . "'>".$row['fullSeriesName']."</a>\n";
 	}
 

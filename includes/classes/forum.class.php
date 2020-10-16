@@ -98,24 +98,24 @@ class Forum extends Config {
                         $hiddenLimit = " AND `t1`.`hidden` = 0";
                 }
 		$query4 = "SELECT t1.tid, t1.ttitle, t1.tpid, t1.tfid, `t1`.`hidden`, t1.tviews, t2.ftitle, t2.fseo FROM forums_threads AS t1 LEFT JOIN forums_forum AS t2 ON t1.tfid = t2.fid WHERE (t2.fpermission LIKE '%".$PLA."%' AND t1.tupdated>='".$FinalDate3."' AND t1.tclosed=0" . $hiddenLimit  . ") ORDER BY t1.tupdated DESC";
-		mysql_query("SET NAMES 'utf8'");
-		$result4 = mysql_query($query4) or die('Error : ' . mysql_error());
-		$numcount = mysql_num_rows($result4);
+		mysqli_query("SET NAMES 'utf8'");
+		$result4 = mysqli_query($query4) or die('Error : ' . mysqli_error());
+		$numcount = mysqli_num_rows($result4);
 		if($numcount == 0){
 			echo "<tr><td class='row1' colspan=\"5\"><div style=\"padding-left:30px;\"><h3>There have been no replies in the last 24 hours.</td></tr>";
 		}
-		while(list($tid,$ttitle,$tpid,$tfid,$thidden,$tviews,$ftitle,$fseo) = mysql_fetch_array($result4)){
+		while(list($tid,$ttitle,$tpid,$tfid,$thidden,$tviews,$ftitle,$fseo) = mysqli_fetch_array($result4)){
 			$ttitle = stripslashes($ttitle);
 
 			//HTML exploit fix
 			//Zigbigidorlu was here =D
 			$ttitle = htmlentities($ttitle);
 
-			$query3 = mysql_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid' AND pistopic='0'");
-			$total_thread_posts = mysql_result($query3, 0);
+			$query3 = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE ptid='$tid' AND pistopic='0'");
+			$total_thread_posts = mysqli_result($query3, 0);
 			$query02 = "SELECT pid, puid, pdate FROM forums_post WHERE ptid='$tid' ORDER BY pid DESC LIMIT 0, 1";
-			$result02 = mysql_query($query02) or die('Error : ' . mysql_error());
-			$row02 = mysql_fetch_array($result02);
+			$result02 = mysqli_query($query02) or die('Error : ' . mysqli_error());
+			$row02 = mysqli_fetch_array($result02);
 			$pid = $row02['pid'];
 			$puid = $row02['puid'];
 			$pdate3 = $row02['pdate'];
@@ -135,7 +135,7 @@ class Forum extends Config {
 
 	public function addTopicView($tid) {
 		$query = "UPDATE forums_threads SET tviews = tviews+1 WHERE tid = $tid";
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 	}
 }
 

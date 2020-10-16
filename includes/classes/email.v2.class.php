@@ -55,7 +55,7 @@ class Email extends Config {
 			$results = $this->mysqli->query($query);
 			$row = $result->fetch_assoc();
 			
-			//list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysql_fetch_array($results)
+			//list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysqli_fetch_array($results)
 			// $Var1 is going to be the cart_id, since the email is going out, it means that we are to send based on the cart which has been moved to inactive, and has created an entry in the orders tab.
 			$this->Subject = "AnimeFTW.tv Store Order Update, Order ID #" . str_pad($row['id'], 8, '0', STR_PAD_LEFT);
 

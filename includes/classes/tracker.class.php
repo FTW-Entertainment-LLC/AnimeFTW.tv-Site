@@ -25,7 +25,7 @@ class AFTWTracker extends Config {
 		$this->tz = $tz;
 		$this->sigim = array('air','blacklagoon','codegeass','deathnote','elfenlied','exia','ichigo','kamina','loulu','luckystar','naruto','rukia','sasuke','trigun','whentheycry');
 		$this->host = $_SERVER['HTTP_HOST'];
-		$this->ruid = mysql_real_escape_string(htmlentities($ruid));
+		$this->ruid = mysqli_real_escape_string(htmlentities($ruid));
 	}
 
 	public function connectProfile($input)
@@ -69,12 +69,12 @@ class AFTWTracker extends Config {
 
 	private function SQLQuery($query,$type)
 	{
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 		if($type == 1){ //Needs results NAOW?!
-			$result = mysql_result($result , 0);
+			$result = mysqli_result($result , 0);
 		}
 		else if($type == 0){ //Cause Arrays are BAMF.
-			$result = mysql_fetch_array($result);
+			$result = mysqli_fetch_array($result);
 		}
 		else {}
 		return $result;
@@ -87,13 +87,13 @@ class AFTWTracker extends Config {
 		}
 		else
 		{
-			$tid = mysql_real_escape_string($_GET['tid']);
+			$tid = mysqli_real_escape_string($_GET['tid']);
 			$q = $this->SQLQuery("SELECT id, uid FROM episode_tracker WHERE id='".$tid."'",0);
 			if($q['uid'] == $this->ruid && $this->UserArray[2] != 3)
 			{
 				echo "<div class=\"redmsg\">Tracker Entry was deleted Successfully.</div>";
 				//echo "DELETE FROM episode_tracker WHERE id = '".$q['id']."'";
-				$this->SQLQuery("DELETE FROM episode_tracker WHERE id = '" . mysql_real_escape_string($q['id']) . "'",2);
+				$this->SQLQuery("DELETE FROM episode_tracker WHERE id = '" . mysqli_real_escape_string($q['id']) . "'",2);
 			}
 			else
 			{
@@ -106,7 +106,7 @@ class AFTWTracker extends Config {
 	{
 		$thispage = "/scripts.php?view=tracker&id=".$this->ruid;
 		$tclass = 'tracker2';
-		$rs = $this->SQLQuery("SELECT COUNT(id) FROM episode_tracker WHERE uid='" . mysql_real_escape_string($this->ruid) . "'",1);
+		$rs = $this->SQLQuery("SELECT COUNT(id) FROM episode_tracker WHERE uid='" . mysqli_real_escape_string($this->ruid) . "'",1);
 		if($rs == 0)
 		{
 			echo "<div class=\"redmsg\">No Episodes have been tracked for this user.</div>";
@@ -126,7 +126,7 @@ class AFTWTracker extends Config {
 			$this->pagingV1("tracker-wrapper",$rs,$this->pp,$cpage,$thispage);
 			$q = $this->SQLQuery("SELECT id, eid, dateViewed FROM episode_tracker WHERE uid='".$this->ruid."' ORDER BY dateViewed DESC LIMIT ".$cpage.", ".$this->pp,2);
 			echo "<br />";
-			while(list($id, $eid, $dateViewed) = mysql_fetch_array($q, MYSQL_NUM))
+			while(list($id, $eid, $dateViewed) = mysqli_fetch_array($q, MYSQL_NUM))
 			{
 				$dateViewed = timeZoneChange($dateViewed,$this->UserArray[3]);
 				$dateViewed = date("l, F jS, Y, h:i a",$dateViewed);
@@ -188,8 +188,8 @@ class AFTWTracker extends Config {
 	private function constructEntryDetails($epid,$date)
 	{
 		$query = "SELECT `episode`.`epnumber`, `episode`.`epname`, `series`.`seoname`, `series`.`fullSeriesName` FROM `series`, `episode` WHERE `series`.`id`=`episode`.`sid` AND `episode`.`id` = $epid";
-		$result = mysql_query($query);
-		$row = mysql_fetch_assoc($result);
+		$result = mysqli_query($query);
+		$row = mysqli_fetch_assoc($result);
 		//return checkEpisodeSeriesName($eid).'<br /> Viewed on '.$dateViewed.', Entitled: '.checkEpisode2($eid).'';
 
 		return ' Viewed Series <a href="/anime/' . $row['seoname'] . '/" target="_blank">' . $row['fullSeriesName'] . '</a> Episode #' . $row['epnumber'] . ' <br /> Viewed on ' . $date . ', Entitled: <a href="/anime/' . $row['seoname'] . '/ep-' . $row['epnumber'] . '" target="_blank">' . $row['epname'] . '</a>';
@@ -197,19 +197,19 @@ class AFTWTracker extends Config {
 
 	public function currentEpisodeAvailability($epid)
 	{
-		$query = "SELECT `round` FROM `watchlist`, `episode` WHERE `watchlist`.`uid` = " . $this->UserArray[1] . " AND `episode`.`id` = '" . mysql_real_escape_string($epid) . "' AND `watchlist`.`sid` = `episode`.`sid`";
-        $result = mysql_query($query);
+		$query = "SELECT `round` FROM `watchlist`, `episode` WHERE `watchlist`.`uid` = " . $this->UserArray[1] . " AND `episode`.`id` = '" . mysqli_real_escape_string($epid) . "' AND `watchlist`.`sid` = `episode`.`sid`";
+        $result = mysqli_query($query);
         if (!$result) {
             $round = 0;
         } else {
-            $row = mysql_fetch_assoc($result);
+            $row = mysqli_fetch_assoc($result);
             $round = $row['round'];
         }
-        $row = mysql_fetch_assoc($result);
+        $row = mysqli_fetch_assoc($result);
 		$query = "SELECT `id`, `dateViewed`, `seriesName` FROM `episode_tracker` WHERE `eid` = $epid AND `uid` = " . $this->UserArray[1] . " AND `round` = " . $round;
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
         if ($result) {
-            $count = mysql_num_rows($result);
+            $count = mysqli_num_rows($result);
         } else {
             $count = 0;
         }
@@ -224,7 +224,7 @@ class AFTWTracker extends Config {
 
 			</div>';
 		} else {
-			$row = mysql_fetch_assoc($result);
+			$row = mysqli_fetch_assoc($result);
 			echo '
 			<div style="font-size:14px;" class="tracker-button">
 				<img src="' . $this->Host . '/added_tracker.png" alt="" title="This video is already in your Tracker for this Round!" style="float:left;padding-top:1px;padding-right:3px;" />&nbsp;<span>In your Tracker.</span>
@@ -263,14 +263,14 @@ class AFTWTracker extends Config {
 	// Records the episode entry.
 	public function addTrackerEntry($epid)
 	{
-        $query = "SELECT `round` FROM `watchlist`, `episode` WHERE `watchlist`.`uid` = " . $this->UserArray[1] . " AND `episode`.`id` = '" . mysql_real_escape_string($epid) . "' AND `watchlist`.`sid` = `episode`.`sid`";
-        $result = mysql_query($query);
-        $row = mysql_fetch_assoc($result);
-		$query = "SELECT id FROM episode_tracker WHERE eid = " . mysql_real_escape_string($epid) . ' AND uid = ' . $this->UserArray[1] . ' AND `round` = ' . $row['round'];
-		$result = mysql_query($query);
+        $query = "SELECT `round` FROM `watchlist`, `episode` WHERE `watchlist`.`uid` = " . $this->UserArray[1] . " AND `episode`.`id` = '" . mysqli_real_escape_string($epid) . "' AND `watchlist`.`sid` = `episode`.`sid`";
+        $result = mysqli_query($query);
+        $row = mysqli_fetch_assoc($result);
+		$query = "SELECT id FROM episode_tracker WHERE eid = " . mysqli_real_escape_string($epid) . ' AND uid = ' . $this->UserArray[1] . ' AND `round` = ' . $row['round'];
+		$result = mysqli_query($query);
 		if($result)
 		{
-			$count = @mysql_num_rows($result);
+			$count = @mysqli_num_rows($result);
 		}
 		else
 		{
@@ -278,8 +278,8 @@ class AFTWTracker extends Config {
 		}
 		if($count == 0 || ($this->UserArray[2] != 3 && $count > 0))
 		{
-			$query = "INSERT INTO episode_tracker (`uid`, `eid`, `seriesName`, `dateViewed`, `round`) VALUES ('" . $this->UserArray[1] . "', '" . mysql_real_escape_string($epid) . "', (SELECT `sid` FROM episode WHERE `id` = " . mysql_real_escape_string($epid) . "), '" . time() . "', '" . $row['round'] . "')";
-			$result = mysql_query($query);
+			$query = "INSERT INTO episode_tracker (`uid`, `eid`, `seriesName`, `dateViewed`, `round`) VALUES ('" . $this->UserArray[1] . "', '" . mysqli_real_escape_string($epid) . "', (SELECT `sid` FROM episode WHERE `id` = " . mysqli_real_escape_string($epid) . "), '" . time() . "', '" . $row['round'] . "')";
+			$result = mysqli_query($query);
 		}
 		echo '<!-- Success --> on ' . date("F jS Y");
 	}

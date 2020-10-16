@@ -38,21 +38,21 @@ if (isset($_GET['rf'])){
 	$ReferalLink = @$_SERVER['HTTP_REFERER'];
 	$ReferalIp = $_SERVER['REMOTE_ADDR'];
 	if($Referal == 'zen'){
-		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
-		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysqli_real_escape_string($ReferalLink) . "', NULL, '" . mysqli_real_escape_string($Referal) . "', '" . mysqli_real_escape_string(time()) . "', '" . mysqli_real_escape_string($ReferalIp) . "')";
+		mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 	}
 	else if($Referal == 'af'){
-		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
-		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysqli_real_escape_string($ReferalLink) . "', NULL, '" . mysqli_real_escape_string($Referal) . "', '" . mysqli_real_escape_string(time()) . "', '" . mysqli_real_escape_string($ReferalIp) . "')";
+		mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 	}
 	else if($Referal == 'at'){
-		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
-		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysqli_real_escape_string($ReferalLink) . "', NULL, '" . mysqli_real_escape_string($Referal) . "', '" . mysqli_real_escape_string(time()) . "', '" . mysqli_real_escape_string($ReferalIp) . "')";
+		mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 	}
 	else if($Referal == 'logo'){}
 	else {
-		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysql_real_escape_string($ReferalLink) . "', NULL, '" . mysql_real_escape_string($Referal) . "', '" . mysql_real_escape_string(time()) . "', '" . mysql_real_escape_string($ReferalIp) . "')";
-		mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('" . mysqli_real_escape_string($ReferalLink) . "', NULL, '" . mysqli_real_escape_string($Referal) . "', '" . mysqli_real_escape_string(time()) . "', '" . mysqli_real_escape_string($ReferalIp) . "')";
+		mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 	}
 }
 //$index_global_message = "";
@@ -128,8 +128,8 @@ if (isset($_GET['rf'])){
 		{
 			echo '<!-- Query:' . $query . ' -->';
 		}
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		while(list($tid, $ttitle, $tpid, $tfid, $tdate, $pbody, $ftitle, $fseo) = mysql_fetch_array($result))
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		while(list($tid, $ttitle, $tpid, $tfid, $tdate, $pbody, $ftitle, $fseo) = mysqli_fetch_array($result))
 		{
 			$pbody = stripslashes($pbody);
 
@@ -155,37 +155,37 @@ if (isset($_GET['rf'])){
         if (1 == 2) {
 				$FinalDate3 = time()-86400;
 				//how many active in last minute
-				$query22 = mysql_query("SELECT ID FROM users WHERE lastActivity>='".(time()-86400)."'");
-				$online_users_24hours = mysql_num_rows($query22) or die("Error: ". mysql_error(). " with query ". $query22);
+				$query22 = mysqli_query("SELECT ID FROM users WHERE lastActivity>='".(time()-86400)."'");
+				$online_users_24hours = mysqli_num_rows($query22) or die("Error: ". mysqli_error(). " with query ". $query22);
 				//sidebar st00fs
-					$query2 = mysql_query("SELECT id FROM episode");
-					$full_total_episodes = mysql_num_rows($query2) or die("Error: ". mysql_error(). " with query ". $query2);
+					$query2 = mysqli_query("SELECT id FROM episode");
+					$full_total_episodes = mysqli_num_rows($query2) or die("Error: ". mysqli_error(). " with query ". $query2);
 
-					$query3 = mysql_query("SELECT id FROM series WHERE active='yes'");
-					$total_series = mysql_num_rows($query3) or die("Error: ". mysql_error(). " with query ". $query3);
+					$query3 = mysqli_query("SELECT id FROM series WHERE active='yes'");
+					$total_series = mysqli_num_rows($query3) or die("Error: ". mysqli_error(). " with query ". $query3);
 
-					$query4 = mysql_query("SELECT id FROM page_comments");
-					$total_comments = mysql_num_rows($query4) or die("Error: ". mysql_error(). " with query ". $query4);
+					$query4 = mysqli_query("SELECT id FROM page_comments");
+					$total_comments = mysqli_num_rows($query4) or die("Error: ". mysqli_error(). " with query ". $query4);
 				//gender queries!
 					//male
-					$query5 = mysql_query("SELECT ID FROM users WHERE gender='male'");
-					$total_male = mysql_num_rows($query5) or die("Error: ". mysql_error(). " with query ". $query5);
+					$query5 = mysqli_query("SELECT ID FROM users WHERE gender='male'");
+					$total_male = mysqli_num_rows($query5) or die("Error: ". mysqli_error(). " with query ". $query5);
 					//female
-					$query6 = mysql_query("SELECT ID FROM users WHERE gender='female'");
-					$total_female = mysql_num_rows($query6) or die("Error: ". mysql_error(). " with query ". $query6);
+					$query6 = mysqli_query("SELECT ID FROM users WHERE gender='female'");
+					$total_female = mysqli_num_rows($query6) or die("Error: ". mysqli_error(). " with query ". $query6);
 				//avatar queries!
 					// how many active?
-					$query7 = mysql_query("SELECT ID FROM users WHERE avatarActivate='yes'");
-					$total_avatars = mysql_num_rows($query7) or die("Error: ". mysql_error(). " with query ". $query7);
+					$query7 = mysqli_query("SELECT ID FROM users WHERE avatarActivate='yes'");
+					$total_avatars = mysqli_num_rows($query7) or die("Error: ". mysqli_error(). " with query ". $query7);
 					// how many gif?
-					$query8 = mysql_query("SELECT ID FROM users WHERE avatarExtension='gif'");
-					$total_avatars_gif = mysql_num_rows($query8) or die("Error: ". mysql_error(). " with query ". $query8);
+					$query8 = mysqli_query("SELECT ID FROM users WHERE avatarExtension='gif'");
+					$total_avatars_gif = mysqli_num_rows($query8) or die("Error: ". mysqli_error(). " with query ". $query8);
 					// how many jpgs?
-					$query9 = mysql_query("SELECT ID FROM users WHERE avatarExtension='jpg'");
-					$total_avatars_jpg = mysql_num_rows($query9) or die("Error: ". mysql_error(). " with query ". $query9);
+					$query9 = mysqli_query("SELECT ID FROM users WHERE avatarExtension='jpg'");
+					$total_avatars_jpg = mysqli_num_rows($query9) or die("Error: ". mysqli_error(). " with query ". $query9);
 					// how many pngs?
-					$query10 = mysql_query("SELECT ID FROM users WHERE avatarExtension='png'");
-					$total_avatars_png = mysql_num_rows($query10) or die("Error: ". mysql_error(). " with query ". $query10);
+					$query10 = mysqli_query("SELECT ID FROM users WHERE avatarExtension='png'");
+					$total_avatars_png = mysqli_num_rows($query10) or die("Error: ". mysqli_error(). " with query ". $query10);
 		echo "<div class='side-body-bg'>\n";
 		echo "<span class='scapmain'>AnimeFTW.tv Site Statistics</span>\n";
 		echo "<br />\n";
@@ -194,10 +194,10 @@ if (isset($_GET['rf'])){
 				echo '<div align="center">There have been '.$online_users_24hours.' registered users online in the past 24 hours!<br /><br /></div>
 					<div style="width:100%">';
 				$query19 = "SELECT ID, lastActivity FROM users WHERE lastActivity>='".$FinalDate3."' ORDER BY lastActivity DESC";
-				$result19 = mysql_query($query19) or die('Error : ' . mysql_error());
-				$ucount = mysql_num_rows($result19);
+				$result19 = mysqli_query($query19) or die('Error : ' . mysqli_error());
+				$ucount = mysqli_num_rows($result19);
 				$i =0;
-  				while(list($ID,$lastActivity) = mysql_fetch_array($result19))
+  				while(list($ID,$lastActivity) = mysqli_fetch_array($result19))
 				{
 					$lastActivity = $Config->timeZoneChange($lastActivity,$profileArray[3]);
 
@@ -230,10 +230,10 @@ if (isset($_GET['rf'])){
 						<div class="date"></div>
        		<h2>10 Newest Members!</h2>';
 							$query = "SELECT Username FROM users WHERE active='1' ORDER BY id DESC LIMIT 0, 10";
-							$result = mysql_query($query) or die('Error : ' . mysql_error());
+							$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 							$self = $_SERVER['PHP_SELF'];
 
-						while(list($Username) = mysql_fetch_array($result, MYSQL_NUM))
+						while(list($Username) = mysqli_fetch_array($result, MYSQL_NUM))
 						{
 							echo '<a href="//'.$siteroot.'/user/'.$Username.'">'.$Username.'</a>, ';
 						}
@@ -246,14 +246,14 @@ if (isset($_GET['rf'])){
 			if($profileArray[2] != 0 && $profileArray[2] !=3)
 			{
 			$query = "SELECT episode.id, episode.seriesname, episode.epname, episode.epnumber FROM episode, series WHERE episode.seriesname=series.seriesName AND series.active = 'yes' ORDER BY episode.id DESC LIMIT 0, 15";
-			$result = mysql_query($query) or die('Error : ' . mysql_error());
+			$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 			$self = $_SERVER['PHP_SELF'];
 
-			while(list($id, $seriesname, $epname, $epnumber) = mysql_fetch_array($result, MYSQL_NUM))
+			while(list($id, $seriesname, $epname, $epnumber) = mysqli_fetch_array($result, MYSQL_NUM))
 			{
 			$query2 = "SELECT seriesName, fullSeriesName, seoname FROM series WHERE seriesName='".$seriesname."'";
-			$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
-			list($seriesName2, $fullSeriesName, $seoname) = mysql_fetch_array($result2, MYSQL_NUM);
+			$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+			list($seriesName2, $fullSeriesName, $seoname) = mysqli_fetch_array($result2, MYSQL_NUM);
 			$fullSeriesName = stripslashes($fullSeriesName);
 			$epname = stripslashes($epname);
 			echo '<div> - Episode #' . $epnumber . ' added to series <a href="//'.$siteroot.'/anime/'.$seoname.'/">' . $fullSeriesName . '</a> titled: <span style="font-weight:bold;">' . $epname . '</span></div>
@@ -263,14 +263,14 @@ if (isset($_GET['rf'])){
 		}
 		else {
 			$query = "SELECT id, seriesname, epname, epnumber FROM episode ORDER BY date DESC LIMIT 0, 15";
-			$result = mysql_query($query) or die('Error : ' . mysql_error());
+			$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 			$self = $_SERVER['PHP_SELF'];
 
-			while(list($id, $seriesname, $epname, $epnumber) = mysql_fetch_array($result, MYSQL_NUM))
+			while(list($id, $seriesname, $epname, $epnumber) = mysqli_fetch_array($result, MYSQL_NUM))
 			{
 			$query2 = "SELECT seriesName, fullSeriesName, seoname FROM series WHERE seriesName='".$seriesname."'";
-			$result2 = mysql_query($query2) or die('Error : ' . mysql_error());
-			list($seriesName2, $fullSeriesName, $seoname) = mysql_fetch_array($result2, MYSQL_NUM);
+			$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+			list($seriesName2, $fullSeriesName, $seoname) = mysqli_fetch_array($result2, MYSQL_NUM);
 			$fullSeriesName = stripslashes($fullSeriesName);
 			$epname = stripslashes($epname);
 			echo '<div> - Episode #' . $epnumber . ' added to series <a href="//'.$siteroot.'/videos/'.$seoname.'/">' . $fullSeriesName . '</a> titled: <span style="font-weight:bold;">' . $epname . '</span></div>
@@ -311,8 +311,8 @@ if (isset($_GET['rf'])){
 					$query1 = "SELECT ip, seenReason FROM banned
 							ORDER BY id
 							DESC";
-				$result1 = mysql_query($query1) or die('Error : ' . mysql_error());
-  				while(list($ip,$seenReason) = mysql_fetch_array($result1))
+				$result1 = mysqli_query($query1) or die('Error : ' . mysqli_error());
+  				while(list($ip,$seenReason) = mysqli_fetch_array($result1))
 				{
 					echo "----------------------<br />";
 					echo "<div>$ip - BANNED - Reason: $seenReason</div>";

@@ -22,15 +22,15 @@ function niceday2($dated) {
 if($_POST)
 {
 	$uid = $_POST['uid'];
-	$uid = mysql_real_escape_string($uid);
+	$uid = mysqli_real_escape_string($uid);
 	$ip = $_POST['ip'];
-	$ip = mysql_real_escape_string($ip);
+	$ip = mysqli_real_escape_string($ip);
 	$epid = @$_POST['epid'];
-	$epid = mysql_real_escape_string($epid);
+	$epid = mysqli_real_escape_string($epid);
 	$comment = $_POST['comment'];
-	$comment = mysql_real_escape_string($comment);
+	$comment = mysqli_real_escape_string($comment);
 	$spoiler = @$_POST['spoiler'];
-	$spoiler = mysql_real_escape_string($spoiler);
+	$spoiler = mysqli_real_escape_string($spoiler);
 	$dated = date("Y-m-d H:i:s");
 	$is_approved = 1;
 	if(isset($_POST['t']) && $_POST['t'] == 1){
@@ -39,20 +39,20 @@ if($_POST)
 			echo 'The comment was not processed.';
 		}
 		else {
-			$pid = mysql_real_escape_string($pid);
+			$pid = mysqli_real_escape_string($pid);
 			$comment = strip_tags($comment);
 			$comment = nl2br($comment);
 			//insert the comment
 			$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, page_id, dated, is_approved, uid, epid, type) VALUES (NULL, '$comment', '0', '$ip', 'u".$pid."', '$dated', '$is_approved', '$uid', '0', '1') ";
-			mysql_query($query);
+			mysqli_query($query);
 			//select the id for everything else
-			$result = mysql_query("SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND page_id='u".$pid."'") or die("error ". mysql_error(). " with query ");
-			$row = mysql_fetch_array($result); //put it in an array
+			$result = mysqli_query("SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND page_id='u".$pid."'") or die("error ". mysqli_error(). " with query ");
+			$row = mysqli_fetch_array($result); //put it in an array
 			//insert a notification row.. cause were bad ass like that.
 			$queryi = "INSERT INTO notifications (`id`, `uid`, `date`, `type`, `d1`, `d2`, `d3`) VALUES (NULL, '".$pid."', '".time()."', '2', '".$row['id']."', NULL, NULL)";
-			mysql_query($queryi);
-			$result2 = mysql_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
-			$row2 = mysql_fetch_array($result2);
+			mysqli_query($queryi);
+			$result2 = mysqli_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
+			$row2 = mysqli_fetch_array($result2);
 			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="//i.animeftw.tv/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';}
 			else {$avatar = '<img src="//i.animeftw.tv/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" width="40px" style="padding:2px;" border="0" />';}
 			$comment = stripslashes($comment);
@@ -73,12 +73,12 @@ if($_POST)
 			$comment = strip_tags($comment);
 			$comment = nl2br($comment);
 			$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, dated, is_approved, uid, epid) VALUES (NULL, '".addslashes($comment)."', '$spoiler', '$ip', '$dated', '$is_approved', '$uid', '$epid') ";
-			mysql_query($query);
+			mysqli_query($query);
 			//Select the last one you just did..
-			$result = mysql_query("SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND epid='".$epid."'") or die("error ". mysql_error(). " with query ".$query);
-			$row = mysql_fetch_array($result);
-			$result2 = mysql_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
-			$row2 = mysql_fetch_array($result2);
+			$result = mysqli_query("SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND epid='".$epid."'") or die("error ". mysqli_error(). " with query ".$query);
+			$row = mysqli_fetch_array($result);
+			$result2 = mysqli_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
+			$row2 = mysqli_fetch_array($result2);
 			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="//i.animeftw.tv/avatars/default.gif" alt="avatar" height="50px" border="0" />';}
 			else {$avatar = '<img src="//i.animeftw.tv/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" height="50px" border="0" />';}
 

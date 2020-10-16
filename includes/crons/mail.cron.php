@@ -14,20 +14,20 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 	// processed, it can be any amount of time.
 	// build the query that will tell us how many there were.
 	$query = "SELECT id, date, sid, v1, v2 FROM email";
-	$results = mysql_query($query);
-	$count = mysql_num_rows($results);
+	$results = mysqli_query($query);
+	$count = mysqli_num_rows($results);
 	
 	if($count > 0)
 	{
-		while(list($id,$date,$sid,$v1,$v2) = mysql_fetch_array($results))
+		while(list($id,$date,$sid,$v1,$v2) = mysqli_fetch_array($results))
 		{
 			$query = "SELECT series.fullSeriesName, series.seoname, episode.epname, episode.epnumber, episode.date, episode.image FROM series, episode WHERE series.id = ".$sid." AND episode.id = ".$v1." AND episode.sid=series.id";
-			$result = mysql_query($query);
-			$row = mysql_fetch_array($result);
+			$result = mysqli_query($query);
+			$row = mysqli_fetch_array($result);
 			
 			$subquery = "SELECT users.Username, users.Email FROM users, watchlist WHERE users.ID=watchlist.uid AND watchlist.sid = $sid AND watchlist.email = 1";
-			$subresult = mysql_query($subquery);
-			while(list($Username,$Email) = mysql_fetch_array($subresult))
+			$subresult = mysqli_query($subquery);
+			while(list($Username,$Email) = mysqli_fetch_array($subresult))
 			{
 				//begin email buildup
 				$mime_boundary = "----FTW_ENTERTAINMENT_LLC----".md5(time());
@@ -81,7 +81,7 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 				$SMTPMail = new SMTPClient ($SmtpServer, $SmtpPort, $SmtpUser, $SmtpPass, $from, $to, $subject, $headers, $body);
 				$SMTPChat = $SMTPMail->SendMail();
 				
-				mysql_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', '".$Action."');");
+				mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', '".$Action."');");
 			}
 			unset($result);
 			unset($row);
@@ -89,6 +89,6 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 			unset($subresult);
 			unset($subquery);
 		}
-		mysql_query("TRUNCATE email");
+		mysqli_query("TRUNCATE email");
 	}
-	mysql_query("UPDATE `crons` SET `status` = 0, `last_run` = " . time() . " WHERE `id` = 4");
+	mysqli_query("UPDATE `crons` SET `status` = 0, `last_run` = " . time() . " WHERE `id` = 4");

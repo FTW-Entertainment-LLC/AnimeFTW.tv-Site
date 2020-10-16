@@ -29,7 +29,7 @@ class Content extends Config {
 		
 		if(!$results)
 		{
-			echo '<div>There was an error with the SQL query. Error: ' . mysql_error() . '</div>';
+			echo '<div>There was an error with the SQL query. Error: ' . mysqli_error() . '</div>';
 			exit;
 		}
 		
@@ -63,7 +63,7 @@ class Content extends Config {
 		
 		if(!$results)
 		{
-			echo '<div>There was an error with the SQL query. Error: ' . mysql_error() . '</div>';
+			echo '<div>There was an error with the SQL query. Error: ' . mysqli_error() . '</div>';
 			exit;
 		}
 		

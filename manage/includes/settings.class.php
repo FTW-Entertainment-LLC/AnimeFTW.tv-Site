@@ -21,14 +21,14 @@ class Settings extends Config {
 		<div id="ContentStuff" class="ContentStuff" style="display:hidden;"><div align="center">Choose From the Above Options.</div></div>';
 		}
 		if(isset($_GET['subnode']) && $_GET['subnode'] == 'permissions'){
-			$query = mysql_query("SELECT * FROM permissions");
-			$count = mysql_num_rows($query); 
+			$query = mysqli_query("SELECT * FROM permissions");
+			$count = mysqli_num_rows($query); 
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
 			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
 			echo '<table>';
 			$i = 1;
-			while($row = mysql_fetch_assoc($query)){
+			while($row = mysqli_fetch_assoc($query)){
 				if($row['parent'] == ''){
 					if($i > 1){
 						echo '</tr>'."\n";
@@ -59,14 +59,14 @@ class Settings extends Config {
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-settings'){
-			$query = mysql_query("SELECT * FROM settings");
-			$count = mysql_num_rows($query); 
+			$query = mysqli_query("SELECT * FROM settings");
+			$count = mysqli_num_rows($query); 
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
 			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
 			echo '<table>';
 			echo '<tr><td><b>Setting</b></td><td><b>Value</b></td></tr>';
-			while($row = mysql_fetch_assoc($query)){
+			while($row = mysqli_fetch_assoc($query)){
 				echo '<tr><td width="50%" valign="top"><div align="left">'.$row['display_name'].'</div></td>'."\n";
 				echo '<td><input type="text" name="'.$row['name'].'" id="'.$row['name'].'" value="'.$row['value'].'" /></td>'."\n";
 				echo '</tr>'."\n";
@@ -78,14 +78,14 @@ class Settings extends Config {
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-groups'){
-			$query = mysql_query("SELECT * FROM site_groups");
-			$count = mysql_num_rows($query); 
+			$query = mysqli_query("SELECT * FROM site_groups");
+			$count = mysqli_num_rows($query); 
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
 			echo '<div style="height:400px;overflow-y:scroll;overflow-x:none;">';	
 			echo '<table>';
 			echo '<tr><td><b>ID Number</b></td><td><b>Group ID#</b></td></tr>';
-			while($row = mysql_fetch_assoc($query)){
+			while($row = mysqli_fetch_assoc($query)){
 				echo '<tr><td width="25%">'.$row['groupID'].'</td>'."\n";
 				echo '<td valign="top"><div align="left"><input type="text" name="'.$row['groupName'].'" id="'.$row['name'].'" value="'.$row['groupName'].'" /></div></td>'."\n";
 				echo '</tr>'."\n";

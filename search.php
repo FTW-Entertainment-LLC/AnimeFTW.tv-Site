@@ -9,14 +9,14 @@ $v->connectProfile($Config->outputUserInformation());
 if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && !isset($_GET['page']))
 {
 	header('Content-type: application/json; charset=UTF-8');
-	$q = mysql_real_escape_string($_GET['q']);
+	$q = mysqli_real_escape_string($_GET['q']);
 	$query = "SELECT fullSeriesName, seoname FROM series WHERE  active='yes' AND aonly = 0 AND ( fullSeriesName LIKE '%".$q."%' OR romaji LIKE '%".$q."%' OR kanji LIKE '%".$q."%' ) ORDER BY fullSeriesName LIMIT 0, 8";
-	$query = mysql_query($query);
+	$query = mysqli_query($query);
 	
 	$results = [];
 	$counts	= [];
 	$seoLinks = [];
-	while ($row = mysql_fetch_array($query, MYSQL_ASSOC)) {
+	while ($row = mysqli_fetch_array($query, MYSQL_ASSOC)) {
 		$seoLinks[] = "http://www.animeftw.tv/anime/{$row['seoname']}";
 		$results[] = $row['fullSeriesName'];
 		$counts[] = "1 Result";

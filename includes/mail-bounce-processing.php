@@ -112,7 +112,7 @@ try {
 	// This was a failure message.. we will need to update the user so that they dont get future emails
 	if($headers['Subject'][0] == 'Mail delivery failed: returning message to sender' || $headers['Subject'][0] == 'Delivery Status Notification (Failure)')
 	{
-		mysql_query("UPDATE `users` SET `notifications` = 0 WHERE `Email` = '$orig_to_email1'");
+		mysqli_query("UPDATE `users` SET `notifications` = 0 WHERE `Email` = '$orig_to_email1'");
 	}
   
   $stmt->bindParam(':x_original_to',  $orig_to_email1, PDO::PARAM_STR, 255);

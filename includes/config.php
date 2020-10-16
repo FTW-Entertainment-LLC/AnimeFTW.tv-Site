@@ -14,6 +14,5 @@ if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'h
 	$newsdbpass 		= 'L=.zZ76[,TOqwf*&tl';
 	$newsdbname 		= 'devsftw9_anime';
 }
-$x = mysql_connect($newsdbhost,$newsdbuser,$newsdbpass) or die('MySQL is having techincal issues.. If you see this for longer than a few seconds, please alert the admins on the facebook page.');
-mysql_select_db($newsdbname,$x);
+$conn = mysqli_connect($newsdbhost,$newsdbuser,$newsdbpass,$newsdbname);
 ?>

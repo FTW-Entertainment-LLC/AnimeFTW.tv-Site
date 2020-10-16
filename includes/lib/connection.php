@@ -23,7 +23,7 @@
 		function db($dbuser, $dbpassword, $dbname, $dbhost)
 		{
 	
-			$this->dbh = @mysql_connect($dbhost,$dbuser,$dbpassword);
+			$this->dbh = @mysqli_connect($dbhost,$dbuser,$dbpassword);
 			
 			if ( ! $this->dbh )
 			{
@@ -40,7 +40,7 @@
 		
 		function select($db)
 		{
-			if ( !@mysql_select_db($db,$this->dbh))
+			if ( !@mysqli_select_db($db,$this->dbh))
 			{
 				$this->print_error("<ol><b>Error selecting database <u>$db</u>!</b><li>Are you sure it exists?<li>Are you sure there is a valid database connection?</ol>");
 			}
@@ -52,7 +52,7 @@
 		function print_error($str = "")
 		{
 			
-			if ( !$str ) $str = mysql_error();
+			if ( !$str ) $str = mysqli_error();
 			
 			// If there is an error then take note of it
 			print "<blockquote><font face=arial size=2 color=ff0000>";
@@ -77,10 +77,10 @@
 			// Keep track of the last query for debug..
 			$this->last_query = $query;
 			
-			// Perform the query via std mysql_query function..
-			$this->result = mysql_query($query,$this->dbh);
+			// Perform the query via std mysqli_query function..
+			$this->result = mysqli_query($query,$this->dbh);
 	
-			if ( mysql_error() ) 
+			if ( mysqli_error() ) 
 			{				
 				// If there is an error then take note of it..
 				$this->print_error();
@@ -96,9 +96,9 @@
 					// Take note of column info
 					
 					$i=0;
-					while ($i < @mysql_num_fields($this->result))
+					while ($i < @mysqli_num_fields($this->result))
 					{
-						$this->col_info[$i] = @mysql_fetch_field($this->result);
+						$this->col_info[$i] = @mysqli_fetch_field($this->result);
 						$i++;
 					}
 	
@@ -106,7 +106,7 @@
 					// Store Query Results
 					
 					$i=0;
-					while ( $row = @mysql_fetch_object($this->result) )
+					while ( $row = @mysqli_fetch_object($this->result) )
 					{ 
 	
 						// Store relults as an objects within main array
@@ -115,7 +115,7 @@
 						$i++;
 					}
 					
-					@mysql_free_result($this->result);
+					@mysqli_free_result($this->result);
 				}
 				
 				return TRUE;
@@ -128,7 +128,7 @@
 		
 		function RecordCount ( $query )
 		{
-			return mysql_num_rows ( mysql_query ( $query ) );
+			return mysqli_num_rows ( mysqli_query ( $query ) );
 		}
 		
 		// ==================================================================
@@ -136,7 +136,7 @@
 		
 		function Mresult ( $query, $a, $b )
 		{
-			return mysql_result ( mysql_query ( $query ), $a, $b );
+			return mysqli_result ( mysqli_query ( $query ), $a, $b );
 		}
 		
 		/**
@@ -150,7 +150,7 @@
 		{
 			if (!$magic_quotes) {
 				if (strnatcmp(PHP_VERSION, '4.3.0') >= 0) {
-					return "'" . mysql_real_escape_string($string) . "'";
+					return "'" . mysqli_real_escape_string($string) . "'";
 				}
 				$string = str_replace("'", "\\'" , str_replace('\\', '\\\\', str_replace("\0", "\\\0", $string)));
 				return  "'" . $string . "'"; 

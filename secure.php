@@ -53,25 +53,25 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					if(isEmail($userName))
 					{
 						// if the username is an email, we change the query string a bit.
-						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Email = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Email = \'' . mysqli_real_escape_string( $userName ) . '\' AND Password = \'' . mysqli_real_escape_string( md5 ( $password ) ) . '\'';
 					}
 					else
 					{
 						$userName = makeUrlFriendly($userName);
 						// if the username is a real username.. then we use a different string.
-						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Username = \'' . mysql_real_escape_string( $userName ) . '\' AND Password = \'' . mysql_real_escape_string( md5 ( $password ) ) . '\'';
+						$query = 'SELECT `ID`, `Username`, `Email`, `Active`, `Reason`, `Password` FROM `' . $Config->MainDB . '`.`users` WHERE Username = \'' . mysqli_real_escape_string( $userName ) . '\' AND Password = \'' . mysqli_real_escape_string( md5 ( $password ) ) . '\'';
 					}
-					$result = mysql_query($query);
-					if(mysql_num_rows($result) == 1)
+					$result = mysqli_query($query);
+					if(mysqli_num_rows($result) == 1)
 					{
-						$row = mysql_fetch_assoc($result);
+						$row = mysqli_fetch_assoc($result);
 						if ( $row['Active'] == 1 )
 						{
 							$Session->setUserSessionData($row['ID'],$row['Username'],(@$_POST['remember'])?TRUE:FALSE);
-							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysql_real_escape_string($userName) . '\'';
-							mysql_query($query) or die('Error : ' . mysql_error());
+							$query = 'UPDATE users SET `lastLogin` = \''.time().'\' WHERE `Username`=\'' . mysqli_real_escape_string($userName) . '\'';
+							mysqli_query($query) or die('Error : ' . mysqli_error());
 							$query = "INSERT INTO `" . $Config->MainDB . "`.`logins` (`ip`, `date`, `uid`, `agent`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$row['ID']."', '".$_SERVER['HTTP_USER_AGENT']."')";
-							mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+							mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 
 							// send an email to the user.
 							$Session->sendEmailToUser($row['Email'],$row['ID']);
@@ -101,8 +101,8 @@ $PageTitle = 'Login - AnimeFTW.TV';
 					}
 					else {
 						$query = "INSERT INTO `failed_logins` (`name`, `password`, `ip`, `date`) VALUES
-		('" . mysql_real_escape_string($userName) . "', '" . mysql_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
-						mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+		('" . mysqli_real_escape_string($userName) . "', '" . mysqli_real_escape_string($password) . "', '" . $_SERVER['REMOTE_ADDR'] . "', '".time()."')";
+						mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 						$error = 'Login failed! Password or Username is Incorrect.<br />'.$Config->checkFailedLogins($_SERVER['REMOTE_ADDR']);
 					}
 				}
@@ -192,13 +192,13 @@ else if($_GET['node'] == 'reviews' && 2 == 1)
 		$rating = $_POST['art_rating'];
 		if(md5($uid) == $ver){
 	 		$query = sprintf("INSERT INTO reviews (sid, uid, date, review, stars, approved) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($sid, $conn),
-				mysql_real_escape_string($uid, $conn),
-				mysql_real_escape_string(time(), $conn),
-				mysql_real_escape_string($review, $conn),
-				mysql_real_escape_string($rating, $conn),
-				mysql_real_escape_string('0', $conn));
-			mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+				mysqli_real_escape_string($sid, $conn),
+				mysqli_real_escape_string($uid, $conn),
+				mysqli_real_escape_string(time(), $conn),
+				mysqli_real_escape_string($review, $conn),
+				mysqli_real_escape_string($rating, $conn),
+				mysqli_real_escape_string('0', $conn));
+			mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 		}
 		else {
 			header('location: /reviews');
@@ -210,16 +210,16 @@ else if($_GET['node'] == 'password-confirm' && 2 == 1)
 	$PageTitle = 'Password Confirmation - AnimeFTW.TV';
 	require_once ( 'includes/settings.php' );
 
-	$query = "SELECT * FROM users WHERE ID = " . mysql_real_escape_string($_GET['ID']);
-	$result = mysql_query($query);
+	$query = "SELECT * FROM users WHERE ID = " . mysqli_real_escape_string($_GET['ID']);
+	$result = mysqli_query($query);
 
-	if(mysql_num_rows($result) == 1)
+	if(mysqli_num_rows($result) == 1)
 	{
-		$row = mysql_fetch_assoc($result);
+		$row = mysqli_fetch_assoc($result);
 		if($row['Temp_pass'] == $_GET['new'] && $row['Temp_pass_active'] == 1)
 		{
 			$msg = 'Your new password has been confirmed. You may login using it.';
-			$update = mysql_query("UPDATE `users` SET `Password` = '" . mysql_real_escape_string(md5($row['Temp_pass'])) . "', `Temp_pass_active` = 0 WHERE ID = " . mysql_real_escape_string($_GET['ID']));
+			$update = mysqli_query("UPDATE `users` SET `Password` = '" . mysqli_real_escape_string(md5($row['Temp_pass'])) . "', `Temp_pass_active` = 0 WHERE ID = " . mysqli_real_escape_string($_GET['ID']));
 		}
 		else
 		{
@@ -812,8 +812,8 @@ else if($_GET['node'] == 'reviews'){
 		echo '<h2>ERROR</h2><br />Please <a href="https://www.animeftw.tv/login">Login</a> so that you can review a Series!';
 	}
 	else {
-		$totalreviews = mysql_query("SELECT * FROM reviews WHERE uid='$globalnonid'");
-		$totalreviews = mysql_num_rows($totalreviews);
+		$totalreviews = mysqli_query("SELECT * FROM reviews WHERE uid='$globalnonid'");
+		$totalreviews = mysqli_num_rows($totalreviews);
 		if($profileArray[2] == 3){
 			$possibleUserreviews = 5;
 		}
@@ -847,12 +847,12 @@ else if($_GET['node'] == 'reviews'){
 		   if($_GET['subnode'] == 'review'){
 			   //Pull the respective Series ID number and get the series info and name..
 				$ReviewedSeries = $_GET['sid'];
-				$possiblereviews = mysql_query("SELECT * FROM reviews WHERE uid='$profileArray[2]' AND sid='$ReviewedSeries'");
-				$reviews = mysql_num_rows($possiblereviews);
+				$possiblereviews = mysqli_query("SELECT * FROM reviews WHERE uid='$profileArray[2]' AND sid='$ReviewedSeries'");
+				$reviews = mysqli_num_rows($possiblereviews);
 				if($reviews == 0)
 				{
-					$reviewsquery = mysql_query("SELECT fullSeriesName, description FROM series WHERE id='$ReviewedSeries'");
-					$seriesCount = mysql_num_rows($reviewsquery);
+					$reviewsquery = mysqli_query("SELECT fullSeriesName, description FROM series WHERE id='$ReviewedSeries'");
+					$seriesCount = mysqli_num_rows($reviewsquery);
 				   echo '<div class="mpart">
 						<h2>AnimeFTW Series Reviews!</h2><br /><br />';
 					if($seriesCount == 0)
@@ -860,7 +860,7 @@ else if($_GET['node'] == 'reviews'){
 						echo '<b>ERROR: NO Such Series! Click back or <a href="/reviews/">return</a> to the Reviews Home page.';
 					}
 					else {
-					$reviewInfo = mysql_fetch_array($reviewsquery);
+					$reviewInfo = mysqli_fetch_array($reviewsquery);
 					$rFullSeriesName = $reviewInfo['fullSeriesName'];
 					$rdescription = $reviewInfo['description'];
 					$rdescription = stripslashes($rdescription);

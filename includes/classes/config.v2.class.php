@@ -438,7 +438,7 @@ class Config {
     // takes a query and a var and retunrs
     public function SingleVarQuery($query,$var)
     {
-        $result = $this->mysqli->query($query) or die('Error : ' . mysql_error());
+        $result = $this->mysqli->query($query) or die('Error : ' . mysqli_error());
         $row = $result->fetch_assoc();
         return $row[$var];
     }
@@ -446,7 +446,7 @@ class Config {
     // records the mod function right into the database.
     public function ModRecord($type)
     {
-        $this->mysqli->query("INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysql_real_escape_string($_SERVER['REQUEST_URI'])."')");
+        $this->mysqli->query("INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysqli_real_escape_string($_SERVER['REQUEST_URI'])."')");
     }
 
     // we dont know what it does.. it just looks cool.

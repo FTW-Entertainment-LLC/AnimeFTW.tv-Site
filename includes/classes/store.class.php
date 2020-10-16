@@ -98,14 +98,14 @@ class Store extends Config {
 	private function BuildStoreCategories($type = NULL,$var = NULL)
 	{
 		$query = "SELECT * FROM store_category";
-		$result = mysql_query($query);
+		$result = mysqli_query($query);
 
 		// if we want to specifiy something, we change it!
 		if($type == 1)
 		{
 			$returned = "";
 			$returned .= '<select name="item-categories" class="loginForm">';
-			while($row = mysql_fetch_array($result))
+			while($row = mysqli_fetch_array($result))
 			{
 				if(is_numeric($var) && $var == $row['id'])
 				{
@@ -123,7 +123,7 @@ class Store extends Config {
 		{
 			$CatArray = array();
 			$i = 1;
-			while($row = mysql_fetch_array($result))
+			while($row = mysqli_fetch_array($result))
 			{
 					$name = strtolower($row['name']);
 				@$CatArray[$name]['id'] .= $row['id'];
@@ -253,7 +253,7 @@ class Store extends Config {
 		{
 			if($SingleCategory != NULL)
 			{
-				$query = "SELECT store_items.id, store_items.name, store_items.price, store_category.name AS catname, store_items.description, store_items.picturetype FROM store_items, store_category WHERE store_items.category=store_category.id AND store_items.availability='available' AND store_category.name = '" . mysql_real_escape_string($SingleCategory) . "' ORDER BY RAND()";
+				$query = "SELECT store_items.id, store_items.name, store_items.price, store_category.name AS catname, store_items.description, store_items.picturetype FROM store_items, store_category WHERE store_items.category=store_category.id AND store_items.availability='available' AND store_category.name = '" . mysqli_real_escape_string($SingleCategory) . "' ORDER BY RAND()";
 				$title = "Available Items under '" . $this->CatArray[$this->options[0]]['name'] . "'";
 			}
 			else
@@ -261,14 +261,14 @@ class Store extends Config {
 				$query = "SELECT store_items.id, store_items.name, store_items.price, store_category.name AS catname, store_items.description, store_items.picturetype FROM store_items, store_category WHERE store_items.category=store_category.id AND store_items.availability='available' ORDER BY RAND() LIMIT 0, 4";
 				$title = "Featured Items";
 			}
-			$result = mysql_query($query);
+			$result = mysqli_query($query);
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'>" . $title . "</span>\n";
 			echo "<br />\n";
 			echo "<span class='poster'>&nbsp;</span><br />\n";
 			echo '<div class="tbl" style="font-size:14px;">';
 			$i = 0;
-			while($row = mysql_fetch_array($result))
+			while($row = mysqli_fetch_array($result))
 			{
 				if($i == 0)
 				{
@@ -337,17 +337,17 @@ class Store extends Config {
 
 	private function ShowItem()
 	{
-		$query = "SELECT id, name, price, availability, description, productnum, pictures, picturetype FROM store_items WHERE name = '" . mysql_real_escape_string($this->options[1]) . "'";
-		$result = mysql_query($query);
+		$query = "SELECT id, name, price, availability, description, productnum, pictures, picturetype FROM store_items WHERE name = '" . mysqli_real_escape_string($this->options[1]) . "'";
+		$result = mysqli_query($query);
 		if(!$result)
 		{
 			// no results
 		}
 		else
 		{
-			$row = mysql_fetch_array($result);
+			$row = mysqli_fetch_array($result);
 			$this->ItemName = $row['name'];
-			$numrows = mysql_num_rows($result);
+			$numrows = mysqli_num_rows($result);
 
 			if($numrows > 0)
 			{
@@ -397,8 +397,8 @@ class Store extends Config {
 	private function BuildAvailability($item_id)
 	{
 		$query = "SELECT `id`, `item_count`, `item_size` FROM store_inventory WHERE item_id='$item_id' AND item_count>0 ORDER BY `order` ASC";
-		$results = mysql_query($query);
-		$numrow = mysql_num_rows($results);
+		$results = mysqli_query($query);
+		$numrow = mysqli_num_rows($results);
 
 		if($numrow > 0) // if there are active rows, it means it can be bought.
 		{
@@ -407,7 +407,7 @@ class Store extends Config {
 				$disabled = '';
 				$content = '<option value="0">Choose a Size</option>';
 				$addtocart = '<input type="submit" name="add-to-cart" id="add-to-cart" value="Add to Cart" />';
-				while($row = mysql_fetch_assoc($results))
+				while($row = mysqli_fetch_assoc($results))
 				{
 					$content .= '<option value="' . $row['id'] . '">' . $row['item_size'] . ' - ' . $row['item_count'] . ' Available</option>';
 				}
@@ -440,16 +440,16 @@ class Store extends Config {
 		$this->OrderStatus();
 		// we need to select all of the carts that are inactive, they will have a status as to what is completed.
 		$query = "SELECT store_cart.id AS cart_id, store_orders.id AS order_id, store_orders.total_price, store_orders.date_submitted, store_orders.date_updated, store_orders.status, store_orders.tracking_num FROM store_cart, store_orders WHERE store_orders.cart_id=store_cart.id AND store_cart.uid = " . $this->UserArray[1] . " AND store_cart.active = 1 ORDER BY store_cart.id ASC";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		if(!$results)
 		{
-			echo 'There was an error with the query: ' . mysql_error();
+			echo 'There was an error with the query: ' . mysqli_error();
 			exit;
 		}
-		$count = mysql_num_rows($results);
+		$count = mysqli_num_rows($results);
 		if($count > 0)
 		{
-			while(list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysql_fetch_array($results))
+			while(list($cart_id,$order_id,$total_price,$date_submitted,$date_updated,$status,$tracking_num) = mysqli_fetch_array($results))
 			{
 				echo '<div class="store-row-container" style="border:1px solid #333;margin:0 0 10px 0;">';
 				echo '<div class="store-order-header" style="padding:5px;background:#e2e2e2;">
@@ -466,9 +466,9 @@ class Store extends Config {
 				}
 				echo '	</div>';
 
-				$subresults = mysql_query("SELECT store_orders_items.item_id, (SELECT item_size FROM store_inventory WHERE id=store_orders_items.inventory_id) AS item_size, store_orders_items.quantity, store_items.name, store_items.picturetype FROM store_orders_items, store_items WHERE store_orders_items.cart_id=" . $cart_id . " AND store_items.id=store_orders_items.item_id");
+				$subresults = mysqli_query("SELECT store_orders_items.item_id, (SELECT item_size FROM store_inventory WHERE id=store_orders_items.inventory_id) AS item_size, store_orders_items.quantity, store_items.name, store_items.picturetype FROM store_orders_items, store_items WHERE store_orders_items.cart_id=" . $cart_id . " AND store_items.id=store_orders_items.item_id");
 				$i = 0;
-				while(list($item_id,$item_size,$quantity,$name,$picturetype) = mysql_fetch_array($subresults))
+				while(list($item_id,$item_size,$quantity,$name,$picturetype) = mysqli_fetch_array($subresults))
 				{
 					echo '<div>
 						<div style="display:inline-block; width:75px;"><img src="' . $this->Host . '/storeimages/item' . $item_id . '-0.' . $picturetype . '" alt="" style="width:45px;padding:10px;" /></div>
@@ -516,9 +516,9 @@ class Store extends Config {
 						{
 							$this->ModRecord("Deactivate Store Item");
 							// deleting is a strong word.. we are actually marking the item as inactive.
-							mysql_query("UPDATE store_items SET availability = 'unavailable' WHERE id = " . mysql_real_escape_string($_GET['id']));
+							mysqli_query("UPDATE store_items SET availability = 'unavailable' WHERE id = " . mysqli_real_escape_string($_GET['id']));
 							// now we update all of the inventory to make sure that there is nothing possible to buy.
-							mysql_query("UPDATE store_inventory SET item_count = 0 WHERE item_id = " . mysql_real_escape_string($_GET['id']));
+							mysqli_query("UPDATE store_inventory SET item_count = 0 WHERE item_id = " . mysqli_real_escape_string($_GET['id']));
 						}
 						else if($_GET['action'] == 'edit')
 						{
@@ -535,7 +535,7 @@ class Store extends Config {
 						else if($_GET['action'] == 'add-inventory-row')
 						{
 							$this->ModRecord("Add New Inventory Row to Item");
-							mysql_query("INSERT INTO store_inventory (`id`, `item_id`, `item_count`, `item_size`, `order`) VALUES (NULL, '" . mysql_real_escape_string($_GET['id']) . "', '0', '', '20')");
+							mysqli_query("INSERT INTO store_inventory (`id`, `item_id`, `item_count`, `item_size`, `order`) VALUES (NULL, '" . mysqli_real_escape_string($_GET['id']) . "', '0', '', '20')");
 						}
 						///inv_id="  + inv_id + "&value=
 						else if($_GET['action'] == 'update-inventory-row')
@@ -549,17 +549,17 @@ class Store extends Config {
 								$inv_id = substr($_GET['inv_id'],5);
 								$inv_type = substr($_GET['inv_id'],0,4);
 
-								$this->ModRecord("Update Inventory for Item " . mysql_real_escape_string($_GET['id']));
+								$this->ModRecord("Update Inventory for Item " . mysqli_real_escape_string($_GET['id']));
 
 								if($inv_type == 'size')
 								{
 									// We are going to update the size value
-									mysql_query("UPDATE store_inventory SET item_size = '" . mysql_real_escape_string($_GET['value']) . "' WHERE id = " . mysql_real_escape_string($inv_id));
+									mysqli_query("UPDATE store_inventory SET item_size = '" . mysqli_real_escape_string($_GET['value']) . "' WHERE id = " . mysqli_real_escape_string($inv_id));
 								}
 								else if($inv_type == 'count')
 								{
 									// We are going to update the count value
-									mysql_query("UPDATE store_inventory SET item_count = '" . mysql_real_escape_string($_GET['value']) . "' WHERE id = " . mysql_real_escape_string($inv_id));
+									mysqli_query("UPDATE store_inventory SET item_count = '" . mysqli_real_escape_string($_GET['value']) . "' WHERE id = " . mysqli_real_escape_string($inv_id));
 								}
 								else
 								{
@@ -576,13 +576,13 @@ class Store extends Config {
 				else
 				{
 					$query = "SELECT id, name, productnum FROM store_items ORDER BY name ASC";
-					$results = mysql_query($query);
+					$results = mysqli_query($query);
 
-					$rowcount = mysql_num_rows($results);
+					$rowcount = mysqli_num_rows($results);
 					echo '<div style="float:right;padding-right:15px;"><a href="#" onClick="AdminFunction(\'manage-stock\',\'add\',\'0\'); return false;">Add Item</a></div><div align="center" style="margin-top:5px;">Showing a total of ' . $rowcount . ' items available on the store.</div>
 					<div>';
 					$i = 0;
-					while(list($id,$name,$productnum) = mysql_fetch_array($results))
+					while(list($id,$name,$productnum) = mysqli_fetch_array($results))
 					{
 						if($i%2)
 						{
@@ -633,9 +633,9 @@ class Store extends Config {
 	{
 		if($Type == 'Edit')
 		{
-			$query = "SELECT id, category, name, price, availability, description, productnum, pictures, picturetype, weight FROM store_items WHERE id = " . mysql_real_escape_string($_GET['id']);
-			$results = mysql_query($query);
-			list($id,$category,$name,$price,$availability,$description,$productnum,$pictures,$picturetype,$weight) = mysql_fetch_array($results);
+			$query = "SELECT id, category, name, price, availability, description, productnum, pictures, picturetype, weight FROM store_items WHERE id = " . mysqli_real_escape_string($_GET['id']);
+			$results = mysqli_query($query);
+			list($id,$category,$name,$price,$availability,$description,$productnum,$pictures,$picturetype,$weight) = mysqli_fetch_array($results);
 			$method = '<input type="hidden" name="method" value="EditStoreItem" />';
 			$ButtonText = 'Edit Item';
 			$FormOptions = '';
@@ -740,11 +740,11 @@ class Store extends Config {
 		echo '<div style="font-size:16px;width:200px;border-bottom:1px solid #ccc;">Item Inventory</div>';
 
 		$query = "SELECT `id`, `item_count`, `item_size`, `order` FROM store_inventory WHERE item_id = $id ORDER BY `order` ASC";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 
 		if(!$results)
 		{
-			echo 'There was an error with the MySQL query; ' . mysql_error();
+			echo 'There was an error with the MySQL query; ' . mysqli_error();
 			exit;
 		}
 		echo '<div id="item-inventory" style="padding-top:5px;">';
@@ -754,7 +754,7 @@ class Store extends Config {
 		echo '<div style="display:inline-block;width:150px;" align="center">Item Count</div>';
 		echo '<div style="display:inline-block;width:150px;" align="center">Display Order</div>';
 		echo '</div>';
-		while(list($iid,$item_count,$item_size,$order) = mysql_fetch_array($results))
+		while(list($iid,$item_count,$item_size,$order) = mysqli_fetch_array($results))
 		{
 			echo '<form id="inv-' . $id . '" class="inventory-row-form">
 			<input type="hidden" name="id" value="' . $id . '" />';
@@ -841,8 +841,8 @@ class Shopping_Cart extends Config {
 	private function BuildItemArray()
 	{
 		$query = "SELECT id, category, name, price, description, productnum, weight FROM store_items";
-		$results = mysql_query($query);
-		while($row = mysql_fetch_array($results))
+		$results = mysqli_query($query);
+		while($row = mysqli_fetch_array($results))
 		{
 			$this->storeitems[$row['id']][0] = $row['id'];
 			$this->storeitems[$row['id']][1] = $row['category'];
@@ -862,23 +862,23 @@ class Shopping_Cart extends Config {
 	 */
 	function setItemQuantity($order_code, $quantity)
 	{
-		$query = "SELECT store_cart.uid FROM store_cart, store_orders_items WHERE store_orders_items.id = " . mysql_real_escape_string($order_code) . " AND store_cart.id=store_orders_items.cart_id";
-		$results = mysql_query($query);
+		$query = "SELECT store_cart.uid FROM store_cart, store_orders_items WHERE store_orders_items.id = " . mysqli_real_escape_string($order_code) . " AND store_cart.id=store_orders_items.cart_id";
+		$results = mysqli_query($query);
 		if(!$results)
 		{
 		}
 		else
 		{
-			$row = mysql_fetch_array($results);
+			$row = mysqli_fetch_array($results);
 			if($row['uid'] == $this->UserArray[1])
 			{
 				if($quantity == 0)
 				{
-					mysql_query("DELETE FROM store_orders_items WHERE id = $order_code");
+					mysqli_query("DELETE FROM store_orders_items WHERE id = $order_code");
 				}
 				else
 				{
-					mysql_query("UPDATE store_orders_items SET quantity = " . mysql_real_escape_string($quantity) . " WHERE id = " . mysql_real_escape_string($order_code));
+					mysqli_query("UPDATE store_orders_items SET quantity = " . mysqli_real_escape_string($quantity) . " WHERE id = " . mysqli_real_escape_string($order_code));
 				}
 			}
 			else
@@ -892,10 +892,10 @@ class Shopping_Cart extends Config {
 		// When this function is called, the item is being added to the cart, once the CheckCart function is done, we need to
 		$cart_id = $this->CheckCart();
 		$query = "INSERT INTO `store_orders_items` (`id`, `cart_id`, `item_id`, `inventory_id`, `quantity`) VALUES (NULL, '" . $cart_id . "', (SELECT item_id FROM `store_inventory` WHERE id = '" . $inventory_id . "'), '" . $inventory_id . "', '" . $quantity . "');";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		if(!$results)
 		{
-			echo 'Error in mysql query.' . mysql_error();
+			echo 'Error in mysql query.' . mysqli_error();
 			exit;
 		}
 
@@ -904,16 +904,16 @@ class Shopping_Cart extends Config {
 	private function CheckCart()
 	{
 		$query = "SELECT id FROM store_cart WHERE uid = '" . $this->UserArray[1] . "' and active = 0";
-		$results = mysql_query($query);
-		$numrows = mysql_num_rows($results);
+		$results = mysqli_query($query);
+		$numrows = mysqli_num_rows($results);
 		if($numrows < 1)
 		{
-			$query = "INSERT INTO `store_cart` (`id`, `active`, `uid`, `date`, `ip`, `agent`) VALUES (NULL, '0', '" . $this->UserArray[1] . "', '" . time() . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "');";
+			$query = "INSERT INTO `store_cart` (`id`, `active`, `uid`, `date`, `ip`, `agent`) VALUES (NULL, '0', '" . $this->UserArray[1] . "', '" . time() . "', '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . mysqli_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "');";
 			// no rows, create one now.
-			mysql_query($query);
-			$results = mysql_query("SELECT id FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0");
+			mysqli_query($query);
+			$results = mysqli_query("SELECT id FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0");
 		}
-		$row = mysql_fetch_array($results);
+		$row = mysqli_fetch_array($results);
 		return $row['id'];
 	}
 
@@ -924,10 +924,10 @@ class Shopping_Cart extends Config {
 	 */
 	function getItems() {
 		$query = "SELECT soi.id, soi.cart_id, soi.item_id, soi.inventory_id, soi.quantity, si.item_size FROM store_orders_items AS soi, store_inventory AS si WHERE soi.cart_id = " . $this->current_cart[0] . " AND si.id=soi.inventory_id";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		$total_price = $i = 0;
 		$i = 0;
-		while(list($id,$cart_id,$item_id,$inventory_id,$quantity,$item_size) = mysql_fetch_array($results))
+		while(list($id,$cart_id,$item_id,$inventory_id,$quantity,$item_size) = mysqli_fetch_array($results))
 		{
 			$total_price += $quantity*$this->storeitems[$item_id][3];
 			if($i % 2)
@@ -981,24 +981,24 @@ class Shopping_Cart extends Config {
 	private function CheckForCart()
 	{
 		$query = "SELECT * FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 		if(!$results)
 		{
 			// there are no carts for this user.. so we should really make one..
-			mysql_query("INSERT INTO `store_cart` (`id`, `active`, `uid`, `date`, `ip`, `agent`) VALUES (NULL, '0', '" . $this->UserArray[1] . "', '" . time() . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . mysql_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "');");
+			mysqli_query("INSERT INTO `store_cart` (`id`, `active`, `uid`, `date`, `ip`, `agent`) VALUES (NULL, '0', '" . $this->UserArray[1] . "', '" . time() . "', '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "', '" . mysqli_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "');");
 			$query = "SELECT * FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0";
-			$results = mysql_query($query);
+			$results = mysqli_query($query);
 			//echo $query;
-			$this->current_cart = mysql_fetch_array($results);
+			$this->current_cart = mysqli_fetch_array($results);
 			return FALSE;
 		}
 		else
 		{
-			$this->current_cart = mysql_fetch_array($results); // pushes the current cart data into the active slot.
+			$this->current_cart = mysqli_fetch_array($results); // pushes the current cart data into the active slot.
 
 			// now we check to see if there is any data in the cart, aka items.
-			$results = mysql_query("SELECT id FROM store_orders_items WHERE cart_id = " . $this->current_cart[0]);
-			$numrows = mysql_num_rows($results);
+			$results = mysqli_query("SELECT id FROM store_orders_items WHERE cart_id = " . $this->current_cart[0]);
+			$numrows = mysqli_num_rows($results);
 			// if there are no results, that means there are no items.
 			if($numrows < 1)
 			{
@@ -1014,12 +1014,12 @@ class Shopping_Cart extends Config {
 	public function CheckoutDetails()
 	{
 		$query = "SELECT store_orders_items.item_id, store_items.price, store_orders_items.quantity, store_orders_items.cart_id FROM store_orders_items, store_items WHERE store_items.id=store_orders_items.item_id AND store_orders_items.cart_id = (SELECT id FROM store_cart WHERE uid = " . $this->UserArray[1] . " AND active = 0)";
-		$results = mysql_query($query);
+		$results = mysqli_query($query);
 
 		$start = 0;
 		$items = 0;
 		$weight = 0;
-		while($row = mysql_fetch_array($results))
+		while($row = mysqli_fetch_array($results))
 		{
 			$weight = $weight+$this->storeitems[$row['item_id']][6];
 			$items = $items+$row['quantity'];
@@ -1269,27 +1269,27 @@ class ProcessOrders extends Config {
 
 	private function LogData()
 	{
-		$query = "INSERT INTO `mainaftw_anime`.`store_order_paypallogs` (`id`, `mc_gross`, `protection_eligibility`, `address_status`, `payer_id`, `tax`, `address_street`, `payment_date`, `payment_status`, `address_zip`, `first_name`, `mc_fee`, `address_country_code`, `address_name`, `custom`, `payer_status`, `address_country`, `address_city`, `quantity`, `verify_sign`, `payer_email`, `txn_id`, `payment_type`, `last_name`, `address_state`, `receiver_email`, `payment_fee`, `receiver_id`, `txn_type`, `item_name`, `mc_currency`, `item_number`, `residence_country`, `test_ipn`, `handling_amount`, `transaction_subject`, `payment_gross`, `shipping`, `option_selection1`) VALUES (NULL, '" . mysql_real_escape_string($_POST['mc_gross']) . "', '" . mysql_real_escape_string($_POST['protection_eligibility']) . "', '" . mysql_real_escape_string($_POST['address_status']) . "', '" . mysql_real_escape_string($_POST['payer_id']) . "', '" . mysql_real_escape_string($_POST['tax']) . "', '" . mysql_real_escape_string($_POST['address_street']) . "', '" . mysql_real_escape_string($_POST['payment_date']) . "', '" . mysql_real_escape_string($_POST['payment_status']) . "', '" . mysql_real_escape_string($_POST['address_zip']) . "', '" . mysql_real_escape_string($_POST['first_name']) . "', '" . mysql_real_escape_string($_POST['mc_fee']) . "', '" . mysql_real_escape_string($_POST['address_country_code']) . "', '" . mysql_real_escape_string($_POST['address_name']) . "', '" . mysql_real_escape_string($_POST['custom']) . "', '" . mysql_real_escape_string($_POST['payer_status']) . "', '" . mysql_real_escape_string($_POST['address_country']) . "', '" . mysql_real_escape_string($_POST['address_city']) . "', '" . mysql_real_escape_string($_POST['quantity']) . "', '" . mysql_real_escape_string($_POST['verify_sign']) . "', '" . mysql_real_escape_string($_POST['payer_email']) . "', '" . mysql_real_escape_string($_POST['txn_id']) . "', '" . mysql_real_escape_string($_POST['payment_type']) . "', '" . mysql_real_escape_string($_POST['last_name']) . "', '" . mysql_real_escape_string($_POST['address_state']) . "', '" . mysql_real_escape_string($_POST['receiver_email']) . "', '" . mysql_real_escape_string($_POST['payment_fee']) . "', '" . mysql_real_escape_string($_POST['receiver_id']) . "', '" . mysql_real_escape_string($_POST['txn_type']) . "', '" . mysql_real_escape_string($_POST['item_name']) . "', '" . mysql_real_escape_string($_POST['mc_currency']) . "', '" . mysql_real_escape_string($_POST['item_number']) . "', '" . mysql_real_escape_string($_POST['residence_country']) . "', '" . mysql_real_escape_string($_POST['test_ipn']) . "', '" . mysql_real_escape_string($_POST['handling_amount']) . "', '" . mysql_real_escape_string($_POST['transaction_subject']) . "', '" . mysql_real_escape_string($_POST['payment_gross']) . "', '" . mysql_real_escape_string($_POST['shipping']) . "', '" . mysql_real_escape_string($_POST['option_selection1']) . "');";
-		mysql_query($query);
+		$query = "INSERT INTO `mainaftw_anime`.`store_order_paypallogs` (`id`, `mc_gross`, `protection_eligibility`, `address_status`, `payer_id`, `tax`, `address_street`, `payment_date`, `payment_status`, `address_zip`, `first_name`, `mc_fee`, `address_country_code`, `address_name`, `custom`, `payer_status`, `address_country`, `address_city`, `quantity`, `verify_sign`, `payer_email`, `txn_id`, `payment_type`, `last_name`, `address_state`, `receiver_email`, `payment_fee`, `receiver_id`, `txn_type`, `item_name`, `mc_currency`, `item_number`, `residence_country`, `test_ipn`, `handling_amount`, `transaction_subject`, `payment_gross`, `shipping`, `option_selection1`) VALUES (NULL, '" . mysqli_real_escape_string($_POST['mc_gross']) . "', '" . mysqli_real_escape_string($_POST['protection_eligibility']) . "', '" . mysqli_real_escape_string($_POST['address_status']) . "', '" . mysqli_real_escape_string($_POST['payer_id']) . "', '" . mysqli_real_escape_string($_POST['tax']) . "', '" . mysqli_real_escape_string($_POST['address_street']) . "', '" . mysqli_real_escape_string($_POST['payment_date']) . "', '" . mysqli_real_escape_string($_POST['payment_status']) . "', '" . mysqli_real_escape_string($_POST['address_zip']) . "', '" . mysqli_real_escape_string($_POST['first_name']) . "', '" . mysqli_real_escape_string($_POST['mc_fee']) . "', '" . mysqli_real_escape_string($_POST['address_country_code']) . "', '" . mysqli_real_escape_string($_POST['address_name']) . "', '" . mysqli_real_escape_string($_POST['custom']) . "', '" . mysqli_real_escape_string($_POST['payer_status']) . "', '" . mysqli_real_escape_string($_POST['address_country']) . "', '" . mysqli_real_escape_string($_POST['address_city']) . "', '" . mysqli_real_escape_string($_POST['quantity']) . "', '" . mysqli_real_escape_string($_POST['verify_sign']) . "', '" . mysqli_real_escape_string($_POST['payer_email']) . "', '" . mysqli_real_escape_string($_POST['txn_id']) . "', '" . mysqli_real_escape_string($_POST['payment_type']) . "', '" . mysqli_real_escape_string($_POST['last_name']) . "', '" . mysqli_real_escape_string($_POST['address_state']) . "', '" . mysqli_real_escape_string($_POST['receiver_email']) . "', '" . mysqli_real_escape_string($_POST['payment_fee']) . "', '" . mysqli_real_escape_string($_POST['receiver_id']) . "', '" . mysqli_real_escape_string($_POST['txn_type']) . "', '" . mysqli_real_escape_string($_POST['item_name']) . "', '" . mysqli_real_escape_string($_POST['mc_currency']) . "', '" . mysqli_real_escape_string($_POST['item_number']) . "', '" . mysqli_real_escape_string($_POST['residence_country']) . "', '" . mysqli_real_escape_string($_POST['test_ipn']) . "', '" . mysqli_real_escape_string($_POST['handling_amount']) . "', '" . mysqli_real_escape_string($_POST['transaction_subject']) . "', '" . mysqli_real_escape_string($_POST['payment_gross']) . "', '" . mysqli_real_escape_string($_POST['shipping']) . "', '" . mysqli_real_escape_string($_POST['option_selection1']) . "');";
+		mysqli_query($query);
 
 		// So if the order was accepted, we need to push through things.
 		if((isset($_POST['txn_type']) && $_POST['txn_type'] == 'web_accept') && $_POST['payment_status'] == 'Completed')
 		{
-			$results = mysql_query("SELECT COUNT(id) FROM store_orders WHERE cart_id = " . mysql_real_escape_string($_POST['option_selection1']));
-			$row = mysql_fetch_array($results);
+			$results = mysqli_query("SELECT COUNT(id) FROM store_orders WHERE cart_id = " . mysqli_real_escape_string($_POST['option_selection1']));
+			$row = mysqli_fetch_array($results);
 
 			if($row[0] == 1)
 			{
 				// this order is already outstanding, we need to update it so that it shows that the money went through and we are processing it.
-				mysql_query("UPDATE store_orders SET payment_method = 1, payment_id = " . mysql_real_escape_string($_POST['txn_id']) . " WHERE cart_id = " . mysql_real_escape_string($_POST['option_selection1']));
+				mysqli_query("UPDATE store_orders SET payment_method = 1, payment_id = " . mysqli_real_escape_string($_POST['txn_id']) . " WHERE cart_id = " . mysqli_real_escape_string($_POST['option_selection1']));
 			}
 			else
 			{
 				// Since this order is a one shot go system, we need to change the cart to inactive, no confusion here.
-				mysql_query("UPDATE store_cart SET active = 1 WHERE id = " . mysql_real_escape_string($_POST['option_selection1']));
+				mysqli_query("UPDATE store_cart SET active = 1 WHERE id = " . mysqli_real_escape_string($_POST['option_selection1']));
 
 				// Add the details to the store_orders, since this is a new order that was instantly processed.
-				mysql_query("INSERT INTO store_orders (`id`, `cart_id`, `total_price`, `date_submitted`, `date_updated`, `status`, `payment_method`, `payment_id`) VALUES (NULL, '" . mysql_real_escape_string($_POST['option_selection1']) . "', '" . mysql_real_escape_string($_POST['payment_gross']) . "', '" . time() . "', '" . time() . "', '0', '1','" . mysql_real_escape_string($_POST['txn_id']) . "')");
+				mysqli_query("INSERT INTO store_orders (`id`, `cart_id`, `total_price`, `date_submitted`, `date_updated`, `status`, `payment_method`, `payment_id`) VALUES (NULL, '" . mysqli_real_escape_string($_POST['option_selection1']) . "', '" . mysqli_real_escape_string($_POST['payment_gross']) . "', '" . time() . "', '" . time() . "', '0', '1','" . mysqli_real_escape_string($_POST['txn_id']) . "')");
 			}
 			// We need to run the store items adjustment function so that any ordered items are no longer in queue.
 			$this->adjustInventory($_POST['option_selection1']);
@@ -1304,10 +1304,10 @@ class ProcessOrders extends Config {
 		else if((isset($_POST['txn_type']) && $_POST['txn_type'] == 'web_accept') && $_POST['payment_status'] == 'Pending')
 		{
 			// The order is set to pending (from an eCheck), so let's set the cart to inactive and update the Orders
-			mysql_query("UPDATE store_cart SET active = 1 WHERE id = " . mysql_real_escape_string($_POST['option_selection1']));
+			mysqli_query("UPDATE store_cart SET active = 1 WHERE id = " . mysqli_real_escape_string($_POST['option_selection1']));
 
 			// Add a row, since we are waiting for it to go through, we will need to worry about finding the data later.
-			mysql_query("INSERT INTO store_orders (`id`, `cart_id`, `total_price`, `date_submitted`, `date_updated`, `status`, `payment_method`, `payment_id`) VALUES (NULL, '" . mysql_real_escape_string($_POST['option_selection1']) . "', '" . mysql_real_escape_string($_POST['payment_gross']) . "', '" . time() . "', '" . time() . "', '0', '3','" . mysql_real_escape_string($_POST['txn_id']) . "')");
+			mysqli_query("INSERT INTO store_orders (`id`, `cart_id`, `total_price`, `date_submitted`, `date_updated`, `status`, `payment_method`, `payment_id`) VALUES (NULL, '" . mysqli_real_escape_string($_POST['option_selection1']) . "', '" . mysqli_real_escape_string($_POST['payment_gross']) . "', '" . time() . "', '" . time() . "', '0', '3','" . mysqli_real_escape_string($_POST['txn_id']) . "')");
 
 			include("email.class.php");
 			$Email = new Email($_POST['payer_email']);
@@ -1322,13 +1322,13 @@ class ProcessOrders extends Config {
 	private function adjustInventory($CartID)
 	{
 		// The first thing we need to do is query the cart, get all of the ordered items and quantities so that we can adjust accordingly.
-		$query = "SELECT inventory_id, quantity FROM store_orders_items WHERE cart_id = " . mysql_real_escape_string($CartID);
-		$results = mysql_query($query);
+		$query = "SELECT inventory_id, quantity FROM store_orders_items WHERE cart_id = " . mysqli_real_escape_string($CartID);
+		$results = mysqli_query($query);
 
 		// we now need to loop through each ordered item and subtract what was ordered from the inventory, making sure to log the autonomous system in case we need to go back through and adjust
-		while($row = mysql_fetch_array($results))
+		while($row = mysqli_fetch_array($results))
 		{
-			mysql_query("UPDATE store_inventory SET item_count = item_count-" . mysql_real_escape_string($row['quantity']) . " WHERE id = " . mysql_real_escape_string($row['inventory_id']));
+			mysqli_query("UPDATE store_inventory SET item_count = item_count-" . mysqli_real_escape_string($row['quantity']) . " WHERE id = " . mysqli_real_escape_string($row['inventory_id']));
 			$this->ModRecord("Automated Store Update, Changed inventory for inventory id " . $row['inventory_id'] . " down by " . $row['quantity']);
 		}
 	}

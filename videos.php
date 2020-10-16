@@ -31,8 +31,8 @@ if(isset($_GET['ref']))
 {
 	//$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`) VALUES ('%s', NULL, '%s', '%s', '%s')";
 	$query = "INSERT INTO `referals` (`Link`, `Destination`, `referalId`, `Date`, `ip`)
-	VALUES ('" . mysql_real_escape_string($_SERVER['HTTP_REFERER']) . "', '" . mysql_real_escape_string($_SERVER['REQUEST_URI']) . "', '" . mysql_real_escape_string($_GET['ref']) . "', '" . time() . "', '" . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
-	mysql_query($query) or die('Could not connect, way to go retard:' . mysql_error());
+	VALUES ('" . mysqli_real_escape_string($_SERVER['HTTP_REFERER']) . "', '" . mysqli_real_escape_string($_SERVER['REQUEST_URI']) . "', '" . mysqli_real_escape_string($_GET['ref']) . "', '" . time() . "', '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
+	mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
 }
 
 echo psa($profileArray,1);

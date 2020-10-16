@@ -54,8 +54,8 @@ class AFTWUser{
 		//0=full-link,1=full-no link,2=Username-no link
 		if($type == 2){$query = "SELECT Username FROM users WHERE ID='".$this->id."'";}
 		else {$query = "SELECT Username, Level_access, advanceImage, Active FROM users WHERE ID='".$this->id."'";}
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
 		if($type == 0){$frontUser = '<a href="'.$this->ssl.'://dev.animeftw.tv/profile/' . $row['Username'] . '">';$endUser = '</a>';}
 		else {$frontUser = '';$endUser = '';}
 		if($type == 2){
@@ -75,15 +75,15 @@ class AFTWUser{
 	//return variable from the Username
 	function returnVarName($var){
 		$query = "SELECT $var FROM users WHERE username='".$this->username."'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
 		return $row[$var];
 	}
 	//return variable from the Username
 	function returnVarId($var){
 		$query = "SELECT $var FROM users WHERE username='".$this->id."'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$row = mysql_fetch_array($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$row = mysqli_fetch_array($result);
 		return $row[$var];
 	}
 }
@@ -128,11 +128,11 @@ class AFTWVideos{
 			$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."ORDER BY fullSeriesName";
 		}
 		else {
-			$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."AND category LIKE '%".mysql_real_escape_string($sort)."%' ORDER BY seriesName";
+			$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."AND category LIKE '%".mysqli_real_escape_string($sort)."%' ORDER BY seriesName";
 		}
-		$query = mysql_query ($sql) or die (mysql_error());
-		$total_rows = mysql_num_rows($query) or die("Error: ". mysql_error(). " with query ". $query);
-		while ($records = @mysql_fetch_array ($query)) {
+		$query = mysqli_query ($sql) or die (mysqli_error());
+		$total_rows = mysqli_num_rows($query) or die("Error: ". mysqli_error(). " with query ". $query);
+		while ($records = @mysqli_fetch_array ($query)) {
 			$alpha[$records['letter']] += 1;
 			${$records['letter']}[$records['id']] = $records['fullSeriesName'];
 		}
@@ -187,7 +187,7 @@ class AFTWVideos{
 	function checkSeries($id,$type) {
 		if($type=0){$query = "SELECT fullSeriesName, seoname, stillRelease, seriesType, seriesList, moviesOnly FROM series WHERE id='$id'";}
 		else {$query = "SELECT fullSeriesName, seoname, seriesList, seriesList FROM series WHERE id='$id'";}
-		$row = mysql_fetch_array($result = mysql_query($query) or die('Error : ' . mysql_error()));
+		$row = mysqli_fetch_array($result = mysqli_query($query) or die('Error : ' . mysqli_error()));
 		$fullSeriesName = stripslashes($row['fullSeriesName']); 
 		$seoname = $row['seoname'];
 		$stillRelease = $row['stillRelease'];
@@ -261,15 +261,15 @@ class AFTWBlog{
 	// grabs the latest blog entries
 	function LatestBlogs(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE uid='".$this->id."' AND readperm LIKE '%".$this->rperm."%' ORDER BY id ASC LIMIT 0, ".$this->showLimit;
-		$result = mysql_query($query);
-		$total_entries = mysql_num_rows($result);
+		$result = mysqli_query($query);
+		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'>".$this->uname." has not made any Blog Posts.</span>\n";
 			echo "</div>\n";
 		}
 		else {
-			while(list($id,$title,$content,$data,$category) = mysql_fetch_array($result))
+			while(list($id,$title,$content,$data,$category) = mysqli_fetch_array($result))
 			{
 				$subline = "Posted by ".$this->uname." on mm/dd/yyyy";
 				echo "<div class='side-body-bg'>\n";
@@ -285,16 +285,16 @@ class AFTWBlog{
 	// Will give the selected Blog post
 	function SingleBlog(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE id='".$this->bid."' AND uid='".$this->id."'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$result = mysql_query($query);
-		$total_entries = mysql_num_rows($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($query);
+		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'>Error: No Blog postings found.</span>\n";
 			echo "</div>\n";
 		}
 		else {
-			$row = mysql_fetch_array($result);
+			$row = mysqli_fetch_array($result);
 			$subline = "Posted by ".$this->uname." on mm/dd/yyyy";
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'><a href='/blogs/".$this->uname."/".$row['id']."-".stripslashes(CleanFileName($row['title']))."/'>".stripslashes($row['title'])."</a></span>\n";

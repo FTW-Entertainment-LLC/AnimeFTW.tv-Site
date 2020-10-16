@@ -16,7 +16,7 @@ else
     $from = '';
 }
 
-//$epid = mysql_real_escape_string($epid);
+//$epid = mysqli_real_escape_string($epid);
 $comment_limit = 15;
 if(isset($_GET['comm_page']))
 {
@@ -64,8 +64,8 @@ else
     $result = $C->mysqli->query($query);
     $i = 1;
     
-    //$query = "SELECT * FROM ratings WHERE rating_id='c".mysql_escape_string($cid)."' AND IP = '".$profileArray[1]."'";
-    //$result = mysql_query($query);
+    //$query = "SELECT * FROM ratings WHERE rating_id='c".mysqli_escape_string($cid)."' AND IP = '".$profileArray[1]."'";
+    //$result = mysqli_query($query);
     
     while($row = $result->fetch_assoc())
     {
@@ -81,8 +81,8 @@ else
         $positive = $row['positive'];
         
         //$query1 = "SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID = '$uid'";// what matches THIS page?
-        //$result1 = mysql_query($query1) or die("Error: ". mysql_error(). " with query ". $query1);
-        //$row1 = mysql_fetch_array($result1);
+        //$result1 = mysqli_query($query1) or die("Error: ". mysqli_error(). " with query ". $query1);
+        //$row1 = mysqli_fetch_array($result1);
         if($row['avatarActivate'] == 'no'){$avatar = '<img src="/images/avatars/default.gif" alt="avatar" height="50px" border="0" />';}
         else {$avatar = '<img src="/images/avatars/user'.$uid.'.'.$row['avatarExtension'].'" alt="User avatar" height="50px" border="0" />';}
         if($isSpoiler == 1)

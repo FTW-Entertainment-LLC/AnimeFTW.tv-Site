@@ -30,15 +30,15 @@ class AFTWBlog{
 	// grabs the latest blog entries
 	function LatestBlogs(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE uid='".$this->id."' AND readperm LIKE '%".$this->rperm."%' ORDER BY id ASC LIMIT 0, ".$this->showLimit;
-		$result = mysql_query($query);
-		$total_entries = mysql_num_rows($result);
+		$result = mysqli_query($query);
+		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'>".$this->uname." has not made any Blog Posts.</span>\n";
 			echo "</div>\n";
 		}
 		else {
-			while(list($id,$title,$content,$data,$category) = mysql_fetch_array($result))
+			while(list($id,$title,$content,$data,$category) = mysqli_fetch_array($result))
 			{
 				$subline = "Posted by ".$this->uname." on mm/dd/yyyy";
 				echo "<div class='side-body-bg'>\n";
@@ -54,16 +54,16 @@ class AFTWBlog{
 	// Will give the selected Blog post
 	function SingleBlog(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE id='".$this->bid."' AND uid='".$this->id."'";
-		$result = mysql_query($query) or die('Error : ' . mysql_error());
-		$result = mysql_query($query);
-		$total_entries = mysql_num_rows($result);
+		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($query);
+		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'>Error: No Blog postings found.</span>\n";
 			echo "</div>\n";
 		}
 		else {
-			$row = mysql_fetch_array($result);
+			$row = mysqli_fetch_array($result);
 			$subline = "Posted by ".$this->uname." on mm/dd/yyyy";
 			echo "<div class='side-body-bg'>\n";
 			echo "<span class='scapmain'><a href='/blogs/".$this->uname."/".$row['id']."-".stripslashes(CleanFileName($row['title']))."/'>".stripslashes($row['title'])."</a></span>\n";

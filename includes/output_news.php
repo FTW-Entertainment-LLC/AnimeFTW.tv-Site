@@ -20,9 +20,9 @@ fullSeriesName LIKE '%Eureka Seven Ao%' OR
 fullSeriesName LIKE '%Jormungand%' OR
 fullSeriesName LIKE '%Daily Lives of High School Boys%' ORDER BY seriesName";
 $i = 1;
-$result = mysql_query($query) or die('Error : ' . mysql_error());
+$result = mysqli_query($query) or die('Error : ' . mysqli_error());
 echo '<textarea style="width:500px;height:300px;">';	
-while(list($fullSeriesName,$description,$seoname) = mysql_fetch_array($result))
+while(list($fullSeriesName,$description,$seoname) = mysqli_fetch_array($result))
 {
 	$description = stripslashes($description);
 	$description = preg_replace('#<br\s*/?>#i', "\n", $description);

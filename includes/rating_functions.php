@@ -14,10 +14,10 @@ function getRating($id){
 	$total = 0;
 	$rows = 0;
 	
-	$sel = mysql_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
-	if(mysql_num_rows($sel) > 0){
+	$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+	if(mysqli_num_rows($sel) > 0){
 	
-		while($data = mysql_fetch_assoc($sel)){
+		while($data = mysqli_fetch_assoc($sel)){
 		
 			$total = $total + $data['rating_num'];
 			$rows++;
@@ -43,10 +43,10 @@ function outOfFive($id){
 	$total = 0;
 	$rows = 0;
 	
-	$sel = mysql_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
-	if(mysql_num_rows($sel) > 0){
+	$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+	if(mysqli_num_rows($sel) > 0){
 	
-		while($data = mysql_fetch_assoc($sel)){
+		while($data = mysqli_fetch_assoc($sel)){
 		
 			$total = $total + $data['rating_num'];
 			$rows++;
@@ -68,8 +68,8 @@ function outOfFive($id){
 
 function getVotes($id){
 
-	$sel = mysql_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
-	$rows = mysql_num_rows($sel);
+	$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+	$rows = mysqli_num_rows($sel);
 	if($rows == 0){
 		$votes = '0 Votes';
 	}
@@ -87,8 +87,8 @@ function pullRating($id,$uid,$show5 = false, $showPerc = false, $showVotes = fal
 	// Check if they have already voted...
 	$text = '';
 	
-	$sel = mysql_query("SELECT id FROM ratings WHERE IP = '".$uid."' AND rating_id = '$id'");
-	if(mysql_num_rows($sel) > 0 || $static == 'novote' || isset($_COOKIE['has_voted_'.$id])){
+	$sel = mysqli_query("SELECT id FROM ratings WHERE IP = '".$uid."' AND rating_id = '$id'");
+	if(mysqli_num_rows($sel) > 0 || $static == 'novote' || isset($_COOKIE['has_voted_'.$id])){
 	
 		
 		
@@ -184,11 +184,11 @@ function getTopRated($limit, $table, $idfield, $namefield){
 			FROM ratings,".$table." WHERE ".$table.".".$idfield." = ratings.rating_id GROUP BY rating_id 
 			ORDER BY rates DESC,rating DESC LIMIT ".$limit."";
 			
-	$sel = mysql_query($sql);
+	$sel = mysqli_query($sql);
 	
 	$result .= '<ul class="topRatedList">'."\n";
 	
-	while($data = @mysql_fetch_assoc($sel)){
+	while($data = @mysqli_fetch_assoc($sel)){
 		$result .= '<li>'.$data['thenamefield'].' ('.$data['rating'].')</li>'."\n";
 	}
 	

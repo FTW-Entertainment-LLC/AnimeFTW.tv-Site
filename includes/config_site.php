@@ -14,7 +14,6 @@ if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com'||$_SERVER['HTTP_HOST'] == 'han
 	$newsdbpass 		= 'L=.zZ76[,TOqwf*&tl';
 	$newsdbname 		= 'devsftw9_anime';
 }
-$x = mysql_connect($newsdbhost,$newsdbuser,$newsdbpass) or die(mysql_error());
-mysql_set_charset($x,"utf8");
-mysql_select_db($newsdbname,$x);
+$conn = mysqli_connect($newsdbhost,$newsdbuser,$newsdbpass,$newsdbname);
+mysqli_set_charset($conn,"utf8");
 ?>
