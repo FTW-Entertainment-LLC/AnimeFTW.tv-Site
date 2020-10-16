@@ -94,7 +94,7 @@ class Config {
     {
         $dbhost = 'localhost';
         $dbuser = 'mainaftw_anime';
-        $dbpass = '26V)YPh:|IJG';
+        $dbpass = 'm2Igd@9W;P8!';
         $dbname = 'mainaftw_anime';
         if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com'||$_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
         {

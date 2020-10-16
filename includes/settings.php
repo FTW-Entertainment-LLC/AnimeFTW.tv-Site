@@ -14,7 +14,7 @@ require ( 'functions.php' );				// - the functions
 define ( "HOSTNAME", "localhost" );			// - hostname - nedded to access the database
 define ( "DATABASE", "mainaftw_anime" );				// - database name - the name of your mysql database
 define ( "DBUSER", "mainaftw_anime" );				// - database user - what user should we use to access the database
-define ( "DBPASS", "26V)YPh:|IJG" );			// - database password - what password should we use to access the database
+define ( "DBPASS", "m2Igd@9W;P8!" );			// - database password - what password should we use to access the database
 define ( "DBPREFIX", "" );				// - db prefix - would you like to use a prefix for your table?
 define ( "APPLICATION_URL", "http://www.animeftw.tv/includes/" );// - app. url - the url that points to our application ( ! with trailing slash )
 define ( "APPLICATION_FOLDER", "members" );		// - do we have a folder where we store our scripts? ( ! no slashes )

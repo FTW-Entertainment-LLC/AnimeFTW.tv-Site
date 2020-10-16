@@ -4,7 +4,7 @@
 //$newsdbhost = 'localhost';
 $newsdbhost = 'localhost';
 $newsdbuser = 'mainaftw_anime';
-$newsdbpass = '26V)YPh:|IJG';
+$newsdbpass = 'm2Igd@9W;P8!';
 $newsdbname = 'mainaftw_anime';
 if($_SERVER['HTTP_HOST'] == 'v4.aftw.ftwdevs.com' || $_SERVER['HTTP_HOST'] == 'hani.v4.aftw.ftwdevs.com')
 {
