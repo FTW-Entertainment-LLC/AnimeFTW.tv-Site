@@ -161,7 +161,7 @@ class AFTWManagement extends Config {
 				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=errors\'); return false;"><img src="//i.animeftw.tv/management/manage_error_reports.png" height="25px" alt="" title="Manage Error Reports" /></a></div>';
 			}
 			if($this->ValidatePermission(33) == TRUE){
-				$query = mysqli_query("SELECT COUNT(id) FROM reviews WHERE approved = 0;");
+				$query = mysqli_query($conn, "SELECT COUNT(id) FROM reviews WHERE approved = 0;");
 				$count = mysqli_result($query, 0);
 				if($count > 0)
 				{
@@ -221,7 +221,7 @@ class AFTWManagement extends Config {
 			$iquery = "SELECT COUNT(id) FROM series";
 		}
 		else {}
-		$query = mysqli_query($iquery);
+		$query = mysqli_query($conn, $iquery);
 		$total = mysqli_result($query, 0);
 		return $total;
 		//unset $query;
@@ -304,8 +304,8 @@ class AFTWManagement extends Config {
 		else {$go = 0;}
 		if($go == 4){
 			if(isset($_GET['id'])){
-				$uid = checkUserNameNumberNoLink(mysqli_real_escape_string($_GET['id']));
-				$cid = mysqli_real_escape_string($_GET['id']);
+				$uid = checkUserNameNumberNoLink(mysqli_real_escape_string($conn, $_GET['id']));
+				$cid = mysqli_real_escape_string($conn, $_GET['id']);
 				if(isset($_GET['modaction']) && $_GET['modaction'] == 'delete'){
 					$error = "<div class=\"redmsg\">$uid 's account was deleted successfully (NOT!)- This function will never work.. Super Failsafe!</div><br />";
 					$fscript = 'Delete User';
@@ -348,7 +348,7 @@ class AFTWManagement extends Config {
 				}
 				if($validfun == FALSE){}
 				else {
-					mysqli_query($query) or die('Error : ' . mysqli_error());
+					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					$this->ModRecord($fscript);
 				}
 			}
@@ -408,7 +408,7 @@ class AFTWManagement extends Config {
 		// build our list
 		if($go >= 1 && $go <= 3){
 			echo '<div style="height:395px;overflow-y:scroll;overflow-x:none;">';
-			$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 			$paging = $this->InternalPaging($rowcount,30,$count,$link);
 			if($go == 1){
 				echo $paging;
@@ -448,8 +448,8 @@ class AFTWManagement extends Config {
 				<div align="center" style="font-size: 9px;">Use the above form, to find users on the site.</div>
 				</td></tr></table></form></div></div>';
 				if($_GET['part'] == 'after'){
-					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysqli_real_escape_string($_GET['username'])."%'";
-					$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysqli_real_escape_string($conn, $_GET['username'])."%'";
+					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					echo '<div style="height:340px;overflow-y:scroll;overflow-x:none;">';
 					while(list($ID,$Username,$Email,$lastActivity,$staticip,$Active,$Level_access,$forumBan,$messageBan,$postBan) = mysqli_fetch_array($result)){
 						$this->BuildList($ID,$Username,NULL,$staticip,$Active,$go,$link,$Email,$lastActivity,$Level_access,$forumBan,$messageBan,$postBan);
@@ -468,7 +468,7 @@ class AFTWManagement extends Config {
 			if(!isset($_GET['do'])){
 				if(!isset($_GET['mode']) && $this->ValidatePermission(11) == TRUE){
 					$query = "SELECT * from page_comments WHERE type = 0 ORDER by id DESC LIMIT 0, 60";
-					$result = mysqli_query($query);
+					$result = mysqli_query($conn, $query);
 					$count = mysqli_num_rows($result);
 					if ($count>0) {
 						echo '<br /><div style="height:443px;overflow-y:scroll;overflow-x:none;">';
@@ -550,7 +550,7 @@ class AFTWManagement extends Config {
 						}
 						else if($_GET['confirm'] == 'after'){
 							$query  = "DELETE FROM page_comments WHERE id = '".$_GET['id']."'";
-							mysqli_query($query) or die('Error : ' . mysqli_error());
+							mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 							$this->ModRecord('Delete Comment');
 							echo "<div class=\"redmsg\">Comment Deleted Successfully.</div><br />";
 							echo '<div align="center"><a href="#" onclick="ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=comments\'); return false;"><h3>Continue</h3></a></div>';
@@ -570,7 +570,7 @@ class AFTWManagement extends Config {
 	private function ManageApplications(){
 		if(!isset($_GET['go'])){
 			if(isset($_GET['action'])){
-				$id = mysqli_real_escape_string($_GET['id']);
+				$id = mysqli_real_escape_string($conn, $_GET['id']);
 				if($_GET['action'] == 'status'){
 					if(isset($_GET['status']) && $_GET['status'] == 'pending'){
 						$error = "<div class=\"redmsg\">Application has been set to Pending.</div>";
@@ -607,7 +607,7 @@ class AFTWManagement extends Config {
 				}
 				else {
 				}
-				mysqli_query($query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				$this->ModRecord($fscript);
 			}
 			if(isset($error)){$height = "425px";echo $error;}else{$height = "450px";}
@@ -620,9 +620,9 @@ class AFTWManagement extends Config {
 			echo '</div>';
 			echo '<div style="height:'.$height.';overflow-y:scroll;overflow-x:none;">';
 			$query = "SELECT a.id, a.positionID, a.username, a.company, a.Age, a.Status, u.ID FROM applications_submissions AS a, users AS u WHERE a.appRound = ".$this->appround." AND u.Username=a.username ORDER BY a.id DESC";
-			$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 			while(list($id,$positionID,$username,$company,$Age,$Status,$uid) = mysqli_fetch_array($result)){
-				$query = mysqli_query("SELECT COUNT(id) FROM applications_sectests WHERE uid=$uid");
+				$query = mysqli_query($conn, "SELECT COUNT(id) FROM applications_sectests WHERE uid=$uid");
 				$total = mysqli_result($query, 0);
 				if($Status == 'Pending'){$style = '#009933;color:#fff';}else if($Status == 'Accepted'){$style = '#0E9FCE';}else if($Status == 'Under Review'){$style = '#FFCC00';}else{$style = '#CC3300;color:#fff';}
 				if($Age == ''){$Age = '&nbsp;';}
@@ -639,7 +639,7 @@ class AFTWManagement extends Config {
 				<div style="float:right;width:122px;" align="center">'.$Age.'</div>
 				<div style="float:right;width:122px;" align="center">'.$company.'</div>
 				<div style="float:right;width:137px;padding-left:3px;" align="center">'.$positionID.'</div>';
-				$q = mysqli_fetch_array(mysqli_query("SELECT ID, Email FROM users WHERE Username = '".$username."'"));
+				$q = mysqli_fetch_array(mysqli_query($conn, "SELECT ID, Email FROM users WHERE Username = '".$username."'"));
 				echo '<div style="width:122px;background-color:#fff;color:#000;" align="center"><a href="#" title="'.$q['Email'].'" onclick="ajax_loadContent(\'manageedit\',\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=management&u='.$this->uid.'&node=users&stage=findusers&part=after&username='.$username.'\');">'.$username.'</a></div>';
 				echo '</div>';
 
@@ -654,7 +654,7 @@ class AFTWManagement extends Config {
 				if($_GET['go'] == 'view'){
 					echo '<div><h3>Showing application details</h3>';
 					$query  = "SELECT * FROM applications_submissions WHERE id= '{$_GET['id']}'";
-				  	$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+				  	$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				   	list($id, $positionID, $username, $company, $reqInformation, $Age, $Status) = mysqli_fetch_array($result, MYSQL_NUM);
 					$reqInformation = stripslashes($reqInformation);
 					$reqInformation = nl2br($reqInformation);
@@ -677,7 +677,7 @@ class AFTWManagement extends Config {
 					echo '</div>';
 				}
 				else if($_GET['go'] == 'sectest'){
-					$q = mysqli_fetch_array(mysqli_query("SELECT s.date, s.q1, s.q2, s.q3, s.q4, s.q5, s.q6, s.q7, s.q8, s.q9, s.q10, s.q11, s.q12, s.q13, s.q14, s.q15, s.q16, s.q17, u.Username FROM applications_sectests AS s, users AS u WHERE u.ID=s.uid AND s.uid = '".mysqli_real_escape_string($_GET['id'])."'"));
+					$q = mysqli_fetch_array(mysqli_query($conn, "SELECT s.date, s.q1, s.q2, s.q3, s.q4, s.q5, s.q6, s.q7, s.q8, s.q9, s.q10, s.q11, s.q12, s.q13, s.q14, s.q15, s.q16, s.q17, u.Username FROM applications_sectests AS s, users AS u WHERE u.ID=s.uid AND s.uid = '".mysqli_real_escape_string($conn, $_GET['id'])."'"));
 					echo '<div>Viewing the Security test for '.$q['Username'].'<br /><br />';
 					echo '<div style="height:435px;overflow-y:scroll;overflow-x:none;">';
 					$qarray = array($q['q1'],$q['q2'],$q['q3'],$q['q4'],$q['q5'],$q['q6'],$q['q7'],$q['q8'],$q['q9'],$q['q10'],$q['q11'],$q['q12'],$q['q13'],$q['q14'],$q['q15'],$q['q16'],$q['q17']);
@@ -718,7 +718,7 @@ class AFTWManagement extends Config {
 			else {
 				$query = "SELECT id, epnumber, epname, seriesname, image FROM episode ORDER BY id DESC LIMIT ".$start.", ".$limit;
 			}
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			$count = mysqli_num_rows($result);
 			echo '<div style="padding-top:5px;">';
 			echo '<div style="float:right;padding-right:80px;"><a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\''.$link.'&edit=add&step=before\'); return false;"><b>Add Episode</b></a></div>';
@@ -753,7 +753,7 @@ class AFTWManagement extends Config {
 				if($_GET['stage'] == 'before'){
 				// We want to build the edit screen prior to doing anything, just so people don't flip their shit..
 				$query  = "SELECT id, epnumber, seriesname, epname, vidheight, vidwidth, epprefix, subGroup, Movie, videotype FROM episode WHERE id= '{$_GET['eid']}'";
-			   $result = mysqli_query($query) or die('Error : ' . mysqli_error());
+			   $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 			   list($id, $epnumber, $seriesName, $epname, $vidheight, $vidwidth, $epprefix, $subGroup, $Movie, $videotype) = mysqli_fetch_array($result, MYSQL_NUM);
 				$seriesName    = htmlspecialchars($seriesName);
 				//$epname = htmlspecialchars($epname);
@@ -779,7 +779,7 @@ class AFTWManagement extends Config {
 					<tr><td width="150" class="fontcolor">Series Name</td><td>
 						<select name="seriesName" style="color: #000000;">';
 					$query2 = "SELECT seriesName, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
-					$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+					$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 					while(list($seriesName2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM)){
 					$fullSeriesName = stripslashes($fullSeriesName);
 				echo '<option id="'.$seriesName2.'" value="'.$seriesName2.'"'; if($seriesName == $seriesName2){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
@@ -825,8 +825,8 @@ class AFTWManagement extends Config {
 					$epname = stripslashes($epname);
 					$epprefix    = stripslashes($epprefix);
 				   // update the item in the database
-				   $query = 'UPDATE episode SET epnumber=\'' . mysqli_real_escape_string($epnumber) . '\', seriesname=\'' . mysqli_real_escape_string($seriesName) .'\', epname=\'' . mysqli_real_escape_string($epname) . '\', vidheight=\'' . mysqli_real_escape_string($vidheight) . '\', vidwidth=\'' . mysqli_real_escape_string($vidwidth) . '\', epprefix=\'' . mysqli_real_escape_string($epprefix) . '\', subGroup=\'' . mysqli_real_escape_string($subGroup) . '\', Movie=\'' . mysqli_real_escape_string($Movie) . '\', videotype=\'' . mysqli_real_escape_string($videotype) . '\' WHERE id=' . $_GET['eid'] . '';
-					mysqli_query($query) or die('Error : ' . mysqli_error());
+				   $query = 'UPDATE episode SET epnumber=\'' . mysqli_real_escape_string($conn, $epnumber) . '\', seriesname=\'' . mysqli_real_escape_string($conn, $seriesName) .'\', epname=\'' . mysqli_real_escape_string($conn, $epname) . '\', vidheight=\'' . mysqli_real_escape_string($conn, $vidheight) . '\', vidwidth=\'' . mysqli_real_escape_string($conn, $vidwidth) . '\', epprefix=\'' . mysqli_real_escape_string($conn, $epprefix) . '\', subGroup=\'' . mysqli_real_escape_string($conn, $subGroup) . '\', Movie=\'' . mysqli_real_escape_string($conn, $Movie) . '\', videotype=\'' . mysqli_real_escape_string($conn, $videotype) . '\' WHERE id=' . $_GET['eid'] . '';
+					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					$msg = "<div class=\"redmsg\">Please verify that all the information is correct, then proceed. </div><br />";
 					$msg .= "<dl><dt>Episode #:</dt><dd>$epnumber</dd></dl>";
 					$msg .= "<dl><dt>Episode Name:</dt><dd> $epname</dd></dl>";
@@ -851,17 +851,17 @@ class AFTWManagement extends Config {
 						if($_GET['step'] == 'before'){
 						}
 						if($_GET['step'] == 'after'){
-							$epnumber = mysqli_real_escape_string($_GET['epnumber']);
-							$seriesName1 = mysqli_real_escape_string($_GET['seriesName']);
-							$epname = mysqli_real_escape_string(urldecode($_GET['epname']));
-							$vidheight = mysqli_real_escape_string($_GET['vidheight']);
-							$vidwidth = mysqli_real_escape_string($_GET['vidwidth']);
-							$epprefix = mysqli_real_escape_string($_GET['epprefix']);
-							$subGroup = mysqli_real_escape_string($_GET['subGroup']);
-							$Movie = mysqli_real_escape_string($_GET['Movie']);
-							$Remember = mysqli_real_escape_string($_GET['Remember']);
-							$addtime = mysqli_real_escape_string($_GET['date']);
-							$videotype =mysqli_real_escape_string( $_GET['videotype']);
+							$epnumber = mysqli_real_escape_string($conn, $_GET['epnumber']);
+							$seriesName1 = mysqli_real_escape_string($conn, $_GET['seriesName']);
+							$epname = mysqli_real_escape_string($conn, urldecode($_GET['epname']));
+							$vidheight = mysqli_real_escape_string($conn, $_GET['vidheight']);
+							$vidwidth = mysqli_real_escape_string($conn, $_GET['vidwidth']);
+							$epprefix = mysqli_real_escape_string($conn, $_GET['epprefix']);
+							$subGroup = mysqli_real_escape_string($conn, $_GET['subGroup']);
+							$Movie = mysqli_real_escape_string($conn, $_GET['Movie']);
+							$Remember = mysqli_real_escape_string($conn, $_GET['Remember']);
+							$addtime = mysqli_real_escape_string($conn, $_GET['date']);
+							$videotype =mysqli_real_escape_string($conn,  $_GET['videotype']);
 							if($addtime == '0'){
 								$addtime = '0';
 							}
@@ -870,10 +870,10 @@ class AFTWManagement extends Config {
 							}
 							$NextEp = $epnumber+1;
 							$query = sprintf("INSERT INTO episode (epnumber, seriesname, epname, vidheight, vidwidth, subGroup, epprefix, Movie, date, videotype, uid) VALUES ('$epnumber', '$seriesName1', '$epname', '$vidheight', '$vidwidth', '$subGroup', '$epprefix', '$Movie', '$addtime', '$videotype', '$this->UserArray[1]')");
-							mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+							mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 							$msg = "<div class=\"redmsg\">Episode #$epnumber Added, titled: $epname </div>";
 							// now we check to see if we can use: RecordNotification($sid,$eid)
-							$airingCheck = mysqli_query("SELECT episode.id AS epid, series.id AS sid, series.stillRelease FROM series, episode WHERE series.seriesName = '".$seriesName1."' AND episode.seriesname = series.seriesName AND episode.epnumber = '".$epnumber."'");
+							$airingCheck = mysqli_query($conn, "SELECT episode.id AS epid, series.id AS sid, series.stillRelease FROM series, episode WHERE series.seriesName = '".$seriesName1."' AND episode.seriesname = series.seriesName AND episode.epnumber = '".$epnumber."'");
 							$ar = mysqli_fetch_array($airingCheck);
 							if($ar['stillRelease'] == 'yes'){
 								$this->RecordNotification($ar['sid'],$ar['epid']);
@@ -926,7 +926,7 @@ class AFTWManagement extends Config {
 				  <option>-Choose Series-</option>';
 
 					  $query2 = "SELECT seriesName, fullSeriesName, active FROM series ORDER BY fullSeriesName ASC";
-					$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+					$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 					while(list($seriesName, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM)){
 						$fullSeriesName = stripslashes($fullSeriesName);
 						if(($seriesName1 == $seriesName && $Remember == TRUE) || isset($_GET['preseriesname']) && $_GET['preseriesname'] == $seriesName)
@@ -1000,8 +1000,8 @@ class AFTWManagement extends Config {
 						}
 						else
 						{
-							$epid = mysqli_real_escape_string($_GET['epid']);
-							$results = mysqli_query("SELECT episode.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.videotype, series.videoServer FROM episode, series WHERE series.seriesName=episode.seriesName AND episode.id = '".$epid."'");
+							$epid = mysqli_real_escape_string($conn, $_GET['epid']);
+							$results = mysqli_query($conn, "SELECT episode.seriesname, episode.epprefix, episode.epnumber, episode.vidwidth, episode.vidheight, episode.videotype, series.videoServer FROM episode, series WHERE series.seriesName=episode.seriesName AND episode.id = '".$epid."'");
 							$row = mysqli_fetch_array($results);
 							$url = 'http://' . $row['videoServer'] . '.animeftw.tv/fetch-pictures-v2.php?node=add&remote=true&seriesName=' . $row['seriesname'] . '&epprefix=' . $row['epprefix'] . '&epnumber=' . $row['epnumber'] . '&durration=360&vidwidth=' . $row['vidwidth'] . '&vidheight=' . $row['vidheight'] . '&videotype=' . $row['videotype'];
 							//echo $url;
@@ -1015,7 +1015,7 @@ class AFTWManagement extends Config {
 								echo '<script>alert("Image Creation for ' . $row['seriesname'] . ' episode ' . $row['epnumber'] . ' Completed!");</script>';
 							}
 							//echo '<div align="center">Image Creation has been completed<br />Please verify that the image has shown up below. If not, please alert brad asap.<br /><img src="http://static.ftw-cdn.com/site-images/video-images/'.$row['epprefix'].'_'.$row['epnumber'].'_screen.jpeg" alt="" height="200px" /><br /><br /><input type="button" value="Back to Episode Listing" name="edit" id="edit" onclick="ajax_loadContent(\'manageedit\',\''.$link.'&sname='.$row['seriesname'].'\'); return false;"></div>';
-							mysqli_query("UPDATE episode SET image = 1 WHERE id = $epid");
+							mysqli_query($conn, "UPDATE episode SET image = 1 WHERE id = $epid");
 						}
 					}
 				}
@@ -1029,7 +1029,7 @@ class AFTWManagement extends Config {
 	// function here
 
 	private function RecordNotification($sid,$eid){
-		mysqli_query("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES (NULL, '".time()."', '0', '".$sid."', '".$eid."', 'NULL')");
+		mysqli_query($conn, "INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES (NULL, '".time()."', '0', '".$sid."', '".$eid."', 'NULL')");
 	}
 
 	private function BuildList($id,$username,$regDate = NULL,$ip,$active,$type,$link,$Email = NULL,$lastActivity = NULL,$Level_access = NULL,$forumBan = NULL,$messageBan = NULL,$postBan = NULL){
@@ -1202,8 +1202,8 @@ class AFTWManagement extends Config {
 				<div id="ContentStuff" class="ContentStuff">';
 				$TotalSeries = $this->Query('series'); //count all of the series please.
 				$query = "SELECT id, seriesName, fullSeriesName, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category FROM series ORDER BY id DESC LIMIT $page, $limit";
-				mysqli_query("SET NAMES 'utf8'");
-				$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, "SET NAMES 'utf8'");
+				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 
 				echo '<div id="seriesg">';
 				echo '<div style="padding:3px;">';
@@ -1214,7 +1214,7 @@ class AFTWManagement extends Config {
 				$i = 0;
 				$fivearray = array(1 => '<br />',2 => '<br /><br />',3 => '<br /><br /><br />',4 => '<br /><br /><br /><br />',5 => '<br /><br /><br /><br /><br />',6 => '<br /><br /><br /><br /><br /><br />',7 => '<br /><br /><br /><br /><br /><br /><br />');
 				while(list($id, $seriesName, $fullSeriesName, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteActivate, $noteReason, $category) = mysqli_fetch_array($result, MYSQL_NUM)){
-					$query = mysqli_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
+					$query = mysqli_query($conn, "SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
 					$CountEpisodes = mysqli_num_rows($query);
 					if($moviesOnly == 1){$moviesOnly = 'yes';}else {$moviesOnly = 'no';}
 					if($noteActivate == 1){$noteActivate = 'yes';}else {$noteActivate = 'no';}
@@ -1329,7 +1329,7 @@ class AFTWManagement extends Config {
 					echo '<br /><div align="center">The announcement Builder is a simple script that facilitates the ability to grab the neccessary data for creating proper announcements when releasing mass updates of Series.</div><br /><b>Choose from Available Series:</b>';
 					echo '<div style="height:125px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;">';
 					$query = "SELECT id, fullSeriesName FROM series ORDER by seriesName ASC";
-					$result = mysqli_query($query);
+					$result = mysqli_query($conn, $query);
 					echo '<form action="POST" id="SeriesAnnouncementBuilder">
 					<input type="hidden" name="Authorization" value="0110110101101111011100110110100001101001" id="Authorization" />
 					<input type="hidden" id="method" class="method" value="SeriesAnnouncementBuilder" name="method" />';
@@ -1369,7 +1369,7 @@ class AFTWManagement extends Config {
 							echo '<select name="AvailableSeries" id="AvailableSeries" style="color: #000000;">';
 						$query2 = "SELECT seriesName, fullSeriesName FROM series ORDER BY fullSeriesName ASC";
 						echo '<option id="0" value="0">Choose a Series</option> ';
-						$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+						$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 						while(list($seriesName, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM)){
 							$fullSeriesName = stripslashes($fullSeriesName);
 							echo '<option id="'.$seriesName.'" value="'.$seriesName.'"'; if($seriesName == $ReqSeriesName){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
@@ -1388,8 +1388,8 @@ class AFTWManagement extends Config {
 					}
 					else
 					{
-						$query = "SELECT episode.vidheight, episode.vidwidth, episode.epprefix, episode.subGroup, episode.videotype, series.fullSeriesName FROM episode, series WHERE episode.seriesname = '" . mysqli_real_escape_string($_GET['seriesname']) . "' AND series.seriesName=episode.seriesname LIMIT 0, 1";
-						$results = mysqli_query($query);
+						$query = "SELECT episode.vidheight, episode.vidwidth, episode.epprefix, episode.subGroup, episode.videotype, series.fullSeriesName FROM episode, series WHERE episode.seriesname = '" . mysqli_real_escape_string($conn, $_GET['seriesname']) . "' AND series.seriesName=episode.seriesname LIMIT 0, 1";
+						$results = mysqli_query($conn, $query);
 						$row = mysqli_fetch_array($results);
 						echo '<div id="form_results" class="form_results">&nbsp;</div>';
 						echo '<form method="POST" name="MassEpisodeEdit" id="MassEpisodeEdit">';
@@ -1540,11 +1540,11 @@ class AFTWManagement extends Config {
 							exit;
 						}
 						else {
-							$sid = mysqli_real_escape_string($_GET['sid']);
+							$sid = mysqli_real_escape_string($conn, $_GET['sid']);
 							$sid = htmlentities($sid);
 							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList FROM series WHERE id='$sid'";
-							mysqli_query("SET NAMES 'utf8'");
-							$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+							mysqli_query($conn, "SET NAMES 'utf8'");
+							$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList) = mysqli_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
 
@@ -1564,8 +1564,8 @@ class AFTWManagement extends Config {
 							$Type = 'add';
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />';
 							$SubmitTXT = 'Add Series';
-							$query = "SELECT series, prefix, anidbsid FROM uestatus WHERE id = " . mysqli_real_escape_string($_GET['ueid']);
-							$result = mysqli_query($query);
+							$query = "SELECT series, prefix, anidbsid FROM uestatus WHERE id = " . mysqli_real_escape_string($conn, $_GET['ueid']);
+							$result = mysqli_query($conn, $query);
 							$row = mysqli_fetch_array($result);
 							$SeriesPrefix = substr($row['series'], 0, 10);
 							$SeriesPrefix = strtolower($SeriesPrefix);
@@ -1751,7 +1751,7 @@ class AFTWManagement extends Config {
 									else {
 										echo '<option id="0" value="0">None</option> ';
 									}
-									$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+									$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 									while(list($id2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 									{
 										$fullSeriesName = stripslashes($fullSeriesName);
@@ -1774,7 +1774,7 @@ class AFTWManagement extends Config {
 									else {
 										echo '<option id="0" value="0">None</option> ';
 									}
-									$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+									$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 									while(list($id2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM)){
 										$fullSeriesName = stripslashes($fullSeriesName);
 										echo '<option id="'.$id2.'" value="'.$id2.'"'; if($id2 == $sequelto){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
@@ -1921,7 +1921,7 @@ class AFTWManagement extends Config {
 		<div id="ContentStuff" class="ContentStuff" style="display:hidden;"><div align="center">Choose From the Above Options.</div></div>';
 		}
 		if(isset($_GET['subnode']) && $_GET['subnode'] == 'permissions'){
-			$query = mysqli_query("SELECT * FROM permissions");
+			$query = mysqli_query($conn, "SELECT * FROM permissions");
 			$count = mysqli_num_rows($query);
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
@@ -1959,7 +1959,7 @@ class AFTWManagement extends Config {
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-settings'){
-			$query = mysqli_query("SELECT * FROM settings");
+			$query = mysqli_query($conn, "SELECT * FROM settings");
 			$count = mysqli_num_rows($query);
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
@@ -1978,7 +1978,7 @@ class AFTWManagement extends Config {
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-groups'){
-			$query = mysqli_query("SELECT * FROM site_groups");
+			$query = mysqli_query($conn, "SELECT * FROM site_groups");
 			$count = mysqli_num_rows($query);
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
@@ -2056,11 +2056,11 @@ class AFTWManagement extends Config {
 		$return = '';
 		// first step is to get the list of groups available.
 		$query = "SELECT groupID, groupName FROM site_groups";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		$i = 0;
 		while($group_array = mysqli_fetch_array($results)){
 			$subquery = "SELECT id FROM permissions_objects WHERE permission_id = $pid AND oid = ".$group_array[0];
-			$query = mysqli_query($subquery);
+			$query = mysqli_query($conn, $subquery);
 			$count = mysqli_num_rows($query);
 			if($count == 1){
 				$checked = ' checked="checked"';
@@ -2088,22 +2088,22 @@ class AFTWManagement extends Config {
 				if(is_array($value)){
 					$permissionsid = substr($name, 4);
 					$query = "SELECT groupID FROM site_groups";
-					$results = mysqli_query($query);
+					$results = mysqli_query($conn, $query);
 					$i = 0;
 					// we want to query the database, to get a full list of groups, that way we can delete objects where need be..
 					while($row = mysqli_fetch_array($results)){
-						$query = mysqli_query("SELECT id FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
+						$query = mysqli_query($conn, "SELECT id FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
 						$count = mysqli_num_rows($query);
 						if(in_array($row[0],$value)){ //if the presented valiable is IN the array, that means it needs to be added
 							if($count == 1){ //we have found the package, nothing needed.
 							}
 							else { //for everything else you need to add it.
-								mysqli_query("INSERT INTO permissions_objects (id, oid, type, permission_id) VALUES (NULL, '".mysqli_real_escape_string($row[0])."', '1', '".mysqli_real_escape_string($permissionsid)."')") or die(mysqli_error());
+								mysqli_query($conn, "INSERT INTO permissions_objects (id, oid, type, permission_id) VALUES (NULL, '".mysqli_real_escape_string($conn, $row[0])."', '1', '".mysqli_real_escape_string($conn, $permissionsid)."')") or die(mysqli_error());
 							}
 						}
 						else { //its not in the array, it can be deleted
 							if($count == 1){ // the package was found in the DB, but we dont need it, so it can be deleted
-								mysqli_query("DELETE FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
+								mysqli_query($conn, "DELETE FROM permissions_objects WHERE permission_id = ".$permissionsid." AND type = 1 AND oid = ".$row[0]);
 							}
 							else { // it's not in the database anyway, go home..
 							}
@@ -2121,59 +2121,59 @@ class AFTWManagement extends Config {
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$this->uid = $_POST['uid'];
-				$sid = mysqli_real_escape_string($_POST['sid']);
-				$seriesName = mysqli_real_escape_string($_POST['seriesName']);
-				$fullSeriesName = mysqli_real_escape_string($_POST['fullSeriesName']);
-				$kanji = mysqli_real_escape_string($_POST['kanji']);
-				$romaji = mysqli_real_escape_string($_POST['romaji']);
-				$synonym = mysqli_real_escape_string($_POST['synonym']);
-				$seoname = mysqli_real_escape_string($_POST['seoname']);
-				$videoServer = mysqli_real_escape_string($_POST['videoServer']);
-				$active = mysqli_real_escape_string($_POST['active']);
-				$description = mysqli_real_escape_string($_POST['description2']);
-				$ratingLink = mysqli_real_escape_string($_POST['ratingLink']);
-				$stillRelease = mysqli_real_escape_string($_POST['stillRelease']);
-				$Movies = mysqli_real_escape_string($_POST['Movies']);
-				$moviesOnly = mysqli_real_escape_string($_POST['moviesOnly']);
-				$OVA = mysqli_real_escape_string($_POST['OVA']);
-				$noteReason = mysqli_real_escape_string($_POST['noteReason']);
-				$aonly = mysqli_real_escape_string($_POST['aonly']);
-				$prequelto = mysqli_real_escape_string($_POST['prequelto']);
-				$sequelto = mysqli_real_escape_string($_POST['sequelto']);
-				$category = mysqli_real_escape_string($_POST['category']);
-				$seriesType = mysqli_real_escape_string($_POST['seriesType']);
-				$seriesList = mysqli_real_escape_string($_POST['seriesList']);
+				$sid = mysqli_real_escape_string($conn, $_POST['sid']);
+				$seriesName = mysqli_real_escape_string($conn, $_POST['seriesName']);
+				$fullSeriesName = mysqli_real_escape_string($conn, $_POST['fullSeriesName']);
+				$kanji = mysqli_real_escape_string($conn, $_POST['kanji']);
+				$romaji = mysqli_real_escape_string($conn, $_POST['romaji']);
+				$synonym = mysqli_real_escape_string($conn, $_POST['synonym']);
+				$seoname = mysqli_real_escape_string($conn, $_POST['seoname']);
+				$videoServer = mysqli_real_escape_string($conn, $_POST['videoServer']);
+				$active = mysqli_real_escape_string($conn, $_POST['active']);
+				$description = mysqli_real_escape_string($conn, $_POST['description2']);
+				$ratingLink = mysqli_real_escape_string($conn, $_POST['ratingLink']);
+				$stillRelease = mysqli_real_escape_string($conn, $_POST['stillRelease']);
+				$Movies = mysqli_real_escape_string($conn, $_POST['Movies']);
+				$moviesOnly = mysqli_real_escape_string($conn, $_POST['moviesOnly']);
+				$OVA = mysqli_real_escape_string($conn, $_POST['OVA']);
+				$noteReason = mysqli_real_escape_string($conn, $_POST['noteReason']);
+				$aonly = mysqli_real_escape_string($conn, $_POST['aonly']);
+				$prequelto = mysqli_real_escape_string($conn, $_POST['prequelto']);
+				$sequelto = mysqli_real_escape_string($conn, $_POST['sequelto']);
+				$category = mysqli_real_escape_string($conn, $_POST['category']);
+				$seriesType = mysqli_real_escape_string($conn, $_POST['seriesType']);
+				$seriesList = mysqli_real_escape_string($conn, $_POST['seriesList']);
 
 				$fullSeriesName = htmlspecialchars($fullSeriesName);
 				$kanji = htmlspecialchars($kanji);
 				$description = nl2br($description);
 				$noteReason = nl2br($noteReason);
 				//echo $description;
-				mysqli_query("SET NAMES 'utf8'");
+				mysqli_query($conn, "SET NAMES 'utf8'");
 				$query = 'UPDATE series
-					SET seriesName=\'' . mysqli_real_escape_string($seriesName) .'\',
+					SET seriesName=\'' . mysqli_real_escape_string($conn, $seriesName) .'\',
 					fullSeriesName=\'' . $fullSeriesName . '\',
-					romaji=\'' . mysqli_real_escape_string($romaji) . '\',
-					kanji=\'' . mysqli_real_escape_string($kanji) . '\',
+					romaji=\'' . mysqli_real_escape_string($conn, $romaji) . '\',
+					kanji=\'' . mysqli_real_escape_string($conn, $kanji) . '\',
 					synonym=\'' . $synonym . '\',
-					seoname=\'' . mysqli_real_escape_string($seoname) . '\',
-					videoServer=\'' . mysqli_real_escape_string($videoServer) . '\',
-					active=\'' . mysqli_real_escape_string($active) . '\',
+					seoname=\'' . mysqli_real_escape_string($conn, $seoname) . '\',
+					videoServer=\'' . mysqli_real_escape_string($conn, $videoServer) . '\',
+					active=\'' . mysqli_real_escape_string($conn, $active) . '\',
 					description=\'' . $description . '\',
-					ratingLink=\'' . mysqli_real_escape_string($ratingLink) . '\',
-					stillRelease=\'' . mysqli_real_escape_string($stillRelease) . '\',
-					Movies=\'' . mysqli_real_escape_string($Movies) . '\',
-					moviesOnly=\'' . mysqli_real_escape_string($moviesOnly) . '\',
-					OVA=\'' . mysqli_real_escape_string($OVA) . '\',
+					ratingLink=\'' . mysqli_real_escape_string($conn, $ratingLink) . '\',
+					stillRelease=\'' . mysqli_real_escape_string($conn, $stillRelease) . '\',
+					Movies=\'' . mysqli_real_escape_string($conn, $Movies) . '\',
+					moviesOnly=\'' . mysqli_real_escape_string($conn, $moviesOnly) . '\',
+					OVA=\'' . mysqli_real_escape_string($conn, $OVA) . '\',
 					noteReason=\'' . $noteReason . '\',
-					aonly=\'' . mysqli_real_escape_string($aonly) . '\',
-					prequelto=\'' . mysqli_real_escape_string($prequelto) . '\',
-					sequelto=\'' . mysqli_real_escape_string($sequelto) . '\',
+					aonly=\'' . mysqli_real_escape_string($conn, $aonly) . '\',
+					prequelto=\'' . mysqli_real_escape_string($conn, $prequelto) . '\',
+					sequelto=\'' . mysqli_real_escape_string($conn, $sequelto) . '\',
 					category=\'' . $category . '\',
-					seriesType=\'' . mysqli_real_escape_string($seriesType) . '\',
-					seriesList=\'' . mysqli_real_escape_string($seriesList) . '\'
+					seriesType=\'' . mysqli_real_escape_string($conn, $seriesType) . '\',
+					seriesList=\'' . mysqli_real_escape_string($conn, $seriesList) . '\'
 					WHERE id=' . $sid . '';
-				mysqli_query($query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
 
 				$this->ModRecord('Edit series, ' . $fullSeriesName);
@@ -2189,31 +2189,31 @@ class AFTWManagement extends Config {
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$this->uid = $_POST['uid'];
-				$seriesName = mysqli_real_escape_string($_POST['seriesName']);
-				$fullSeriesName = mysqli_real_escape_string($_POST['fullSeriesName']);
-				$kanji = mysqli_real_escape_string($_POST['kanji']);
-				$romaji = mysqli_real_escape_string($_POST['romaji']);
-				$synonym = mysqli_real_escape_string($_POST['synonym']);
-				$seoname = mysqli_real_escape_string($_POST['seoname']);
-				$videoServer = mysqli_real_escape_string($_POST['videoServer']);
-				$active = mysqli_real_escape_string($_POST['active']);
-				$description = mysqli_real_escape_string($_POST['description2']);
-				$ratingLink = mysqli_real_escape_string($_POST['ratingLink']);
-				$stillRelease = mysqli_real_escape_string($_POST['stillRelease']);
-				$Movies = mysqli_real_escape_string($_POST['Movies']);
-				$moviesOnly = mysqli_real_escape_string($_POST['moviesOnly']);
-				$OVA = mysqli_real_escape_string($_POST['OVA']);
-				$noteReason = mysqli_real_escape_string($_POST['noteReason']);
-				$aonly = mysqli_real_escape_string($_POST['aonly']);
-				$prequelto = mysqli_real_escape_string($_POST['prequelto']);
-				$sequelto = mysqli_real_escape_string($_POST['sequelto']);
-				$category = mysqli_real_escape_string($_POST['category']);
-				$seriesType = mysqli_real_escape_string($_POST['seriesType']);
-				$seriesList = mysqli_real_escape_string($_POST['seriesList']);
+				$seriesName = mysqli_real_escape_string($conn, $_POST['seriesName']);
+				$fullSeriesName = mysqli_real_escape_string($conn, $_POST['fullSeriesName']);
+				$kanji = mysqli_real_escape_string($conn, $_POST['kanji']);
+				$romaji = mysqli_real_escape_string($conn, $_POST['romaji']);
+				$synonym = mysqli_real_escape_string($conn, $_POST['synonym']);
+				$seoname = mysqli_real_escape_string($conn, $_POST['seoname']);
+				$videoServer = mysqli_real_escape_string($conn, $_POST['videoServer']);
+				$active = mysqli_real_escape_string($conn, $_POST['active']);
+				$description = mysqli_real_escape_string($conn, $_POST['description2']);
+				$ratingLink = mysqli_real_escape_string($conn, $_POST['ratingLink']);
+				$stillRelease = mysqli_real_escape_string($conn, $_POST['stillRelease']);
+				$Movies = mysqli_real_escape_string($conn, $_POST['Movies']);
+				$moviesOnly = mysqli_real_escape_string($conn, $_POST['moviesOnly']);
+				$OVA = mysqli_real_escape_string($conn, $_POST['OVA']);
+				$noteReason = mysqli_real_escape_string($conn, $_POST['noteReason']);
+				$aonly = mysqli_real_escape_string($conn, $_POST['aonly']);
+				$prequelto = mysqli_real_escape_string($conn, $_POST['prequelto']);
+				$sequelto = mysqli_real_escape_string($conn, $_POST['sequelto']);
+				$category = mysqli_real_escape_string($conn, $_POST['category']);
+				$seriesType = mysqli_real_escape_string($conn, $_POST['seriesType']);
+				$seriesList = mysqli_real_escape_string($conn, $_POST['seriesList']);
 
-				mysqli_query("SET NAMES 'utf8'");
+				mysqli_query($conn, "SET NAMES 'utf8'");
 				$query = "INSERT INTO series (seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, prequelto, sequelto, category, seriesType, seriesList) VALUES ('$seriesName', '$fullSeriesName', '$romaji', '$kanji', '$synonym', '$seoname', '$videoServer', '$active', '$description', '$ratingLink', '$stillRelease', '$Movies', '$moviesOnly', '$OVA', '$noteReason', '$aonly', '$prequelto', '$sequelto', '$category', '$seriesType', '$seriesList')";
-				mysqli_query($query) or die('Could not connect, way to go retard: ' . mysqli_error());
+				mysqli_query($conn, $query) or die('Could not connect, way to go retard: ' . mysqli_error());
 
 				$sid = $this->SingleVarQuery("SELECT id FROM series WHERE seriesName = '" . $seriesName . "'",'id'); //Get the Series ID through seriesName
 				$this->updatePreSequel($sid, $prequelto, $sequelto);
@@ -2230,18 +2230,18 @@ class AFTWManagement extends Config {
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
 				$this->uid = $_POST['uid'];
-				$seriesname = mysqli_real_escape_string($_POST['seriesname']);
-				$fullSeriesName = mysqli_real_escape_string($_POST['fullSeriesName']);
-				$old_vidwidth = mysqli_real_escape_string($_POST['old_vidwidth']);
-				$old_vidheight = mysqli_real_escape_string($_POST['old_vidheight']);
-				$old_epprefix = mysqli_real_escape_string($_POST['old_epprefix']);
-				$old_subGroup = mysqli_real_escape_string($_POST['old_subGroup']);
-				$old_videotype = mysqli_real_escape_string($_POST['old_videotype']);
-				$vidwidth = mysqli_real_escape_string($_POST['vidwidth']);
-				$vidheight = mysqli_real_escape_string($_POST['vidheight']);
-				$epprefix = mysqli_real_escape_string($_POST['epprefix']);
-				$subGroup = mysqli_real_escape_string($_POST['subGroup']);
-				$videotype = mysqli_real_escape_string($_POST['videotype']);
+				$seriesname = mysqli_real_escape_string($conn, $_POST['seriesname']);
+				$fullSeriesName = mysqli_real_escape_string($conn, $_POST['fullSeriesName']);
+				$old_vidwidth = mysqli_real_escape_string($conn, $_POST['old_vidwidth']);
+				$old_vidheight = mysqli_real_escape_string($conn, $_POST['old_vidheight']);
+				$old_epprefix = mysqli_real_escape_string($conn, $_POST['old_epprefix']);
+				$old_subGroup = mysqli_real_escape_string($conn, $_POST['old_subGroup']);
+				$old_videotype = mysqli_real_escape_string($conn, $_POST['old_videotype']);
+				$vidwidth = mysqli_real_escape_string($conn, $_POST['vidwidth']);
+				$vidheight = mysqli_real_escape_string($conn, $_POST['vidheight']);
+				$epprefix = mysqli_real_escape_string($conn, $_POST['epprefix']);
+				$subGroup = mysqli_real_escape_string($conn, $_POST['subGroup']);
+				$videotype = mysqli_real_escape_string($conn, $_POST['videotype']);
 				$UpdateType = $_POST['UpdateType'];
 
 				if($old_epprefix != $epprefix) // if the episode prefix changed, then it nullifies the episodes images..
@@ -2272,7 +2272,7 @@ class AFTWManagement extends Config {
 
 				$fullSeriesName = stripslashes($fullSeriesName);
 				//echo $description;
-				mysqli_query("SET NAMES 'utf8'");
+				mysqli_query($conn, "SET NAMES 'utf8'");
 				$query = 'UPDATE episode
 					SET vidwidth=\'' . $vidwidth .'\',
 					vidheight=\'' . $vidheight . '\',
@@ -2280,7 +2280,7 @@ class AFTWManagement extends Config {
 					subGroup=\'' . $subGroup . '\',
 					videotype=\'' . $videotype . '\''.$QuerySet.'
 					WHERE seriesname=\'' . $seriesname . '\'' . $QueryAddon;
-				mysqli_query($query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				$this->ModRecord('Mass Episode Edit for Series ' . $fullSeriesName . ', old -vh:' . $old_vidheight . ', -vw:' . $old_vidwidth . ', -pref:' . $old_epprefix . ', -sg:' . $old_subGroup . ', -vt:' . $old_videotype . '');
 				echo 'Success';
 			}
@@ -2299,10 +2299,10 @@ class AFTWManagement extends Config {
 				}
 				else
 				{
-					$input = mysqli_real_escape_string($_POST['SeriesName']);
-					mysqli_query("SET NAMES 'utf8'");
+					$input = mysqli_real_escape_string($conn, $_POST['SeriesName']);
+					mysqli_query($conn, "SET NAMES 'utf8'");
 					$query   = "SELECT id, seriesName, fullSeriesName, seoname, kanji, romaji, ratingLink, category FROM series WHERE ( fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' ) ORDER BY seriesName ASC LIMIT 100";
-					$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					$ts = mysqli_num_rows($result);
 					if($ts < 1)
 					{
@@ -2350,7 +2350,7 @@ class AFTWManagement extends Config {
 					$query .= " id = $value";
 					$i++;
 				}
-				$result = mysqli_query($query);
+				$result = mysqli_query($conn, $query);
 				echo '<textarea style="height:175px;overflow-y:scroll;overflow-x:none;border:1px solid #0C90BB;width:100%" onclick="this.select()">';
 				while($row = mysqli_fetch_array($result))
 				{
@@ -2370,10 +2370,10 @@ class AFTWManagement extends Config {
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
-				$episodes = mysqli_real_escape_string($_POST['episodesdoing'])."/".mysqli_real_escape_string($_POST['episodetotal']);
-				$dimmensions = mysqli_real_escape_string($_POST['width'])."x".mysqli_real_escape_string($_POST['height']);
-				$query = "INSERT INTO uestatus (series, prefix, episodes, type, resolution, status, user, updated, anidbsid, fansub) VALUES ('" . mysqli_real_escape_string($_POST['Series']) . "', '" . mysqli_real_escape_string($_POST['Prefix']) . "', '" . $episodes . "', '" . mysqli_real_escape_string($_POST['Type']) . "', '" . $dimmensions . "', '" . mysqli_real_escape_string($_POST['Status']) . "', '" . mysqli_real_escape_string($_POST['user']) . "', NOW(), '" . mysqli_real_escape_string($_POST['anidb']) . "', '" . mysqli_real_escape_string($_POST['fansub']) . "')";
-				mysqli_query($query) or die(mysqli_error());
+				$episodes = mysqli_real_escape_string($conn, $_POST['episodesdoing'])."/".mysqli_real_escape_string($conn, $_POST['episodetotal']);
+				$dimmensions = mysqli_real_escape_string($conn, $_POST['width'])."x".mysqli_real_escape_string($conn, $_POST['height']);
+				$query = "INSERT INTO uestatus (series, prefix, episodes, type, resolution, status, user, updated, anidbsid, fansub) VALUES ('" . mysqli_real_escape_string($conn, $_POST['Series']) . "', '" . mysqli_real_escape_string($conn, $_POST['Prefix']) . "', '" . $episodes . "', '" . mysqli_real_escape_string($conn, $_POST['Type']) . "', '" . $dimmensions . "', '" . mysqli_real_escape_string($conn, $_POST['Status']) . "', '" . mysqli_real_escape_string($conn, $_POST['user']) . "', NOW(), '" . mysqli_real_escape_string($conn, $_POST['anidb']) . "', '" . mysqli_real_escape_string($conn, $_POST['fansub']) . "')";
+				mysqli_query($conn, $query) or die(mysqli_error());
 				echo 'Success';
 				//echo $query;
 			}
@@ -2386,21 +2386,21 @@ class AFTWManagement extends Config {
 		{
 			if(isset($_POST['Authorization']) && $_POST['Authorization'] == '0110110101101111011100110110100001101001')
 			{
-				$episodes = mysqli_real_escape_string($_POST['episodesdoing'])."/".mysqli_real_escape_string($_POST['episodetotal']);
-				$dimmensions = mysqli_real_escape_string($_POST['width'])."x".mysqli_real_escape_string($_POST['height']);
+				$episodes = mysqli_real_escape_string($conn, $_POST['episodesdoing'])."/".mysqli_real_escape_string($conn, $_POST['episodetotal']);
+				$dimmensions = mysqli_real_escape_string($conn, $_POST['width'])."x".mysqli_real_escape_string($conn, $_POST['height']);
 				$query = "UPDATE `uestatus` SET
-				`series` = '" . mysqli_real_escape_string($_POST['Series']) . "',
-				`prefix` = '" . mysqli_real_escape_string($_POST['Prefix']) . "',
+				`series` = '" . mysqli_real_escape_string($conn, $_POST['Series']) . "',
+				`prefix` = '" . mysqli_real_escape_string($conn, $_POST['Prefix']) . "',
 				`episodes` = '" . $episodes . "',
-				`type` = '" . mysqli_real_escape_string($_POST['Type']) . "',
+				`type` = '" . mysqli_real_escape_string($conn, $_POST['Type']) . "',
 				`resolution` = '" . $dimmensions . "',
-				`status` = '" . mysqli_real_escape_string($_POST['Status']) . "',
-				`user` = '" . mysqli_real_escape_string($_POST['uploader']) . "',
+				`status` = '" . mysqli_real_escape_string($conn, $_POST['Status']) . "',
+				`user` = '" . mysqli_real_escape_string($conn, $_POST['uploader']) . "',
 				`updated` = NOW(),
-				`anidbsid` = '" . mysqli_real_escape_string($_POST['anidb']) . "',
-				`fansub` = '" . mysqli_real_escape_string($_POST['fansub']) . "'
-				WHERE `uestatus`.`ID` = " . mysqli_real_escape_string($_POST['ueid']);
-				mysqli_query($query) or die(mysqli_error());
+				`anidbsid` = '" . mysqli_real_escape_string($conn, $_POST['anidb']) . "',
+				`fansub` = '" . mysqli_real_escape_string($conn, $_POST['fansub']) . "'
+				WHERE `uestatus`.`ID` = " . mysqli_real_escape_string($conn, $_POST['ueid']);
+				mysqli_query($conn, $query) or die(mysqli_error());
 				echo 'Success';
 				//echo $query;
 			}
@@ -2419,8 +2419,8 @@ class AFTWManagement extends Config {
 			else
 			{
 				// query the database, we need the basic information of the user we are editing
-				$query = "SELECT `Username`, `display_name`, `Password`, `Level_access` FROM users WHERE ID = " . mysqli_real_escape_string($_POST['id']);
-				$result = mysqli_query($query);
+				$query = "SELECT `Username`, `display_name`, `Password`, `Level_access` FROM users WHERE ID = " . mysqli_real_escape_string($conn, $_POST['id']);
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				if(($_POST['id'] == $this->UserArray[1]) || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
 				{
@@ -2431,11 +2431,11 @@ class AFTWManagement extends Config {
                     // We will allow managers to change them as well as admins.
                     if ((($this->UserArray[1] != $_POST['id'] && ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)) || ($_POST['id'] == $this->UserArray[1] && ($this->UserArray[2] != 3))) && (($_POST['displayName'] != $row['display_name'] && $_POST['displayName'] != $row['Username']) || ($_POST['displayName'] == $row['Username'] && $_POST['displayName'] != $row['display_name']))) {
                         // We need to check to make sure this display name is not in existance.
-                        $query = "SELECT COUNT(ID) AS userNameCount FROM `users` WHERE '" . mysqli_real_escape_string(@$_POST['displayName']) . "' IN(`Username`,`display_name`);";
-                        $result = mysqli_query($query);
+                        $query = "SELECT COUNT(ID) AS userNameCount FROM `users` WHERE '" . mysqli_real_escape_string($conn, @$_POST['displayName']) . "' IN(`Username`,`display_name`);";
+                        $result = mysqli_query($conn, $query);
                         $usercount = mysqli_fetch_object($result);
                         if ($usercount->userNameCount == 0 || ($usercount->userNameCount > 0 && $_POST['displayName'] == $row['Username']) || ($_POST['displayName'] == $this->UserArray[5] && $_POST['id'] == $this->UserArray[1])) {
-                            $display_name = ' `display_name`=\'' . mysqli_real_escape_string(@$_POST['displayName']) . '\',';
+                            $display_name = ' `display_name`=\'' . mysqli_real_escape_string($conn, @$_POST['displayName']) . '\',';
                         } else {
         					echo 'Display Name is already taken, please try another.';
                             exit;
@@ -2482,25 +2482,25 @@ class AFTWManagement extends Config {
 					}
 					else
 					{
-						$EmailAlias = ' `Alias`=\'' . mysqli_real_escape_string($Alias) . '\',';
+						$EmailAlias = ' `Alias`=\'' . mysqli_real_escape_string($conn, $Alias) . '\',';
 					}
 
 					// if the users access level is an admin or manager, give them the ability to edit everything
 					if($this->UserArray[2] == 1 || $this->UserArray[2] == 2)
 					{
-						$additional = ',' . $EmailAlias . $display_name . ' `canDownload`=\'' . mysqli_real_escape_string($candownload) . '\', `Level_access`=\'' . mysqli_real_escape_string($level_access) . '\', `advanceImage`=\'' . mysqli_real_escape_string($preffix) . '\', `avatarActivate`=\'' . mysqli_real_escape_string($avataractive) . '\', `avatarExtension`=\'' . mysqli_real_escape_string($avatarextension) . '\',' .
-                        ' `personalMsg`=\'' . mysqli_real_escape_string($personalmsg) . '\', `memberTitle`=\'' . mysqli_real_escape_string($membertitle) . '\', `aboutMe`=\'' . mysqli_real_escape_string($aboutme) . '\', `interests`=\'' . mysqli_real_escape_string($interests) . '\', `signatureActive`=\'' . mysqli_real_escape_string($sigactive) . '\', `Signature`=\'' . mysqli_real_escape_string($Signature) . '\', `notes`=\'' . mysqli_real_escape_string($notes) . '\'';
+						$additional = ',' . $EmailAlias . $display_name . ' `canDownload`=\'' . mysqli_real_escape_string($conn, $candownload) . '\', `Level_access`=\'' . mysqli_real_escape_string($conn, $level_access) . '\', `advanceImage`=\'' . mysqli_real_escape_string($conn, $preffix) . '\', `avatarActivate`=\'' . mysqli_real_escape_string($conn, $avataractive) . '\', `avatarExtension`=\'' . mysqli_real_escape_string($conn, $avatarextension) . '\',' .
+                        ' `personalMsg`=\'' . mysqli_real_escape_string($conn, $personalmsg) . '\', `memberTitle`=\'' . mysqli_real_escape_string($conn, $membertitle) . '\', `aboutMe`=\'' . mysqli_real_escape_string($conn, $aboutme) . '\', `interests`=\'' . mysqli_real_escape_string($conn, $interests) . '\', `signatureActive`=\'' . mysqli_real_escape_string($conn, $sigactive) . '\', `Signature`=\'' . mysqli_real_escape_string($conn, $Signature) . '\', `notes`=\'' . mysqli_real_escape_string($conn, $notes) . '\'';
 					}
 					else if($this->UserArray[2] == 4 || $this->UserArray[2] == 5 || $this->UserArray[2] == 6 || $this->UserArray[2] == 7)
 					{
 						//AMs and staff can see these...
 						if($Signature != '')
 						{
-							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysqli_real_escape_string($preffix) . '\', `aboutMe`=\'' . mysqli_real_escape_string($aboutme) . '\', `interests`=\'' . mysqli_real_escape_string($interests) . '\', `Signature`=\'' . mysqli_real_escape_string($Signature).'\', `signatureActive`=\'yes\'';
+							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysqli_real_escape_string($conn, $preffix) . '\', `aboutMe`=\'' . mysqli_real_escape_string($conn, $aboutme) . '\', `interests`=\'' . mysqli_real_escape_string($conn, $interests) . '\', `Signature`=\'' . mysqli_real_escape_string($conn, $Signature).'\', `signatureActive`=\'yes\'';
 						}
 						else
 						{
-							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysqli_real_escape_string($preffix) . '\', `aboutMe`=\'' . mysqli_real_escape_string($aboutme) . '\', `interests`=\'' . mysqli_real_escape_string($interests) . '\', `Signature`=\'' . mysqli_real_escape_string($Signature).'\'';
+							$additional = ',' . $EmailAlias . ' `advanceImage`=\'' . mysqli_real_escape_string($conn, $preffix) . '\', `aboutMe`=\'' . mysqli_real_escape_string($conn, $aboutme) . '\', `interests`=\'' . mysqli_real_escape_string($conn, $interests) . '\', `Signature`=\'' . mysqli_real_escape_string($conn, $Signature).'\'';
 						}
 					}
 					else {
@@ -2508,25 +2508,25 @@ class AFTWManagement extends Config {
 						$additional = '';
 					}
 					$query = 'UPDATE users SET
-					`firstName`=\'' . mysqli_real_escape_string($firstname) . '\',
-					`lastName`=\'' . mysqli_real_escape_string($lastname) . '\',
-					`gender`=\'' . mysqli_real_escape_string($gender) . '\',
-					`ageDate`=\'' . mysqli_real_escape_string($ageday) . '\',
-					`ageMonth`=\'' . mysqli_real_escape_string($agemonth) . '\',
-					`ageYear`=\'' . mysqli_real_escape_string($ageyear) . '\',
-					`country`=\'' . mysqli_real_escape_string($country) . '\',
-					`msnAddress`=\'' . mysqli_real_escape_string($msn) . '\',
-					`aimName`=\'' . mysqli_real_escape_string($aim) . '\',
-					`yahooName`=\'' . mysqli_real_escape_string($yim) . '\',
-					`skypeName`=\'' . mysqli_real_escape_string($skype) . '\',
-					`icqNumber`=\'' . mysqli_real_escape_string($icq) . '\',
-					`showEmail`=\'' . mysqli_real_escape_string($showemail) . '\',
-					`theme`=\'' . mysqli_real_escape_string($theme) . '\'
+					`firstName`=\'' . mysqli_real_escape_string($conn, $firstname) . '\',
+					`lastName`=\'' . mysqli_real_escape_string($conn, $lastname) . '\',
+					`gender`=\'' . mysqli_real_escape_string($conn, $gender) . '\',
+					`ageDate`=\'' . mysqli_real_escape_string($conn, $ageday) . '\',
+					`ageMonth`=\'' . mysqli_real_escape_string($conn, $agemonth) . '\',
+					`ageYear`=\'' . mysqli_real_escape_string($conn, $ageyear) . '\',
+					`country`=\'' . mysqli_real_escape_string($conn, $country) . '\',
+					`msnAddress`=\'' . mysqli_real_escape_string($conn, $msn) . '\',
+					`aimName`=\'' . mysqli_real_escape_string($conn, $aim) . '\',
+					`yahooName`=\'' . mysqli_real_escape_string($conn, $yim) . '\',
+					`skypeName`=\'' . mysqli_real_escape_string($conn, $skype) . '\',
+					`icqNumber`=\'' . mysqli_real_escape_string($conn, $icq) . '\',
+					`showEmail`=\'' . mysqli_real_escape_string($conn, $showemail) . '\',
+					`theme`=\'' . mysqli_real_escape_string($conn, $theme) . '\'
 					'.$additional.'
-					WHERE `ID`=\'' . mysqli_real_escape_string($rid) . '\'';
+					WHERE `ID`=\'' . mysqli_real_escape_string($conn, $rid) . '\'';
 					//echo $query;
 					//echo $_SERVER['REQUEST_URI'];
-   					mysqli_query($query) or die('Error : ' . mysqli_error());
+   					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					echo 'Success';
 					$this->ModRecord("Account id " . $rid . " edited by " . $row['Username']);
 				}
@@ -2548,7 +2548,7 @@ class AFTWManagement extends Config {
 				{
 					$this->uid = $_POST['uid'];
 					$this->ModRecord('Edit Item to the Store');
-					$results = mysqli_query("UPDATE store_items SET category = '" . mysqli_real_escape_string($_POST['item-categories']) . "', name = '" . mysqli_real_escape_string($_POST['name']) . "', price = '" . mysqli_real_escape_string($_POST['price']) . "', availability = '" . mysqli_real_escape_string($_POST['availability']) . "', description = '" . mysqli_real_escape_string($_POST['description']) . "', productnum = '" . mysqli_real_escape_string($_POST['productnum']) . "', pictures = '" . mysqli_real_escape_string($_POST['pictures']) . "', picturetype = '" . mysqli_real_escape_string($_POST['picturetype']) . "', weight = '" . mysqli_real_escape_string($_POST['weight']) . "' WHERE id = " . mysqli_real_escape_string($_POST['id']));
+					$results = mysqli_query($conn, "UPDATE store_items SET category = '" . mysqli_real_escape_string($conn, $_POST['item-categories']) . "', name = '" . mysqli_real_escape_string($conn, $_POST['name']) . "', price = '" . mysqli_real_escape_string($conn, $_POST['price']) . "', availability = '" . mysqli_real_escape_string($conn, $_POST['availability']) . "', description = '" . mysqli_real_escape_string($conn, $_POST['description']) . "', productnum = '" . mysqli_real_escape_string($conn, $_POST['productnum']) . "', pictures = '" . mysqli_real_escape_string($conn, $_POST['pictures']) . "', picturetype = '" . mysqli_real_escape_string($conn, $_POST['picturetype']) . "', weight = '" . mysqli_real_escape_string($conn, $_POST['weight']) . "' WHERE id = " . mysqli_real_escape_string($conn, $_POST['id']));
 					if(!$results)
 					{
 						echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysqli_error() . '</div>';
@@ -2568,7 +2568,7 @@ class AFTWManagement extends Config {
 			{
 				$this->uid = $_POST['uid'];
 				$this->ModRecord('Add Item to the Store');
-				$results = mysqli_query("INSERT INTO `mainaftw_anime`.`store_items` (`id` ,`category` ,`name` ,`price` ,`availability` ,`description` ,`productnum` ,`pictures` ,`picturetype` ,`weight`) VALUES (NULL , '" . mysqli_real_escape_string($_POST['item-categories']) . "', '" . mysqli_real_escape_string($_POST['name']) . "', '" . mysqli_real_escape_string($_POST['price']) . "', '" . mysqli_real_escape_string($_POST['availability']) . "', '" . mysqli_real_escape_string($_POST['description']) . "', '" . mysqli_real_escape_string($_POST['productnum']) . "', '" . mysqli_real_escape_string($_POST['pictures']) . "', '" . mysqli_real_escape_string($_POST['picturetype']) . "', '" . mysqli_real_escape_string($_POST['weight']) . "');");
+				$results = mysqli_query($conn, "INSERT INTO `mainaftw_anime`.`store_items` (`id` ,`category` ,`name` ,`price` ,`availability` ,`description` ,`productnum` ,`pictures` ,`picturetype` ,`weight`) VALUES (NULL , '" . mysqli_real_escape_string($conn, $_POST['item-categories']) . "', '" . mysqli_real_escape_string($conn, $_POST['name']) . "', '" . mysqli_real_escape_string($conn, $_POST['price']) . "', '" . mysqli_real_escape_string($conn, $_POST['availability']) . "', '" . mysqli_real_escape_string($conn, $_POST['description']) . "', '" . mysqli_real_escape_string($conn, $_POST['productnum']) . "', '" . mysqli_real_escape_string($conn, $_POST['pictures']) . "', '" . mysqli_real_escape_string($conn, $_POST['picturetype']) . "', '" . mysqli_real_escape_string($conn, $_POST['weight']) . "');");
 				if(!$results)
 				{
 					echo '<div align="center" style="color:#FFFFFF;font-weight:bold;background-color:#FF0000;padding:2px;">There was an error when attempting to execute the query: ' . mysqli_error() . '</div>';
@@ -2587,8 +2587,8 @@ class AFTWManagement extends Config {
 			{
 				if(isset($_POST['email']) &&($_POST['email'] == $_POST['email_confirm']))
 				{
-					$query = "SELECT ID FROM users WHERE Email = '" . mysqli_real_escape_string($_POST['email']) . "'";
-					$result = mysqli_query($query);
+					$query = "SELECT ID FROM users WHERE Email = '" . mysqli_real_escape_string($conn, $_POST['email']) . "'";
+					$result = mysqli_query($conn, $query);
 					$count = mysqli_num_rows($result);
 					if($count > 0)
 					{
@@ -2597,11 +2597,11 @@ class AFTWManagement extends Config {
 					else
 					{
 						// we need to validate that the password is correct before letting them change it.
-						$result = mysqli_query("SELECT ID FROM users WHERE ID = " . mysqli_real_escape_string($_POST['id']) . " AND Password = '" . mysqli_real_escape_string(md5($_POST['password'])) . "'");
+						$result = mysqli_query($conn, "SELECT ID FROM users WHERE ID = " . mysqli_real_escape_string($conn, $_POST['id']) . " AND Password = '" . mysqli_real_escape_string($conn, md5($_POST['password'])) . "'");
 						$count = mysqli_num_rows($result);
 						if($count > 0)
 						{
-							mysqli_query("UPDATE users SET Email = '" . mysqli_real_escape_string($_POST['email']) . "' WHERE ID='" . mysqli_real_escape_string($_POST['id']) . "'");
+							mysqli_query($conn, "UPDATE users SET Email = '" . mysqli_real_escape_string($conn, $_POST['email']) . "' WHERE ID='" . mysqli_real_escape_string($conn, $_POST['id']) . "'");
 							$subject = "Email Change at AnimeFTW.tv";
 							$message = "Hello " . $_POST['username'] . ", this is just a friendly email to let you know that your Email was changed on our website. If this was unexpected, we encourage you to go to your profile https://".$_SERVER['HTTP_HOST']."/user/" . $_POST['username'] . " and make sure that it is up to date.\n\n If you have any questions please let us know by posting in our forums, http://".$_SERVER['HTTP_HOST']."/forums . \n\n Regards, \n\n FTW Entertainment LLC & AnimeFTW.tv Staff.";
 							$this->NewSendMail($subject,$_POST['email'],$message);
@@ -2633,11 +2633,11 @@ class AFTWManagement extends Config {
 				if(isset($_POST['current-password']) &&($_POST['pw_c'] == $_POST['pw']))
 				{
 						// we need to validate that the password is correct before letting them change it.
-						$result = mysqli_query("SELECT `ID`, `Email` FROM users WHERE ID = " . mysqli_real_escape_string($_POST['id']) . " AND Password = '" . mysqli_real_escape_string(md5($_POST['current-password'])) . "'");
+						$result = mysqli_query($conn, "SELECT `ID`, `Email` FROM users WHERE ID = " . mysqli_real_escape_string($conn, $_POST['id']) . " AND Password = '" . mysqli_real_escape_string($conn, md5($_POST['current-password'])) . "'");
 						$count = mysqli_num_rows($result);
 						if($count > 0)
 						{
-							mysqli_query("UPDATE users SET Password = '" . mysqli_real_escape_string(md5($_POST['pw'])) . "' WHERE ID='" . mysqli_real_escape_string($_POST['id']) . "'");
+							mysqli_query($conn, "UPDATE users SET Password = '" . mysqli_real_escape_string($conn, md5($_POST['pw'])) . "' WHERE ID='" . mysqli_real_escape_string($conn, $_POST['id']) . "'");
 							$subject = "Password Change at AnimeFTW.tv";
 							$message = "Hello " . $_POST['Username'] . ", this is just a friendly email to let you know that your Password was changed on our website. If this was unexpected, we encourage you to go to your profile http://" . $_SERVER['HTTP_HOST'] . "/user/" . strtolower($_POST['Username']) . " and make sure that it is up to date.\n\n If you have any questions please let us know by posting in our forums, http://" . $_SERVER['HTTP_HOST'] . "/forums.\n\n Regards,\nFTW Entertainment LLC & AnimeFTW.tv Staff.";
 							$row = mysqli_fetch_assoc($result);
@@ -2669,13 +2669,13 @@ class AFTWManagement extends Config {
 	{
 		if($prequelto != 0)//If the prequel is updated, we update that series sequel to this one.
 		{
-			$query = 'UPDATE series SET sequelto=\'' . mysqli_real_escape_string($sid) . '\' WHERE id=' . mysqli_real_escape_string($prequelto) . '';
-			mysqli_query($query) or die('Error : ' . mysqli_error());
+			$query = 'UPDATE series SET sequelto=\'' . mysqli_real_escape_string($conn, $sid) . '\' WHERE id=' . mysqli_real_escape_string($conn, $prequelto) . '';
+			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		}
 		if($sequelto != 0)//If the sequel is, or also was updated with the prequel, we update that series prequel to this one.
 		{
-			$query = 'UPDATE series SET prequelto=\'' . mysqli_real_escape_string($sid) . '\' WHERE id=' . mysqli_real_escape_string($sequelto) . '';
-			mysqli_query($query) or die('Error : ' . mysqli_error());
+			$query = 'UPDATE series SET prequelto=\'' . mysqli_real_escape_string($conn, $sid) . '\' WHERE id=' . mysqli_real_escape_string($conn, $sequelto) . '';
+			mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		}
 	}
 }

@@ -24,7 +24,7 @@ class Review extends Config {
 	{
 		$query = "SELECT `reviews`.`id`, `reviews`.`sid`, `reviews`.`uid`, `reviews`.`date`, `reviews`.`review`, `reviews`.`approved`, `reviews`.`stars`, `reviews`.`approved`, `reviews`.`approvedby`, `reviews`.`approvaldate`, `users`.`Username`, `users`.`avatarActivate`, `users`.`avatarExtension` FROM `reviews`,`users` WHERE `reviews`.`sid` = $sid AND `users`.`ID`=`reviews`.`uid` ORDER BY `reviews`.`date` DESC";
 		
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		
 		$count = mysqli_num_rows($result);
 		echo '<div style="padding-top:10px;border-top:1px solid #d8d8d8;">';
@@ -129,7 +129,7 @@ class Review extends Config {
 		if($this->UserArray[0] == 1)
 		{
 			$query = "SELECT `id`, `approved` FROM `reviews` WHERE `uid` = " . $this->UserArray[1] . " AND `sid` = $sid";
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			
 			if(mysqli_num_rows($result) > 0)
 			{
@@ -226,15 +226,15 @@ class Review extends Config {
 		else
 		{
 			// so they pass the data check, let's make sure there are no reviews waiting to be processed, or already approved.
-			$query = "SELECT * FROM `reviews` WHERE `sid` = " . mysqli_real_escape_string($_POST['id']) . " AND `uid` = " . $this->UserArray[1];
-			$result = mysqli_query($query);
+			$query = "SELECT * FROM `reviews` WHERE `sid` = " . mysqli_real_escape_string($conn, $_POST['id']) . " AND `uid` = " . $this->UserArray[1];
+			$result = mysqli_query($conn, $query);
 			
 			$count = mysqli_num_rows($result);
 			
 			if($count < 1)
 			{
 				// nothing here, let's submit the review!
-				mysqli_query("INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`, `approved`, `approvedby`, `approvaldate`) VALUES (NULL, '" . mysqli_real_escape_string($_POST['id']) . "', '" . $this->UserArray[1] . "', " . time() . ", '" . mysqli_real_escape_string($_POST['review-textarea']) . "', '" . mysqli_real_escape_string($_POST['rating-rated-select']) . "', 0, 0, 0)");
+				mysqli_query($conn, "INSERT INTO `reviews` (`id`, `sid`, `uid`, `date`, `review`, `stars`, `approved`, `approvedby`, `approvaldate`) VALUES (NULL, '" . mysqli_real_escape_string($conn, $_POST['id']) . "', '" . $this->UserArray[1] . "', " . time() . ", '" . mysqli_real_escape_string($conn, $_POST['review-textarea']) . "', '" . mysqli_real_escape_string($conn, $_POST['rating-rated-select']) . "', 0, 0, 0)");
 				$reviewid = mysqli_insert_id();
 				$slackData = "*New Review Posted*: \n ```" . $_POST['review-textarea'] . "``` <https://www.animeftw.tv/manage/#reviews>";
 				$slack = $this->postToSlack($slackData);

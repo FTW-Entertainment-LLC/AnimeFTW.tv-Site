@@ -2,7 +2,7 @@
 include('../classes/config.class.php');
 
 $query = "SELECT `id`, `date` FROM `mainaftw_stats`.`series_stats`";
-$result = mysqli_query($query);
+$result = mysqli_query($conn, $query);
 
 while($row = mysqli_fetch_assoc($result))
 {
@@ -12,5 +12,5 @@ while($row = mysqli_fetch_assoc($result))
 	$month = substr($row['date'], 0, -6);
 	$thisday = strtotime($year . '-' . $month . '-' . $day);
 	
-	mysqli_query("UPDATE `mainaftw_stats`.`series_stats` SET `date` = " . $thisday . " WHERE `id` = " . $row['id']);
+	mysqli_query($conn, "UPDATE `mainaftw_stats`.`series_stats` SET `date` = " . $thisday . " WHERE `id` = " . $row['id']);
 }

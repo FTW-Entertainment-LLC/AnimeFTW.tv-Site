@@ -2,7 +2,7 @@
 	include('../includes/siteroot.php');
 	include('../includes/settings.php');
 	if(isset($_GET['activate'])) {
-		$key = mysqli_real_escape_string($_GET['activate']);
+		$key = mysqli_real_escape_string($conn, $_GET['activate']);
 		$query = "SELECT `id`,`firstName` FROM `users` WHERE `random_key`='$key' LIMIT 1";
 		if($db->RecordCount($query) == 1) {
 			$db->query("UPDATE `users` SET `active`='1' WHERE `random_key`='$key'");

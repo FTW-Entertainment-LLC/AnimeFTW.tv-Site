@@ -10,7 +10,7 @@
 	require_once("/home/mainaftw/public_html/includes/classes/email.class.php"); 
 
 $query = "SELECT Username, advanceDate, advanceLevel, advanceActive FROM users WHERE Level_access = 7";
-$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 
 //vars
 $CronID = 3;
@@ -51,8 +51,8 @@ else {
 }
 
 	// Update the logs, and then make sure the cron is reset.
-	mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $currenttime . "', '" . time() . "');");
-	mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
+	mysqli_query($conn, "INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $currenttime . "', '" . time() . "');");
+	mysqli_query($conn, "UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
 
 
 ?>

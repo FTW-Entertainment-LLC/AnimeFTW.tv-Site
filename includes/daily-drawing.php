@@ -17,7 +17,7 @@
 	}
 	
 	$query = "SELECT Username FROM users WHERE lastActivity >= ".$start." AND lastActivity <= ".$now." AND registrationDate < $start ORDER BY RAND() LIMIT 0,2;";
-	$result = mysqli_query($query);
+	$result = mysqli_query($conn, $query);
 	$u = 'Users picked for AFTW\'s Christmas (weekly) Drawing:'."\n";
 	while(list($Username) = mysqli_fetch_array($result)){
 		$u.= $Username."\n";

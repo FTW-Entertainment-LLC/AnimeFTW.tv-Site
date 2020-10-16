@@ -30,7 +30,7 @@ class AFTWBlog{
 	// grabs the latest blog entries
 	function LatestBlogs(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE uid='".$this->id."' AND readperm LIKE '%".$this->rperm."%' ORDER BY id ASC LIMIT 0, ".$this->showLimit;
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){
 			echo "<div class='side-body-bg'>\n";
@@ -54,8 +54,8 @@ class AFTWBlog{
 	// Will give the selected Blog post
 	function SingleBlog(){
 		$query = "SELECT id, title, content, readperm, commentperm, date, category FROM blog_content WHERE id='".$this->bid."' AND uid='".$this->id."'";
-		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query);
 		$total_entries = mysqli_num_rows($result);
 		if($total_entries == 0){
 			echo "<div class='side-body-bg'>\n";

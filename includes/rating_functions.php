@@ -14,7 +14,7 @@ function getRating($id){
 	$total = 0;
 	$rows = 0;
 	
-	$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+	$sel = mysqli_query($conn, "SELECT rating_num FROM ratings WHERE rating_id = '$id'");
 	if(mysqli_num_rows($sel) > 0){
 	
 		while($data = mysqli_fetch_assoc($sel)){
@@ -43,7 +43,7 @@ function outOfFive($id){
 	$total = 0;
 	$rows = 0;
 	
-	$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+	$sel = mysqli_query($conn, "SELECT rating_num FROM ratings WHERE rating_id = '$id'");
 	if(mysqli_num_rows($sel) > 0){
 	
 		while($data = mysqli_fetch_assoc($sel)){
@@ -68,7 +68,7 @@ function outOfFive($id){
 
 function getVotes($id){
 
-	$sel = mysqli_query("SELECT rating_num FROM ratings WHERE rating_id = '$id'");
+	$sel = mysqli_query($conn, "SELECT rating_num FROM ratings WHERE rating_id = '$id'");
 	$rows = mysqli_num_rows($sel);
 	if($rows == 0){
 		$votes = '0 Votes';
@@ -87,7 +87,7 @@ function pullRating($id,$uid,$show5 = false, $showPerc = false, $showVotes = fal
 	// Check if they have already voted...
 	$text = '';
 	
-	$sel = mysqli_query("SELECT id FROM ratings WHERE IP = '".$uid."' AND rating_id = '$id'");
+	$sel = mysqli_query($conn, "SELECT id FROM ratings WHERE IP = '".$uid."' AND rating_id = '$id'");
 	if(mysqli_num_rows($sel) > 0 || $static == 'novote' || isset($_COOKIE['has_voted_'.$id])){
 	
 		
@@ -184,7 +184,7 @@ function getTopRated($limit, $table, $idfield, $namefield){
 			FROM ratings,".$table." WHERE ".$table.".".$idfield." = ratings.rating_id GROUP BY rating_id 
 			ORDER BY rates DESC,rating DESC LIMIT ".$limit."";
 			
-	$sel = mysqli_query($sql);
+	$sel = mysqli_query($conn, $sql);
 	
 	$result .= '<ul class="topRatedList">'."\n";
 	

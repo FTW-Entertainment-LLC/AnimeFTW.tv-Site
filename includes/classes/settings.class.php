@@ -34,7 +34,7 @@ class Settings Extends Config {
 			$returndata = '';
 		}
 		$query = "SELECT * FROM `user_setting_option`$SQLAddon";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		
 		$count = mysqli_num_rows($result);
 		
@@ -138,8 +138,8 @@ class Settings Extends Config {
 				foreach ($_POST AS $key => &$value) {
 					$option_id = substr($key,8);
 					if (substr($key,0,7) == 'setting') {
-						$query = "SELECT `id` FROM `user_setting` WHERE `uid` = " . mysqli_real_escape_String($userId) . " AND `option_id` = " . mysqli_real_escape_string($option_id);
-						$result = mysqli_query($query);
+						$query = "SELECT `id` FROM `user_setting` WHERE `uid` = " . mysqli_real_escape_String($userId) . " AND `option_id` = " . mysqli_real_escape_string($conn, $option_id);
+						$result = mysqli_query($conn, $query);
 						$count = mysqli_num_rows($result);
 						
 						// this is a setting.. check to see if its a default or not.
@@ -148,8 +148,8 @@ class Settings Extends Config {
 								echo 'Nothing to remove for id ' . $option_id . '<br>';
 							} else {
 								// this setting is the same as what the default should be, we will delete any entries that may exist so the system will know to take defaults.
-								$query = "DELETE FROM `user_setting` WHERE `uid` = " . mysqli_real_escape_String($userId) . " AND `option_id` = " . mysqli_real_escape_string($option_id);
-								$result = mysqli_query($query);
+								$query = "DELETE FROM `user_setting` WHERE `uid` = " . mysqli_real_escape_String($userId) . " AND `option_id` = " . mysqli_real_escape_string($conn, $option_id);
+								$result = mysqli_query($conn, $query);
 								echo 'Deleted entry for id ' . $option_id . '<br>';
 							}
 						} else {
@@ -157,7 +157,7 @@ class Settings Extends Config {
 								echo 'Nothing to add for id ' . $option_id . '<br>';
 							} else {
 								// this setting is not the same as the default, so we need to add it to the database.
-								$result = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . mysqli_real_escape_String($userId) . "', " . time() . ", " . time() . ", " . $option_id . ", " . mysqli_real_escape_string($value) . ", 0)");
+								$result = mysqli_query($conn, "INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . mysqli_real_escape_String($userId) . "', " . time() . ", " . time() . ", " . $option_id . ", " . mysqli_real_escape_string($conn, $value) . ", 0)");
 								echo 'Added entry for id ' . $option_id . '<br>';
 							}
 						}
@@ -171,9 +171,9 @@ class Settings Extends Config {
 	public function array_userSiteSettings($ruid)
 	{
 		//builds the list of user specific settings.
-		$query = "SELECT * FROM `user_setting` WHERE `uid` = " . mysqli_real_escape_string($ruid);
+		$query = "SELECT * FROM `user_setting` WHERE `uid` = " . mysqli_real_escape_string($conn, $ruid);
         
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$this->SiteUserSettings = array();
 		
 		$count = mysqli_num_rows($result);
@@ -188,7 +188,7 @@ class Settings Extends Config {
 		//builds the list of options for each option.
 		$query = "SELECT * FROM `user_setting_option_values`";
 		// id 	name 	option_id 
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$this->SiteSettings = array();
 		
 		while ($row = mysqli_fetch_assoc($result)) {

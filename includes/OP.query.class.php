@@ -6,7 +6,7 @@
 		$args = func_get_args();
 		$input = array_slice($args,1);
 		$safe = $this->buildsafe($args[0],$input);
-		$query = @mysqli_query($safe);
+		$query = @mysqli_query($conn, $safe);
 
 		if(gettype($query) == "resource") {
 			$return = array();
@@ -20,7 +20,7 @@
 	}
 	private function buildsafe($query,$input) {
 		foreach($input as $replace) {
-			$safe = mysqli_real_escape_string($replace);
+			$safe = mysqli_real_escape_string($conn, $replace);
 			$query = preg_replace("/%s/is",$safe,$query,1);
 		}
 		return $query;

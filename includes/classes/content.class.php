@@ -49,18 +49,18 @@ class Content extends Config {
         if (isset($_GET['node']) && $_GET['node'] == 'eblast') {
             $this->displayEblastSettings();
         } else {
-            $query = "SELECT id, full_page_name, body FROM content WHERE node = '".mysqli_real_escape_string($_GET['node'])."' AND permissions LIKE '%".$this->UserArray[2]."%'";
+            $query = "SELECT id, full_page_name, body FROM content WHERE node = '".mysqli_real_escape_string($conn, $_GET['node'])."' AND permissions LIKE '%".$this->UserArray[2]."%'";
             if($this->UserArray[2] == 1){
                 //echo $query;
             }
-            $results = mysqli_query($query); // or die($query."<br/><br/>".mysqli_error())
+            $results = mysqli_query($conn, $query); // or die($query."<br/><br/>".mysqli_error())
             $count = mysqli_num_rows($results);
             
             if($count == 0){ // zero count means they cant see it.. or it doesnt exist.. which means we need to give them the 404 page..
                 $this->ShowErrorMessage('404');
             }
             else if($count == 1){
-                $results = mysqli_query($query);
+                $results = mysqli_query($conn, $query);
                 $row = mysqli_fetch_array($results); //there should be one result but lets give it to the array..
                 echo "<div class='side-body-bg'>\n";
                 echo "<span class='scapmain'>".stripslashes($row['full_page_name'])."</span>\n";
@@ -71,8 +71,8 @@ class Content extends Config {
             }
             else if($count > 1){ //the count is greater than one, so we need to dig deeper (as there are now subnodes!..
                 if(isset($_GET['subnode'])){
-                    $query .= " AND sub_node = '".mysqli_real_escape_string($_GET['subnode'])."'";
-                    $results = mysqli_query($query);
+                    $query .= " AND sub_node = '".mysqli_real_escape_string($conn, $_GET['subnode'])."'";
+                    $results = mysqli_query($conn, $query);
                     $row = mysqli_fetch_array($results); //there should be one result but lets give it to the array..
                     
                     echo "<div class='side-body-bg'>\n";
@@ -98,7 +98,7 @@ class Content extends Config {
     
     private function ShowErrorMessage($errornum){
         $query = "SELECT * FROM content WHERE node = 'error' AND sub_node = '".$errornum."'";
-        $results = mysqli_query($query);
+        $results = mysqli_query($conn, $query);
         $row = mysqli_fetch_array($results); //there should be one result but lets give it to the array..
         echo "<div class='side-body-bg'>\n";
         echo "<span class='scapmain'>".stripslashes($row['full_page_name'])."</span>\n";
@@ -111,7 +111,7 @@ class Content extends Config {
     
     private function RandomAnime(){
         $query = "SELECT id, seoname, fullSeriesName FROM series WHERE aonly = 0 ORDER BY RAND() LIMIT 0, 1";
-        $results = mysqli_query($query);
+        $results = mysqli_query($conn, $query);
         $row = mysqli_fetch_array($results);
         return '<br /><span style="font-size:24px;"><a href="/anime/'.$row[1].'/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&show=tooltips&id='.$row[0].'\',this);return false" onmouseout="ajax_hideTooltip()">'.stripslashes($row[2]).'</a></span>';
     }
@@ -123,8 +123,8 @@ class Content extends Config {
             $userId = substr($this->base64url_decode($_GET['id']),4);
             $email = $this->base64url_decode($_GET['email']);
             // Validate that the base64 of the email and the uid checks out.
-            $query = "SELECT ID FROM `users` WHERE `Email` = '" . mysqli_real_escape_string($email) . "' AND `ID` = " . mysqli_real_escape_string($userId);
-            $result = mysqli_query($query);
+            $query = "SELECT ID FROM `users` WHERE `Email` = '" . mysqli_real_escape_string($conn, $email) . "' AND `ID` = " . mysqli_real_escape_string($conn, $userId);
+            $result = mysqli_query($conn, $query);
             $count = mysqli_num_rows($result);
             echo "<div class='side-body-bg'>\n";
             echo "<span class='scapmain'>Manage your AnimeFTW.tv email setttings!<br></span><br>\n";

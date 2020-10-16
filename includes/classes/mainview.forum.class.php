@@ -23,8 +23,8 @@ class AFTWForumMain extends Config {
 	public function MainDisplay(){
 		echo "<div id='navstrip'><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums/'>AnimeFTW.TV Forums</a></div><br />";
 		$query1 = "SELECT cid, ctitle, cpermission, cseo FROM forums_categories WHERE cpermission LIKE '%".$this->perms."%' ORDER BY corder ";
-		mysqli_query("SET NAMES 'utf8'");
-		$result1 = mysqli_query($query1) or die('Error : ' . mysqli_error());
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result1 = mysqli_query($conn, $query1) or die('Error : ' . mysqli_error());
 		while(list($cid,$ctitle,$cpermission,$cseo) = mysqli_fetch_array($result1)) {
 			echo "<table cellpadding='0' cellspacing='1' width='100%' class='forum_idx_table'>\n";
 			echo "<tr>\n<td colspan='2' class='forum-caption forum_cat_name'>".$ctitle."</td>\n";
@@ -33,7 +33,7 @@ class AFTWForumMain extends Config {
 			echo "<td width='1%' class='forum-caption' style='white-space:nowrap'>Last Post Info</td>\n";
 			echo "</tr>\n";
 			$query200 = "SELECT fid, fpermission, ftitle, fdescription, ficon, fcid, fseo FROM forums_forum WHERE fcid='".$cid."' AND fpermission LIKE '%".$this->perms."%' ORDER BY forder ASC";
-			$result200 = mysqli_query($query200) or die('Error : ' . mysqli_error());
+			$result200 = mysqli_query($conn, $query200) or die('Error : ' . mysqli_error());
 			while(list($fid,$fpermission,$ftitle,$fdescription,$ficon,$fcid,$fseo) = mysqli_fetch_array($result200)) {
 				$fdescription = stripslashes($fdescription);
 				$fim = "<img src='//i.animeftw.tv/forumimages/bf_new.png' border='0'  alt='Posts!' />";
@@ -41,11 +41,11 @@ class AFTWForumMain extends Config {
 				echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>$fim</td>\n";
 				echo "<td class='tbl1 forum_name' valign='top'><!--forum_name--><a href='/forums/".$fseo."/'>".$ftitle."</a><br />\n";
 				echo "<span class='small'>".$fdescription."</span>\n";
-				$total_forum_threads = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid' AND pistopic='1'");
+				$total_forum_threads = mysqli_query($conn, "SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid' AND pistopic='1'");
 				$total_forum_threads  = mysqli_result($total_forum_threads , 0);
-				$total_forum_posts = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid' AND pistopic='0'");
+				$total_forum_posts = mysqli_query($conn, "SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid' AND pistopic='0'");
 				$total_forum_posts = mysqli_result($total_forum_posts, 0);
-				$query5 = mysqli_query("SELECT p.pdate, p.puid, t.ttitle, t.tid FROM forums_threads AS t, forums_post AS p, users AS u WHERE t.tfid = '$fid' AND p.ptid=t.tid AND u.ID=p.puid ORDER BY p.pid DESC LIMIT 0, 1;");
+				$query5 = mysqli_query($conn, "SELECT p.pdate, p.puid, t.ttitle, t.tid FROM forums_threads AS t, forums_post AS p, users AS u WHERE t.tfid = '$fid' AND p.ptid=t.tid AND u.ID=p.puid ORDER BY p.pid DESC LIMIT 0, 1;");
 				$row5 = mysqli_fetch_array($query5);
 				$ptid = $row5['tid'];
 				$puid = $row5['puid'];
@@ -82,7 +82,7 @@ class AFTWForumMain extends Config {
 		echo "<td class='tbl2' width='1%' style='white-space: no-wrap;' rowspan='4'><center><img src='//i.animeftw.tv/forumimages/user.png' border='0' alt='Active Users' /></center></td>\n";
 		echo "</tr>\n<tr>\n";
 		$FinalDate3 = time()-900;
-		$ou24h = mysqli_query("SELECT COUNT(ID) FROM users WHERE lastActivity>='$FinalDate3'");
+		$ou24h = mysqli_query($conn, "SELECT COUNT(ID) FROM users WHERE lastActivity>='$FinalDate3'");
 		$online_users_24hours = mysqli_result($ou24h, 0);
 
 		echo "<td class='tbl2' align='right'><span style='float: left; padding-left:5px;'>$online_users_24hours user(s) active in the past 15 minutes</span><a href='/forums/active-topics'>Today's active topics</a>&nbsp;</td>\n";
@@ -103,7 +103,7 @@ class AFTWForumMain extends Config {
 	// Function just to give teh latest activity
 	private function LatestActivity($FinalDate3){
 		$query19 = "SELECT ID, lastActivity FROM users WHERE lastActivity>='".$FinalDate3."' ORDER BY lastActivity DESC";
-		$result19 = mysqli_query($query19) or die('Error : ' . mysqli_error());
+		$result19 = mysqli_query($conn, $query19) or die('Error : ' . mysqli_error());
 
 		$count = mysqli_num_rows($result19);
 		$online_users_24hours = "";
@@ -129,7 +129,7 @@ class AFTWForumMain extends Config {
 
 	// Something simple for our stats... booya.
 	private function SimpleStats(){
-		$result = mysqli_query("SELECT COUNT(ID) AS UserCount, (SELECT ID FROM users WHERE active='1' ORDER BY id DESC LIMIT 0, 1) AS ChosenUser, (SELECT COUNT(pid) FROM forums_post) AS ForumPosts FROM users WHERE Active='1'");
+		$result = mysqli_query($conn, "SELECT COUNT(ID) AS UserCount, (SELECT ID FROM users WHERE active='1' ORDER BY id DESC LIMIT 0, 1) AS ChosenUser, (SELECT COUNT(pid) FROM forums_post) AS ForumPosts FROM users WHERE Active='1'");
 		$row = mysqli_fetch_assoc($result);
 		$TotalUsers = $row['UserCount'];
 		$ChosenUser = $row['ChosenUser'];

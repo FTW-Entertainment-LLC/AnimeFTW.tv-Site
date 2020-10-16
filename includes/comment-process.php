@@ -22,15 +22,15 @@ function niceday2($dated) {
 if($_POST)
 {
 	$uid = $_POST['uid'];
-	$uid = mysqli_real_escape_string($uid);
+	$uid = mysqli_real_escape_string($conn, $uid);
 	$ip = $_POST['ip'];
-	$ip = mysqli_real_escape_string($ip);
+	$ip = mysqli_real_escape_string($conn, $ip);
 	$epid = @$_POST['epid'];
-	$epid = mysqli_real_escape_string($epid);
+	$epid = mysqli_real_escape_string($conn, $epid);
 	$comment = $_POST['comment'];
-	$comment = mysqli_real_escape_string($comment);
+	$comment = mysqli_real_escape_string($conn, $comment);
 	$spoiler = @$_POST['spoiler'];
-	$spoiler = mysqli_real_escape_string($spoiler);
+	$spoiler = mysqli_real_escape_string($conn, $spoiler);
 	$dated = date("Y-m-d H:i:s");
 	$is_approved = 1;
 	if(isset($_POST['t']) && $_POST['t'] == 1){
@@ -39,19 +39,19 @@ if($_POST)
 			echo 'The comment was not processed.';
 		}
 		else {
-			$pid = mysqli_real_escape_string($pid);
+			$pid = mysqli_real_escape_string($conn, $pid);
 			$comment = strip_tags($comment);
 			$comment = nl2br($comment);
 			//insert the comment
 			$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, page_id, dated, is_approved, uid, epid, type) VALUES (NULL, '$comment', '0', '$ip', 'u".$pid."', '$dated', '$is_approved', '$uid', '0', '1') ";
-			mysqli_query($query);
+			mysqli_query($conn, $query);
 			//select the id for everything else
-			$result = mysqli_query("SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND page_id='u".$pid."'") or die("error ". mysqli_error(). " with query ");
+			$result = mysqli_query($conn, "SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND page_id='u".$pid."'") or die("error ". mysqli_error(). " with query ");
 			$row = mysqli_fetch_array($result); //put it in an array
 			//insert a notification row.. cause were bad ass like that.
 			$queryi = "INSERT INTO notifications (`id`, `uid`, `date`, `type`, `d1`, `d2`, `d3`) VALUES (NULL, '".$pid."', '".time()."', '2', '".$row['id']."', NULL, NULL)";
-			mysqli_query($queryi);
-			$result2 = mysqli_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
+			mysqli_query($conn, $queryi);
+			$result2 = mysqli_query($conn, "SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
 			$row2 = mysqli_fetch_array($result2);
 			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="//i.animeftw.tv/avatars/default.gif" alt="avatar" width="40px" style="padding:2px;" border="0" />';}
 			else {$avatar = '<img src="//i.animeftw.tv/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" width="40px" style="padding:2px;" border="0" />';}
@@ -73,11 +73,11 @@ if($_POST)
 			$comment = strip_tags($comment);
 			$comment = nl2br($comment);
 			$query = "INSERT INTO page_comments (id, comments, isSpoiler, ip, dated, is_approved, uid, epid) VALUES (NULL, '".addslashes($comment)."', '$spoiler', '$ip', '$dated', '$is_approved', '$uid', '$epid') ";
-			mysqli_query($query);
+			mysqli_query($conn, $query);
 			//Select the last one you just did..
-			$result = mysqli_query("SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND epid='".$epid."'") or die("error ". mysqli_error(). " with query ".$query);
+			$result = mysqli_query($conn, "SELECT id FROM page_comments WHERE dated='".$dated."' AND uid='".$uid."' AND epid='".$epid."'") or die("error ". mysqli_error(). " with query ".$query);
 			$row = mysqli_fetch_array($result);
-			$result2 = mysqli_query("SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
+			$result2 = mysqli_query($conn, "SELECT Username, avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'");
 			$row2 = mysqli_fetch_array($result2);
 			if($row2['avatarActivate'] == 'no'){$avatar = '<img src="//i.animeftw.tv/avatars/default.gif" alt="avatar" height="50px" border="0" />';}
 			else {$avatar = '<img src="//i.animeftw.tv/avatars/user'.$uid.'.'.$row2['avatarExtension'].'" alt="User avatar" height="50px" border="0" />';}

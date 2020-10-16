@@ -21,7 +21,7 @@ class Settings extends Config {
 		<div id="ContentStuff" class="ContentStuff" style="display:hidden;"><div align="center">Choose From the Above Options.</div></div>';
 		}
 		if(isset($_GET['subnode']) && $_GET['subnode'] == 'permissions'){
-			$query = mysqli_query("SELECT * FROM permissions");
+			$query = mysqli_query($conn, "SELECT * FROM permissions");
 			$count = mysqli_num_rows($query); 
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
@@ -59,7 +59,7 @@ class Settings extends Config {
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-settings'){
-			$query = mysqli_query("SELECT * FROM settings");
+			$query = mysqli_query($conn, "SELECT * FROM settings");
 			$count = mysqli_num_rows($query); 
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';
@@ -78,7 +78,7 @@ class Settings extends Config {
 			echo '</form>';
 		}
 		else if(isset($_GET['subnode']) && $_GET['subnode'] == 'site-groups'){
-			$query = mysqli_query("SELECT * FROM site_groups");
+			$query = mysqli_query($conn, "SELECT * FROM site_groups");
 			$count = mysqli_num_rows($query); 
 			echo '<div id="form_results" class="form_results">&nbsp;</div>';
 			echo '<form method="POST" action="#" id="SettingsForm"><input type="hidden" name="uid" value="'.$this->uid.'" />';

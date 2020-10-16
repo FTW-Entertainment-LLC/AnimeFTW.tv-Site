@@ -24,7 +24,7 @@ class Search extends Config {
 
 	private function array_searchSeries($input)
 	{
-		$input = mysqli_real_escape_string($input);
+		$input = mysqli_real_escape_string($conn, $input);
 		if($this->UserArray[2] == 0)
 		{
 			// the user is an unregistered user, give them limited information
@@ -38,7 +38,7 @@ class Search extends Config {
 		{
 			$query = "SELECT `id`, `seriesName`, `fullSeriesName`, `seoname`, `ratingLink`, `category`, `total_reviews` FROM `series` WHERE `active` = 'yes' AND ( `fullSeriesName` LIKE '%".$input."%' OR `romaji` LIKE '%".$input."%' OR `kanji` LIKE '%".$input."%' OR `category` LIKE '%".$input."%' ) ORDER BY `seriesName` ASC";
 		}
-		$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$numrows = mysqli_num_rows($result);
 		$data = array();
 		if($numrows > 0)
@@ -79,9 +79,9 @@ class Search extends Config {
 	}
 
 	public function seriesStatistics($id) {
-		mysqli_query("SET NAMES 'utf8'");
+		mysqli_query($conn, "SET NAMES 'utf8'");
 		$query = "SELECT kanji, romaji FROM series WHERE id='$id';";
-		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$row = mysqli_fetch_array($result);
 		$kanji = $row['kanji'];
 		$romaji = $row['romaji'];
@@ -102,7 +102,7 @@ class Search extends Config {
 	public function seoCheck($seriesName)
 	{
 		$query = "SELECT seoname FROM series WHERE seriesName='$seriesName'";
-		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$row = mysqli_fetch_array($result);
 		$seoname = $row['seoname'];
 		return $seoname;
@@ -116,7 +116,7 @@ class Search extends Config {
 		}
 		else {
 			$query   = "SELECT avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'";
-			$result  = mysqli_query($query) or die('Error, query failed');
+			$result  = mysqli_query($conn, $query) or die('Error, query failed');
 			$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 			$avatarActivate = $row['avatarActivate'];
 			if($type == 'profile')

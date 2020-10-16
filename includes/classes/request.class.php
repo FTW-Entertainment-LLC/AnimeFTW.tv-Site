@@ -52,7 +52,7 @@ class AnimeRequest extends Config{
     
     public function getRemainingVotes()
     {
-        $result = mysqli_query("SELECT
+        $result = mysqli_query($conn, "SELECT
                              COUNT(request_votes.id) AS NumVotes
                             FROM
                              requests, request_votes
@@ -70,7 +70,7 @@ class AnimeRequest extends Config{
     
     public function getOldVotes()
     {
-        $result = mysqli_query("SELECT
+        $result = mysqli_query($conn, "SELECT
                              COUNT(request_votes.id) AS NumVotes
                             FROM
                              requests, request_votes
@@ -400,7 +400,7 @@ class AnimeRequest extends Config{
             ORDER BY $sort
             LIMIT ".($this->page-1)*$this->rpp.", ".$this->rpp; //page-1 because we want page 1 to be the first.
         //echo $query."<br>";
-        $result = mysqli_query($query) or die('Error : ' . mysqli_error());
+        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
         
         $pages_query = "SELECT COUNT(*) AS amount
             FROM user_requests
@@ -416,7 +416,7 @@ class AnimeRequest extends Config{
                 $uploadstatus = $this->getStatusNum(ucfirst($uploadstatus));
                 if ($status!=$uploadstatus){ 
                     //$status in the request database is not the same as the upload boards database.
-                    mysqli_query("UPDATE requests SET status=".$uploadstatus." WHERE id=".$id) or die('Error : ' . mysqli_error());
+                    mysqli_query($conn, "UPDATE requests SET status=".$uploadstatus." WHERE id=".$id) or die('Error : ' . mysqli_error());
                     $status = $uploadstatus; //Change it on this current run too.
                 }
             }
@@ -471,9 +471,9 @@ class AnimeRequest extends Config{
                 <div class = "table-row">
                 <div class="col" style="width: 380px" align = "left">'.$name.'</div>
                 ';
-                $result2 = mysqli_query("SELECT count(*) from request_votes WHERE voted_to=$id");
+                $result2 = mysqli_query($conn, "SELECT count(*) from request_votes WHERE voted_to=$id");
                 $rvotes = mysqli_result($result2, 0);
-                $result2 = mysqli_query("SELECT count(*) AS votes from request_votes WHERE voted_by=".$this->UserArray[1]." AND voted_to=".$id);
+                $result2 = mysqli_query($conn, "SELECT count(*) AS votes from request_votes WHERE voted_by=".$this->UserArray[1]." AND voted_to=".$id);
                 $personalvotes = intval(mysqli_result($result2, 0));
                 echo '
                 <div class="col" style="width: 60px;">'.$rvotes.' <div style="display:inline-block">';
@@ -621,9 +621,9 @@ class AnimeRequest extends Config{
         } elseif (isset($_GET["mode"]) && $_GET["mode"]=="add" && (isset($_GET["anidb"]) && is_numeric($_GET["anidb"])) && isset($_GET["details"])) {
             $AID = $_GET["anidb"];
             // No request was found, however we need to verify that the entry is not on the site already.
-            $query = "SELECT `series`.`seoname`, `series`.`fullSeriesName` FROM `series`, `uestatus` WHERE `series`.`id`= `uestatus`.`sid` AND `uestatus`.`anidbsid` = " . mysqli_real_escape_string($AID) . " AND `uestatus`.`sid` != 0 LIMIT 1";
+            $query = "SELECT `series`.`seoname`, `series`.`fullSeriesName` FROM `series`, `uestatus` WHERE `series`.`id`= `uestatus`.`sid` AND `uestatus`.`anidbsid` = " . mysqli_real_escape_string($conn, $AID) . " AND `uestatus`.`sid` != 0 LIMIT 1";
             
-            $result = mysqli_query($query);
+            $result = mysqli_query($conn, $query);
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 // the series is on the site, give them a link to it.
@@ -709,8 +709,8 @@ class AnimeRequest extends Config{
         echo $this->maxvotes . '<br />';
         if ($this->getRemainingVotes() < $this->getMaxVotes()) {
             $rid = $_GET["requestanimevote"];
-            $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysqli_real_escape_string($rid) . ")"; // Added the escape string, cant have people doing silly stuff..
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysqli_real_escape_string($conn, $rid) . ")"; // Added the escape string, cant have people doing silly stuff..
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             return $this->getRemainingVotes(); // Return the remaining votes so we can be sure they dont double dip... this might be needed?
         } else {
             return 0;
@@ -1150,16 +1150,16 @@ class AnimeRequest extends Config{
         echo $this->maxvotes . '<br />';
         if ($this->getRemainingVotes() < $this->maxvotes) {
             //Check if it's possible to vote
-            $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysqli_real_escape_string($rid) . ")"; // Added the escape string, cant have people doing silly stuff..
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            $query = "INSERT INTO `request_votes` (`voted_by`, `voted_to`) VALUES (" . $this->UserArray[1] . ", " . mysqli_real_escape_string($conn, $rid) . ")"; // Added the escape string, cant have people doing silly stuff..
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
         }
     }
     
     private function changeRequestValue($value, $arid, $option)
     {
         if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
-            $query = "UPDATE `requests` SET `".$option."` = '" . mysqli_real_escape_string($value) . "' WHERE `requests`.`id` = " . mysqli_real_escape_string($arid);
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            $query = "UPDATE `requests` SET `".$option."` = '" . mysqli_real_escape_string($conn, $value) . "' WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             $this->ModRecord("Updated an Anime Request ".$option." (ID: ".$arid.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
         }
     }
@@ -1171,29 +1171,29 @@ class AnimeRequest extends Config{
             $userIp = @$_SERVER['REMOTE_ADDR'];
             $date = time();
             $tid = $this->SingleVarQuery("SELECT tid FROM requests WHERE id=".$arid, "tid");
-            $query2 = mysqli_query("SELECT pid FROM forums_post WHERE ptid='$tid'"); 
+            $query2 = mysqli_query($conn, "SELECT pid FROM forums_post WHERE ptid='$tid'"); 
             $total_thread_posts = mysqli_num_rows($query2) or die("Error: ". mysqli_error(). " with query ". $query2);
             $new_post_id = $total_thread_posts+1;
             $query = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, ptispost, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                mysqli_real_escape_string($tid),
-                mysqli_real_escape_string($this->UserArray[1]),
-                mysqli_real_escape_string($this->fid),
-                mysqli_real_escape_string(null),
-                mysqli_real_escape_string($date),
-                mysqli_real_escape_string("Request has been deleted: ".$reason),
-                mysqli_real_escape_string($new_post_id),
-                mysqli_real_escape_string($userIp));
-            mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+                mysqli_real_escape_string($conn, $tid),
+                mysqli_real_escape_string($conn, $this->UserArray[1]),
+                mysqli_real_escape_string($conn, $this->fid),
+                mysqli_real_escape_string($conn, null),
+                mysqli_real_escape_string($conn, $date),
+                mysqli_real_escape_string($conn, "Request has been deleted: ".$reason),
+                mysqli_real_escape_string($conn, $new_post_id),
+                mysqli_real_escape_string($conn, $userIp));
+            mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
             $query = 'UPDATE forums_threads SET tupdated=\'' . mysqli_escape_string($date) . '\'WHERE tid=' . $tid . '';
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             $query = 'UPDATE forums_threads SET tclosed=\'1\' WHERE tid=' . $tid . '';
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             
             //Request deletion
-            $query = "DELETE FROM `requests` WHERE `requests`.`id` = " . mysqli_real_escape_string($arid);
-            mysqli_query($query) or die('Error : ' . mysqli_error());
-            $query = "DELETE FROM `request_votes` WHERE `voted_to` = " . mysqli_real_escape_string($arid);
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            $query = "DELETE FROM `requests` WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
+            $query = "DELETE FROM `request_votes` WHERE `voted_to` = " . mysqli_real_escape_string($conn, $arid);
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             $this->ModRecord("Deleted an Anime Request (ID: ".$arid.", reason: ".$reason.")."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
             
         }
@@ -1203,19 +1203,19 @@ class AnimeRequest extends Config{
     {
         if ($this->UserArray[2] == 1 || $this->UserArray[2] == 2 || $this->UserArray[2] == 6) {
             $arid = $_GET["id"];
-            $query = "UPDATE `requests` SET `status` = '2' WHERE `requests`.`id` = " . mysqli_real_escape_string($arid);
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            $query = "UPDATE `requests` SET `status` = '2' WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             // grab the information about the series entry.
-            $query = "SELECT `name`, `anidb`, `type`, `episodes` FROM `requests` WHERE `requests`.`id` = " . mysqli_real_escape_string($arid);
-            $result = mysqli_query($query);
+            $query = "SELECT `name`, `anidb`, `type`, `episodes` FROM `requests` WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
+            $result = mysqli_query($conn, $query);
             $seriesInfo = mysqli_fetch_assoc($result);
             // let's add a series to the claimed pile..
             $seriestype = array("----", "Series", "OVA", "Movie");
             $query = "INSERT INTO uestatus (`series`, `prefix`, `episodes`, `type`, `resolution`, `status`, `user`, `updated`, `anidbsid`, `fansub`, `sid`, `change`) VALUES ('" . $seriesInfo['name'] . "', '" . str_replace(' ', '', strtolower($seriesInfo['name'])) . "', '" . $seriesInfo['episodes'] . "/" . $seriesInfo['episodes'] . "', '" . $seriestype[$seriesInfo['type']] . "', '--x--', 'Claimed', '" . $this->UserArray[1] . "', NOW(), '" . $seriesInfo['anidb'] . "', '0', '0', 0)";
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             $ueid = mysqli_insert_id();
-            $query = "UPDATE `requests` SET `uid` = '".$ueid."' WHERE `requests`.`id` = " . mysqli_real_escape_string($arid);
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+            $query = "UPDATE `requests` SET `uid` = '".$ueid."' WHERE `requests`.`id` = " . mysqli_real_escape_string($conn, $arid);
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             
             $this->ModRecord("Marked an Anime Request (".$arid.") as Claimed."); // Make sure you log the action, to ensure if someone breaks everything we know who to blame.
         }
@@ -1223,8 +1223,8 @@ class AnimeRequest extends Config{
     
     private function subtractVote($arid)
     {
-        $query = "DELETE FROM `request_votes` WHERE `voted_to` = " . mysqli_real_escape_string($arid) . " AND voted_by = " . $this->UserArray[1] . " LIMIT 1";
-        mysqli_query($query) or die('Error : ' . mysqli_error());
+        $query = "DELETE FROM `request_votes` WHERE `voted_to` = " . mysqli_real_escape_string($conn, $arid) . " AND voted_by = " . $this->UserArray[1] . " LIMIT 1";
+        mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
     }
     
     private function addRequest($name, $type, $episodes, $anidb, $description, $details)
@@ -1250,8 +1250,8 @@ class AnimeRequest extends Config{
             return;
         }
         $details = strip_tags($details, "<pre><blockquote><h1><h2><h3><h4><h5><p><ul><li><strong><em><del><b><i><a><ol><hr><table><thead><tr><td><tbody><img><br>");
-        $query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=" . mysqli_real_escape_string($anidb) . ""; //check if it already exist
-        $result = mysqli_query($query) or die('Error : ' . mysqli_error());
+        $query = "SELECT COUNT(`id`) FROM `requests` WHERE `anidb`=" . mysqli_real_escape_string($conn, $anidb) . ""; //check if it already exist
+        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
         $res = mysqli_result($result, 0);
         //echo $res;
         
@@ -1260,44 +1260,44 @@ class AnimeRequest extends Config{
             $submittitle = "Anime Request: ".$name;
             $date = time();
             $query = sprintf("INSERT INTO forums_threads (ttitle, tpid, tfid, tdate, tupdated) VALUES ('%s', '%s', '%s', '%s', '%s')",
-            mysqli_real_escape_string($submittitle),
-            mysqli_real_escape_string($this->UserArray[1]),
-            mysqli_real_escape_string($this->fid),
-            mysqli_real_escape_string($date),
-            mysqli_real_escape_string($date));
-            mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+            mysqli_real_escape_string($conn, $submittitle),
+            mysqli_real_escape_string($conn, $this->UserArray[1]),
+            mysqli_real_escape_string($conn, $this->fid),
+            mysqli_real_escape_string($conn, $date),
+            mysqli_real_escape_string($conn, $date));
+            mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
                 
             $query006 = "SELECT tid FROM forums_threads WHERE tdate='$date'";
-            $result006 = mysqli_query($query006) or die('Error : ' . mysqli_error());
+            $result006 = mysqli_query($conn, $query006) or die('Error : ' . mysqli_error());
             $row006 = mysqli_fetch_array($result006);
             $ptid3 = $row006['tid'];
             $pistopic = 1;
             $userIp = @$_SERVER['REMOTE_ADDR'];
             $query = sprintf("INSERT INTO `requests` (`name`, `status`, `type`, `episodes`, `anidb`, `user_id`, `date`, `description`,`details`, `tid`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                mysqli_real_escape_string($name),
-                mysqli_real_escape_string("1"),
-                mysqli_real_escape_string($type),
-                mysqli_real_escape_string($episodes),
-                mysqli_real_escape_string($anidb),
-                mysqli_real_escape_string($this->UserArray[1]),
-                mysqli_real_escape_string(time()),
-                mysqli_real_escape_string($description),
-                mysqli_real_escape_string($details),
-                mysqli_real_escape_string($ptid3));
-            mysqli_query($query) or die('Error : ' . mysqli_error());
+                mysqli_real_escape_string($conn, $name),
+                mysqli_real_escape_string($conn, "1"),
+                mysqli_real_escape_string($conn, $type),
+                mysqli_real_escape_string($conn, $episodes),
+                mysqli_real_escape_string($conn, $anidb),
+                mysqli_real_escape_string($conn, $this->UserArray[1]),
+                mysqli_real_escape_string($conn, time()),
+                mysqli_real_escape_string($conn, $description),
+                mysqli_real_escape_string($conn, $details),
+                mysqli_real_escape_string($conn, $ptid3));
+            mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
             $reqid = mysqli_insert_id();
             echo "Success ".$reqid;
             $details = "[animerequest]".$reqid."[/animerequest]"; //We change the details on the forum to the dynamic version
             $query2 = sprintf("INSERT INTO forums_post (ptid, puid, pfid, ptitle, pdate, pbody, pistopic, pip) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                mysqli_real_escape_string($ptid3),
-                mysqli_real_escape_string($this->UserArray[1]),
-                mysqli_real_escape_string($this->fid),
-                mysqli_real_escape_string($submittitle),
-                mysqli_real_escape_string($date),
-                mysqli_real_escape_string($details),
-                mysqli_real_escape_string($pistopic),
-                mysqli_real_escape_string($userIp));
-            mysqli_query($query2) or die('Could not connect, way to go retard:' . mysqli_error());
+                mysqli_real_escape_string($conn, $ptid3),
+                mysqli_real_escape_string($conn, $this->UserArray[1]),
+                mysqli_real_escape_string($conn, $this->fid),
+                mysqli_real_escape_string($conn, $submittitle),
+                mysqli_real_escape_string($conn, $date),
+                mysqli_real_escape_string($conn, $details),
+                mysqli_real_escape_string($conn, $pistopic),
+                mysqli_real_escape_string($conn, $userIp));
+            mysqli_query($conn, $query2) or die('Could not connect, way to go retard:' . mysqli_error());
         } else {
             echo "Request already exist";
         }
@@ -1315,7 +1315,7 @@ class AnimeRequest extends Config{
         foreach ($out[1] as $i) {
             //echo $i;
             $req_query = "SELECT Username, name, status, type, episodes, anidb, user_id, date, description, details FROM user_requests WHERE id='".$i."'";
-            $req_result = mysqli_query($req_query) or die('Error : ' . mysqli_error());
+            $req_result = mysqli_query($conn, $req_query) or die('Error : ' . mysqli_error());
             if (mysqli_num_rows($req_result) > 0) {
                 while (list($Username, $name, $status, $type, $episodes, $anidb, $user_id, $date, $description, $details) = mysqli_fetch_array($req_result)) {
                     if ($episodes == 0) {
@@ -1343,7 +1343,7 @@ class AnimeRequest extends Config{
     private function getVoters($id)
     {
         $query = "SELECT count(1) AS `votes`, `voted_by`, `voted_to` FROM `request_votes` WHERE `voted_to`=".$id." group by `voted_by`, `voted_to` ORDER BY votes DESC";
-        $result = mysqli_query($query) or die('Error : ' . mysqli_error());
+        $result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
         return $result;
     }
     
@@ -1381,7 +1381,7 @@ class AnimeRequest extends Config{
     {
         $query = "SELECT `series`.`seoname` FROM `uestatus`,`series` WHERE `uestatus`.`anidbsid`=$anidb AND `uestatus`.`sid` != 0 AND `series`.`id`=`uestatus`.`sid` LIMIT 0, 1";
         
-        $result = mysqli_query($query);
+        $result = mysqli_query($conn, $query);
         if (!$result) {
             echo "There was an error looking up the enhanced status. Try again later.";
             exit;

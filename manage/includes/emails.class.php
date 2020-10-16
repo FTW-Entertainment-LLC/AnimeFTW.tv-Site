@@ -120,7 +120,7 @@ class Emails extends Config {
 		}
 		// `added`, `updated`, `starts`, `status`, `title`, `contents`, `type`, `count`
 		$query = "SELECT ${columns} FROM `eblast_campaigns`" . $where . $orderBy;
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		
 		$count = mysqli_num_rows($result);
 		echo '
@@ -144,7 +144,7 @@ class Emails extends Config {
 		else {
 			$i=0;
 			$query = "SELECT ${columns} FROM `eblast_campaigns`" . $where . $orderBy . " LIMIT " . $start . "," . $count;
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			while($row = mysqli_fetch_assoc($result)){
 				echo '
 				<div class="table-row'; 
@@ -191,8 +191,8 @@ class Emails extends Config {
 				echo '<div align="center">There was an issue with the request.</div>';
 				exit;
 			}
-			$query = "SELECT * FROM `eblast_campaigns` WHERE `id` = '" . mysqli_real_escape_string($_GET['id']) . "'";
-			$result = mysqli_query($query);
+			$query = "SELECT * FROM `eblast_campaigns` WHERE `id` = '" . mysqli_real_escape_string($conn, $_GET['id']) . "'";
+			$result = mysqli_query($conn, $query);
 			
 			if(!$result){
 				echo 'There was an issue with the query.';
@@ -395,7 +395,7 @@ Helvetica, Arial, sans-serif; padding: 20px 0 0;" class="content" align="left" v
 			$query .= " WHERE `id` = ${id}";
 		}
 		$query .= " ORDER BY `name`";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		
 		$returnArray = array();
 		$i = 0;

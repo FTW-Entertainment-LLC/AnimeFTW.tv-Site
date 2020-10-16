@@ -48,7 +48,7 @@
 			}
 		}
 		final protected function db_query($query) {
-			//$this->result = mysqli_query($this->database,$query);
+			//$this->result = mysqli_query($conn, $this->database,$query);
 			return array();
 		}
 		final protected function db_row($query) {

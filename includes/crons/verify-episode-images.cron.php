@@ -52,7 +52,7 @@ class ImageChecker extends Config {
 
 }
 
-$lastIdQuery = mysqli_query("SELECT `value` FROM `settings` WHERE `name`='verify_image_exists_last_id'");
+$lastIdQuery = mysqli_query($conn, "SELECT `value` FROM `settings` WHERE `name`='verify_image_exists_last_id'");
 if (!$lastIdQuery) {
 	die("Failed to get verify_image_exists_last_id");
 }
@@ -64,14 +64,14 @@ if (!$lastId) {
 
 //$lastId = intval($lastId); // Do we want to conform it to an Int?
 
-$seriesQuery = mysqli_query("SELECT `id` FROM `series` WHERE `active`='yes' ORDER BY `id` LIMIT {$lastId[0]},1");
+$seriesQuery = mysqli_query($conn, "SELECT `id` FROM `series` WHERE `active`='yes' ORDER BY `id` LIMIT {$lastId[0]},1");
 if (!$seriesQuery) {
 	die("Failed to get series");
 }
 
 $series = mysqli_fetch_row($seriesQuery);
 if (!$series) {
-	$countCheckQuery = mysqli_query("SELECT count(id) FROM `series` WHERE `active`='yes'");
+	$countCheckQuery = mysqli_query($conn, "SELECT count(id) FROM `series` WHERE `active`='yes'");
 
 	if ($countCheckQuery) {
 
@@ -85,7 +85,7 @@ if (!$series) {
 			$nextId = 0;
 		}
 
-		$settingsQuery = mysqli_query("UPDATE `settings` SET `value`='{$nextId}' WHERE `id` = '15'");
+		$settingsQuery = mysqli_query($conn, "UPDATE `settings` SET `value`='{$nextId}' WHERE `id` = '15'");
 
 	} else {
 		die("Fatal: Failed to check to see if next ID is safe or end of list");
@@ -94,7 +94,7 @@ if (!$series) {
 	die("Failed to get series value for #{$lastId[0]}");
 }
 
-$episodesQuery = mysqli_query("SELECT `id`, `spriteId` FROM `episode` WHERE `sid`='{$series[0]}'");
+$episodesQuery = mysqli_query($conn, "SELECT `id`, `spriteId` FROM `episode` WHERE `sid`='{$series[0]}'");
 if (!$episodesQuery) {
 	die("Failed to get episodes");
 }
@@ -105,25 +105,25 @@ while ($episode = mysqli_fetch_row($episodesQuery)) {
 
 	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_screen.jpeg");
 	if (!$exists) {
-		mysqli_query("UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
+		mysqli_query($conn, "UPDATE `episode` SET `image` = 0, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
 	}
 
 	$exists = $imageChecker->check("{$series[0]}/{$episode[0]}_sprite.jpeg");
 	if (!$exists && $episode[1] === null) {
-		$spriteQuery = mysqli_query("DELETE FROM `sprites` WHERE `id` = '{$episode[1]}'");
+		$spriteQuery = mysqli_query($conn, "DELETE FROM `sprites` WHERE `id` = '{$episode[1]}'");
 		if ($spriteQuery) {
-			mysqli_query("UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
+			mysqli_query($conn, "UPDATE `episode` SET `spriteId` = NULL, `updated` = '" . time() . "' WHERE `id` = '{$episode[0]}'");
 		}
 	}
 
 
 }
 
-$settingsQuery = mysqli_query("UPDATE `settings` SET `value`='" . ++$lastId[0] . "' WHERE `id` = '15'");
+$settingsQuery = mysqli_query($conn, "UPDATE `settings` SET `value`='" . ++$lastId[0] . "' WHERE `id` = '15'");
 if (!$settingsQuery) {
 	// What do...this is unrecoverable :L
 }
 
 $endTime = time();
-mysqli_query("INSERT INTO `crons_log` (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '15', '{$startTime}', '{$endTime}');");
-mysqli_query("UPDATE `crons` SET `last_run` = '{$endTime}', `status` = 0 WHERE `id` = 15"); // No idea why status = 0
+mysqli_query($conn, "INSERT INTO `crons_log` (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '15', '{$startTime}', '{$endTime}');");
+mysqli_query($conn, "UPDATE `crons` SET `last_run` = '{$endTime}', `status` = 0 WHERE `id` = 15"); // No idea why status = 0

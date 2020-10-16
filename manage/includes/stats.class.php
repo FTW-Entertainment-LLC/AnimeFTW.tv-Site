@@ -29,7 +29,7 @@ class Stats extends Config {
 		$thirtydaysago = time()-(30*86400);
 		
 		$query = "SELECT `id`, `var1`, `var2` FROM  `mainaftw_stats`.`user_stats` WHERE `type` = 1 AND `var1` >= " . $thirtydaysago;
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$data = '';
 		$count = mysqli_num_rows($result);
 		$i = 1;

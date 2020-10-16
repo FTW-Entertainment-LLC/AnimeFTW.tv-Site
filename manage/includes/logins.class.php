@@ -19,13 +19,13 @@ class Logins extends Config {
 	public function processLogins()
 	{
 		// we need to get the email to make the process work.
-		$query = mysqli_query("SELECT Email FROM users WHERE Username = '" . mysqli_real_escape_string($_POST['logname']) . "'");
+		$query = mysqli_query($conn, "SELECT Email FROM users WHERE Username = '" . mysqli_real_escape_string($conn, $_POST['logname']) . "'");
 		$row = mysqli_fetch_assoc($query);
 		$UserEmail = $row['Email'];
 		// now for the real login
 		$PhaseTwo = $this->Build($_POST['passw0rd'],$UserEmail);
 		$query = "SELECT ID, Username FROM users WHERE Email = '" . $UserEmail . "' AND phasetwo = '" . $PhaseTwo . "'";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		if(!$results)
 		{
 			echo 'Error in the MySQL Query:' . $PhaseTwo;

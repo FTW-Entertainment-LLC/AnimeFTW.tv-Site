@@ -42,21 +42,21 @@ if(isset($_POST['q']) || isset($_GET['q']))
 	else
 	{
 		$SearchInput = strtolower($q);
-		$SearchInput = mysqli_real_escape_string($SearchInput);
+		$SearchInput = mysqli_real_escape_string($conn, $SearchInput);
 		//$episodeSearch = strpos($SearchInput,'episode');
 		$episodeSearch = strpos_arr($SearchInput,array('episode','ep','movie','ova'));
 
-		mysqli_query("SET NAMES 'utf8'"); 
+		mysqli_query($conn, ,"SET NAMES 'utf8'"); 
 		if($episodeSearch === false)
 		{
 			// episode string NOT found
 			if($profileArray[2] == 1)
 			{
-				$Searched = mysqli_query("Select V1, V2, V3, V4 FROM ((SELECT Username as V1, Active as V2, Level_access as V3, ID as V4 FROM users WHERE Username LIKE '%".$SearchInput."%') UNION ALL (Select fullSeriesName as V1, active as V2, seoname as V3, id as V4 FROM series WHERE active='yes' ".$aonly." AND ( fullSeriesName LIKE '%".$SearchInput."%' OR romaji LIKE '%".$SearchInput."%' OR kanji LIKE '%".$SearchInput."%' ))) AS temp_table ORDER BY V1 ASC LIMIT 8");
+				$Searched = mysqli_query($conn, ,"Select V1, V2, V3, V4 FROM ((SELECT Username as V1, Active as V2, Level_access as V3, ID as V4 FROM users WHERE Username LIKE '%".$SearchInput."%') UNION ALL (Select fullSeriesName as V1, active as V2, seoname as V3, id as V4 FROM series WHERE active='yes' ".$aonly." AND ( fullSeriesName LIKE '%".$SearchInput."%' OR romaji LIKE '%".$SearchInput."%' OR kanji LIKE '%".$SearchInput."%' ))) AS temp_table ORDER BY V1 ASC LIMIT 8");
 			}
 			else
 			{
-				$Searched = mysqli_query("Select V1, V2, V3, V4 FROM ((SELECT Username as V1, Active as V2, Level_access as V3, ID as V4 FROM users WHERE Username LIKE '%".$SearchInput."%' AND ID IN (SELECT reqFriend FROM friends WHERE Asker='".$globalnonid."')) UNION ALL (Select fullSeriesName as V1, active as V2, seoname as V3, id as V4 FROM series WHERE active='yes' ".$aonly." AND ( fullSeriesName LIKE '%".$SearchInput."%' OR romaji LIKE '%".$SearchInput."%' OR kanji LIKE '%".$SearchInput."%' ))) AS temp_table ORDER BY V1 ASC LIMIT 8");
+				$Searched = mysqli_query($conn, ,"Select V1, V2, V3, V4 FROM ((SELECT Username as V1, Active as V2, Level_access as V3, ID as V4 FROM users WHERE Username LIKE '%".$SearchInput."%' AND ID IN (SELECT reqFriend FROM friends WHERE Asker='".$globalnonid."')) UNION ALL (Select fullSeriesName as V1, active as V2, seoname as V3, id as V4 FROM series WHERE active='yes' ".$aonly." AND ( fullSeriesName LIKE '%".$SearchInput."%' OR romaji LIKE '%".$SearchInput."%' OR kanji LIKE '%".$SearchInput."%' ))) AS temp_table ORDER BY V1 ASC LIMIT 8");
 			}
 		}
 		else
@@ -89,7 +89,7 @@ if(isset($_POST['q']) || isset($_GET['q']))
 			}
 			$ie = $s+1;
 			@$SeriesNameFull = reverseCheckSeries($SeriesNameFull);
-			$Searched = mysqli_query("SELECT epnumber as V1, videotype as V2, epname as V3, epprefix as V4, id, sid FROM episode WHERE seriesname='".@$SeriesNameFull."' AND epnumber = '".$SearchExplode[$ie]."' ".$movvar);
+			$Searched = mysqli_query($conn, ,"SELECT epnumber as V1, videotype as V2, epname as V3, epprefix as V4, id, sid FROM episode WHERE seriesname='".@$SeriesNameFull."' AND epnumber = '".$SearchExplode[$ie]."' ".$movvar);
 		}
 		
 		$total_queries = mysqli_num_rows($Searched);
@@ -121,7 +121,7 @@ if(isset($_POST['q']) || isset($_GET['q']))
 				if($City['V2'] == '1'){
 					$ModifiedV1 = '';
 					$V1 = $Name;
-					$query   = mysqli_query("SELECT id FROM friends WHERE reqFriend='".$City['V4']."' AND Asker='".$profileArray[1]."'");
+					$query   = mysqli_query($conn, ,"SELECT id FROM friends WHERE reqFriend='".$City['V4']."' AND Asker='".$profileArray[1]."'");
 					$tm = mysqli_num_rows($query);
 					if($tm == 1){$V2 = '- <span style="color:#006600;">Friend</span>';}else{$V2 = '- <span style="color:#CC0000;">User</span>';}
 					$V3 = '/user/'.$City['V1'];

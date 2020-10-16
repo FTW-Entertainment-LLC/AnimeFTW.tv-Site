@@ -43,9 +43,9 @@ class AFTWNotifications extends Config {
 		$ctime = time();
 		$past = $ctime-(4*$this->darray[7]); //we want the date 4 weeks in the past
 		//build the query, straight forward stuff
-		mysqli_query("DELETE FROM notifications WHERE date <= $past");
-		mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '13', '" . time() . "', '" . time() . "');");
-		mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = 13");
+		mysqli_query($conn, "DELETE FROM notifications WHERE date <= $past");
+		mysqli_query($conn, "INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '13', '" . time() . "', '" . time() . "');");
+		mysqli_query($conn, "UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = 13");
 	}
 
 	public function ShowSprite()
@@ -53,7 +53,7 @@ class AFTWNotifications extends Config {
 		if($this->UserArray[0] == 1)
 		{
             $query = "SELECT COUNT(id) as Total FROM notifications WHERE notifications.date > ".$this->UserArray[12]." AND (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1].")))";
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			if(!$result)
 			{
 			}
@@ -79,7 +79,7 @@ class AFTWNotifications extends Config {
 		if($this->UserArray[0] == 1)
 		{
 			$query = "SELECT COUNT(notifications.id) FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ";
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			if(!$result)
 			{
 				echo 'There was an error executing the query.';
@@ -108,7 +108,7 @@ class AFTWNotifications extends Config {
 
 	# function Query
 	private function Query($q){
-		$query = mysqli_query($q);
+		$query = mysqli_query($conn, $q);
 		return $query;
 	}
 
@@ -126,7 +126,7 @@ class AFTWNotifications extends Config {
 			$queryLimit = " LIMIT 0, 30";
 		}
 
-		mysqli_query("SET NAMES 'utf8'");
+		mysqli_query($conn, "SET NAMES 'utf8'");
 		$query = "SELECT notifications.* FROM notifications WHERE (notifications.uid = ".$this->UserArray[1]." OR (notifications.uid IS NULL AND notifications.d1 = (SELECT watchlist.sid FROM watchlist WHERE watchlist.sid = notifications.d1 AND watchlist.uid = ".$this->UserArray[1]."))) ORDER BY notifications.date DESC" . $queryLimit;
 		$result = $this->Query($query);
 		//echo '<ul>';
@@ -334,7 +334,7 @@ class AFTWNotifications extends Config {
 
 	# function RecordView
 	private function RecordView(){
-		mysqli_query("UPDATE users SET viewNotifications = '".time()."' WHERE ID = '".$this->UserArray[1]."'");
+		mysqli_query($conn, "UPDATE users SET viewNotifications = '".time()."' WHERE ID = '".$this->UserArray[1]."'");
 	}
 }
 

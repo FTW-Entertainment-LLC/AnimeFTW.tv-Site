@@ -65,9 +65,9 @@ class Register extends Config {
 												else
 												{
 													$query = "INSERT INTO users (`Username`, `display_name`, `Password`, `registrationDate`, `Email`, `Random_key`, `firstName`, `gender`, `ageDate`, `ageMonth`, `ageYear`, `staticip`, `timeZone`) VALUES (" . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( $this->makeUrlFriendly("$postUsername") ) . ", " . $this->sanitizeInput ( md5 ( $_POST['password'] ) ).", '" . time () . "', " . $this->sanitizeInput($_POST['email'] ) . ", '" . $this->generateRandomString(32) . "', " . $this->sanitizeInput(@$_POST['firstname']) . ", " . $this->sanitizeInput(@$_POST['gender']) . ", " . $this->sanitizeInput(@$_POST['ageDate']) . ", " . $this->sanitizeInput(@$_POST['ageMonth']) . ", " . $this->sanitizeInput(@$_POST['ageYear']) . ", '".$_SERVER['REMOTE_ADDR']."', ".$this->sanitizeInput($_POST['timeZone']).")";
-													$result = mysqli_query($query);
+													$result = mysqli_query($conn, $query);
 													$getUser = "SELECT `ID`, `Username`, `Email`, `Random_key` FROM `users` WHERE `Username` = " . $this->sanitizeInput($this->makeUrlFriendly("$postUsername") ) . "";
-													$results = mysqli_query($getUser);
+													$results = mysqli_query($conn, $getUser);
 													if(mysqli_num_rows($results) == 1)
 													{
 														$row = mysqli_fetch_assoc($results);
@@ -81,7 +81,7 @@ class Register extends Config {
 														else
 														{
 															// they don't want to receive our emails :(
-															$suplementalquery = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
+															$suplementalquery = mysqli_query($conn, "INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '2', '4', '0');");
 														}
 														// check to see if they want to receive admin emails
 														if(isset($_POST['notifications']) && $_POST['notifications'] == 1)
@@ -91,7 +91,7 @@ class Register extends Config {
 														else
 														{
 															// sandpanda..
-															$suplementalquery = mysqli_query("INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
+															$suplementalquery = mysqli_query($conn, "INSERT INTO `user_setting` (`id`, `uid`, `date_added`, `date_updated`, `option_id`, `value`, `disabled`) VALUES (NULL, '" . $row->ID . "', " . time() . ", " . time() . ", '7', '14', '0');");
 														}
 														include_once("email.class.php");
 														$Email = new Email($row['Email']);
@@ -156,7 +156,7 @@ class Register extends Config {
 		$OutputArray = array('error' => NULL, 'msg' => NULL);
 		if ( $_GET['ID'] != '' && is_numeric ( $_GET['ID'] ) == TRUE && strlen ( $_GET['key'] ) == 32 && ctype_alnum( $_GET['key'] ) == TRUE ) {
 			$query = "SELECT ID, Password, Random_key, Active FROM `users` WHERE ID = " . $this->sanitizeInput($_GET['ID']);
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			
 			if(mysqli_num_rows($result) == 1)
 			{
@@ -168,7 +168,7 @@ class Register extends Config {
 					$OutputArray['error'] = 'The confirmation key that was generated for this member does not match with the one entered !';
 				}
 				else {
-					$update = mysqli_query("UPDATE `users` SET Active = 1 WHERE ID=" . $this->sanitizeInput($row['ID']));
+					$update = mysqli_query($conn, "UPDATE `users` SET Active = 1 WHERE ID=" . $this->sanitizeInput($row['ID']));
 					include_once('sessions.class.php');
 					$Session = new Sessions();
 					$Session->setUserSessionData($row['ID'],$row['Username'],TRUE);
@@ -189,7 +189,7 @@ class Register extends Config {
 	{
 		$query = "SELECT COUNT(*) as total FROM `users` WHERE `" . $field . "` = " . $this->sanitizeInput($compared);
 		
-		$query = mysqli_query($query);
+		$query = mysqli_query($conn, $query);
 		
 		$query = mysqli_fetch_assoc($query);
 		
@@ -227,7 +227,7 @@ class Register extends Config {
 	{
 		if (!$magic_quotes) {
 			if (strnatcmp(PHP_VERSION, '4.3.0') >= 0) {
-				return "'" . mysqli_real_escape_string($string) . "'";
+				return "'" . mysqli_real_escape_string($conn, $string) . "'";
 			}
 			$string = str_replace("'", "\\'" , str_replace('\\', '\\\\', str_replace("\0", "\\\0", $string)));
 			return  "'" . $string . "'"; 

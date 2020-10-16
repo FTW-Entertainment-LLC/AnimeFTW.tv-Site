@@ -79,8 +79,8 @@
 								 $this::lang("MESSAGE_DELETE",$this->config));
 									
 			
-				$query = mysqli_query("SELECT SQL_CALC_FOUND_ROWS `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `rid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
-				$total = mysqli_query("SELECT FOUND_ROWS()");
+				$query = mysqli_query($conn, "SELECT SQL_CALC_FOUND_ROWS `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `rid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
+				$total = mysqli_query($conn, "SELECT FOUND_ROWS()");
 				$trow = mysqli_fetch_assoc($total);
 				while($row = mysqli_fetch_assoc($query)) {
 					include_once('includes/classes/config.class.php');
@@ -109,8 +109,8 @@
 									"col_date"=>$this::lang("MESSAGE_DATE",$this->config),
 									"col_del"=>$this::lang("MESSAGE_DELETE",$this->config));
 			
-				$query = mysqli_query("SELECT SQL_CALC_FOUND_ROWS `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
-				$total = mysqli_query("SELECT FOUND_ROWS()");
+				$query = mysqli_query($conn, "SELECT SQL_CALC_FOUND_ROWS `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
+				$total = mysqli_query($conn, "SELECT FOUND_ROWS()");
 				$trow = mysqli_fetch_assoc($total);
 				while($row = mysqli_fetch_assoc($query)) {
 					$row['from'] = $this::nameFromId($row['rid']);
@@ -133,8 +133,8 @@
 									"col_date"=>$this::lang("MESSAGE_DATE",$this->config),
 									"col_del"=>$this::lang("MESSAGE_DELETE",$this->config));
 			
-				$query = mysqli_query("SELECT SQL_CALC_FOUND_ROWS `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='1' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
-				$total = mysqli_query("SELECT FOUND_ROWS()");
+				$query = mysqli_query($conn, "SELECT SQL_CALC_FOUND_ROWS `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='1' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
+				$total = mysqli_query($conn, "SELECT FOUND_ROWS()");
 				$trow = mysqli_fetch_assoc($total);
 				while($row = mysqli_fetch_assoc($query)) {
 					$row['from'] = $this::nameFromId($row['rid']);
@@ -173,7 +173,7 @@
 				if(is_numeric($_GET['subj'])) {
 					$id = $_GET['subj'];
 					$uid = $this->userID;
-					$q = mysqli_query("SELECT * FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR `sid`='$uid')");
+					$q = mysqli_query($conn, "SELECT * FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR `sid`='$uid')");
 					if(mysqli_num_rows($q) == 1) {
 						$r = mysqli_fetch_assoc($q);
 						$sub = $r['msgSubject'];
@@ -208,9 +208,9 @@
 		if($uid > 0) {
 			$output = $this::readTemplate("mes_page",$this->config);
 			$tpl = $this::readTemplate("mes_view",$this->config);
-			$mes_query = mysqli_query("SELECT * FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR `sid`='$uid')");
+			$mes_query = mysqli_query($conn, "SELECT * FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR `sid`='$uid')");
 			if(mysqli_num_rows($mes_query) == 1) {
-				mysqli_query("UPDATE `messages` SET `viewed`='0' WHERE `id`='$id' AND `rid`='$uid'");
+				mysqli_query($conn, "UPDATE `messages` SET `viewed`='0' WHERE `id`='$id' AND `rid`='$uid'");
 			
 				$boxname = $this::lang("MESSAGE_READMES",$this->config);
 				$mes_row = mysqli_fetch_assoc($mes_query);
@@ -247,7 +247,7 @@
 	private function ReadDraft($id) {
 		$uid = $this->userID;
 		if($uid > 0) {
-			$draft_query = mysqli_query("SELECT * FROM `messages` WHERE `id`='$id' AND `sid`='$uid'");
+			$draft_query = mysqli_query($conn, "SELECT * FROM `messages` WHERE `id`='$id' AND `sid`='$uid'");
 			if(mysqli_num_rows($draft_query) == 1) {
 				$draft_row = mysqli_fetch_assoc($draft_query);
 				$draft_row['to'] = $this::nameFromId($draft_row['rid']);
@@ -264,7 +264,7 @@
 	}
 	
 	private function idFromName($name) {
-		$id_query = mysqli_query("SELECT `ID` FROM `users` WHERE `Username`='$name'");
+		$id_query = mysqli_query($conn, "SELECT `ID` FROM `users` WHERE `Username`='$name'");
 		if(mysqli_num_rows($id_query) == 1) {
 			$id_row = mysqli_fetch_assoc($id_query);
 			return $id_row['ID'];
@@ -274,7 +274,7 @@
 	}
 	
 	private function nameFromId($id) {
-		$name_query = mysqli_query("SELECT `Username` FROM `users` WHERE `ID`='$id'");
+		$name_query = mysqli_query($conn, "SELECT `Username` FROM `users` WHERE `ID`='$id'");
 		if(mysqli_num_rows($name_query) == 1) {
 			$name_row = mysqli_fetch_assoc($name_query);
 			return $name_row['Username'];

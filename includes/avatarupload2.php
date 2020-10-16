@@ -65,7 +65,7 @@ else{
 					//TOTAL Success!
 					$result = 1;
 					$query = 'UPDATE users SET avatarExtension=\'' . mysqli_escape_string($avatarExtension) . '\', avatarActivate=\'' . mysqli_escape_string($avatarActivate) . '\'WHERE ID=\''.$profileArray[1].'\'';
-					mysqli_query($query) or die('Error : ' . mysqli_error());
+					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				}
 				else{
 					//File was invalid, was it?

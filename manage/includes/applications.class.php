@@ -40,7 +40,7 @@ class Applications extends Config {
 	private function buildAppData()
 	{
 		$query = "SELECT `id`, `name`, `value` FROM `" . $this->MainDB . "`.`settings` WHERE `id` = 7 OR `id` = 8";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		while($row = mysqli_fetch_assoc($result))
 		{
 			$this->AppSettings[$row['id']]['name'] = $row['name'];
@@ -85,7 +85,7 @@ class Applications extends Config {
 	private function showCurrentApplications()
 	{
 		$query = "SELECT `applications_submissions`.`id`, `applications_submissions`.`positionID`, `applications_submissions`.`company`, `applications_submissions`.`Age`, `applications_submissions`.`Status`, `applications_submissions`.`reqInformation`, `users`.`ID` FROM `" . $this->MainDB . "`.`applications_submissions`, `" . $this->MainDB . "`.`users` WHERE `users`.`Username`= `applications_submissions`.`username` AND `applications_submissions`.`appRound` = " . $this->AppSettings[8]['value'] . " ORDER BY `applications_submissions`.`id`";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		
 		echo '<div>
 			<div class="table-row">
@@ -168,7 +168,7 @@ class Applications extends Config {
 	private function displaySecurityTest($uid)
 	{
 		$query = "SELECT `id`, `date` FROM `" . $this->MainDB . "`.`applications_sectests` WHERE `uid` = " . $uid;
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		
 		$count = mysqli_num_rows($result);
 		if($count > 0)

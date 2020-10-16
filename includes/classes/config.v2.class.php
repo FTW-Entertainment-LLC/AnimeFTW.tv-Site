@@ -446,7 +446,7 @@ class Config {
     // records the mod function right into the database.
     public function ModRecord($type)
     {
-        $this->mysqli->query("INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysqli_real_escape_string($_SERVER['REQUEST_URI'])."')");
+        $this->mysqli->query("INSERT INTO modlogs (uid, ip, agent, date, script, request_url) VALUES ('" . $this->UserArray[1] . "', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['HTTP_USER_AGENT']."', '".time()."', '".$type."', '".mysqli_real_escape_string($conn, $_SERVER['REQUEST_URI'])."')");
     }
 
     // we dont know what it does.. it just looks cool.

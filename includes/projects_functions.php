@@ -3,38 +3,38 @@ $sort=$_GET['sort'];
 $actioned=$_GET['actioned'];
 
 if ($sort == "") {
-$onresult = mysqli_query("SELECT * FROM uestatus WHERE status='ongoing'");
+$onresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='ongoing'");
 } else {
-$onresult = mysqli_query("SELECT * FROM uestatus WHERE status='ongoing' ORDER BY $sort ASC");
+$onresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='ongoing' ORDER BY $sort ASC");
 }
 
 if ($sort == "") {
-$upresult = mysqli_query("SELECT * FROM uestatus WHERE status='uploading'");
+$upresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='uploading'");
 } else {
-$upresult = mysqli_query("SELECT * FROM uestatus WHERE status='uploading' ORDER BY $sort ASC");
+$upresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='uploading' ORDER BY $sort ASC");
 }
 
 if ($sort == "") {
-$dnresult = mysqli_query("SELECT * FROM uestatus WHERE status='done'");
+$dnresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='done'");
 } else {
-$dnresult = mysqli_query("SELECT * FROM uestatus WHERE status='done' ORDER BY $sort ASC");
+$dnresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='done' ORDER BY $sort ASC");
 }
 
 if ($sort == "") {
-$enresult = mysqli_query("SELECT * FROM uestatus WHERE status='encoding'");
+$enresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='encoding'");
 } else {
-$enresult = mysqli_query("SELECT * FROM uestatus WHERE status='encoding' ORDER BY $sort ASC");
+$enresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='encoding' ORDER BY $sort ASC");
 }
 
 if ($sort == "") {
-$lvresult = mysqli_query("SELECT * FROM uestatus WHERE status='live'");
+$lvresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='live'");
 } else {
-$lvresult = mysqli_query("SELECT * FROM uestatus WHERE status='live' ORDER BY $sort ASC");
+$lvresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='live' ORDER BY $sort ASC");
 }
 
 if ($sort == "") {
-$claimedresult = mysqli_query("SELECT * FROM uestatus WHERE status='claimed'");
+$claimedresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='claimed'");
 } else {
-$claimedresult = mysqli_query("SELECT * FROM uestatus WHERE status='claimed' ORDER BY $sort ASC");
+$claimedresult = mysqli_query($conn, "SELECT * FROM uestatus WHERE status='claimed' ORDER BY $sort ASC");
 }
 ?>

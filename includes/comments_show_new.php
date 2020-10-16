@@ -23,19 +23,19 @@ $conn = mysqli_connect($newsdbhost, $newsdbuser, $newsdbpass, $newsdbname);
 # mysqli_select_db($newsdbname);
 
 // construct page query to find out how many matches
-$result=mysqli_query($conn, "select count(*) from $db_table WHERE epid='$epid' AND is_approved = '1'");
+$result=mysqli_query($conn, , "select count(*) from $db_table WHERE epid='$epid' AND is_approved = '1'");
 $count=$result->num_rows;
 $total_pages = ceil($count / $comment_limit);
 
 // and the average rating is ...
 $query = "SELECT AVG(rating) from $db_table WHERE epid='$epid' AND is_approved = '1' AND rating>'0'";
-$result = mysqli_query($conn, $query) or die("error ". mysqli_error(). " with query ".$query);
+$result = mysqli_query($conn, , $query) or die("error ". mysqli_error(). " with query ".$query);
 $row = mysqli_fetch_array($result);
 $av_rating = number_format($row['AVG(rating)'],2);
 
 // construct page query to find out how many matches
 $query = "SELECT * from $db_table WHERE epid = '$epid' AND is_approved = '1' ORDER by dated DESC LIMIT $from, $comment_limit";// what matches THIS page?
-$result = mysqli_query($conn, $query) or die("Error: ". mysqli_error(). " with query ". $query); 
+$result = mysqli_query($conn, , $query) or die("Error: ". mysqli_error(). " with query ". $query); 
 
 // skip output if no comments exist
 if (!$count) {
@@ -58,7 +58,7 @@ if (!$count) {
 		echo "<td><p style='". $comm_style. "'>
 		<strong>";
 		/*$query2 = "SELECT Level_access, advanceActive, advanceImage, advancePreffix FROM users WHERE Username='".$myrow['name']."'";
-			$result2 = mysqli_query($conn, $query2) or die("error ". mysqli_error(). " with query ".$query2);
+			$result2 = mysqli_query($conn, , $query2) or die("error ". mysqli_error(). " with query ".$query2);
 			$row2 = mysqli_fetch_array($result2);
 			$Level_access = $row2['Level_access'];
 			$advanceActive = $row2['advanceActive'];

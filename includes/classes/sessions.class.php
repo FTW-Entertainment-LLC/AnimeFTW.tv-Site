@@ -36,14 +36,14 @@ class Sessions extends Config {
         setcookie("0au", $authorizationToken, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
         setcookie("0st", $sessionToken, time() + (60*60*24*365), "/", $this->ThisDomain, 0, 1);
         // set the information in the database.
-        $query = "INSERT INTO `" . $this->MainDB . "`.`user_session` (`id`, `added`, `updated`, `uid`, `agent`, `validate`, `ip`) VALUES ('" . mysqli_real_escape_string($sessionToken) . "', '" . time() . "', '" . time() ."', '" . $id . "', '" . mysqli_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "', '" . mysqli_real_escape_string($randomkey) . "', '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
-        $query2 = "INSERT INTO `" . $this->MainDB . "`.`user_authorization` (`id`, `uid`, `sid`, `update`, `browser`, `platform`, `version`, `ip`) VALUES ('" . $authorizationToken . "', '" . $id . "', '" . $sessionToken ."', '" . time() . "', '" . mysqli_real_escape_string($userDetails['browser']) . "', '" . mysqli_real_escape_string($userDetails['platform']) . "', '" . mysqli_real_escape_string($userDetails['version']) . "', '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "')";
+        $query = "INSERT INTO `" . $this->MainDB . "`.`user_session` (`id`, `added`, `updated`, `uid`, `agent`, `validate`, `ip`) VALUES ('" . mysqli_real_escape_string($conn, $sessionToken) . "', '" . time() . "', '" . time() ."', '" . $id . "', '" . mysqli_real_escape_string($conn, $_SERVER['HTTP_USER_AGENT']) . "', '" . mysqli_real_escape_string($conn, $randomkey) . "', '" . mysqli_real_escape_string($conn, $_SERVER['REMOTE_ADDR']) . "')";
+        $query2 = "INSERT INTO `" . $this->MainDB . "`.`user_authorization` (`id`, `uid`, `sid`, `update`, `browser`, `platform`, `version`, `ip`) VALUES ('" . $authorizationToken . "', '" . $id . "', '" . $sessionToken ."', '" . time() . "', '" . mysqli_real_escape_string($conn, $userDetails['browser']) . "', '" . mysqli_real_escape_string($conn, $userDetails['platform']) . "', '" . mysqli_real_escape_string($conn, $userDetails['version']) . "', '" . mysqli_real_escape_string($conn, $_SERVER['REMOTE_ADDR']) . "')";
         
-        $result = mysqli_query($query);
+        $result = mysqli_query($conn, $query);
         if(!$result) {
             echo 'Error processing the update ' . mysqli_error();
         }
-        $result = mysqli_query($query2);
+        $result = mysqli_query($conn, $query2);
         if(!$result) {
             echo 'Error processing the update ' . mysqli_error();
         }
@@ -59,10 +59,10 @@ class Sessions extends Config {
     public function logoutOfSession()
     {
         // remove it from the database.
-        $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysqli_real_escape_string($_COOKIE['0st']) . "' AND `uid` = '" . $this->UserArray[1] . "'";
-        $result = mysqli_query($query);
-        $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysqli_real_escape_string($_COOKIE['0au']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `sid` = '" . mysqli_real_escape_string($_COOKIE['0st']) . "'";
-        $result2 = mysqli_query($query2);
+        $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysqli_real_escape_string($conn, $_COOKIE['0st']) . "' AND `uid` = '" . $this->UserArray[1] . "'";
+        $result = mysqli_query($conn, $query);
+        $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `id` = '" . mysqli_real_escape_string($conn, $_COOKIE['0au']) . "' AND `uid` = '" . $this->UserArray[1] . "' AND `sid` = '" . mysqli_real_escape_string($conn, $_COOKIE['0st']) . "'";
+        $result2 = mysqli_query($conn, $query2);
         if(!$result || !$result2) {
             echo 'Error processing the update ' . mysqli_error();
             echo $query;
@@ -86,28 +86,28 @@ class Sessions extends Config {
                 // desktop session
                 if($allSessions != false) {
                     // We will want to remove ALL sessions of the requested.
-                    $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `uid` = " . mysqli_real_escape_string($_GET['uid']) . "'";
+                    $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `uid` = " . mysqli_real_escape_string($conn, $_GET['uid']) . "'";
                     
                     if($_GET['uid'] == $this->UserArray[1]) {
                         // if the user id is the same as the logged in user, we want to ensure that the existing session is not logged out.
-                        $queryAddon = " AND `id` != " . mysqli_real_escape_string($_COOKIE['st']);
+                        $queryAddon = " AND `id` != " . mysqli_real_escape_string($conn, $_COOKIE['st']);
                     } else {
                         // nope, give em hell and banish all of the sessions.
                         $queryAddon = "";
                     }
                     
                     // Also clean up all of the authorization keys
-                    $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `uid` = '" . mysqli_real_escape_string($_GET['uid']) . "'";
+                    $query2 = "DELETE FROM `" . $this->MainDB . "`.`user_authorization` WHERE `uid` = '" . mysqli_real_escape_string($conn, $_GET['uid']) . "'";
                     $query2 = $query2 . $queryAddon;
-                    $result2 = mysqli_query($query2);
+                    $result2 = mysqli_query($conn, $query2);
                 } else {
                     // only one session.
-                    $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysqli_real_escape_string($_GET['id']) . "'";
+                    $query = "DELETE FROM `" . $this->MainDB . "`.`user_session` WHERE `id` = '" . mysqli_real_escape_string($conn, $_GET['id']) . "'";
                 }
                 $query = $query . $queryAddon;
                 
                 // results
-                $result = mysqli_query($query);
+                $result = mysqli_query($conn, $query);
                 if(!$result) {
                     echo 'Error in executing the Query.';
                     exit;
@@ -117,14 +117,14 @@ class Sessions extends Config {
                 // api sessions
                 if($allSessions != false) {
                     // We will want to remove ALL sessions of the requested, since this is not a current session thing, we can remove all, all the time.
-                    $query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `uid` = " . mysqli_real_escape_string($_GET['uid']);
+                    $query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `uid` = " . mysqli_real_escape_string($conn, $_GET['uid']);
                 } else {
                     // only one session.
-                    $query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `id` = '" . mysqli_real_escape_string($_GET['id']) . "'";
+                    $query = "DELETE FROM `" . $this->MainDB . "`.`developers_api_sessions` WHERE `id` = '" . mysqli_real_escape_string($conn, $_GET['id']) . "'";
                 }
             
                 // result
-                $result = mysqli_query($query);
+                $result = mysqli_query($conn, $query);
                 if(!$result) {
                     echo 'Error in executing the Query.';
                     exit;
@@ -139,8 +139,8 @@ class Sessions extends Config {
     public function sendEmailToUser($email,$uid)
     {
         // First check to see if they have beenw logged in from this specific users logins in the past so we dont spam them.
-        $query = "SELECT `id` FROM `" . $this->MainDB . "`.`user_session` WHERE `agent` = '" . mysqli_real_escape_string($_SERVER['HTTP_USER_AGENT']) . "' AND `ip` = '" . mysqli_real_escape_string($_SERVER['REMOTE_ADDR']) . "'";
-        $result = mysqli_query($query);
+        $query = "SELECT `id` FROM `" . $this->MainDB . "`.`user_session` WHERE `agent` = '" . mysqli_real_escape_string($conn, $_SERVER['HTTP_USER_AGENT']) . "' AND `ip` = '" . mysqli_real_escape_string($conn, $_SERVER['REMOTE_ADDR']) . "'";
+        $result = mysqli_query($conn, $query);
         if(mysqli_num_rows($result) < 1)
         {
             $bcc = '';
@@ -161,7 +161,7 @@ class Sessions extends Config {
             $body .= "- Your friends at AnimeFTW.tv.";
             
             mail($email,"New session at AnimeFTW.tv!", $body, $headers);
-            mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
+            mysqli_query($conn, "INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', 'New Session at AnimeFTW.tv.');");
         }
     }
 }

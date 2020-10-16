@@ -38,14 +38,14 @@ class AFTWDev{
 	//get Validate DID info
 	function ValDID(){
 		$query = "SELECT id FROM developers WHERE devkey='".$this->did."'";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$didreturn = mysqli_num_rows($result);
 		return $didreturn;
 	}
 	//get Validate DID info
 	function ShowAds(){
 		$query = "SELECT ads FROM developers WHERE devkey='".$this->did."'";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		if($row['ads'] == 1){$ads = TRUE;}
 		else{$ads = FALSE;}
@@ -60,13 +60,13 @@ class AFTWDev{
 		echo "</results>\n";
 	}
 	private function Query($q){
-		$query = mysqli_query($q);
+		$query = mysqli_query($conn, $q);
 		$query = mysqli_result($query, 0);
 		return $query;
 	}
 
 	private function ArrQuery($query){
-		$query = mysqli_query($query);
+		$query = mysqli_query($conn, $query);
 		$query = mysqli_fetch_array($query);
 		return $query;
 	}
@@ -74,7 +74,7 @@ class AFTWDev{
 	private function buildCategories()
 	{
 		$query = "SELECT * FROM `categories`";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		while($row = mysqli_fetch_assoc($result))
 		{
 			$this->Categories[$row['id']]['id'] = $row['id'];
@@ -97,7 +97,7 @@ class AFTWDev{
 
 	//show anime, paged
 	function ShowAnime($sort,$count,$start,$username,$password,$gsort,$alpha = NULL,$SortNum = 0){
-		mysqli_query("SET NAMES 'utf8'");
+		mysqli_query($conn, "SET NAMES 'utf8'");
 
 		$client = (isset($_GET['client'])) ? $_GET['client'] : "browser";
 		$version = (isset($_GET['version'])) ? $_GET['version'] : 0;
@@ -141,8 +141,8 @@ class AFTWDev{
 			$query = "SELECT id, seriesName, fullSeriesName, romaji, kanji, seoname, description, ratingLink, stillRelease, Movies, OVA, category, total_reviews FROM series WHERE active='yes' $aonly $alphalimit ORDER BY fullSeriesName ".$sort." LIMIT ".$start.", ".$count;
 				$g_s = '';
 		}
-		mysqli_query("SET NAMES 'utf8'");
-		$result = mysqli_query($query);
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result = mysqli_query($conn, $query);
 		echo '<results start="'.$start.'" count="'.$count.'" next="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=anime'.$g_s.'&amp;start='.($start+$count).'&amp;count='.$count.'"';
 		if($start == 0){echo "\n";}
 		else {
@@ -196,8 +196,8 @@ class AFTWDev{
 	//get our seriesName var
 	function get_seriesname($seriesname)
 	{
-		$query = "SELECT `id` FROM `series` WHERE `seriesName` = '" . mysqli_real_escape_string($seriesname) . "'";
-		$result = mysqli_query($query);
+		$query = "SELECT `id` FROM `series` WHERE `seriesName` = '" . mysqli_real_escape_string($conn, $seriesname) . "'";
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_assoc($result);
 		$this->series = $row['id'];
 	}
@@ -211,8 +211,8 @@ class AFTWDev{
 			$limitfunc = " LIMIT 0,".$_GET['limit'];
 		} else {$limitfunc = "";}
 		$query = "SELECT id, sid, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, videotype, image FROM episode WHERE sid='".$this->series."' AND Movie='0' ORDER BY epnumber ".$sort.$limitfunc;
-		mysqli_query("SET NAMES 'utf8'");
-		$result = mysqli_query($query);
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result = mysqli_query($conn, $query);
 		echo '<episodes>'."\n";
 		if($limit == TRUE && ($showad == FALSE || $appver < 3)){
 			echo "		<episode href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=0\">\n";
@@ -254,8 +254,8 @@ class AFTWDev{
 	//show episode list of single anime
 	function ShowEpisode(){
 		$query = "SELECT id, sid, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, videotype, image FROM episode WHERE id='".$this->eid."'";
-		mysqli_query("SET NAMES 'utf8'");
-		$result = mysqli_query($query);
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		if($row['image'] == 0){$imvarb = $this->Host . '/video-images/noimage.png';}
 		else {$imvarb = "{$this->Host}/video-images/{$row['sid']}/{$row['id']}_screen.jpeg";}
@@ -279,7 +279,7 @@ class AFTWDev{
 	//get basic FALSE or TRUE for username
 	function CheckUser($username){
 		$query = "SELECT Level_access FROM users WHERE Username='".$username."'";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		if($row['Level_access'] == 3){$rv = TRUE;}
 		else {$rv = FALSE;}
@@ -290,8 +290,8 @@ class AFTWDev{
 		$appver = (isset($appkey[1])) ? $appkey[1] : 0;
 		if($limit == TRUE && $showad == TRUE && $appver < 3){$limitfunc = " LIMIT 0, 2";} else{$limitfunc = "";}
 		$query = "SELECT id, sid, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, videotype, image FROM episode WHERE sid='".$this->series."' AND Movie='1'".$limitfunc." ORDER BY epnumber ".$sort;
-		mysqli_query("SET NAMES 'utf8'");
-		$result = mysqli_query($query);
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result = mysqli_query($conn, $query);
 		echo '<movies>'."\n";
 		if($limit == TRUE && $showad == TRUE && $appver < 3){
 			echo "		<movie href=\"https://".$_SERVER['HTTP_HOST']."/api/v1/show?did=".$this->did."&amp;username=".$username."&amp;password=".$password."&amp;show=episode&amp;id=0\">\n";
@@ -350,8 +350,8 @@ class AFTWDev{
 		}
 		else {
 			$query = "SELECT id, sid, epnumber, epname, seriesname, vidheight, vidwidth, epprefix, subGroup, Movie, doubleEp, date, videotype, image FROM episode ORDER BY id ".$sort." LIMIT ".$start.", ".$count;
-			mysqli_query("SET NAMES 'utf8'");
-			$result = mysqli_query($query);
+			mysqli_query($conn, "SET NAMES 'utf8'");
+			$result = mysqli_query($conn, $query);
 			$TheResults = '<results start="'.$start.'" count="'.$count.'" next="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=latest&amp;start='.($start+$count).'&amp;count='.$count.'"';
 			if($start == 0){echo "\n";}
 			else
@@ -388,8 +388,8 @@ class AFTWDev{
 	function ShowTagCloud($username,$password){
 		include('wordcloud.class.php');
 		$cloud = new wordcloud();
-		mysqli_query("SET NAMES 'utf8'");
-		$query = mysqli_query("SELECT name FROM categories ORDER BY name DESC");
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$query = mysqli_query($conn, "SELECT name FROM categories ORDER BY name DESC");
 		if ($query)
 		{
 			while ($row = mysqli_fetch_assoc($query))
@@ -426,8 +426,8 @@ class AFTWDev{
 				$alpha = substr($alpha,0,1);
 				$alphalimit = "AND `fullSeriesName` LIKE '$alpha%'";
 			}
-			mysqli_query("SET NAMES 'utf8'");
-			if($query = mysqli_query("SELECT `fullSeriesName` FROM series WHERE active='yes' $alphalimit")) {
+			mysqli_query($conn, "SET NAMES 'utf8'");
+			if($query = mysqli_query($conn, "SELECT `fullSeriesName` FROM series WHERE active='yes' $alphalimit")) {
 				if(mysqli_num_rows($query)) {
 					$temp = array();
 					while($row = mysqli_fetch_assoc($query)) {
@@ -457,17 +457,17 @@ class AFTWDev{
 	//record our logs
 	function RecordDevLogs($username,$url,$agent,$ip){
 		$query = "SELECT id FROM developers WHERE devkey='".$this->did."'";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 		$row = mysqli_fetch_array($result);
 		$query = "INSERT INTO developers_logs (date, did, uid, agent, ip, url)
 VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '".$ip."', '".$url."')";
-		mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+		mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 		$query = 'UPDATE users SET lastActivity=\''.time().'\' WHERE ID=\''.GetUID($username).'\'';
-		mysqli_query($query) or die('Error : ' . mysqli_error());
+		mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 	}
 
 	public function Search($sort,$count,$start,$username,$password,$SearchInput,$alpha = NULL){
-		mysqli_query("SET NAMES 'utf8'");
+		mysqli_query($conn, "SET NAMES 'utf8'");
 
 		$client = (isset($_GET['client'])) ? $_GET['client'] : "browser";
 		$version = (isset($_GET['version'])) ? $_GET['version'] : 0;
@@ -495,11 +495,11 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 		}
 		//santize!
 		$SearchInput = htmlentities($SearchInput);
-		$SearchInput = mysqli_real_escape_string($SearchInput);
+		$SearchInput = mysqli_real_escape_string($conn, $SearchInput);
 
 		$query = "SELECT id, seriesName, fullSeriesName, romaji, kanji, seoname,description, ratingLink, stillRelease, Movies, OVA, category, total_reviews FROM series WHERE active='yes' AND ( fullSeriesName LIKE '%".$SearchInput."%' OR romaji LIKE '%".$SearchInput."%' OR kanji LIKE '%".$SearchInput."%' ) " . $aonly . "ORDER BY fullSeriesName LIMIT ".$start.",".$count;
-		mysqli_query("SET NAMES 'utf8'");
-		$result = mysqli_query($query);
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result = mysqli_query($conn, $query);
 		echo '<results start="'.$start.'" count="'.$count.'" next="https://'.$_SERVER['HTTP_HOST'].'/api/v1/show?did='.$this->did.'&amp;client='.$client.'&amp;version='.$version.'&amp;username='.$username.'&amp;password='.$password.'&amp;show=search&amp;for='.$SearchInput.'&amp;start='.($start+$count).'&amp;count='.$count.'"';
 		if($start == 0){echo "\n";}
 		else {
@@ -584,11 +584,11 @@ VALUES ('".time()."', '".$row['id']."', '".GetUID($username)."', '".$agent."', '
 private function VideoLink($sid,$epprefix,$ep,$videotype,$Movie){
 	$style = 0;
 	$query = "SELECT seriesName, videoServer FROM series WHERE id='".$sid."'";
-	$result = mysqli_query($query);
+	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result);
 	// sub query, cause im lazy now..
 	$squery = "SELECT Level_access FROM users WHERE Username = '".$this->UserName."'";
-	$subquery = mysqli_query($squery);
+	$subquery = mysqli_query($conn, $squery);
 	$sr = mysqli_fetch_array($subquery);
 	$sr = $sr['Level_access'];
 	$CDNDown = 1; //if the CDN is down, changing this to 1 moves things to zeus.
@@ -622,7 +622,7 @@ private function VideoLink($sid,$epprefix,$ep,$videotype,$Movie){
 //quick series Check
 function QuickSeriesCheck($sid){
 	$query = "SELECT fullSeriesName FROM series WHERE id='".$sid."'";
-	$result = mysqli_query($query);
+	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result);
 	$fullSeriesName = stripslashes($row['fullSeriesName']);
 	return $fullSeriesName;
@@ -630,7 +630,7 @@ function QuickSeriesCheck($sid){
 //quick series Check
 function GetUID($username){
 	$query = "SELECT ID FROM users WHERE Username='".$username."'";
-	$result = mysqli_query($query);
+	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_array($result);
 	$ID = stripslashes($row['ID']);
 	return $ID;

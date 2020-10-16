@@ -78,7 +78,7 @@
 			$this->last_query = $query;
 			
 			// Perform the query via std mysqli_query function..
-			$this->result = mysqli_query($query,$this->dbh);
+			$this->result = mysqli_query($conn, $query,$this->dbh);
 	
 			if ( mysqli_error() ) 
 			{				
@@ -150,7 +150,7 @@
 		{
 			if (!$magic_quotes) {
 				if (strnatcmp(PHP_VERSION, '4.3.0') >= 0) {
-					return "'" . mysqli_real_escape_string($string) . "'";
+					return "'" . mysqli_real_escape_string($conn, $string) . "'";
 				}
 				$string = str_replace("'", "\\'" , str_replace('\\', '\\\\', str_replace("\0", "\\\0", $string)));
 				return  "'" . $string . "'"; 

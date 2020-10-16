@@ -44,7 +44,7 @@ class AFTWWatchlist extends Config {
 
 	# function Query
 	private function Query($q){
-		$query = mysqli_query($q);
+		$query = mysqli_query($conn, $q);
 		return $query;
 	}
 
@@ -56,7 +56,7 @@ class AFTWWatchlist extends Config {
 		else {
 			$sid = htmlspecialchars($_GET['id']);
 			if(isset($_GET['stage']) && $_GET['stage'] == 'before'){
-				$result  = mysqli_query("SELECT id FROM watchlist WHERE uid = '" . $this->UserArray[1] . "' AND sid = '".mysqli_real_escape_string($sid)."'");
+				$result  = mysqli_query($conn, "SELECT id FROM watchlist WHERE uid = '" . $this->UserArray[1] . "' AND sid = '".mysqli_real_escape_string($conn, $sid)."'");
 				$watchlist_total = mysqli_num_rows($result);
 				if($watchlist_total == 1){ // we have them now, give them the DENIED access!
 
@@ -69,7 +69,7 @@ class AFTWWatchlist extends Config {
 				}
 			}
 			else if(isset($_GET['stage']) && $_GET['stage'] == 'after'){
-				$result  = mysqli_query("SELECT id FROM watchlist WHERE uid = '".$this->UserArray[1]."' AND sid = '".mysqli_real_escape_string($sid)."'");
+				$result  = mysqli_query($conn, "SELECT id FROM watchlist WHERE uid = '".$this->UserArray[1]."' AND sid = '".mysqli_real_escape_string($conn, $sid)."'");
 				$watchlist_total = mysqli_num_rows($result);
 				if($watchlist_total == 1){ // we have them now, give them the DENIED access!
 					//echo '<img src="//i.animeftw.tv/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="/user">In My WatchList</a>';
@@ -79,8 +79,8 @@ class AFTWWatchlist extends Config {
 
 				}
 				else { // it's not in their watchlist, so lets add it!
-					$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysqli_real_escape_string($sid)."', '0', '0')";
-					mysqli_query($query) or die(mysqli_error());
+					$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysqli_real_escape_string($conn, $sid)."', '0', '0')";
+					mysqli_query($conn, $query) or die(mysqli_error());
 					//echo '<img src="//i.animeftw.tv/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="#" onClick="return false;">Added to My WatchList</a>';
 					$this->SubProfileView(TRUE);
 
@@ -111,17 +111,17 @@ class AFTWWatchlist extends Config {
 			}
 			if(isset($_GET['del']) && is_numeric($_GET['del'])){
 				$did = htmlspecialchars($_GET['del']);
-				$did = mysqli_real_escape_string($did);
-				$query = mysqli_query("SELECT id FROM watchlist WHERE id = '".$did."' AND uid = '".$this->UserArray[1]."'");
+				$did = mysqli_real_escape_string($conn, $did);
+				$query = mysqli_query($conn, "SELECT id FROM watchlist WHERE id = '".$did."' AND uid = '".$this->UserArray[1]."'");
 				$watchlist_total = mysqli_num_rows($query);
 				if($watchlist_total == 1){ // Delete the record
-					mysqli_query("DELETE FROM watchlist WHERE id = '".$did."'");
+					mysqli_query($conn, "DELETE FROM watchlist WHERE id = '".$did."'");
 					echo "<div class=\"redmsg\">My WatchList Entry Deleted.</div><br />";
 				}
 				else {}
 			}
-			$results = mysqli_query("SELECT watchlist.id, watchlist.uid, watchlist.date, watchlist.update, watchlist.sid, watchlist.currentep, watchlist.tracker, watchlist.tracker_latest, watchlist.comment, watchlist.round,  watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysqli_real_escape_string($uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC, watchlist.date DESC LIMIT ".$start.", ".$perpage);
-			$results2 = mysqli_query("SELECT watchlist.id, watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysqli_real_escape_string($uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC");
+			$results = mysqli_query($conn, "SELECT watchlist.id, watchlist.uid, watchlist.date, watchlist.update, watchlist.sid, watchlist.currentep, watchlist.tracker, watchlist.tracker_latest, watchlist.comment, watchlist.round,  watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysqli_real_escape_string($conn, $uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC, watchlist.date DESC LIMIT ".$start.", ".$perpage);
+			$results2 = mysqli_query($conn, "SELECT watchlist.id, watchlist_statuses.StatusName FROM watchlist, watchlist_statuses WHERE watchlist.uid = '".mysqli_real_escape_string($conn, $uid)."' AND watchlist.status=watchlist_statuses.id ORDER BY watchlist_statuses.StatusName DESC");
 			$total_rows = mysqli_num_rows($results2);
 			if($total_rows == 0){
 				echo "<div class=\"redmsg\">This user does not have any My WatchList entries.</div><br />";
@@ -151,20 +151,20 @@ class AFTWWatchlist extends Config {
 	# function BuildSeries
 	private function BuildSeries($id,$sid,$comment,$date = NULL,$update = NULL,$currentep,$tracker = NULL,$tracker_latest = NULL,$comment,$round=0,$StatusName,$CurrentUser,$divid,$link){
 		if($tracker == NULL || $tracker == 0){
-			$results = mysqli_query("SELECT series.id, series.fullSeriesName, series.seoname, COUNT(episode.id) AS MaxEps FROM series, episode WHERE series.id = ".$sid." AND episode.sid=series.id");
+			$results = mysqli_query($conn, "SELECT series.id, series.fullSeriesName, series.seoname, COUNT(episode.id) AS MaxEps FROM series, episode WHERE series.id = ".$sid." AND episode.sid=series.id");
 		}
 		else { //counts are based on the tracker entries
 			if($tracker_latest == 1){ // latest tracker stats for the episode
-				$results = mysqli_query("SELECT episode.epnumber FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.round='${round}' AND episode_tracker.seriesName = '".$sid."' ORDER BY episode.epnumber DESC LIMIT 0, 1 ");
+				$results = mysqli_query($conn, "SELECT episode.epnumber FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.round='${round}' AND episode_tracker.seriesName = '".$sid."' ORDER BY episode.epnumber DESC LIMIT 0, 1 ");
 				$row = mysqli_fetch_array($results);
 				$currentep = $row['epnumber'];
 			}
 			else {
-				$results = mysqli_query("SELECT COUNT(episode.id) as MaxEps FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.round='${round}' AND episode_tracker.seriesName = '".$sid."'");
+				$results = mysqli_query($conn, "SELECT COUNT(episode.id) as MaxEps FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$CurrentUser."' AND episode_tracker.round='${round}' AND episode_tracker.seriesName = '".$sid."'");
 				$row = mysqli_fetch_array($results);
 				$currentep = $row['MaxEps'];
 			}
-			$results = mysqli_query("SELECT series.id, series.fullSeriesName, series.seoname, COUNT(episode.id) AS MaxEps FROM series, episode WHERE series.id = ".$sid." AND episode.sid=series.id");
+			$results = mysqli_query($conn, "SELECT series.id, series.fullSeriesName, series.seoname, COUNT(episode.id) AS MaxEps FROM series, episode WHERE series.id = ".$sid." AND episode.sid=series.id");
 		}
 
 		$row = mysqli_fetch_array($results);
@@ -183,8 +183,8 @@ class AFTWWatchlist extends Config {
 		if(isset($_GET['stage'])){
 			if($TinyMode == TRUE){
 				$sid = $_GET['id'];
-				$query = "SELECT id, uid, sid, comment, round FROM watchlist WHERE sid = ".mysqli_real_escape_string($sid)." AND uid = ".$this->UserArray[1];
-				$results = mysqli_query($query);
+				$query = "SELECT id, uid, sid, comment, round FROM watchlist WHERE sid = ".mysqli_real_escape_string($conn, $sid)." AND uid = ".$this->UserArray[1];
+				$results = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($results);
 				$wid = $row['id'];
 				$guid = $row['uid'];
@@ -196,7 +196,7 @@ class AFTWWatchlist extends Config {
 				$wid = substr($wid, 3);
 
 				$query = "SELECT uid, sid, comment, round FROM watchlist WHERE id = ".$wid."";
-				$results = mysqli_query($query);
+				$results = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($results);
 				$guid = $row['uid'];
 				$gsid = $row['sid'];
@@ -207,24 +207,24 @@ class AFTWWatchlist extends Config {
 			echo '<div id="watchlist-edit-details-'.$wid.'" style="padding-top:5px;'.$topdown.'">';
 
 			if($_GET['edit'] == 'true' && $this->UserArray[1] == $row['uid']){ //they pass, let them through
-				$status = mysqli_real_escape_string($_GET['Status']);
-				$UpdateType = mysqli_real_escape_string($_GET['UpdateType']);
+				$status = mysqli_real_escape_string($conn, $_GET['Status']);
+				$UpdateType = mysqli_real_escape_string($conn, $_GET['UpdateType']);
 				if($UpdateType == 1)
 				{
-					$TrackerLatest = mysqli_real_escape_string($_GET['TrackerLatest']);
+					$TrackerLatest = mysqli_real_escape_string($conn, $_GET['TrackerLatest']);
 				}
 				else
 				{
 					$TrackerLatest = 0;
 				}
-				$Email = mysqli_real_escape_string($_GET['Emails']);
-				$currentep = mysqli_real_escape_string($_GET['Currentep']);
-				$Comment = mysqli_real_escape_string(urldecode($_GET['Comment']));
+				$Email = mysqli_real_escape_string($conn, $_GET['Emails']);
+				$currentep = mysqli_real_escape_string($conn, $_GET['Currentep']);
+				$Comment = mysqli_real_escape_string($conn, urldecode($_GET['Comment']));
 				$Comment = htmlspecialchars($Comment);
-				$round = mysqli_real_escape_string(urldecode($_GET['round']));
+				$round = mysqli_real_escape_string($conn, urldecode($_GET['round']));
 				$query = "UPDATE `watchlist` SET `update` = '".time()."', `status` = '".$status."', `email` = '".$Email."', `currentep` = '".$currentep."', `tracker` = '".$UpdateType."', `tracker_latest` = '".$TrackerLatest."', `comment` = '".$Comment."', `round` = '${round}' WHERE `watchlist`.`id` = ".$wid;
 				//echo $query;
-				mysqli_query($query);
+				mysqli_query($conn, $query);
 				echo '<span style="color:#E30707;font-size:10px;" id="update-text">Update Succesful!<br /></span>';
 				echo '<script>
 				$(function() {
@@ -245,7 +245,7 @@ class AFTWWatchlist extends Config {
 			}
 
 			$query = "SELECT * FROM watchlist WHERE id = ".$wid."";
-			$results = mysqli_query($query);
+			$results = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($results);
 			$total_rows = mysqli_num_rows($results);
 
@@ -262,7 +262,7 @@ class AFTWWatchlist extends Config {
 			echo '<form method="GET" id="submit_wl-'.$wid.'" name="submit_wl-'.$wid.'">';
 			echo '<input type="hidden" name="wid" id="wid" value="'.$wid.'" />';
 
-			$subquery = mysqli_query("SELECT id, StatusName FROM watchlist_statuses ORDER BY StatusName ASC");
+			$subquery = mysqli_query($conn, "SELECT id, StatusName FROM watchlist_statuses ORDER BY StatusName ASC");
 			echo '<div style="padding-bottom:5px;"><span style="color:#7A7A7A;font-size:10px;">Entry Status:</span><br />';
 			echo '<select name="Status" id="Status">';
 			while(list($id,$StatusName) = mysqli_fetch_array($subquery)){
@@ -343,7 +343,7 @@ class AFTWWatchlist extends Config {
 				echo '<div><span style="color:#7A7A7A;font-size:10px;">Episode Tracker Episodes:</span><span style="font-size:9px;">[<a href="#" onClick="return false;" title="There are all the episodes in our episode tracker for this series on this round.">?</a>]</span>
 				<div id="TrackerEpisodes">';
 				$query = "SELECT episode.epnumber, episode.epname FROM episode_tracker, episode WHERE episode.id=episode_tracker.eid AND episode_tracker.uid = '".$guid."' AND episode_tracker.seriesName = '".$gsid."' AND episode_tracker.round = '" . $row['round'] . "' ORDER BY episode.epnumber";
-				$results = mysqli_query($query);
+				$results = mysqli_query($conn, $query);
 				while(list($epnumber,$epname) = mysqli_fetch_array($results)){
 					echo "<div class=\"z\">Episode #".$epnumber.", titled: ".$epname."</div>";
 				}
@@ -439,9 +439,9 @@ class AFTWWatchlist extends Config {
 
 		$this->array_watchListStatuses(); // build the various statuses we can use in a watchlist.
 
-		$query = "SELECT `id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`, `round` FROM `watchlist` WHERE `sid` = " . mysqli_real_escape_string($sid) . " AND `uid` = " . $this->UserArray[1];
+		$query = "SELECT `id`, `uid`, `date`, `update`, `sid`, `status`, `email`, `currentep`, `tracker`, `tracker_latest`, `comment`, `round` FROM `watchlist` WHERE `sid` = " . mysqli_real_escape_string($conn, $sid) . " AND `uid` = " . $this->UserArray[1];
 
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 
 		$count = mysqli_num_rows($result);
 
@@ -451,8 +451,8 @@ class AFTWWatchlist extends Config {
 			if($add == TRUE && $count == 0)
 			{
 				// we want to add a new series to the My WatchList system.
-				$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `comment`, `status`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysqli_real_escape_string($sid)."', '0', '', '1', '0')";
-				$result = mysqli_query($query);
+				$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `comment`, `status`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysqli_real_escape_string($conn, $sid)."', '0', '', '1', '0')";
+				$result = mysqli_query($conn, $query);
 
 				 $row = array('id' => mysqli_insert_id(), 'uid' => $this->UserArray[1], 'date' => time(), 'update' => time(), 'sid' => $sid, 'status' => '1', 'email' => 1, 'currentep' => 0, 'tracker' => '0', 'tracker_latest' => '', 'comment' => '', 'round' => '0');
 			}
@@ -631,7 +631,7 @@ class AFTWWatchlist extends Config {
 	private function array_watchListStatuses()
 	{
 		$query = "SELECT `id`, `StatusName` FROM `watchlist_statuses` ORDER BY `StatusName` ASC";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 
 		$i = 0;
 		while($row = mysqli_fetch_assoc($result))
@@ -644,9 +644,9 @@ class AFTWWatchlist extends Config {
 
 	private function buildTrackedEpisodes($uid,$wid,$page = 0,$count = 5)
 	{
-        $query = "SELECT `id`, `uid`, `sid`, `round` FROM `watchlist` WHERE `id` = '" . mysqli_real_escape_string($wid) . "' AND `uid` = '" . $uid . "'";
+        $query = "SELECT `id`, `uid`, `sid`, `round` FROM `watchlist` WHERE `id` = '" . mysqli_real_escape_string($conn, $wid) . "' AND `uid` = '" . $uid . "'";
 
-        $result = mysqli_query($query);
+        $result = mysqli_query($conn, $query);
         $row = mysqli_fetch_assoc($result);
 
         if (isset($_GET['round']) && is_numeric($_GET['round'])) {
@@ -661,8 +661,8 @@ class AFTWWatchlist extends Config {
 							</div>
 						</div>
 						<div style="font-size:12px;color:#242424;">';
-		$query = "SELECT `episode`.`epnumber`, `episode`.`epname`, `episode`.`Movie` FROM `episode_tracker`, `episode` WHERE `episode`.`id`=`episode_tracker`.`eid` AND `episode_tracker`.`uid` = '" . $uid . "' AND `episode_tracker`.`seriesName` = '" . $row['sid'] . "' AND `episode_tracker`.`round` = '" . mysqli_real_escape_string($row['round']) . "' ORDER BY `episode`.`epnumber` LIMIT " . ($page*$count) . ", " . $count . "";
-		$result = mysqli_query($query);
+		$query = "SELECT `episode`.`epnumber`, `episode`.`epname`, `episode`.`Movie` FROM `episode_tracker`, `episode` WHERE `episode`.`id`=`episode_tracker`.`eid` AND `episode_tracker`.`uid` = '" . $uid . "' AND `episode_tracker`.`seriesName` = '" . $row['sid'] . "' AND `episode_tracker`.`round` = '" . mysqli_real_escape_string($conn, $row['round']) . "' ORDER BY `episode`.`epnumber` LIMIT " . ($page*$count) . ", " . $count . "";
+		$result = mysqli_query($conn, $query);
 
 		$count = mysqli_num_rows($result);
 
@@ -690,8 +690,8 @@ class AFTWWatchlist extends Config {
 
 	private function trackedEpisodeNav($watchListEntry,$currentpage,$count)
 	{
-		$query = "SELECT COUNT(id) AS numrows FROM `episode_tracker` WHERE `uid` = " . $watchListEntry['uid'] . " AND `seriesName` = " . $watchListEntry['sid'] . " AND `round` = " . mysqli_real_escape_string($watchListEntry['round']);
-        $result = mysqli_query($query);
+		$query = "SELECT COUNT(id) AS numrows FROM `episode_tracker` WHERE `uid` = " . $watchListEntry['uid'] . " AND `seriesName` = " . $watchListEntry['sid'] . " AND `round` = " . mysqli_real_escape_string($conn, $watchListEntry['round']);
+        $result = mysqli_query($conn, $query);
 
         $row = mysqli_fetch_assoc($result);
 		if ($row['numrows'] > 0) {
@@ -733,25 +733,25 @@ class AFTWWatchlist extends Config {
 		}
 		else
 		{
-			$status = mysqli_real_escape_string($_POST['Status']);
-			$UpdateType = mysqli_real_escape_string($_POST['UpdateType']);
+			$status = mysqli_real_escape_string($conn, $_POST['Status']);
+			$UpdateType = mysqli_real_escape_string($conn, $_POST['UpdateType']);
 			if($UpdateType == 1)
 			{
-				$TrackerLatest = mysqli_real_escape_string($_POST['TrackerLatest']);
+				$TrackerLatest = mysqli_real_escape_string($conn, $_POST['TrackerLatest']);
 				$currentep = 0;
 			}
 			else
 			{
 				$TrackerLatest = 0;
-				$currentep = mysqli_real_escape_string($_POST['CurrentepActive']);
+				$currentep = mysqli_real_escape_string($conn, $_POST['CurrentepActive']);
 			}
-			$Email = mysqli_real_escape_string($_POST['Emails']);
+			$Email = mysqli_real_escape_string($conn, $_POST['Emails']);
 
-			$Comment = mysqli_real_escape_string(urldecode($_POST['Comment']));
+			$Comment = mysqli_real_escape_string($conn, urldecode($_POST['Comment']));
 			$Comment = htmlspecialchars($Comment);
-            $round = mysqli_real_escape_string($_POST['round']);
-			$query = "UPDATE `watchlist` SET `update` = '" . time() . "', `status` = '" . $status . "', `email` = '" . $Email . "', `currentep` = '" . $currentep . "', `tracker` = '" . $UpdateType . "', `tracker_latest` = '" . $TrackerLatest . "', `comment` = '" . $Comment . "', `round` = '" . $round . "' WHERE `id` = '" . mysqli_real_escape_string($_POST['wid']) . "' AND `uid` = '" . mysqli_real_escape_string($this->UserArray[1]) . "'";
-			$result = mysqli_query($query);
+            $round = mysqli_real_escape_string($conn, $_POST['round']);
+			$query = "UPDATE `watchlist` SET `update` = '" . time() . "', `status` = '" . $status . "', `email` = '" . $Email . "', `currentep` = '" . $currentep . "', `tracker` = '" . $UpdateType . "', `tracker_latest` = '" . $TrackerLatest . "', `comment` = '" . $Comment . "', `round` = '" . $round . "' WHERE `id` = '" . mysqli_real_escape_string($conn, $_POST['wid']) . "' AND `uid` = '" . mysqli_real_escape_string($conn, $this->UserArray[1]) . "'";
+			$result = mysqli_query($conn, $query);
 			echo $query;
 		}
 	}
@@ -759,7 +759,7 @@ class AFTWWatchlist extends Config {
     private function countAndReturnEpisodesTracked($uid, $sid)
     {
         $query = "SELECT COUNT(*) as `count`, `round` FROM `episode_tracker` WHERE uid = ${uid} AND `seriesName` = ${sid} GROUP BY `round` ORDER BY `seriesName`";
-        $result = mysqli_query($query);
+        $result = mysqli_query($conn, $query);
         $returnArray = [];
         while($row = mysqli_fetch_assoc($result)) {
             $returnArray[$row['round']] = $row['count'];

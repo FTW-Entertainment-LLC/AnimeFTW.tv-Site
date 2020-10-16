@@ -64,8 +64,8 @@ class Series extends Config {
 				<div id="ContentStuff" class="ContentStuff">';
 				$TotalSeries = $this->Query('series'); //count all of the series please.
 				$query = "SELECT id, seriesName, fullSeriesName, seoname, romaji, kanji, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category FROM series ORDER BY id DESC LIMIT $page, $limit";
-				mysqli_query("SET NAMES 'utf8'");
-				$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+				mysqli_query($conn, "SET NAMES 'utf8'");
+				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 
 				echo '<div id="seriesg">';
 				echo '<div style="padding:3px;">';
@@ -81,7 +81,7 @@ class Series extends Config {
 				<script type="text/javascript" src="assets/jqplot.pointLabels.min.js"></script>';
 				while(list($id, $seriesName, $fullSeriesName, $seoname, $romaji, $kanji, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteActivate, $noteReason, $category) = mysqli_fetch_array($result, MYSQL_NUM))
 				{
-					$query = mysqli_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
+					$query = mysqli_query($conn, "SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
 					$CountEpisodes = mysqli_num_rows($query);
 					if($moviesOnly == 1){$moviesOnly = 'yes';}else {$moviesOnly = 'no';}
 					if($noteActivate == 1){$noteActivate = 'yes';}else {$noteActivate = 'no';}
@@ -146,7 +146,7 @@ class Series extends Config {
 					$sevendaysago = $today-(7*86400);
 					$query1 = "SELECT `date`, `views` FROM  `mainaftw_stats`.`series_stats` WHERE `series_id` = " . $id . " AND `date` >= " . $sevendaysago . " AND `date` <= " . $today;
 					//echo $query1;
-					$result1 = mysqli_query($query1);
+					$result1 = mysqli_query($conn, $query1);
 					if(!$result1)
 					{
 					}
@@ -341,7 +341,7 @@ class Series extends Config {
 							echo '<select name="AvailableSeries" id="AvailableSeries" style="color: #000000;">';
 						$query2 = "SELECT `id`, `seriesName`, `fullSeriesName` FROM series ORDER BY fullSeriesName ASC";
 						echo '<option id="0" value="0">Choose a Series</option> ';
-						$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+						$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 						while(list($id, $seriesName, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 						{
 							$fullSeriesName = stripslashes($fullSeriesName);
@@ -360,8 +360,8 @@ class Series extends Config {
 						</script>';
 					if(isset($_GET['seriesname']))
 					{
-						$query = "SELECT `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`hd`, `series`.`fullSeriesName` FROM `episode`, `series` WHERE episode.sid = '" . mysqli_real_escape_string($_GET['seriesname']) . "' AND series.id='" . mysqli_real_escape_string($_GET['seriesname']) . "'LIMIT 0, 1";
-						$results = mysqli_query($query);
+						$query = "SELECT `episode`.`vidheight`, `episode`.`vidwidth`, `episode`.`epprefix`, `episode`.`subGroup`, `episode`.`videotype`, `episode`.`hd`, `series`.`fullSeriesName` FROM `episode`, `series` WHERE episode.sid = '" . mysqli_real_escape_string($conn, $_GET['seriesname']) . "' AND series.id='" . mysqli_real_escape_string($conn, $_GET['seriesname']) . "'LIMIT 0, 1";
+						$results = mysqli_query($conn, $query);
 						$row = mysqli_fetch_array($results);
 						echo '<div id="form_results" class="form_results">&nbsp;</div>';
 						echo '<form method="POST" name="MassEpisodeEdit" id="MassEpisodeEdit">';
@@ -529,11 +529,11 @@ class Series extends Config {
 							exit;
 						}
 						else {
-							$sid = mysqli_real_escape_string($_GET['sid']);
+							$sid = mysqli_real_escape_string($conn, $_GET['sid']);
 							$sid = htmlentities($sid);
 							$query2  = "SELECT id, seriesName, fullSeriesName, romaji, kanji, synonym, seoname, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteReason, aonly, sequelto, prequelto, category, seriesType, seriesList, ueid, hd, `license` FROM series WHERE id='$sid'";
-							mysqli_query("SET NAMES 'utf8'");
-							$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+							mysqli_query($conn, "SET NAMES 'utf8'");
+							$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 							list($id, $seriesName, $fullSeriesName, $romaji, $kanji, $synonym, $seoname, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteReason, $aonly, $sequelto, $prequelto, $category, $seriesType, $seriesList, $ueid, $hd, $license) = mysqli_fetch_array($result2, MYSQL_NUM);
 							$description = str_replace("<br />", "\n", $description);
 
@@ -554,8 +554,8 @@ class Series extends Config {
 							$HiddenInputs = '<input type="hidden" id="method" class="method" value="AddSeries" name="method" />
 							<input type="hidden" id="uploaderid" name="uploaderid" value="' . $_GET['ueid'] . '" />';
 							$SubmitTXT = 'Add Series';
-							$query = "SELECT `series`, `prefix`, `anidbsid`, `hd`, `airing` FROM `uestatus` WHERE `id` = " . mysqli_real_escape_string($_GET['ueid']);
-							$result = mysqli_query($query);
+							$query = "SELECT `series`, `prefix`, `anidbsid`, `hd`, `airing` FROM `uestatus` WHERE `id` = " . mysqli_real_escape_string($conn, $_GET['ueid']);
+							$result = mysqli_query($conn, $query);
 							$row = mysqli_fetch_array($result);
 							$SeriesPrefix = substr($row['series'], 0, 10);
 							$SeriesPrefix = strtolower($SeriesPrefix);
@@ -765,7 +765,7 @@ class Series extends Config {
 								{
 									echo '<option id="0" value="0">None</option> ';
 								}
-								$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+								$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 								while(list($id2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM))
 								{
 									$fullSeriesName = stripslashes($fullSeriesName);
@@ -787,7 +787,7 @@ class Series extends Config {
 								else {
 									echo '<option id="0" value="0">None</option> ';
 								}
-								$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+								$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 								while(list($id2, $fullSeriesName) = mysqli_fetch_array($result2, MYSQL_NUM)){
 									$fullSeriesName = stripslashes($fullSeriesName);
 									echo '<option id="'.$id2.'" value="'.$id2.'"'; if($id2 == $sequelto){echo' selected';} echo '>'.$fullSeriesName.'</option> ';
@@ -947,10 +947,10 @@ class Series extends Config {
 	private function adminSeriesSearch()
 	{
 		$this->buildCategories();
-		$input = mysqli_real_escape_string($_POST['SeriesName']);
-		mysqli_query("SET NAMES 'utf8'");
+		$input = mysqli_real_escape_string($conn, $_POST['SeriesName']);
+		mysqli_query($conn, "SET NAMES 'utf8'");
 		$query   = "SELECT id, seriesName, fullSeriesName, seoname, romaji, kanji, videoServer, active, description, ratingLink, stillRelease, Movies, moviesOnly, OVA, noteActivate, noteReason, category, (SELECT COUNT(id) FROM episode WHERE seriesname=series.seriesName) AS numeps FROM series WHERE ( fullSeriesName LIKE '%".$input."%' OR romaji LIKE '%".$input."%' OR kanji LIKE '%".$input."%' ) ORDER BY seriesName ASC LIMIT 100";
-		$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$ts = mysqli_num_rows($result);
 		if($ts < 1)
 		{
@@ -961,7 +961,7 @@ class Series extends Config {
 			echo '<div align="center">Showing ' . $ts . ' Results for: <b>' . stripslashes($input) . '</b></div>';
 			while(list($id, $seriesName, $fullSeriesName, $seoname, $romaji, $kanji, $videoServer, $active, $description, $ratingLink, $stillRelease, $Movies, $moviesOnly, $OVA, $noteActivate, $noteReason, $category, $numeps) = mysqli_fetch_array($result, MYSQL_NUM))
 			{
-				//$query = mysqli_query("SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
+				//$query = mysqli_query($conn, "SELECT id FROM episode WHERE seriesname='".$seriesName."' AND Movie = 0");
 				$CountEpisodes = $numeps;
 				if($moviesOnly == 1){$moviesOnly = 'yes';}else {$moviesOnly = 'no';}
 				if($noteActivate == 1){$noteActivate = 'yes';}else {$noteActivate = 'no';}
@@ -1028,7 +1028,7 @@ class Series extends Config {
 					$today = strtotime(date("Y-m-d"));
 					$sevendaysago = $today-(7*86400);
 					$query1 = "SELECT `date`, `views` FROM  `mainaftw_stats`.`series_stats` WHERE `series_id` = " . $id . " AND `date` >= " . $sevendaysago . " AND `date` <= " . $today;
-					$result1 = mysqli_query($query1);
+					$result1 = mysqli_query($conn, $query1);
 					if(!$result1)
 					{
 					}
@@ -1119,7 +1119,7 @@ class Series extends Config {
 			$iquery = "SELECT COUNT(id) FROM series";
 		}
 		else {}
-		$query = mysqli_query($iquery);
+		$query = mysqli_query($conn, $iquery);
 		$total = mysqli_result($query, 0);
 		return $total;
 		//unset $query;

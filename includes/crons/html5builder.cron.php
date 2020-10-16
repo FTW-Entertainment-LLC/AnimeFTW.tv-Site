@@ -17,14 +17,14 @@ $currenttime = time();
 $today = md5(date("dmY"));
 
 $query = "SELECT `id`, `seriesname`, `epprefix`, `epnumber` FROM `episode` WHERE `html5` = 0 AND `videotype` = 'mkv' LIMIT 0, 50";
-$result = mysqli_query($query);
+$result = mysqli_query($conn, $query);
 
 $count = mysqli_num_rows($result);
 
 if($count == 0)
 {
 	// if we receive zero rows, this job is done, should send an email as well, but who cares...
-	mysqli_query("UPDATE `crons` SET `status` = 2 WHERE `id` = $CronID");
+	mysqli_query($conn, "UPDATE `crons` SET `status` = 2 WHERE `id` = $CronID");
 }
 else
 {
@@ -36,16 +36,16 @@ else
 		if(strtolower($contents) != 'success')
 		{
 			$reportback .= $row['seriesname'] . ', episode #' . $row['epnumber'] . ' did not create with error: ' . $contents . "\n";
-			mysqli_query("UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
+			mysqli_query($conn, "UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
 		}
 		else
 		{
-			mysqli_query("UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
+			mysqli_query($conn, "UPDATE `episode` SET `html5` = 1 WHERE `id` = " . $row['id']);
 		}
 	}
 	
-	//mysqli_query("INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $currenttime . "', '" . time() . "');");
-	//mysqli_query("UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
+	//mysqli_query($conn, "INSERT INTO crons_log (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $CronID . "', '" . $currenttime . "', '" . time() . "');");
+	//mysqli_query($conn, "UPDATE crons SET last_run = '" . time() . "', status = 0 WHERE id = " . $CronID);
 	
 	if($reportback != '')
 	{

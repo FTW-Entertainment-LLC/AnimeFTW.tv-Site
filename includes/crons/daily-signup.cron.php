@@ -37,24 +37,24 @@ class DailySignups extends Config {
 			$endofday = $startofday+86399;
 			
 			$query = "SELECT COUNT(ID) AS NumSignups FROM `" . $this->MainDatabase . "`.`users` WHERE `registrationDate` >= " . $startofday . " AND `registrationDate` <= " . $endofday;
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_assoc($result);
-			mysqli_query("INSERT INTO `" . $this->StatsDatabase . "`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '1', '" . $startofday . "', '" . $row['NumSignups'] . "')");
+			mysqli_query($conn, "INSERT INTO `" . $this->StatsDatabase . "`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '1', '" . $startofday . "', '" . $row['NumSignups'] . "')");
 			unset($row);
 			unset($query);
 			unset($result);
 			// number of activated signups for the day.
 			$query = "SELECT COUNT(ID) AS NumSignups FROM `" . $this->MainDatabase . "`.`users` WHERE `registrationDate` >= " . $startofday . " AND `registrationDate` <= " . $endofday . " AND `Active` = 1";
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_assoc($result);
-			mysqli_query("INSERT INTO `" . $this->StatsDatabase . "`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '2', '" . $startofday . "', '" . $row['NumSignups'] . "')");
+			mysqli_query($conn, "INSERT INTO `" . $this->StatsDatabase . "`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '2', '" . $startofday . "', '" . $row['NumSignups'] . "')");
 		}
 	}
 	
 	private function updateCronEntry()
 	{
-		mysqli_query("INSERT INTO `" . $this->MainDatabase . "`.`crons_log` (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $this->CronID . "', '" . time() . "', '" . time() . "');");
-		mysqli_query("UPDATE `" . $this->MainDatabase . "`.`crons` SET last_run = '" . time() . "', status = 0 WHERE id = " . $this->CronID);
+		mysqli_query($conn, "INSERT INTO `" . $this->MainDatabase . "`.`crons_log` (`id`, `cron_id`, `start_time`, `end_time`) VALUES (NULL, '" . $this->CronID . "', '" . time() . "', '" . time() . "');");
+		mysqli_query($conn, "UPDATE `" . $this->MainDatabase . "`.`crons` SET last_run = '" . time() . "', status = 0 WHERE id = " . $this->CronID);
 	}
 }
 

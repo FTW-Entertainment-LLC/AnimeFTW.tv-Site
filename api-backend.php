@@ -47,7 +47,7 @@ $Password = @$_GET['password'];
 $android = (isset($_GET['client']) && $_GET['client'] == "FtwAndApp") ? TRUE : FALSE;
 $version = (isset($_GET['version'])) ? $_GET['version'] : 0;
 $appkey = ($android == TRUE) ? array("FtwAndApp",$version) : array(NULL,NULL);
-$alpha = isset($_GET['alpha']) ? mysqli_real_escape_string($_GET['alpha']) : NULL;
+$alpha = isset($_GET['alpha']) ? mysqli_real_escape_string($conn, , $_GET['alpha']) : NULL;
 if(@$_SERVER['HTTP_USER_AGENT'] == ''){
 	if(isset($_GET['version'])){
 		$agent = $_GET['client'].' running '.$_GET['version'];

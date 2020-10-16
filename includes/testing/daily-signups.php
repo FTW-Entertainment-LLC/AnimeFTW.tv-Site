@@ -9,8 +9,8 @@ for($i=1825;$i>0;$i--)
 	$endofday = $startofday+86399;
 	
 	$query = "SELECT COUNT(ID) AS NumSignups FROM `users` WHERE `registrationDate` >= " . $startofday . " AND `registrationDate` <= " . $endofday . " ";
-	$result = mysqli_query($query);
+	$result = mysqli_query($conn, $query);
 	$row = mysqli_fetch_assoc($result);	
 	//echo $query;
-	mysqli_query("INSERT INTO `mainaftw_stats`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '1', '" . $startofday . "', '" . $row['NumSignups'] . "')");
+	mysqli_query($conn, "INSERT INTO `mainaftw_stats`.`user_stats` (`id`, `type`, `var1`, `var2`) VALUES (NULL, '1', '" . $startofday . "', '" . $row['NumSignups'] . "')");
 }

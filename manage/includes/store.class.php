@@ -91,9 +91,9 @@ class Store extends Config {
 						{
 							$this->ModRecord("Deactivate Store Item");
 							// deleting is a strong word.. we are actually marking the item as inactive.
-							mysqli_query("UPDATE store_items SET availability = 'unavailable' WHERE id = " . mysqli_real_escape_string($_GET['id']));
+							mysqli_query($conn, "UPDATE store_items SET availability = 'unavailable' WHERE id = " . mysqli_real_escape_string($conn, $_GET['id']));
 							// now we update all of the inventory to make sure that there is nothing possible to buy.
-							mysqli_query("UPDATE store_inventory SET item_count = 0 WHERE item_id = " . mysqli_real_escape_string($_GET['id']));
+							mysqli_query($conn, "UPDATE store_inventory SET item_count = 0 WHERE item_id = " . mysqli_real_escape_string($conn, $_GET['id']));
 						}
 						else if($_GET['action'] == 'edit')
 						{
@@ -110,7 +110,7 @@ class Store extends Config {
 						else if($_GET['action'] == 'add-inventory-row')
 						{
 							$this->ModRecord("Add New Inventory Row to Item");
-							mysqli_query("INSERT INTO store_inventory (`id`, `item_id`, `item_count`, `item_size`, `order`) VALUES (NULL, '" . mysqli_real_escape_string($_GET['id']) . "', '0', '', '20')");
+							mysqli_query($conn, "INSERT INTO store_inventory (`id`, `item_id`, `item_count`, `item_size`, `order`) VALUES (NULL, '" . mysqli_real_escape_string($conn, $_GET['id']) . "', '0', '', '20')");
 						}
 						///inv_id="  + inv_id + "&value=
 						else if($_GET['action'] == 'update-inventory-row')
@@ -124,17 +124,17 @@ class Store extends Config {
 								$inv_id = substr($_GET['inv_id'],5);
 								$inv_type = substr($_GET['inv_id'],0,4);
 
-								$this->ModRecord("Update Inventory for Item " . mysqli_real_escape_string($_GET['id']));
+								$this->ModRecord("Update Inventory for Item " . mysqli_real_escape_string($conn, $_GET['id']));
 
 								if($inv_type == 'size')
 								{
 									// We are going to update the size value
-									mysqli_query("UPDATE store_inventory SET item_size = '" . mysqli_real_escape_string($_GET['value']) . "' WHERE id = " . mysqli_real_escape_string($inv_id));
+									mysqli_query($conn, "UPDATE store_inventory SET item_size = '" . mysqli_real_escape_string($conn, $_GET['value']) . "' WHERE id = " . mysqli_real_escape_string($conn, $inv_id));
 								}
 								else if($inv_type == 'count')
 								{
 									// We are going to update the count value
-									mysqli_query("UPDATE store_inventory SET item_count = '" . mysqli_real_escape_string($_GET['value']) . "' WHERE id = " . mysqli_real_escape_string($inv_id));
+									mysqli_query($conn, "UPDATE store_inventory SET item_count = '" . mysqli_real_escape_string($conn, $_GET['value']) . "' WHERE id = " . mysqli_real_escape_string($conn, $inv_id));
 								}
 								else
 								{
@@ -151,7 +151,7 @@ class Store extends Config {
 				else
 				{
 					$query = "SELECT id, name, productnum FROM store_items ORDER BY name ASC";
-					$results = mysqli_query($query);
+					$results = mysqli_query($conn, $query);
 
 					$rowcount = mysqli_num_rows($results);
 					echo '<div style="float:right;padding-right:15px;"><a href="#" onClick="AdminFunction(\'manage-stock\',\'add\',\'0\'); return false;">Add Item</a></div><div align="center" style="margin-top:5px;">Showing a total of ' . $rowcount . ' items available on the store.</div>
@@ -207,8 +207,8 @@ class Store extends Config {
 
 	private function ShowItem()
 	{
-		$query = "SELECT id, name, price, availability, description, productnum, pictures, picturetype FROM store_items WHERE name = '" . mysqli_real_escape_string($this->options[1]) . "'";
-		$result = mysqli_query($query);
+		$query = "SELECT id, name, price, availability, description, productnum, pictures, picturetype FROM store_items WHERE name = '" . mysqli_real_escape_string($conn, $this->options[1]) . "'";
+		$result = mysqli_query($conn, $query);
 		if(!$result)
 		{
 			// no results
@@ -267,7 +267,7 @@ class Store extends Config {
 	private function BuildAvailability($item_id)
 	{
 		$query = "SELECT `id`, `item_count`, `item_size` FROM store_inventory WHERE item_id='$item_id' AND item_count>0 ORDER BY `order` ASC";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		$numrow = mysqli_num_rows($results);
 
 		if($numrow > 0) // if there are active rows, it means it can be bought.
@@ -309,8 +309,8 @@ class Store extends Config {
 	{
 		if($Type == 'Edit')
 		{
-			$query = "SELECT id, category, name, price, availability, description, productnum, pictures, picturetype, weight FROM store_items WHERE id = " . mysqli_real_escape_string($_GET['id']);
-			$results = mysqli_query($query);
+			$query = "SELECT id, category, name, price, availability, description, productnum, pictures, picturetype, weight FROM store_items WHERE id = " . mysqli_real_escape_string($conn, $_GET['id']);
+			$results = mysqli_query($conn, $query);
 			list($id,$category,$name,$price,$availability,$description,$productnum,$pictures,$picturetype,$weight) = mysqli_fetch_array($results);
 			$method = '<input type="hidden" name="method" value="EditStoreItem" />';
 			$ButtonText = 'Edit Item';
@@ -416,7 +416,7 @@ class Store extends Config {
 		echo '<div style="font-size:16px;width:200px;border-bottom:1px solid #ccc;">Item Inventory</div>';
 
 		$query = "SELECT `id`, `item_count`, `item_size`, `order` FROM store_inventory WHERE item_id = $id ORDER BY `order` ASC";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 
 		if(!$results)
 		{
@@ -482,7 +482,7 @@ class Store extends Config {
 	private function BuildStoreCategories($type = NULL,$var = NULL)
 	{
 		$query = "SELECT * FROM store_category";
-		$result = mysqli_query($query);
+		$result = mysqli_query($conn, $query);
 
 		// if we want to specifiy something, we change it!
 		if($type == 1)
@@ -538,7 +538,7 @@ class Store extends Config {
 					// everything checked out, we need to:
 					// 1. Update the order
 					// 2. send a status update email
-					$results = mysqli_query("UPDATE `store_orders` SET `status` = " . mysqli_real_escape_string($_GET['value']) . ", `date_updated` = " . time() . " WHERE `id` = " . mysqli_real_escape_string($_GET['id']));
+					$results = mysqli_query($conn, "UPDATE `store_orders` SET `status` = " . mysqli_real_escape_string($conn, $_GET['value']) . ", `date_updated` = " . time() . " WHERE `id` = " . mysqli_real_escape_string($conn, $_GET['id']));
 					if(!$results)
 					{
 						echo 'An error happened during the update process.';
@@ -547,8 +547,8 @@ class Store extends Config {
 					// now that the update has been completed we need to send them an email!
 
 					// first select the data set.
-					$query = "SELECT `store_order_paypallogs`.`payer_email`, `store_orders`.`cart_id` FROM `store_orders`, `store_order_paypallogs` WHERE `store_order_paypallogs`.`option_selection1`=`store_orders`.`cart_id` AND `store_orders`.`id` = " . mysqli_real_escape_string($_GET['id']);
-					$results = mysqli_query($query);
+					$query = "SELECT `store_order_paypallogs`.`payer_email`, `store_orders`.`cart_id` FROM `store_orders`, `store_order_paypallogs` WHERE `store_order_paypallogs`.`option_selection1`=`store_orders`.`cart_id` AND `store_orders`.`id` = " . mysqli_real_escape_string($conn, $_GET['id']);
+					$results = mysqli_query($conn, $query);
 
 					if(!$results)
 					{
@@ -576,7 +576,7 @@ class Store extends Config {
 				else
 				{
 					$tracking_num = preg_replace('/\s+/', '', $_GET['value']);
-					$results = mysqli_query("UPDATE `store_orders` SET `tracking_num` = '" . mysqli_real_escape_string($tracking_num) . "' WHERE `id` = " . mysqli_real_escape_string($_GET['id']));
+					$results = mysqli_query($conn, "UPDATE `store_orders` SET `tracking_num` = '" . mysqli_real_escape_string($conn, $tracking_num) . "' WHERE `id` = " . mysqli_real_escape_string($conn, $_GET['id']));
 				}
 			}
 			else
@@ -587,7 +587,7 @@ class Store extends Config {
 		else
 		{
 			$query = "SELECT `id`, `cart_id`, `total_price`, `date_submitted`, `status`, `tracking_num`, `payment_method`, `payment_id` FROM `store_orders` ORDER BY `id` ASC";
-			$results = mysqli_query($query);
+			$results = mysqli_query($conn, $query);
 
 			$rowcount = mysqli_num_rows($results);
 			echo '<div align="center" style="margin-top:5px;">Showing a total of ' . $rowcount . ' orders.</div>

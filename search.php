@@ -9,9 +9,9 @@ $v->connectProfile($Config->outputUserInformation());
 if(isset($_GET['remote']) && $_GET['remote'] == 'yes' && !isset($_GET['page']))
 {
 	header('Content-type: application/json; charset=UTF-8');
-	$q = mysqli_real_escape_string($_GET['q']);
+	$q = mysqli_real_escape_string($conn, $_GET['q']);
 	$query = "SELECT fullSeriesName, seoname FROM series WHERE  active='yes' AND aonly = 0 AND ( fullSeriesName LIKE '%".$q."%' OR romaji LIKE '%".$q."%' OR kanji LIKE '%".$q."%' ) ORDER BY fullSeriesName LIMIT 0, 8";
-	$query = mysqli_query($query);
+	$query = mysqli_query($conn, $query);
 	
 	$results = [];
 	$counts	= [];

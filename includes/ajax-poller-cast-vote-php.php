@@ -18,23 +18,23 @@ if(isset($_GET['pollId'])){
 	// Insert new vote into the database
 	// You may put in some more code here to limit the number of votes the same ip adress could cast.
 	
-	if($optionId)mysqli_query("insert into poller_vote(optionID,ipAddress)values('".$optionId."','".getenv("REMOTE_ADDR")."')");
+	if($optionId)mysqli_query($conn, "insert into poller_vote(optionID,ipAddress)values('".$optionId."','".getenv("REMOTE_ADDR")."')");
 	
 	// Returning data as xml
 	
 	echo '<?xml version="1.0" ?>';
 	
-	$res = mysqli_query("select ID,pollerTitle from poller where ID='".$pollId."'");
+	$res = mysqli_query($conn, "select ID,pollerTitle from poller where ID='".$pollId."'");
 	if($inf = mysqli_fetch_array($res)){
 		echo "<pollerTitle>".$inf["pollerTitle"]."</pollerTitle>\n";
 		
-		$resOptions = mysqli_query("select ID,optionText from poller_option where pollerID='".$inf["ID"]."' order by pollerOrder") or die(mysqli_error());
+		$resOptions = mysqli_query($conn, "select ID,optionText from poller_option where pollerID='".$inf["ID"]."' order by pollerOrder") or die(mysqli_error());
 		while($infOptions = mysqli_fetch_array($resOptions)){
 			echo "<option>\n";
 			echo "\t<optionText>".$infOptions["optionText"]."</optionText>\n";					
 			echo "\t<optionId>".$infOptions["ID"]."</optionId>\n";					
 			
-			$resVotes = mysqli_query("select count(ID) from poller_vote where optionID='".$infOptions["ID"]."'");
+			$resVotes = mysqli_query($conn, "select count(ID) from poller_vote where optionID='".$infOptions["ID"]."'");
 			if($infVotes = mysqli_fetch_array($resVotes)){
 				echo "\t<votes>".$infVotes["count(ID)"]."</votes>\n";							
 			}										

@@ -35,7 +35,7 @@ class AFTWstats extends Config {
 	public function UsageStats()
 	{
 		$query = "SELECT `id`, `name`, `content` FROM `stats` WHERE id >= 1 OR id <= 18";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		if(!$results)
 		{
 			echo 'There were errors with the setup.';
@@ -83,7 +83,7 @@ class AFTWstats extends Config {
     {
         if (1 == 2) {
             $query = "SELECT `value` FROM `settings` WHERE `id` = 10";
-            $result = mysqli_query($query);
+            $result = mysqli_query($conn, $query);
 
             if (!$result) {
                 echo 'There was an issue running the donation box query';
@@ -116,7 +116,7 @@ class AFTWstats extends Config {
 	public function BirthdayBox(){
 		$Month = date("m");
 		$Day = date("d");
-		$result = mysqli_query("SELECT COUNT(ID) AS numrows FROM users WHERE ageDate = $Day AND ageMonth = $Month AND Active = 1") or die('Error : Error: Error: Error');
+		$result = mysqli_query($conn, "SELECT COUNT(ID) AS numrows FROM users WHERE ageDate = $Day AND ageMonth = $Month AND Active = 1") or die('Error : Error: Error: Error');
 		$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Today's Birthdays</div>\n";
@@ -128,7 +128,7 @@ class AFTWstats extends Config {
 	public function TodaysBirthdays(){
 		$Month = date("m");
 		$Day = date("d");
-		$result = mysqli_query("SELECT ID, ageDate, ageYear, ageMonth FROM users WHERE ageDate = $Day AND ageMonth = $Month AND Active = 1") or die('Error : Error: Error: Error');
+		$result = mysqli_query($conn, "SELECT ID, ageDate, ageYear, ageMonth FROM users WHERE ageDate = $Day AND ageMonth = $Month AND Active = 1") or die('Error : Error: Error: Error');
 		echo "<div class='side-body' align=\"center\">\n";
 		while(list($ID,$ageDate,$ageYear,$ageMonth) = mysqli_fetch_array($result)){
 			echo $this->formatUsername($ID) . " - Age ".$this->Birthday($ageMonth,$ageDate,$ageYear)."<br />";
@@ -159,7 +159,7 @@ class AFTWstats extends Config {
 				$aonly = "";
 			}
 			$query = "SELECT `epnumber`, `epname`, `date`, `fullSeriesName`, `seoname` FROM `episode` INNER JOIN `series` ON `episode`.`sid`=`series`.`id` AND `series`.`stillRelease` = 'yes'" . $aonly . " ORDER BY `episode`.`id` DESC LIMIT 0, 10";
-			$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 			while(list($epnumber,$epname,$date,$fullSeriesName,$seoname) = mysqli_fetch_array($result, MYSQL_NUM)){
 				$fullSeriesName = stripslashes($fullSeriesName);
 				$epname = stripslashes($epname);
@@ -189,7 +189,7 @@ class AFTWstats extends Config {
 		else if($this->la == 3){$aonly = " AND aonly < 2";}
 		else {$aonly = "";}
 			$query = "SELECT id, fullSeriesName, seoname FROM series WHERE active = 'yes'".$aonly." ORDER BY id DESC LIMIT 0, 10";
-			$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 			while(list($id,$fullSeriesName,$seoname) = mysqli_fetch_array($result, MYSQL_NUM)){
 				$fullSeriesName = stripslashes($fullSeriesName);
 			echo '<div align="center" style="padding:3px;"><a href="/anime/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$id.'\',this);return false;" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a> was Added</div>';
@@ -206,7 +206,7 @@ class AFTWstats extends Config {
 		echo "<div class='side-body-bg'>";
 		echo "<div class='scapmain'>Top My WatchList Series</div>\n";
 		echo "<div class='side-body floatfix'>\n";
-		$results = mysqli_query("SELECT COUNT(watchlist.id), series.seoname, series.fullSeriesName FROM watchlist, series WHERE series.id=watchlist.sid GROUP BY watchlist.sid ORDER BY COUNT(watchlist.id) DESC LIMIT 0, 10");
+		$results = mysqli_query($conn, "SELECT COUNT(watchlist.id), series.seoname, series.fullSeriesName FROM watchlist, series WHERE series.id=watchlist.sid GROUP BY watchlist.sid ORDER BY COUNT(watchlist.id) DESC LIMIT 0, 10");
 		echo "<ol class=\"top10\">";
 		while(list($cid,$seoname,$fullSeriesName) = mysqli_fetch_array($results, MYSQL_NUM)){
 			echo '<li type="1"><a href="/anime/'.$seoname.'/" title="'.$cid.' Users Watching">'.$fullSeriesName.'</a></li>'."\n";
@@ -221,7 +221,7 @@ class AFTWstats extends Config {
 		echo "<div class='scapmain'>Store Categories</div>\n";
 		echo "<div class='side-body floatfix'>\n";
 		$query = "SELECT name FROM store_category WHERE type = 0 ORDER BY name";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		echo '<div align="left">';
 		while($row = mysqli_fetch_assoc($results))
 		{
@@ -234,50 +234,50 @@ class AFTWstats extends Config {
 	public function BuildStats(){
 		/*
 		// Update the total users
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE Active = 1) WHERE name = 'total_users'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE Active = 1) WHERE name = 'total_users'");
 
 		// Update the total episode count
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM episode) WHERE name = 'total_episodes'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM episode) WHERE name = 'total_episodes'");
 
 		// Update the total series count
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM series) WHERE name = 'total_series'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM series) WHERE name = 'total_series'");
 
 		// Update the total page comments
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM page_comments WHERE type = 0) WHERE name = 'total_comments'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM page_comments WHERE type = 0) WHERE name = 'total_comments'");
 
 		// Update the total profile page comments
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM page_comments WHERE type = 1) WHERE name = 'total_comments_profile'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM page_comments WHERE type = 1) WHERE name = 'total_comments_profile'");
 
 		// Update the total episodes tracked
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM episode_tracker) WHERE name = 'total_tracker_rows'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM episode_tracker) WHERE name = 'total_tracker_rows'");
 
 		// Upudate the total statuses
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM status) WHERE name = 'total_statuses'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM status) WHERE name = 'total_statuses'");
 
 		// Update total users in last 24 hours
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE lastActivity>='".(time()-86400)."') WHERE name = 'total_24_hour_users'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE lastActivity>='".(time()-86400)."') WHERE name = 'total_24_hour_users'");
 
 		// Update total watchlist entries
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(id) FROM watchlist) WHERE name = 'total_mywatchlist'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(id) FROM watchlist) WHERE name = 'total_mywatchlist'");
 
 		// Update total Males
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE gender = 'male') WHERE name = 'total_males'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE gender = 'male') WHERE name = 'total_males'");
 
 		// Update total females
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE gender = 'female') WHERE name = 'total_female'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE gender = 'female') WHERE name = 'total_female'");
 
 		// update total active avatars
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes') WHERE name = 'total_avatars'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes') WHERE name = 'total_avatars'");
 
 		//
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'gif') WHERE name = 'total_avatars_gif'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'gif') WHERE name = 'total_avatars_gif'");
 
 		//
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'jpg') WHERE name = 'total_avatars_jpgs'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'jpg') WHERE name = 'total_avatars_jpgs'");
 
 		//
-		mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'png') WHERE name = 'total_avatars_pngs'");
-		//mysqli_query("UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'gif') WHERE name = 'total_users'");
+		mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'png') WHERE name = 'total_avatars_pngs'");
+		//mysqli_query($conn, "UPDATE stats SET content = (SELECT COUNT(ID) FROM users WHERE avatarActivate = 'yes' AND avatarExtension = 'gif') WHERE name = 'total_users'");
 
 
 		// Calculations.

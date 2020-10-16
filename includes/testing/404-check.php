@@ -13,7 +13,7 @@ else
 }
 
 $query = "SELECT epnumber, epprefix, seriesname, videotype FROM episode WHERE html5 = 1 ORDER BY id LIMIT $limit, 5000";
-$result = mysqli_query($query);
+$result = mysqli_query($conn, $query);
 if(!$result)
 {
 	echo 'There were no results to display';

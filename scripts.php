@@ -20,10 +20,10 @@ if($port == 443) {
 	$Host = 'http://img03.animeftw.tv';
 }
 
-$globalvarsquery = mysqli_query("SELECT * FROM global_settings WHERE id='1'");
+$globalvarsquery = mysqli_query($conn, "SELECT * FROM global_settings WHERE id='1'");
 
 $query = "SELECT `name`, `value` FROM settings WHERE (name = 'videos_active' OR name = 'comments_active' OR name = 'posting_comments' OR name = 'applications_status' OR name = 'application_round')";
-$results = mysqli_query($query);
+$results = mysqli_query($conn, $query);
 
 $globalvars = array();
 
@@ -54,8 +54,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	include_once 'includes/global_functions.php';
 	if($_GET['show'] == 'tooltips'){
 		$id = $_GET['id'];
-		$query  = "SELECT description FROM series WHERE id='".mysqli_real_escape_string($id)."'";
-		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$query  = "SELECT description FROM series WHERE id='".mysqli_real_escape_string($conn, $id)."'";
+		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$verifier = mysqli_num_rows($result);
 		$row = mysqli_fetch_array($result);
 		$description = stripslashes($row['description']);
@@ -64,7 +64,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	if($_GET['show'] == 'user-tips'){
 		$id = $_GET['id'];
 		$query  = "SELECT Username, gender, ageMonth, ageYear, country, avatarActivate, avatarExtension, personalMsg FROM users WHERE ID='".$id."'";
-		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$verifier = mysqli_num_rows($result);
 		$row = mysqli_fetch_array($result);
 		$description = stripslashes($row['description']);
@@ -72,8 +72,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'profiles'){
 	}
 	if($_GET['show'] == 'eptips'){
 		$id = $_GET['id'];
-		$query  = "SELECT epnumber, epPrefix, image, sid FROM episode WHERE id='".mysqli_real_escape_string($id)."'";
-		$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+		$query  = "SELECT epnumber, epPrefix, image, sid FROM episode WHERE id='".mysqli_real_escape_string($conn, $id)."'";
+		$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 		$verifier = mysqli_num_rows($result);
 		$row = mysqli_fetch_array($result);
 		if($row['image'] == 0){
@@ -102,7 +102,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 		if($_GET['edit'] == 'profile'){
 			if($_GET['fieldname'] == 'status'){
 				//check the status, see if it matches the latest one in the DB.
-				$s = mysqli_fetch_array(mysqli_query("SELECT status AS s, date AS d FROM status WHERE uid='".mysqli_real_escape_string($id)."' ORDER BY id DESC LIMIT 0, 1"));
+				$s = mysqli_fetch_array(mysqli_query($conn, "SELECT status AS s, date AS d FROM status WHERE uid='".mysqli_real_escape_string($conn, $id)."' ORDER BY id DESC LIMIT 0, 1"));
 				$pfin = $s['s']." posted on ".date("M dS, Y",$s['d']);
 				if(($con == $pfin) || ($con == 'No Status Updates!')){
 					//Status is the same.. silly users clicking things..
@@ -110,15 +110,15 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 				} else {
 					//Not the same status? Well lets update and display the new one!
 					$con = strip_tags($con);
-					$con = mysqli_real_escape_string($con);
+					$con = mysqli_real_escape_string($conn, $con);
 					$date = time();
-					mysqli_query("INSERT INTO status (id, date, status, uid) VALUES (NULL, '".$date."', '".$con."', '".$id."')");
+					mysqli_query($conn, "INSERT INTO status (id, date, status, uid) VALUES (NULL, '".$date."', '".$con."', '".$id."')");
 					echo $con." posted on ".date("M dS, Y",$date);
 				}
 			}
 			if($_GET['fieldname'] == 'pm'){
 				//We need to check the DB... Since we already limit who can change this.. lets make sure we check again..
-				$s = mysqli_fetch_array(mysqli_query("SELECT personalMsg AS pm FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+				$s = mysqli_fetch_array(mysqli_query($conn, "SELECT personalMsg AS pm FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 				if($con == $s['pm']){
 					//Ok, the content is the same as the one in the DB, no changes!
 					echo $con;
@@ -126,14 +126,14 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 				else {
 					//We have a change??? Lets update!!!
 					$con = strip_tags($con); // clean and scrub!
-					$con = mysqli_real_escape_string($con); //more scrubbing!
-					mysqli_query("UPDATE users SET personalMsg = '$con' WHERE ID = '".mysqli_real_escape_string($id)."'");
+					$con = mysqli_real_escape_string($conn, $con); //more scrubbing!
+					mysqli_query($conn, "UPDATE users SET personalMsg = '$con' WHERE ID = '".mysqli_real_escape_string($conn, $id)."'");
 					echo $con;
 				}
 			}
 			if($_GET['fieldname'] == 'aboutme'){
 				//First thing is first, check the DB for what we needs!
-				$s = mysqli_fetch_array(mysqli_query("SELECT aboutMe AS am FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+				$s = mysqli_fetch_array(mysqli_query($conn, "SELECT aboutMe AS am FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 				$am = stripslashes($s['am']); //convert to <br /> tags.. cause the system REALLY needs it..
 				if($con == $am){
 					//About me in the same, no change!
@@ -144,15 +144,15 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					//Caution changes are a comin'!
 					$con = htmlspecialchars($con);
 					$con = mysqli_escape_string($con); //more scrubbing!
-					mysqli_query("UPDATE users SET aboutMe = '$con' WHERE ID = '$id'");
-					$a = mysqli_fetch_array(mysqli_query("SELECT aboutMe AS am FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+					mysqli_query($conn, "UPDATE users SET aboutMe = '$con' WHERE ID = '$id'");
+					$a = mysqli_fetch_array(mysqli_query($conn, "SELECT aboutMe AS am FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 					$con2 = stripslashes($a['am']);
 					echo $con2;
 				}
 			}
 			if($_GET['fieldname'] == 'interests'){
 				//First thing is first, check the DB for what we needs!
-				$s = mysqli_fetch_array(mysqli_query("SELECT interests FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+				$s = mysqli_fetch_array(mysqli_query($conn, "SELECT interests FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 				$in = stripslashes($s['interests']);
 				if($con == $in){
 					//interests in the same, no change!
@@ -163,8 +163,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					//Caution changes are a comin'!
 					$con = htmlspecialchars($con);
 					$con = mysqli_escape_string($con); //more scrubbing!
-					mysqli_query("UPDATE users SET interests = '$con' WHERE ID = '".mysqli_real_escape_string($id)."'");
-					$a = mysqli_fetch_array(mysqli_query("SELECT interests FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+					mysqli_query($conn, "UPDATE users SET interests = '$con' WHERE ID = '".mysqli_real_escape_string($conn, $id)."'");
+					$a = mysqli_fetch_array(mysqli_query($conn, "SELECT interests FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 					$con2 = stripslashes($a['interests']);
 					echo $con2;
 				}
@@ -172,7 +172,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 			if($_GET['fieldname'] == 'msnAddress' || $_GET['fieldname'] == 'aimName' || $_GET['fieldname'] == 'yahooName' || $_GET['fieldname'] == 'skypeName' || $_GET['fieldname'] == 'icqNumber'){
 				$fn = $_GET['fieldname'];
 				//First thing is first, check the DB for what we needs!
-				$s = mysqli_fetch_array(mysqli_query("SELECT $fn FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+				$s = mysqli_fetch_array(mysqli_query($conn, "SELECT $fn FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 				$var = stripslashes($s[$fn]);
 				if($con == $var){
 					//interests in the same, no change!
@@ -183,8 +183,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'user')
 					//Caution changes are a comin'!
 					$con = htmlspecialchars($con);
 					$con = mysqli_escape_string($con); //more scrubbing!
-					mysqli_query("UPDATE users SET $fn = '$con' WHERE ID = '".mysqli_real_escape_string($id)."'");
-					$a = mysqli_fetch_array(mysqli_query("SELECT $fn FROM users WHERE ID='".mysqli_real_escape_string($id)."'"));
+					mysqli_query($conn, "UPDATE users SET $fn = '$con' WHERE ID = '".mysqli_real_escape_string($conn, $id)."'");
+					$a = mysqli_fetch_array(mysqli_query($conn, "SELECT $fn FROM users WHERE ID='".mysqli_real_escape_string($conn, $id)."'"));
 					$con2 = stripslashes($a[$fn]);
 					echo $con2;
 				}
@@ -200,13 +200,13 @@ if(isset($_GET['view']) && $_GET['view'] == 'comments')
 {
 	echo '<div>';
 	$person = $_GET['id'];
-	$person = mysqli_real_escape_string($person);
+	$person = mysqli_real_escape_string($conn, $person);
 	if (!isset($_GET['id']) || !is_numeric($person)){
 		$finalUsername = 'Error.';
 	}
 	else {
 		$query1   = "SELECT `page_comments`.`comments`, `page_comments`.`dated`, `series`.`seoname`, `series`.`fullSeriesName`, `episode`.`epnumber`, `episode`.`Movie` FROM `page_comments`, `series`, `episode` WHERE `page_comments`.`uid`='".$person."' AND `page_comments`.`type` = 0 AND `episode`.`id`=`page_comments`.`epid` AND `series`.`id`=`episode`.`sid` ORDER BY dated DESC LIMIT 0,10";
-		$result1  = mysqli_query($query1) or die(mysqli_error().$query1);
+		$result1  = mysqli_query($conn, $query1) or die(mysqli_error().$query1);
 		$total_comments = mysqli_num_rows($result1);
 		$finalUsername = '';
 		$numba = 1;
@@ -254,8 +254,8 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 	}
 	if(isset($_GET['id'])){
 		$aid = $_GET['id']; //requested user's ID
-			$query = mysqli_query("SELECT id FROM friends WHERE Asker='".mysqli_real_escape_string($aid)."'");
-			$u = mysqli_fetch_array(mysqli_query("SELECT Username FROM users WHERE ID='".mysqli_real_escape_string($aid)."'"));
+			$query = mysqli_query($conn, "SELECT id FROM friends WHERE Asker='".mysqli_real_escape_string($conn, $aid)."'");
+			$u = mysqli_fetch_array(mysqli_query($conn, "SELECT Username FROM users WHERE ID='".mysqli_real_escape_string($conn, $aid)."'"));
 			$CountFriends = mysqli_num_rows($query);
 			if($CountFriends == 0){
 				echo '<br />'.$u['Username'].' Does not have any friends Added!';
@@ -291,7 +291,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 						else {
 						}
 					}
-					$query19 = "SELECT u.ID, u.Username, u.avatarActivate, u.avatarExtension FROM friends AS f, users AS u WHERE u.ID=f.reqFriend AND f.Asker='".mysqli_real_escape_string($aid)."' ORDER BY u.Username ASC LIMIT ".$limit.",8";
+					$query19 = "SELECT u.ID, u.Username, u.avatarActivate, u.avatarExtension FROM friends AS f, users AS u WHERE u.ID=f.reqFriend AND f.Asker='".mysqli_real_escape_string($conn, $aid)."' ORDER BY u.Username ASC LIMIT ".$limit.",8";
 				}
 				else {
 					if($CountFriends > 16)
@@ -306,7 +306,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'friendbar'){
 				echo '<div align="center"><br /><table>';
 				$i=0;
 				$b=0;
-				$result19 = mysqli_query($query19) or die('Error : ' . mysqli_error());
+				$result19 = mysqli_query($conn, $query19) or die('Error : ' . mysqli_error());
   				while(list($uid,$username,$avatarActivate,$avatarExtension) = mysqli_fetch_array($result19))
 				{
 					if($avatarActivate == 'yes'){
@@ -428,7 +428,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 			echo 'One of these things is not like the other (error).';
 		}
 		else {
-			$uid = mysqli_real_escape_string($_GET['id']);
+			$uid = mysqli_real_escape_string($conn, $_GET['id']);
 			if($_GET['subview'] == 'friendbutton')
 			{
 				include_once('includes/classes/users.class.php');
@@ -438,27 +438,27 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 			}
 			else if($_GET['subview'] == 'friend-notification')
 			{
-				$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysqli_real_escape_string($_GET['id'])."'";
-				$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+				$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."' AND reqFriend='".mysqli_real_escape_string($conn, $_GET['id'])."'";
+				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				$onlyFriendships = mysqli_num_rows($result);
 				if($onlyFriendships == 0 && $profileArray[1] != $_GET['id'])
 				{
 					/*$query = sprintf("INSERT INTO friends (reqFriend, Asker, permGranted, reqDate) VALUES ('%s', '%s', '%s', '%s')",
-						mysqli_real_escape_string($uid, $conn),
-						mysqli_real_escape_string($profileArray[1], $conn),
-						mysqli_real_escape_string('no', $conn),
-						mysqli_real_escape_string(time(), $conn));
-					mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+						mysqli_real_escape_string($conn, $uid, $conn),
+						mysqli_real_escape_string($conn, $profileArray[1], $conn),
+						mysqli_real_escape_string($conn, 'no', $conn),
+						mysqli_real_escape_string($conn, time(), $conn));
+					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 					//phase one done, next we find out what we just inserted was..
-					$result1 = mysqli_query("SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysqli_error());
+					$result1 = mysqli_query($conn, "SELECT id FROM friends WHERE Asker = '".$profileArray[1]."' ORDER BY id DESC LIMIT 0, 1") or die('Error : ' . mysqli_error());
 					$row1 = mysqli_fetch_array($result1);
 					//we have our target. Proceed.
 					$query = sprintf("INSERT INTO notifications (uid, date, type, d1, d2, d3) VALUES ('%s', '%s', '%s', '%s', NULL, NULL)",
-						mysqli_real_escape_string($uid, $conn),
-						mysqli_real_escape_string(time(), $conn),
-						mysqli_real_escape_string('1', $conn),
-						mysqli_real_escape_string($row1['id'], $conn));
-					mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+						mysqli_real_escape_string($conn, $uid, $conn),
+						mysqli_real_escape_string($conn, time(), $conn),
+						mysqli_real_escape_string($conn, '1', $conn),
+						mysqli_real_escape_string($conn, $row1['id'], $conn));
+					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 					echo "<a href=\"#\" onclick=\"return false;\"><img src='http://".$_SERVER['HTTP_HOST']."//i.animeftw.tv/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
 					*/
 					echo 'Oh snap!';
@@ -480,11 +480,11 @@ if(isset($_GET['view']) && $_GET['view'] == 'profile')
 					else { //legit request, lets DO this
 						if($_GET['s'] == 'b'){ //user clicked to delete a comment
 							$query = 'UPDATE page_comments SET is_approved=\'0\' WHERE id=' . $id . '';
-			   				mysqli_query($query) or die('Error : ' . mysqli_error());
+			   				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 						}
 						else if($_GET['s'] == 'a'){ //user clicked to UNDO their "delete"
 							$query = 'UPDATE page_comments SET is_approved=\'1\' WHERE id=' . $id . '';
-			   				mysqli_query($query) or die('Error : ' . mysqli_error());
+			   				mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 						}
 						else {
 							echo 'There was another error.. try again.';
@@ -536,7 +536,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'management')
 		}
 		else {
 			$uid = mysqli_escape_string($_GET['u']);
-			$q = mysqli_fetch_array(mysqli_query("SELECT Level_access AS la FROM users WHERE ID='".$uid."'"));
+			$q = mysqli_fetch_array(mysqli_query($conn, "SELECT Level_access AS la FROM users WHERE ID='".$uid."'"));
 			if($q['la'] == 1 || $q['la'] == 2){
 				include_once('includes/classes/config.class.php');
 				include_once('includes/classes/management.class.php');
@@ -570,20 +570,20 @@ if(isset($_GET['view']) && $_GET['view'] == 'utilities')
 		{
 			///scripts.php?view=utilities&mode=comment-votes&cid=11706&vote=u
 			$query = "SELECT id FROM `ratings` WHERE `rating_id` = 'c" . $_GET['cid'] . "' AND `IP` = '" . $profileArray[1] . "'";
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			$count = mysqli_num_rows($result);
 			if($count < 1)
 			{
 				if(isset($_GET['vote']) && $_GET['vote'] == 'up')
 				{
 					$query = "INSERT INTO `ratings` (`rating_id`, `rating_num`, `IP`, `v1`) VALUE ('c" . $_GET['cid'] . "', '1', '" . $profileArray[1] . "', '" . $_SERVER['REQUEST_URI'] . "');";
-					mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 					echo 'success';
 				}
 				else if(isset($_GET['vote']) && $_GET['vote'] == 'down')
 				{
 					$query = "INSERT INTO `ratings` (`rating_id`, `rating_num`, `IP`, `v1`) VALUE ('c" . $_GET['cid'] . "', '2', '" . $profileArray[1] . "', '" . $_SERVER['REQUEST_URI'] . "');";
-					mysqli_query($query) or die('Could not connect, way to go retard:' . mysqli_error());
+					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
 					echo 'success';
 				}
 				else
@@ -1083,7 +1083,7 @@ if(isset($_GET['view']) && $_GET['view'] == 'avatar-upload')
 							$ftp->login("ftpimages", "mui(;Qg_5T~+");
 							$ftp->put($target_file, "avatars/" . $filename);
 							$errormsg .= "Upload Successful! <br />Populating the CDN may take some time if the image was the same extension.";
-							mysqli_query("UPDATE `users` SET `avatarActivate` = 'yes', `avatarExtension` = '" . mysqli_real_escape_string($imageFileType) . "' WHERE `ID` = " . mysqli_real_escape_string($_POST['uid']));
+							mysqli_query($conn, "UPDATE `users` SET `avatarActivate` = 'yes', `avatarExtension` = '" . mysqli_real_escape_string($conn, $imageFileType) . "' WHERE `ID` = " . mysqli_real_escape_string($conn, $_POST['uid']));
 							/* We have succesfully resized and created thumbnail image
 							We can now output image to user's browser or store information in the database*/
 							echo '<img src="//i.animeftw.tv/avatars/' . $filename . '" alt="user-avatar" />';

@@ -14,7 +14,7 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 	// processed, it can be any amount of time.
 	// build the query that will tell us how many there were.
 	$query = "SELECT id, date, sid, v1, v2 FROM email";
-	$results = mysqli_query($query);
+	$results = mysqli_query($conn, $query);
 	$count = mysqli_num_rows($results);
 	
 	if($count > 0)
@@ -22,11 +22,11 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 		while(list($id,$date,$sid,$v1,$v2) = mysqli_fetch_array($results))
 		{
 			$query = "SELECT series.fullSeriesName, series.seoname, episode.epname, episode.epnumber, episode.date, episode.image FROM series, episode WHERE series.id = ".$sid." AND episode.id = ".$v1." AND episode.sid=series.id";
-			$result = mysqli_query($query);
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			
 			$subquery = "SELECT users.Username, users.Email FROM users, watchlist WHERE users.ID=watchlist.uid AND watchlist.sid = $sid AND watchlist.email = 1";
-			$subresult = mysqli_query($subquery);
+			$subresult = mysqli_query($conn, $subquery);
 			while(list($Username,$Email) = mysqli_fetch_array($subresult))
 			{
 				//begin email buildup
@@ -81,7 +81,7 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 				$SMTPMail = new SMTPClient ($SmtpServer, $SmtpPort, $SmtpUser, $SmtpPass, $from, $to, $subject, $headers, $body);
 				$SMTPChat = $SMTPMail->SendMail();
 				
-				mysqli_query("INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', '".$Action."');");
+				mysqli_query($conn, "INSERT INTO email_logs (`id`, `date`, `script`, `action`) VALUES (NULL,'".time()."', '".$_SERVER['REQUEST_URI']."', '".$Action."');");
 			}
 			unset($result);
 			unset($row);
@@ -89,6 +89,6 @@ include('/home/mainaftw/public_html/SMTPmail/SMTPClass.php');
 			unset($subresult);
 			unset($subquery);
 		}
-		mysqli_query("TRUNCATE email");
+		mysqli_query($conn, "TRUNCATE email");
 	}
-	mysqli_query("UPDATE `crons` SET `status` = 0, `last_run` = " . time() . " WHERE `id` = 4");
+	mysqli_query($conn, "UPDATE `crons` SET `status` = 0, `last_run` = " . time() . " WHERE `id` = 4");

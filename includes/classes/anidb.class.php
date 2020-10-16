@@ -66,7 +66,7 @@ class AniDB extends Config{ //Needed for modrecord
 			return;
 		}
 		$query = "UPDATE anidb_api SET lasthttpcall=CURRENT_TIMESTAMP"; //Everything's okay, set it to the current time and continue.
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		
 		//im using cURL, simulating http connection with browser and getting data from anidb
 		  $ch = curl_init();

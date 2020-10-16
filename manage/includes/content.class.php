@@ -48,7 +48,7 @@ class Content extends Config {
 	private function displaySitePages()
 	{
 		$query = "SELECT `id`, `full_page_name` FROM `content` ORDER BY `full_page_name`";
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		
 		echo '<div id="site-content-wrapper">';
 		echo '<div style="margin:2px;font-size:16px;">Choose a page to Edit:</div>';
@@ -96,8 +96,8 @@ class Content extends Config {
 		if($Type == "edit")
 		{
 			// We need to edit the page content
-			$query = "SELECT `id`, `permissions`, `node`, `sub_node`, `full_page_name`, `body` FROM `content` WHERE id = " . mysqli_real_escape_string($_GET['page_id']);
-			$results = mysqli_query($query);
+			$query = "SELECT `id`, `permissions`, `node`, `sub_node`, `full_page_name`, `body` FROM `content` WHERE id = " . mysqli_real_escape_string($conn, $_GET['page_id']);
+			$results = mysqli_query($conn, $query);
 			
 			$row = mysqli_fetch_array($results);
 			$ExtraFormData = '<input type="hidden" name="method" value="EditSitePage" /><input type="hidden" name="page_id" value="' . $row['id'] . '" />';

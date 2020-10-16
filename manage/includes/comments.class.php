@@ -26,7 +26,7 @@ class Comments extends Config {
 				{
 					$query = "SELECT page_comments.id, page_comments.comments, page_comments.ip, page_comments.dated, page_comments.epid, page_comments.uid, episode.epnumber, series.seriesname, series.seoname, series.fullSeriesName FROM page_comments, episode, series WHERE page_comments.type = 0 AND episode.id=page_comments.epid AND series.id=episode.sid ORDER by page_comments.id DESC LIMIT 0, 60";
 
-					$result = mysqli_query($query);
+					$result = mysqli_query($conn, $query);
 					$count = mysqli_num_rows($result);
 					if ($count>0)
 					{
@@ -166,8 +166,8 @@ class Comments extends Config {
 					}
 					else
 					{
-						$query  = "DELETE FROM `page_comments` WHERE `id` = '" . mysqli_real_escape_string($_GET['id']) . "'";
-						mysqli_query($query) or die('Error : ' . mysqli_error());
+						$query  = "DELETE FROM `page_comments` WHERE `id` = '" . mysqli_real_escape_string($conn, $_GET['id']) . "'";
+						mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 						$this->ModRecord('Delete Comment');
 						echo 'Success';
 					}

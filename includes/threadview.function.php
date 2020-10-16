@@ -8,7 +8,7 @@ else {
 	$start_point = 0;
 }
 $query = "SELECT pid, ptid, pfid, ptitle, puid, pdate, pip, pbody, pistopic, ptispost FROM forums_post WHERE ptid='$requestedThread' AND pistopic='1'";
-$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 $row001 = mysqli_fetch_array($result);
 $tid = $row001['ptid'];
 $pid = $row001['pid'];
@@ -30,7 +30,7 @@ $ttitle = htmlentities($ttitle);
 
 $initialPost = 1;
 $query7 = "SELECT fid, ftitle, fseo	FROM forums_forum WHERE fseo='$requestedForum'";
-$result7 = mysqli_query($query7) or die('Error : ' . mysqli_error());
+$result7 = mysqli_query($conn, $query7) or die('Error : ' . mysqli_error());
 $row7 = mysqli_fetch_array($result7);
 $fid = $row7['fid'];
 $ftitle = $row7['ftitle'];
@@ -43,7 +43,7 @@ if($profileArray[2] != 1 && $profileArray[2] != 2)
 }
 
 $query9 = "SELECT tclosed, hidden FROM forums_threads WHERE tid='$tid'" . $restrictHiddenThreads;
-$result9 = mysqli_query($query9) or die('Error : ' . mysqli_error());
+$result9 = mysqli_query($conn, $query9) or die('Error : ' . mysqli_error());
 $row9 = mysqli_fetch_array($result9);
 $tclosed = $row9['tclosed'];
 $thidden = $row9['hidden'];
@@ -55,7 +55,7 @@ echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border
 	</div><br />";
 }
 else {
-	$query009 = mysqli_query("SELECT COUNT(fid) FROM forums_forum WHERE fid='$tfid' AND fpermission LIKE '%".$profileArray[2]."%'");
+	$query009 = mysqli_query($conn, "SELECT COUNT(fid) FROM forums_forum WHERE fid='$tfid' AND fpermission LIKE '%".$profileArray[2]."%'");
 	$total_forum = mysqli_result($query009, 0);
 	if ($total_forum == 0){
 		echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
@@ -76,7 +76,7 @@ else {
 
 					// get posts in this topic
 					$query   = "SELECT COUNT(pid) AS numrows FROM forums_post WHERE ptid='$tid'";
-					$result  = mysqli_query($query) or die('Error, query failed');
+					$result  = mysqli_query($conn, $query) or die('Error, query failed');
 					$row     = mysqli_fetch_array($result, MYSQL_ASSOC);
 					$numrows = $row['numrows'];
 					// get start points
@@ -113,7 +113,7 @@ else {
 									echo "<span class='forumbottons'><img align='middle' src='//i.animeftw.tv/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></span>&nbsp;&nbsp;";
 								}
 								$query = "SELECT fid FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$profileArray[2]%'";
-								$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+								$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 								$row = mysqli_fetch_array($result);
 								$allowedToMakeNewTopic2 = $row['fid'];
 								if ($allowedToMakeNewTopic2 ==''){}
@@ -125,7 +125,7 @@ else {
 							else {
 							echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//i.animeftw.tv/forumimages/postreply.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 								$query = "SELECT fid FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$profileArray[2]%'";
-								$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+								$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 								$row = mysqli_fetch_array($result);
 								$allowedToMakeNewTopic2 = $row['fid'];
 								if ($allowedToMakeNewTopic2 ==''){}
@@ -160,7 +160,7 @@ else {
 
 								//get the user who posted this...
 								$query002 = "SELECT Username, Level_access, firstName, gender, country, avatarActivate, personalMsg, avatarExtension, memberTitle, advanceImage, signatureActive, Signature FROM users WHERE ID='$tpid'";
-										$result002 = mysqli_query($query002) or die('Error : ' . mysqli_error());
+										$result002 = mysqli_query($conn, $query002) or die('Error : ' . mysqli_error());
 										$row002 = mysqli_fetch_array($result002);
 										$Username002 = $row002['Username'];
 										$firstName002 = $row002['firstName'];
@@ -246,7 +246,7 @@ else {
 									{
 									}
 									//check user post posts and count them
-									$query004 = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE puid='$tpid'");
+									$query004 = mysqli_query($conn, "SELECT COUNT(pid) FROM forums_post WHERE puid='$tpid'");
 									$total_user_post_posts = mysqli_result($query004, 0);
 									$total_posts = $total_user_post_posts;
 									echo "<br />
@@ -331,7 +331,7 @@ else {
 
 					$initialPost2 = 2;
 					$query004  = "SELECT pid, ptid, puid, pfid, ptitle, pdate, pbody, ptispost, pip FROM forums_post WHERE ptid='$tid' AND pistopic='0' ORDER BY ptispost ASC LIMIT $start_point2, $rowsPerPage";
-					$result004 = mysqli_query($query004) or die('Error : ' . mysqli_error());
+					$result004 = mysqli_query($conn, $query004) or die('Error : ' . mysqli_error());
 					while(list($pid,$ptid,$puid,$pfid,$ptitle,$pdate,$pbody,$ptispost,$pip) = mysqli_fetch_array($result004))
 					{
 						$pbody = stripslashes($pbody);
@@ -340,7 +340,7 @@ else {
 
 	//get the user who posted this...
 		$query003 = "SELECT Username, Level_access, firstName, gender, country, avatarActivate, personalMsg, avatarExtension, memberTitle, advanceImage, signatureActive, Signature FROM users WHERE ID='$puid'";
-		$result003 = mysqli_query($query003) or die('Error : ' . mysqli_error());
+		$result003 = mysqli_query($conn, $query003) or die('Error : ' . mysqli_error());
 		$row003 = mysqli_fetch_array($result003);
 		$Username003 = $row003['Username'];
 
@@ -375,7 +375,7 @@ else {
 	if($profileArray[2] == 1 || $profileArray[2] == 2) { $IpAddress1 = "IP: <i><a href='http://ip-lookup.net?ip=".$pip."' target='_blank'>".$pip."</a></i> &bull;\n"; }
 
     //check user post posts and count them
-		$query006 = mysqli_query("SELECT pid FROM forums_post WHERE puid='$puid'");
+		$query006 = mysqli_query($conn, "SELECT pid FROM forums_post WHERE puid='$puid'");
 		$total_user_post_posts1 = mysqli_num_rows($query006);
 		$total_posts2 = $total_user_post_posts1;
 
@@ -530,7 +530,7 @@ $initialPost2++;
 									echo "<span class='forumbottons'><img align='middle' src='//i.animeftw.tv/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></span>&nbsp;&nbsp;";
 								}
 								$query = "SELECT * FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$PermissionLevelAdvanced%'";
-								$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+								$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 								$row = mysqli_fetch_array($result);
 								$allowedToMakeNewTopic2 = $row['fid'];
 								if ($allowedToMakeNewTopic2 =='')
@@ -545,7 +545,7 @@ $initialPost2++;
 							echo"<span class='forumbottons'><a href='javascript:toggle_visibility(\"QuickReply\");'><img align='middle' src='//i.animeftw.tv/forumimages/fastreply.jpg' alt='quick reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 							echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//i.animeftw.tv/forumimages/postreply.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 								$query = "SELECT * FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$PermissionLevelAdvanced%'";
-								$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+								$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 								$row = mysqli_fetch_array($result);
 								$allowedToMakeNewTopic2 = $row['fid'];
 								if ($allowedToMakeNewTopic2 =='')

@@ -82,7 +82,7 @@
 										"col_date"=>$this::lang("MESSAGE_DATE",$this->config),
 										"col_del"=>$this::lang("MESSAGE_DELETE",$this->config));
 				
-					$query = mysqli_query("SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `rid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
+					$query = mysqli_query($conn, "SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `rid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
 					while($row = mysqli_fetch_assoc($query)) {
 						$row['from'] = $this::nameFromId($row['sid']);
 						
@@ -100,7 +100,7 @@
 										"col_date"=>$this::lang("MESSAGE_DATE",$this->config),
 										"col_del"=>$this::lang("MESSAGE_DELETE",$this->config));
 				
-					$query = mysqli_query("SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
+					$query = mysqli_query($conn, "SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='0' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
 					while($row = mysqli_fetch_assoc($query)) {
 						$row['from'] = $this::nameFromId($row['rid']);
 						$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
@@ -117,7 +117,7 @@
 										"col_date"=>$this::lang("MESSAGE_DATE",$this->config),
 										"col_del"=>$this::lang("MESSAGE_DELETE",$this->config));
 				
-					$query = mysqli_query("SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='1' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
+					$query = mysqli_query($conn, "SELECT `id`,`viewed`,`date`,`msgSubject`,`rid`,`sid` FROM `messages` WHERE `sid`='$id' AND `sent`='1' ORDER BY `id` DESC LIMIT $base,".$this->perPage);
 					while($row = mysqli_fetch_assoc($query)) {
 						$row['from'] = $this::nameFromId($row['rid']);
 						$newtime = $Config->timeZoneChange($row['date'],$this->profileArray[3]);
@@ -154,9 +154,9 @@
 			$uid = $this->userID;
 			if($uid > 0) {
 				$tpl = $this::readTemplate("mes_view",$this->config);
-				$mes_query = mysqli_query("SELECT * FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR `sid`='$uid')");
+				$mes_query = mysqli_query($conn, "SELECT * FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR `sid`='$uid')");
 				if(mysqli_num_rows($mes_query) == 1) {
-					mysqli_query("UPDATE `messages` SET `viewed`='0' WHERE `id`='$id' AND `rid`='$uid'");
+					mysqli_query($conn, "UPDATE `messages` SET `viewed`='0' WHERE `id`='$id' AND `rid`='$uid'");
 				
 					$boxname = $this::lang("MESSAGE_READMES",$this->config);
 					$mes_row = mysqli_fetch_assoc($mes_query);
@@ -180,7 +180,7 @@
 		private function ReadDraft($id) {
 			$uid = $this->userID;
 			if($uid > 0) {
-				$draft_query = mysqli_query("SELECT * FROM `messages` WHERE `id`='$id' AND `sid`='$uid'");
+				$draft_query = mysqli_query($conn, "SELECT * FROM `messages` WHERE `id`='$id' AND `sid`='$uid'");
 				if(mysqli_num_rows($draft_query) == 1) {
 					$draft_row = mysqli_fetch_assoc($draft_query);
 					$draft_row['to'] = $this::nameFromId($draft_row['rid']);
@@ -200,14 +200,14 @@
 			$rid = $this::idFromName($rname);
 			$ip = $_SERVER['REMOTE_ADDR'];
 			
-			$subject = mysqli_real_escape_string($subject);
-			$message = mysqli_real_escape_string($message);
+			$subject = mysqli_real_escape_string($conn, $subject);
+			$message = mysqli_real_escape_string($conn, $message);
 			
 			if(!is_null($rid) && !empty($subject) && !empty($message)) {
 				$message = strip_tags($message);
 				$subject = strip_tags($subject);
 				$sent = ($save == true) ? 1 : 0;
-				if(mysqli_query("INSERT INTO `messages`(`rid`,`sid`,`msgSubject`,`date`,`msgBody`,`Sent`,`ip`)
+				if(mysqli_query($conn, "INSERT INTO `messages`(`rid`,`sid`,`msgSubject`,`date`,`msgBody`,`Sent`,`ip`)
 				VALUES('$rid','$uid','$subject','$date','$message',$sent,'$ip')")) {
 					$return = array("response"=>"ok");
 					echo json_encode($return);
@@ -231,7 +231,7 @@
 		
 		private function delMessage($id) {
 			$uid = $this->userID;
-			if(mysqli_query("DELETE FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR (`sid`='$uid' AND `sent`='0'))")) {
+			if(mysqli_query($conn, "DELETE FROM `messages` WHERE `id`='$id' AND (`rid`='$uid' OR (`sid`='$uid' AND `sent`='0'))")) {
 				$return = array("response"=>"ok");
 				echo json_encode($return);
 			} else {
@@ -252,7 +252,7 @@
 		}
 		
 		private function idFromName($name) {
-			$id_query = mysqli_query("SELECT `id` FROM `users` WHERE `username`='$name'");
+			$id_query = mysqli_query($conn, "SELECT `id` FROM `users` WHERE `username`='$name'");
 			if(mysqli_num_rows($id_query) == 1) {
 				$id_row = mysqli_fetch_assoc($id_query);
 				return $id_row['id'];
@@ -262,7 +262,7 @@
 		}
 		
 		private function nameFromId($id) {
-			$name_query = mysqli_query("SELECT `username` FROM `users` WHERE `id`='$id'");
+			$name_query = mysqli_query($conn, "SELECT `username` FROM `users` WHERE `id`='$id'");
 			if(mysqli_num_rows($name_query) == 1) {
 				$name_row = mysqli_fetch_assoc($name_query);
 				return $name_row['username'];

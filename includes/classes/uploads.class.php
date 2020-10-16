@@ -36,7 +36,7 @@ class Uploads extends Config {
 			{
 				if(isset($_GET['id']) && is_numeric($_GET['id']) && $this->ValidatePermission(78) == TRUE)
 				{
-					mysqli_query("DELETE FROM uestatus WHERE id = " . mysqli_real_escape_string($_GET['id'])) or die(mysqli_error());
+					mysqli_query($conn, "DELETE FROM uestatus WHERE id = " . mysqli_real_escape_string($conn, $_GET['id'])) or die(mysqli_error());
 					$this->Mod("Delete Upload entry, id: " . $_GET['id']);
 				}
 				else
@@ -169,7 +169,7 @@ class Uploads extends Config {
 			$sort = "";
 		}
 		$query = "SELECT ID, series, prefix, episodes, type, resolution, status, user, updated, anidbsid FROM uestatus WHERE status='" . strtolower($Status) . "'" . $sort;
-		$results = mysqli_query($query);
+		$results = mysqli_query($conn, $query);
 		$num_rows = mysqli_num_rows($results);
 		if($num_rows == 0)
 		{
@@ -265,8 +265,8 @@ class Uploads extends Config {
 		{
 			$ExtraSettings = '<input type="hidden" id="method" class="method" value="UploadsEdit" name="method" />';
 			$SubmitButtonTxt = 'Edit Entry';
-			$query = 'SELECT * FROM uestatus WHERE ID = ' . mysqli_real_escape_string($_GET['id']);
-			$result = mysqli_query($query);
+			$query = 'SELECT * FROM uestatus WHERE ID = ' . mysqli_real_escape_string($conn, $_GET['id']);
+			$result = mysqli_query($conn, $query);
 			$row = mysqli_fetch_array($result);
 			$episodes = split("/",$row['episodes']);
 			$resolution = split("x",$row['resolution']);
@@ -290,8 +290,8 @@ class Uploads extends Config {
 			$SubmitButtonTxt = 'Add Entry';
 			if(isset($_GET['add-type']) && $_GET['add-type'] == 1 && isset($_GET['to-reencode']))
 			{
-				$query = "SELECT seriesName, fullSeriesName FROM series WHERE id = " . mysqli_real_escape_string($_GET['to-reencode']);
-				$result = mysqli_query($query);
+				$query = "SELECT seriesName, fullSeriesName FROM series WHERE id = " . mysqli_real_escape_string($conn, $_GET['to-reencode']);
+				$result = mysqli_query($conn, $query);
 				$row = mysqli_fetch_array($result);
 				$Series = '[Reencode] ' . stripslashes($row[1]);
 				$Prefix = $row[0];$episodesdoing = '';$episodetotal = '';$width = '';$height = '';$SeriesType = 'series';$anidb = '';$Fansub = '';
@@ -317,7 +317,7 @@ class Uploads extends Config {
 			{
 				echo '<div align="center">Now that you have chosen to do a Reencode, please choose from the list below.</div><br />';
 				$query = "SELECT id, fullSeriesName FROM series ORDER BY fullSeriesName ASC";
-				$result = mysqli_query($query);
+				$result = mysqli_query($conn, $query);
 				echo '<select id="to-reencode" name="to-reencode" style="color: #000000;">';
 				echo '<option id="0" value="0">Select a Series</option> ';
 				while(list($id, $fullSeriesName) = mysqli_fetch_array($result, MYSQL_NUM))
@@ -442,7 +442,7 @@ class Uploads extends Config {
 						<select id="uploader" name="uploader" style="color: #000000;">';
 						$query = "SELECT ID, Username FROM users WHERE (Level_access = 1 OR Level_access = 2 OR Level_access = 4 OR Level_access = 5 OR Level_access = 6) ORDER BY Username ASC";
 						echo '<option id="'.$user.'" value="'.$user.'">Encoder No longer with us.</option> ';
-						$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+						$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 						while(list($ID, $Username) = mysqli_fetch_array($result, MYSQL_NUM))
 						{
 							echo '<option id="'.$ID.'" value="'.$ID.'"'; if($ID == $user){echo' selected';} echo '>'.$Username.'</option> ';
@@ -556,7 +556,7 @@ class Uploads extends Config {
 
 	private function Visit()
 	{
-		mysqli_query("UPDATE users SET UploadsVisit = '".time()."' WHERE ID = ".$this->UserArray[1]);
+		mysqli_query($conn, "UPDATE users SET UploadsVisit = '".time()."' WHERE ID = ".$this->UserArray[1]);
 	}
 }
 

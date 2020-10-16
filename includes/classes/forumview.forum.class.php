@@ -20,8 +20,8 @@ class AFTWForumView {
 
 	public function ForumDisplay(){
 		$query2 = "SELECT fid, ftitle, fseo FROM forums_forum WHERE fseo='".$this->reqforum."' AND fpermission LIKE '%".$this->perms."%'";
-		mysqli_query("SET NAMES 'utf8'");
-		$result2 = mysqli_query($query2) or die('Error : ' . mysqli_error());
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		$result2 = mysqli_query($conn, $query2) or die('Error : ' . mysqli_error());
 		$row2 = mysqli_fetch_array($result2);
 		$fid = $row2['fid'];
 		$ftitle = $row2['ftitle'];
@@ -37,12 +37,12 @@ class AFTWForumView {
 			$requestedLimit = $requestedLimit+0;
 			$requestedLimitUp = $this->reqLimit+30;
 			$requestedLimitDown = $this->reqLimit-30;
-			$query = mysqli_query("SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid'");
+			$query = mysqli_query($conn, "SELECT COUNT(pid) FROM forums_post WHERE pfid ='$fid'");
 			$users = mysqli_result($query, 0);
 			$page_count = round(($users/30)+1);
 			echo "&nbsp;";
 			//New Paging
-			$query9 = mysqli_query("SELECT COUNT(tid) FROM forums_threads WHERE tfid='$fid'");
+			$query9 = mysqli_query($conn, "SELECT COUNT(tid) FROM forums_threads WHERE tfid='$fid'");
 			$total_threadv2 = mysqli_result($query9, 0);
 			include_once('includes/classes/forumpaging.class.php');
 			$paging = new AFTWForumPageing();
@@ -58,7 +58,7 @@ class AFTWForumView {
 			if ($this->Logged != 1){}
 			else {
 				$query = "SELECT fid FROM forums_forum WHERE fseo='".$this->reqforum."' AND fpermpost LIKE '%".$this->perms."%'";
-				$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+				$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 				$row = mysqli_fetch_array($result);
 				$allowed = $row['fid'];
 				if ($allowed ==''){}

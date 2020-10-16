@@ -14,7 +14,7 @@ switch($do) {
 		if(!get_magic_quotes_gpc()){$username = addslashes($_GET['username']);}
 		else{$username = $_GET['username'];}
 		$username = makeUrlFriendly($username);
-		$count = mysqli_num_rows(mysqli_query("SELECT ID FROM users WHERE Username='".mysqli_real_escape_string($username)."' OR `display_name` ='".mysqli_real_escape_string($username)."'"));
+		$count = mysqli_num_rows(mysqli_query($conn, "SELECT ID FROM users WHERE Username='".mysqli_real_escape_string($conn, $username)."' OR `display_name` ='".mysqli_real_escape_string($conn, $username)."'"));
 		if($count > 0) {
 		// User name not available
 		echo '<span style="color:FF0000">Username Already Taken</span>';

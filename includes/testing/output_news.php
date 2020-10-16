@@ -35,7 +35,7 @@ seriesName LIKE '%fullmetalalchemist%' OR
 seriesName LIKE '%hyakko%' OR
 seriesName LIKE '%kaiba%' ORDER BY seriesName";
 $i = 1;
-$result = mysqli_query($query) or die('Error : ' . mysqli_error());
+$result = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 echo '<textarea style="width:500px;height:300px;">';	
 while(list($fullSeriesName,$description,$seoname) = mysqli_fetch_array($result))
 {

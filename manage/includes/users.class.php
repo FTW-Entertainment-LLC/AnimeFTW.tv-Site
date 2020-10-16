@@ -114,7 +114,7 @@ class Users extends Config {
 			// we check to make sure they are logged in.
 			if($this->UserArray[0] == 1)
 			{
-				$cid = mysqli_real_escape_string($_GET['id']);
+				$cid = mysqli_real_escape_string($conn, $_GET['id']);
 				if(isset($_GET['modaction']) && $_GET['modaction'] == 'delete')
 				{
 					$error = "<div class=\"redmsg\">$cid 's account was deleted successfully (NOT!)- This function will never work.. Super Failsafe!</div><br />";
@@ -189,7 +189,7 @@ class Users extends Config {
 				}
 				else 
 				{
-					mysqli_query($query) or die('Error : ' . mysqli_error());
+					mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					$this->ModRecord($fscript);
 					echo 'Success';
 				}
@@ -281,7 +281,7 @@ class Users extends Config {
 		if($go >= 1 && $go <= 3)
 		{
 			echo '<div>';	
-			$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+			$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 			$paging = $this->pagingV1('right-column',$rowcount,30,$count,$link);
 			if($go == 1)
 			{
@@ -336,7 +336,7 @@ class Users extends Config {
 				if($_GET['part'] == 'after')
 				{					
 					$query = "SELECT ID, Username, Email, lastActivity, staticip, Active, Level_access, forumBan, messageBan, postBan FROM users WHERE Username LIKE '%".mysqli_escape_string($_GET['username'])."%'";
-					$result  = mysqli_query($query) or die('Error : ' . mysqli_error());
+					$result  = mysqli_query($conn, $query) or die('Error : ' . mysqli_error());
 					$count = mysqli_num_rows($result);
 					if($count > 24)
 					{
@@ -426,7 +426,7 @@ class Users extends Config {
 			$iquery = "SELECT COUNT(id) FROM series";
 		}
 		else {}
-		$query = mysqli_query($iquery); 
+		$query = mysqli_query($conn, $iquery); 
 		$total = mysqli_result($query, 0);
 		return $total;
 		//unset $query;
