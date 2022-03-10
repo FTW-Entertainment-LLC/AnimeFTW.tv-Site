@@ -171,7 +171,7 @@ class AFTWVideos extends Config{
 		}
 
 		if($url == NULL){
-				echo '<div align="center"><a href="/anime/age/e"><img src="//i.animeftw.tv/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="" /></a></div><br />';
+				echo '<div align="center"><a href="/anime/age/e"><img src="//animeftw.tv/images/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//animeftw.tv/images/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//animeftw.tv/images/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//animeftw.tv/images/ratings/18+.jpg" alt="" /></a></div><br />';
 		}
 		error_reporting(E_ALL & ~E_NOTICE);
 		$query = mysqli_query ($sql) or die (mysqli_error());
@@ -990,7 +990,7 @@ HDOC;
                                         echo '
 										<div class="video-comments">
 											<div class="video-comments-header" style="font-size:16px;margin:5px 0 0 20px;">Video Comments:</div>
-											<div class="comments" id="comments1"><div align="center" style="padding:10px;text-align:center;font-size:16px;"><img src="//i.animeftw.tv/loading-mini.gif" alt="" />&nbsp;Loading Comments. Please Wait...</div></div>
+											<div class="comments" id="comments1"><div align="center" style="padding:10px;text-align:center;font-size:16px;"><img src="//animeftw.tv/images/loading-mini.gif" alt="" />&nbsp;Loading Comments. Please Wait...</div></div>
 											';
 										if($EpisodeArray[11] == 1)
 										{
@@ -1799,7 +1799,7 @@ HDOC;
 				$fullSeriesName = stripslashes($fullSeriesName);
 				echo '<div class="item">'."\n";
 				echo '	<div class="searchdiv">'."\n";
-				echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="http://'.$_SERVER['HTTP_HOST'].'//i.animeftw.tv/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
+				echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="http://'.$_SERVER['HTTP_HOST'].'//animeftw.tv/images/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
 				echo '		<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.$romaji.'<br />Kanji: '.$kanji.'<br />Categories: '."\n";
 				//$episodes = split(" , ",$category);
 				//foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/" . $this->Categories[$value]['name'] . "\">" . $this->Categories[$value]['name'] . "</a>, ";}

@@ -132,11 +132,11 @@ class AFTWTracker extends Config {
 				$dateViewed = date("l, F jS, Y, h:i a",$dateViewed);
 				if(($this->ruid == $this->UserArray[1] && $this->UserArray[2] != 3) || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2))
 				{
-					$delete = '<a href="#" class="delete-entry" id="tracker-entry-' . $id . '"><img src="//i.animeftw.tv/tinyicons/cancel.png" class="tracker_more" style="float:right;" alt="" title="delete this entry" /></a>';
+					$delete = '<a href="#" class="delete-entry" id="tracker-entry-' . $id . '"><img src="//animeftw.tv/images/tinyicons/cancel.png" class="tracker_more" style="float:right;" alt="" title="delete this entry" /></a>';
 				}
 				else
 				{
-					$delete = '<a href="#" class="null-delete-entry"><img src="//i.animeftw.tv/tinyicons/cancel.png" class="tracker_more" style="float:right;" alt="" title="delete this entry" /></a>';
+					$delete = '<a href="#" class="null-delete-entry"><img src="//animeftw.tv/images/tinyicons/cancel.png" class="tracker_more" style="float:right;" alt="" title="delete this entry" /></a>';
 				}
 				echo '<div class="'.$tclass.'" id="entry-' . $id . '" style="margin-bottom:10px;">'.$delete.$this->constructEntryDetails($eid,$dateViewed) . '</div>'."\n";
 			}
@@ -182,7 +182,7 @@ class AFTWTracker extends Config {
 	}
 	private function CompLink($u,$im)
 	{
-		return '<div align="center"><img src="https://'.$this->host.'//i.animeftw.tv/tracker-sig/'.$im.'/'.$u.'.gif" width="350" height="100"><br />Forum Code<br /><textarea id="tracker-' . $im . '" class="row2" rows="1" cols="80" readonly="readonly">[url=https://'.$this->host.'/user/'.$u.'][img]https://'.$this->host.'//i.animeftw.tv/tracker-sig/'.$im.'/'.$u.'.gif[/img][/url]</textarea></div>';
+		return '<div align="center"><img src="https://'.$this->host.'//animeftw.tv/images/tracker-sig/'.$im.'/'.$u.'.gif" width="350" height="100"><br />Forum Code<br /><textarea id="tracker-' . $im . '" class="row2" rows="1" cols="80" readonly="readonly">[url=https://'.$this->host.'/user/'.$u.'][img]https://'.$this->host.'//animeftw.tv/images/tracker-sig/'.$im.'/'.$u.'.gif[/img][/url]</textarea></div>';
 	}
 
 	private function constructEntryDetails($epid,$date)

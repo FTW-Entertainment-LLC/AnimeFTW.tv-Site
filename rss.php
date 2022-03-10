@@ -25,7 +25,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>2</ttl>
     <image>
-      <url>http://i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
+      <url>http://animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
       <link>http://www.animeftw.tv/</link>
       <title>Latest News and Updates from AnimeFTW.tv</title>
     </image>';
@@ -70,7 +70,7 @@ else
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>2</ttl>
     <image>
-      <url>http://i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
+      <url>http://animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
       <link>http://www.animeftw.tv/anime</link>
       <title>Latest 50 Episodes from AnimeFTW.tv</title>
     </image>';
@@ -130,7 +130,7 @@ echo '
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>2</ttl>
     <image>
-      <url>http://i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
+      <url>http://animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png</url>
       <link>http://www.animeftw.tv/anime</link>
       <title>Latest 20 Series from AnimeFTW.tv</title>
     </image>';

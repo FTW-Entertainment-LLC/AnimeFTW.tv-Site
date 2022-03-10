@@ -1059,7 +1059,7 @@ class Shopping_Cart extends Config {
 					<input type="hidden" name="weight_unit" value="lbs" />
 					<input type="hidden" name="return" value="https://www.animeftw.tv/store/account/" />
 					<input type="hidden" name="cancel_return" value="https://www.animeftw.tv/store/account/cancel" />
-					<input type="image" src="//i.animeftw.tv/storeimages/paypal-buy-now-image.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+					<input type="image" src="//animeftw.tv/images/storeimages/paypal-buy-now-image.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 					<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 				</form>
 			</div>
@@ -1141,7 +1141,7 @@ class Shopping_Cart extends Config {
             text-align: center;
         }
 		.right-checkout-button {
-			background:#FFF url(//i.animeftw.tv/forum_button.png) 105px 9px no-repeat;
+			background:#FFF url(//animeftw.tv/images/forum_button.png) 105px 9px no-repeat;
 			border:2px solid #747478;
 			color:#555;
 			display:inline-block;
@@ -1158,7 +1158,7 @@ class Shopping_Cart extends Config {
 			cursor:pointer;
 		}
 		.right-checkout-button:hover {
-			background:#11B4E9 url(//i.animeftw.tv/forum_button.png) 105px -16px no-repeat;
+			background:#11B4E9 url(//animeftw.tv/images/forum_button.png) 105px -16px no-repeat;
 			border:2px solid #11B4E9;
 			color:#fff;
 		}

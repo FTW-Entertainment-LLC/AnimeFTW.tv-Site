@@ -23,7 +23,7 @@ else {
 		$tfid = $fid;
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
-	echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
+	echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
 	}
 	if (is_numeric($treply))
 	{
@@ -43,7 +43,7 @@ else {
 		$fid = $row9['fid'];
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
-	echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
+	echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
 	echo "&gt;&nbsp;Replying to <a href='/forums/".$fseo."/topic-$treply/s-0'>$ttitle</a></div>";
 	}
 	else if (is_numeric($pedit))
@@ -66,7 +66,7 @@ else {
 		$fid = $row9['fid'];
 		$fseo = $row9['fseo'];
 		$ftitle = $row9['ftitle'];
-	echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
+	echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a>&nbsp;";
 	echo "&gt;&nbsp;Editing post from <a href='/forums/find/post-$pid2'>$ptitle</a></div>";
 
 	}

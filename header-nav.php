@@ -4,10 +4,10 @@ define("THEME_WIDTH", "990");
 if(!isset($PageTitle)){$PageTitle = '';}
 
 if($profileArray[8] == 1){
-	$logo = "<a href=\"/\" title=\"".$PageTitle."\"><img src=\"//i.animeftw.tv/holiday/christmas/new-logo.png\" alt=\"".$PageTitle."\" style=\"border:0px;\" title=\"From all the Staff of AnimeFTW.tv, we wish you a very safe and Happy Holidays!\" /></a>";
+	$logo = "<a href=\"/\" title=\"".$PageTitle."\"><img src=\"//animeftw.tv/images/holiday/christmas/new-logo.png\" alt=\"".$PageTitle."\" style=\"border:0px;\" title=\"From all the Staff of AnimeFTW.tv, we wish you a very safe and Happy Holidays!\" /></a>";
 }
 else {
-	$logo = "<a href=\"/\" title=\"".$PageTitle."\"><img src=\"//i.animeftw.tv/new-logo.png\" alt=\"".$PageTitle."\" style=\"border:0px;\" title=\"AnimeFTW.tv, your home for High Quality Streaming Anime\" /></a>";
+	$logo = "<a href=\"/\" title=\"".$PageTitle."\"><img src=\"//animeftw.tv/images/new-logo.png\" alt=\"".$PageTitle."\" style=\"border:0px;\" title=\"AnimeFTW.tv, your home for High Quality Streaming Anime\" /></a>";
 }
 	echo "	<table cellpadding='0' cellspacing='0' width='100%'>\n	<tr>\n";
 	echo "	<td class='header-bg'>\n";
@@ -76,7 +76,7 @@ else {
 							<input type='hidden' name='sid' value='".md5(time())."' />
 							<span class='search'>
 									<input type='text' name='q' id='q' class='search-box' value='AnimeFTW.tv Site Search' autocomplete='off' />
-									<img src='//i.animeftw.tv/search-button.png' alt='' onClick='document.slimsearch.submit()' class='search-button' />
+									<img src='//animeftw.tv/images/search-button.png' alt='' onClick='document.slimsearch.submit()' class='search-button' />
 							</span>
 						</form>";
 	echo "				<div class='search-text'>";

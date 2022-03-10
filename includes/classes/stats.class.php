@@ -174,7 +174,7 @@ class AFTWstats extends Config {
 			}
 		}
 		if($this->UserArray[0] == 1) {
-			echo "<div align=\"right\"><a href=\"/rss/episodes\"><img src=\"//i.animeftw.tv/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+			echo "<div align=\"right\"><a href=\"/rss/episodes\"><img src=\"//animeftw.tv/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
 		}
 		else {
 			echo "</div></div>";
@@ -195,7 +195,7 @@ class AFTWstats extends Config {
 			echo '<div align="center" style="padding:3px;"><a href="/anime/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$id.'\',this);return false;" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a> was Added</div>';
 			}
 		if($this->UserArray[0] == 1) {
-			echo "<div align=\"right\"><a href=\"/rss/series\"><img src=\"//i.animeftw.tv/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
+			echo "<div align=\"right\"><a href=\"/rss/series\"><img src=\"//animeftw.tv/images/rss_feed_icon.png\" alt=\"rss feed\" width=\"30px\" /></a></div></div></div>";
 		}
 		else {
 			echo "</div></div>";

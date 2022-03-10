@@ -140,23 +140,23 @@ echo psa($profileArray,1);
     			</script>';
     		}
     		echo "</div><br />";
-    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent1').slideDown();return false;\"  title=\"\"><img src='//i.animeftw.tv/userv2.png' alt='' /><span class=''>My Profile</span></a></div>\n";
-    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent2').slideDown();return false;\"  title=\"\"><img src='//i.animeftw.tv/usercontactv2.png' alt='' /><span class=''>Contact Details</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent1').slideDown();return false;\"  title=\"\"><img src='//animeftw.tv/images/userv2.png' alt='' /><span class=''>My Profile</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp();$('#tabcontent2').slideDown();return false;\"  title=\"\"><img src='//animeftw.tv/images/usercontactv2.png' alt='' /><span class=''>Contact Details</span></a></div>\n";
     		if($profileArray[0] == 1){
     			echo "<div class='linfo'>";
     			echo $u->showFriendProfileButton($u->UserArray['ID'],$profileArray);
     			echo "</div>\n";
-    			echo "<div class='linfo'><a href=\"/pm/compose/".$u->UserArray['ID']."\" title=\"\"><img src='//i.animeftw.tv/pmuserv2.png' alt='' /><span>Send a Site PM</span></a></div>\n";
+    			echo "<div class='linfo'><a href=\"/pm/compose/".$u->UserArray['ID']."\" title=\"\"><img src='//animeftw.tv/images/pmuserv2.png' alt='' /><span>Send a Site PM</span></a></div>\n";
     		}
-    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent3').slideDown(); $('#comments1').load('/scripts.php?view=comments&id=".$u->UserArray['ID']."&zone=-6'); return false;\"  title=\"\" id=\"tablink3\"><img src='//i.animeftw.tv/usercommentsv2.png' alt='' /><span>View My Comments</span></a></div>\n";
-    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='//i.animeftw.tv/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>\n";
-    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='//i.animeftw.tv/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent3').slideDown(); $('#comments1').load('/scripts.php?view=comments&id=".$u->UserArray['ID']."&zone=-6'); return false;\"  title=\"\" id=\"tablink3\"><img src='//animeftw.tv/images/usercommentsv2.png' alt='' /><span>View My Comments</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent4').slideDown(); $('#watchlistprofile').load('/scripts.php?view=watchlist&node=profileview&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink4\"><img src='//animeftw.tv/images/new-icons/watchlist_new.png' width='18px' alt='' style='padding-left:8px;' /><span>View My WatchList</span></a></div>\n";
+    		echo "<div class='linfo'><a href=\"#\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent6').slideDown(); $('#episodetracker').load('/scripts.php?view=tracker&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink6\"><img src='//animeftw.tv/images/viewtrackerv1.png' alt='' /><span>View Episode Tracker</span></a></div>\n";
     		if($u->UserArray['ID'] == $profileArray[1]){
-    			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='//i.animeftw.tv/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>\n";
-    			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>\n";
+    			echo "<div class='linfo'><a href=\"#\" rel=\"#profile\" onClick=\"$('.tab-content').slideUp(); $('#tabcontent7').slideDown();$('#usernotifications').load('/scripts.php?view=notifications&show=profile&id=".$u->UserArray['ID']."'); return false;\"><img src='//animeftw.tv/images/new-icons/notifications_new.png' width='21px' alt='' /><span>View Notifications</span></a></div>\n";
+    			echo "<div class='linfo'><a href=\"#\" onclick=\"loadEditProfile(".$u->UserArray['ID']."); return false;\"  title=\"\" id=\"tablink5\"><img src='//animeftw.tv/images/usersetv2.png' alt='' /><span>Edit Your Settings</span></a></div>\n";
     		}
     		else if($profileArray[2] == 1 || $profileArray[2] == 2){
-    			echo "<div class='linfo'><a href=\"#\" onclick=\"$('.tab-content').slideUp(); $('#tabcontent5').slideDown(); $('#profilesettings').load('/scripts.php?view=settings&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/usersetv2.png' alt='' /><span>Edit Their Settings</span></a></div>";
+    			echo "<div class='linfo'><a href=\"#\" onclick=\"$('.tab-content').slideUp(); $('#tabcontent5').slideDown(); $('#profilesettings').load('/scripts.php?view=settings&id=".$u->UserArray['ID']."'); return false;\"  title=\"\" id=\"tablink5\"><img src='//animeftw.tv/images/usersetv2.png' alt='' /><span>Edit Their Settings</span></a></div>";
     		}
     		echo '<script type="text/javascript">
     				$(function() {
@@ -269,7 +269,7 @@ echo psa($profileArray,1);
 						<br />";
 						echo '<div id="content">
 						<form action="/includes/avatarupload2.php" method="post" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();" >
-							 <p id="f1_upload_process">Loading...<br/><img src="//i.animeftw.tv/loader.gif" /><br/></p>
+							 <p id="f1_upload_process">Loading...<br/><img src="//animeftw.tv/images/loader.gif" /><br/></p>
 							 <p id="f1_upload_form" align="center" style="margin-left:-100px;"><br/><label>
 							 <span style="margin-right:100px;">File:</span>
 									  <input name="myfile" type="file" size="30" />

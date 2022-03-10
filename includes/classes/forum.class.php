@@ -85,7 +85,7 @@ class Forum extends Config {
 	}
 
 	private function showActiveTopics ($PLA,$timeZone){
-		echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;Today's Active Topics</div>
+		echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;Today's Active Topics</div>
 <!-- Bgin subforums?! -->";
 		//END TOPIC START BUTTON
 		//START FORUM STUFFS! (header)

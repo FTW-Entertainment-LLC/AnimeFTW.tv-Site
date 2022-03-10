@@ -186,20 +186,20 @@
 				$link = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $Username . '">';
 				if($Level_access == 1)
 				{
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 2)
 				{
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Manager" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Manager" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
 				{
-					// //i.animeftw.tv/staff-icon.png
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
+					// //animeftw.tv/images/staff-icon.png
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 7)
 				{
-					$fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
+					$fixedUsername = '<img src="//animeftw.tv/images/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
 				}
 				else
 				{
@@ -242,20 +242,20 @@
 				}
 				if($Level_access == 1)
 				{
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Administrator" />' . $Username . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Administrator" />' . $Username . $spanafter;
 				}
 				else if($Level_access == 2)
 				{
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Manager" />'  . $Username . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Manager" />'  . $Username . $spanafter;
 				}
 				else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
 				{
-					// //i.animeftw.tv/staff-icon.png
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Member" />'  . $Username . $spanafter;
+					// //animeftw.tv/images/staff-icon.png
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Staff Member" />'  . $Username . $spanafter;
 				}
 				else if($Level_access == 7)
 				{
-					$fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" />'.$Username.'';
+					$fixedUsername = '<img src="//animeftw.tv/images/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" />'.$Username.'';
 				}
 				else
 				{
@@ -277,7 +277,7 @@
 		function bbsmiliesToCode ($bbcode) {
 					//Smilies fix
 					//Zigbigidorlu was here =D
-					$basedir = "//i.animeftw.tv/forumimages";
+					$basedir = "//animeftw.tv/images/forumimages";
 					$searchFor = array(
 										'/\:\)/is',
 										'/\:D/is',
@@ -350,20 +350,20 @@
 				$link = '<a href="https://' . $_SERVER['HTTP_HOST'] . '/user/' . $Username . '"' . $title . '>';
 				if($Level_access == 1)
 				{
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/admin-icon.png" alt="Admin of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Administrator" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 2)
 				{
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Manager" />' . $link . $Username . '</a>' . $spanafter;
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Manager" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
 				{
-					// //i.animeftw.tv/staff-icon.png
-					$fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
+					// //animeftw.tv/images/staff-icon.png
+					$fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" style="vertical-align:middle;width:16px;" border="0" title="AnimeFTW.tv Staff Member" />' . $link . $Username . '</a>' . $spanafter;
 				}
 				else if($Level_access == 7)
 				{
-					$fixedUsername = '<img src="//i.animeftw.tv/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
+					$fixedUsername = '<img src="//animeftw.tv/images/advancedimages/'.$advanceImage.'.png" alt="Advanced User Title" style="vertical-align:middle;" border="0" title="AnimeFTW.tv Advanced Member" /><a href="/user/'.$Username.'">'.$Username.'</a>';
 				}
 				else
 				{
@@ -821,7 +821,7 @@
 					$Type .= '';
 				}
 				else {
-					$Type .= '<img src="//i.animeftw.tv/advancedonly.png" alt="Advanced Members only Series" title="This is an Advanced only Series!" />&nbsp;';
+					$Type .= '<img src="//animeftw.tv/images/advancedonly.png" alt="Advanced Members only Series" title="This is an Advanced only Series!" />&nbsp;';
 				}
 				// Lets find out if its MKV or not!
 				if($row['seriesType'] == 0)
@@ -830,7 +830,7 @@
 				}
 				else if($row['seriesType'] == 1)
 				{
-					$Type .= '<img src="//i.animeftw.tv/mkv-series.png" alt="MKV series" title="This series is in DivX Web 2.0 Format" />';
+					$Type .= '<img src="//animeftw.tv/images/mkv-series.png" alt="MKV series" title="This series is in DivX Web 2.0 Format" />';
 				}
 				else {
 					$Type .= '';
@@ -1002,7 +1002,7 @@
 					$Type .= '&nbsp;<img src="' . $CDNHost . '/movie_blue.png" alt="Movie" title="This is a Movie"  style="vertical-align:middle;" border="0" />';
 				}
 				//$FinalLink = '<a href="/'.$seriesList.'/'.$seoname.'/"><span class="formInfo">'.$fullSeriesName.'<span style="display: none;" class="animetip">';
-				//$FinalLink .= '<table><tr><td width="10%" valign="top"><img src="//i.animeftw.tv/resize/anime/large/'.$row['id'].'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
+				//$FinalLink .= '<table><tr><td width="10%" valign="top"><img src="//animeftw.tv/images/resize/anime/large/'.$row['id'].'.jpg" alt="" /></td><td valign="top"><b>Description:</b><br />'.$description.'</td></tr></table>';
 				//$FinalLink .= '</span></span></a>'.$airing.$Type;
 
 				$FinalLink = '<a href="/'.$seriesList.'/'.$seoname.'/" onmouseover="ajax_showTooltip(window.event,\'http://'.$_SERVER['HTTP_HOST'].'/scripts.php?view=profiles&amp;show=tooltips&amp;id='.$row['id'].'\',this);return false" onmouseout="ajax_hideTooltip()">'.$fullSeriesName.'</a>'.$airing.$Type;
@@ -1027,7 +1027,7 @@
 
 				if($stillRelease == 'yes')
 				{
-					$FinalLink = '<a href="/reviews/series-'.$sid.'/">'.$fullSeriesName.'</a>&nbsp;<img src="//i.animeftw.tv/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
+					$FinalLink = '<a href="/reviews/series-'.$sid.'/">'.$fullSeriesName.'</a>&nbsp;<img src="//animeftw.tv/images/airing_icon.gif" alt="Airing" title="This Series is Airing" style="vertical-align:middle;" border="0" />';
 				}
 				else {
 					$FinalLink = '<a href="/reviews/series-'.$sid.'/">'.$fullSeriesName.'</a>';
@@ -1274,11 +1274,11 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 				$report = $row['report'];
 				if($report == 0)
 				{
-					$videoreport = '<a onClick="javascript:showReport();" style="border:none;cursor:pointer;"><img src="//i.animeftw.tv/reportavideo.png" /></a>
+					$videoreport = '<a onClick="javascript:showReport();" style="border:none;cursor:pointer;"><img src="//animeftw.tv/images/reportavideo.png" /></a>
 ';
 				}
 				else {
-					$videoreport = '<a style="border:none;cursor:pointer;" title="This video has been reported with an error!"><img src="//i.animeftw.tv/reportavideoreported.png" /></a>
+					$videoreport = '<a style="border:none;cursor:pointer;" title="This video has been reported with an error!"><img src="//animeftw.tv/images/reportavideoreported.png" /></a>
 ';
 				}
 				return $videoreport;
@@ -1812,7 +1812,7 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 			{
 				if($type == 'anime')
 				{
-					$returnUrl = '//i.animeftw.tv/resize/anime/s-small/'.$uid.'.jpg';
+					$returnUrl = '//animeftw.tv/images/resize/anime/s-small/'.$uid.'.jpg';
 				}
 				else {
 					$query   = "SELECT avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'";
@@ -1823,19 +1823,19 @@ VALUES ('$seriesId', '$ip', '".time()."', '$epNumber')";
 					{
 						if($avatarActivate == 'no')
 						{
-							$returnUrl = '//i.animeftw.tv/avatars/default.gif';
+							$returnUrl = '//animeftw.tv/images/avatars/default.gif';
 						}
 						else {
-							$returnUrl = '//i.animeftw.tv/avatars/user'.$uid.'.'.$row['avatarExtension'];
+							$returnUrl = '//animeftw.tv/images/avatars/user'.$uid.'.'.$row['avatarExtension'];
 						}
 					}
 					else {
 						if($avatarActivate == 'no')
 						{
-							$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/default.gif';
+							$returnUrl = '//animeftw.tv/images/resize/user/'.$size.'/default.gif';
 						}
 						else {
-							$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
+							$returnUrl = '//animeftw.tv/images/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
 						}
 					}
 				}
@@ -1926,7 +1926,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				else{$aonly = '';}
 				if($stype == 0){
 					if($sort == NULL){
-						echo '<div align="center"><a href="/anime/age/e"><img src="//i.animeftw.tv/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="" /></a></div><br />';
+						echo '<div align="center"><a href="/anime/age/e"><img src="//animeftw.tv/images/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//animeftw.tv/images/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//animeftw.tv/images/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//animeftw.tv/images/ratings/18+.jpg" alt="" /></a></div><br />';
 						$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."ORDER BY fullSeriesName";
 					}
 					else {
@@ -1934,7 +1934,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					}
 				}
 				else {
-					echo '<div align="center"><a href="/anime/age/e"><img src="//i.animeftw.tv/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="" /></a></div><br />';
+					echo '<div align="center"><a href="/anime/age/e"><img src="//animeftw.tv/images/ratings/e.jpg" alt="" /></a>&nbsp;<a href="/anime/age/12"><img src="//animeftw.tv/images/ratings/12+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/15"><img src="//animeftw.tv/images/ratings/15+.jpg" alt="" /></a>&nbsp;<a href="/anime/age/18"><img src="//animeftw.tv/images/ratings/18+.jpg" alt="" /></a></div><br />';
 					if($sort == NULL){
 						$sql = "SELECT UPPER(SUBSTRING(seriesName,1,1)) AS letter, id, fullSeriesName FROM series WHERE seriesList='$listType' ".$aonly."ORDER BY fullSeriesName";
 					}
@@ -2095,9 +2095,9 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				   $ttitle = htmlentities($ttitle);
 		echo "<tr>\n";
 		if ($tclosed == 1) {
-		    $thread_image = "<img src='//i.animeftw.tv/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
+		    $thread_image = "<img src='//animeftw.tv/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
 		  } else {
-		    $thread_image = "<img src='//i.animeftw.tv/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
+		    $thread_image = "<img src='//animeftw.tv/images/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
 		  }
             $thread_subject = "<a id='topic-".$tid."' href='/forums/$fseo/topic-".$tid."/s-0' >".$ttitle."</a>";
 
@@ -2162,8 +2162,8 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					$epname    = stripslashes($epname);
 					if ($accesslevel == 7 || $canDownload == 1){
 						if($type == 1 && ($accesslevel == 7 || $canDownload == 1)){
-							$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
-							//$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:right;padding-top:8px;" border="0" /></a>';
+							$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//animeftw.tv/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
+							//$imgurl = '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//animeftw.tv/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:right;padding-top:8px;" border="0" /></a>';
 						}
 						else {$imgurl = '';}
 
@@ -2225,7 +2225,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					{
 						if ($accesslevel == 7 || $canDownload == 1)
 						{
-							echo '<a href="http://'.$videoServer.'.animeftw.tv/movies/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
+							echo '<a href="http://'.$videoServer.'.animeftw.tv/movies/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//animeftw.tv/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
 						}
 						else {
 						}
@@ -2273,7 +2273,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					{
 						if ($accesslevel == 7 || $canDownload == 1)
 						{
-							echo '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//i.animeftw.tv/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
+							echo '<a href="http://'.$videoServer.'.animeftw.tv/'.$seriesname.'/'.$epPrefix.'_' . $epnumber . '_ns.'.$videotype.'"><img src="//animeftw.tv/images/disk.png" alt="Advanced Download" title="Click To download '.$fullSeriesName.' Episode ' . $epnumber . '" style="float:left;padding-top:2px;padding-right:3px;" border="0" /></a>';
 						}
 						else {
 						}
@@ -2308,7 +2308,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 				{
 					$fullSeriesName = stripslashes($fullSeriesName);
 					echo '<div class="searchdiv">';
-					echo '<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="//i.animeftw.tv/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>';
+					echo '<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="//animeftw.tv/images/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>';
 					echo '<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.checkRomaji($seriesName).'<br />Kanji: '.checkKanji($seriesName).'<br />Categories: ';
 					$episodes = split(", ",$category);
 					foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/$value\">$value</a>, ";}
@@ -2369,7 +2369,7 @@ $fullOutput = '<div class="objects"><a id="facebooklink" title="Share this Episo
 					$fullSeriesName = stripslashes($fullSeriesName);
 					echo '<div class="item">'."\n";
 					echo '	<div class="searchdiv">'."\n";
-					echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="//i.animeftw.tv/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
+					echo '		<div style="float:left;width:100px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/"><img src="//animeftw.tv/images/resize/anime/medium/'.$id.'.jpg" alt="'.$fullSeriesName.'" border="0" /></a></div>'."\n";
 					echo '		<div class="searchinfo"><span style="font-size:16px;"><a href="http://'.$_SERVER['HTTP_HOST'].'/anime/'.$seoname.'/">'.$fullSeriesName.'</a></span><br />Romaji: '.checkRomaji($seriesName).'<br />Kanji: '.checkKanji($seriesName).'<br />Categories: '."\n";
 					$episodes = split(", ",$category);
 					foreach ($episodes as $value) {echo "<a href=\"http://".$_SERVER['HTTP_HOST']."/anime/sort/$value\">$value</a>, ";}

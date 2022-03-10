@@ -143,22 +143,22 @@ class AFTWManagement extends Config {
 		if($this->ValidatePermission(1) == TRUE){
 			echo '<div class="management-nav">';
 			if($this->ValidatePermission(2) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=users\'); return false;"><img src="//i.animeftw.tv/management/manage_users.png" height="25px" alt="" title="Manage Users" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=users\'); return false;"><img src="//animeftw.tv/images/management/manage_users.png" height="25px" alt="" title="Manage Users" /></a></div>';
 			}
 			if($this->ValidatePermission(10) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=comments\'); return false;"><img src="//i.animeftw.tv/management/manage_comments.png" height="25px" alt="" title="Manage Comments" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=comments\'); return false;"><img src="//animeftw.tv/images/management/manage_comments.png" height="25px" alt="" title="Manage Comments" /></a></div>';
 			}
 			if($this->ValidatePermission(17) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=episodes\'); return false;"><img src="//i.animeftw.tv/management/manage_episodes.png" height="25px" alt="" title="Manage Episodes" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=episodes\'); return false;"><img src="//animeftw.tv/images/management/manage_episodes.png" height="25px" alt="" title="Manage Episodes" /></a></div>';
 			}
 			if($this->ValidatePermission(21) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=series\'); return false;"><img src="//i.animeftw.tv/management/manage_series.png" height="25px" alt="" title="Manage Series" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=series\'); return false;"><img src="//animeftw.tv/images/management/manage_series.png" height="25px" alt="" title="Manage Series" /></a></div>';
 			}
 			if($this->ValidatePermission(26) == TRUE){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=applications\'); return false;"><img src="//i.animeftw.tv/management/manage_applications.png" height="25px" alt="" title="Manage Applications" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=applications\'); return false;"><img src="//animeftw.tv/images/management/manage_applications.png" height="25px" alt="" title="Manage Applications" /></a></div>';
 			}
 			if($this->ValidatePermission(30) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=errors\'); return false;"><img src="//i.animeftw.tv/management/manage_error_reports.png" height="25px" alt="" title="Manage Error Reports" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=errors\'); return false;"><img src="//animeftw.tv/images/management/manage_error_reports.png" height="25px" alt="" title="Manage Error Reports" /></a></div>';
 			}
 			if($this->ValidatePermission(33) == TRUE){
 				$query = mysqli_query($conn, "SELECT COUNT(id) FROM reviews WHERE approved = 0;");
@@ -171,22 +171,22 @@ class AFTWManagement extends Config {
 				{
 					$reviewCount = '';
 				}
-				echo '<div style="display:inline-block;"><div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=reviews\'); return false;"><img src="//i.animeftw.tv/management/manage_reviews.png" height="25px" alt="" title="Manage Reviews" /></a></div>' . $reviewCount . '</div>';
+				echo '<div style="display:inline-block;"><div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=reviews\'); return false;"><img src="//animeftw.tv/images/management/manage_reviews.png" height="25px" alt="" title="Manage Reviews" /></a></div>' . $reviewCount . '</div>';
 			}
 			if($this->ValidatePermission(38) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=mail\'); return false;"><img src="//i.animeftw.tv/management/manage_mail.png" height="25px" alt="" title="Manage Emails" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=mail\'); return false;"><img src="//animeftw.tv/images/management/manage_mail.png" height="25px" alt="" title="Manage Emails" /></a></div>';
 			}
 			if($this->ValidatePermission(41) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=logs\'); return false;"><img src="//i.animeftw.tv/management/manage_logs.png" height="25px" alt="" title="Manage Site Logs" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=logs\'); return false;"><img src="//animeftw.tv/images/management/manage_logs.png" height="25px" alt="" title="Manage Site Logs" /></a></div>';
 			}
 			if($this->ValidatePermission(44) == TRUE && 1 == 2){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=mywatchlist\'); return false;"><img src="//i.animeftw.tv/management/manage_my_watchlist.png" height="25px" alt="" title="Manage My WatchList Entries" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=mywatchlist\'); return false;"><img src="//animeftw.tv/images/management/manage_my_watchlist.png" height="25px" alt="" title="Manage My WatchList Entries" /></a></div>';
 			}
 			if($this->ValidatePermission(48) == TRUE){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=forums\'); return false;"><img src="//i.animeftw.tv/management/manage_forum_objects.png" height="25px" alt="" title="Manage Forum Posts and Threads" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=forums\'); return false;"><img src="//animeftw.tv/images/management/manage_forum_objects.png" height="25px" alt="" title="Manage Forum Posts and Threads" /></a></div>';
 			}
 			if($this->ValidatePermission(61) == TRUE){
-				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=settings\'); return false;"><img src="//i.animeftw.tv/management/manage_settings.png" height="25px" alt="" title="Manage Settings" /></a></div>';
+				echo '<div style="display:inline-block;"><a href="#" rel="#manage" onClick="javascript:ajax_loadContent(\'manageedit\',\'/scripts.php?view=management&u='.$this->uid.'&node=settings\'); return false;"><img src="//animeftw.tv/images/management/manage_settings.png" height="25px" alt="" title="Manage Settings" /></a></div>';
 			}
 			echo '</div>';
 		}
@@ -493,7 +493,7 @@ class AFTWManagement extends Config {
 							if($this->ValidatePermission(11) == TRUE){
 								echo "<td>";
 								if ($see_me == 1) {
-									echo "<a href=\"#\"><img src='//i.animeftw.tv/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
+									echo "<a href=\"#\"><img src='//animeftw.tv/images/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
 								} else {
 									echo "&nbsp;";
 								}
@@ -505,7 +505,7 @@ class AFTWManagement extends Config {
 							if($this->ValidatePermission(12) == TRUE){
 								echo "<td>";
 								echo "<a href=\"#\" onClick=\"javascript:ajax_loadContent('manageedit','http://".$_SERVER['HTTP_HOST']."/scripts.php?view=management&u=".$this->uid."&node=comments&do=edit&id=".$myrow['id']."'); return false;\">";
-								echo "<img src='//i.animeftw.tv/editor/edit.gif' width='16' height='15' alt='edit' border='0' />";
+								echo "<img src='//animeftw.tv/images/editor/edit.gif' width='16' height='15' alt='edit' border='0' />";
 								echo "</a>";
 								echo "</td>";
 							}
@@ -521,7 +521,7 @@ class AFTWManagement extends Config {
 							if($this->ValidatePermission(13) == TRUE){
 								echo "<td>";
 								echo "<a href=\"#\" onClick=\"javascript:ajax_loadContent('manageedit','http://".$_SERVER['HTTP_HOST']."/scripts.php?view=management&u=".$this->uid."&node=comments&do=delete&id=".$myrow['id']."&confirm=before'); return false;\">";
-								echo "<img src='//i.animeftw.tv/editor/delete.gif' width='16' height='15' alt='delete' border='0' />";
+								echo "<img src='//animeftw.tv/images/editor/delete.gif' width='16' height='15' alt='delete' border='0' />";
 								echo "</a>";
 								echo "</td>\n";
 							}
@@ -742,7 +742,7 @@ class AFTWManagement extends Config {
 					$addImageIcon = ' | <a href="#" onClick="$(\'#Results\').load(\''.$link.'&edit=image-add&epid='.$r['id'].'\'); return false;">IC</a>';
 					//$addImageIcon = ' | <a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\''.$link.'&edit=image-add&epid='.$r['id'].'\'); return false;">IC</a>';
 				}
-				echo '<div class="eactioncol" align="center" '.$style.'><a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\''.$link.'&eid='.$r['id'].'&stage=before\'); return false;" title="Edit this Episode"><img src="//i.animeftw.tv/editor/edit.gif" height="11px" alt="" /></a> | <a href="#"><img src="//i.animeftw.tv/editor/delete.gif" alt="" height="11px" /></a>'.$addImageIcon.'</div>';
+				echo '<div class="eactioncol" align="center" '.$style.'><a href="#" onClick="javascript:ajax_loadContent(\'manageedit\',\''.$link.'&eid='.$r['id'].'&stage=before\'); return false;" title="Edit this Episode"><img src="//animeftw.tv/images/editor/edit.gif" height="11px" alt="" /></a> | <a href="#"><img src="//animeftw.tv/images/editor/delete.gif" alt="" height="11px" /></a>'.$addImageIcon.'</div>';
 				echo '</div>';
 				$i++;
 			}
@@ -1246,7 +1246,7 @@ class AFTWManagement extends Config {
 					<b>Total Episodes:</b> '.$CountEpisodes.'<br />
 					<b>Number of Movies:</b> '.$Movies.'<br />
 					<b>Genres:</b> '.$category.'<br />
-					<b>Rating:</b><br /><img src="//i.animeftw.tv/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
+					<b>Rating:</b><br /><img src="//animeftw.tv/images/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
 					'.$gvar.'
 					</div>
 					</div>';
@@ -1671,10 +1671,10 @@ class AFTWManagement extends Config {
 							<td>
 								<table>
 								<tr>
-									<td><div align="center"><img src="//i.animeftw.tv/ratings/e.jpg" alt="Everyone" /><br /><input type="radio" name="ratingLink" value="e.jpg" '; if($ratingLink == 'e.jpg'){echo 'checked="checked"';} echo ' /></td></div></td>
-									<td><div align="center"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="12+" /><br /><input type="radio" name="ratingLink" value="12+.jpg" '; if($ratingLink == '12+.jpg'){echo 'checked="checked"';} echo '  /></td></div></td>
-									<td><div align="center"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="15+" /><br /><input type="radio" name="ratingLink" value="15+.jpg" '; if($ratingLink == '15+.jpg'){echo 'checked="checked"';} echo '  /></td></div></td>
-									<td><div align="center"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="18+" /><br /><input type="radio" name="ratingLink" value="18+.jpg" '; if($ratingLink == '18+.jpg'){echo 'checked="checked"';} echo '  /></td></div></td>
+									<td><div align="center"><img src="//animeftw.tv/images/ratings/e.jpg" alt="Everyone" /><br /><input type="radio" name="ratingLink" value="e.jpg" '; if($ratingLink == 'e.jpg'){echo 'checked="checked"';} echo ' /></td></div></td>
+									<td><div align="center"><img src="//animeftw.tv/images/ratings/12+.jpg" alt="12+" /><br /><input type="radio" name="ratingLink" value="12+.jpg" '; if($ratingLink == '12+.jpg'){echo 'checked="checked"';} echo '  /></td></div></td>
+									<td><div align="center"><img src="//animeftw.tv/images/ratings/15+.jpg" alt="15+" /><br /><input type="radio" name="ratingLink" value="15+.jpg" '; if($ratingLink == '15+.jpg'){echo 'checked="checked"';} echo '  /></td></div></td>
+									<td><div align="center"><img src="//animeftw.tv/images/ratings/18+.jpg" alt="18+" /><br /><input type="radio" name="ratingLink" value="18+.jpg" '; if($ratingLink == '18+.jpg'){echo 'checked="checked"';} echo '  /></td></div></td>
 								</tr>
 							</table>
 						</tr>

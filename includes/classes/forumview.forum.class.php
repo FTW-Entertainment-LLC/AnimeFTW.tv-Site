@@ -27,11 +27,11 @@ class AFTWForumView {
 		$ftitle = $row2['ftitle'];
 		$fseo = $row2['fseo'];
 		if ($fid == '') {
-			echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
+			echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 			echo "<div class='errorwrap'><h4>The error returned was:</h4><p>Sorry, the link that brought you to this page seems to be out of date or broken.</p></div><br />";
 		}
 		else {
-			echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a></div><!-- Bgin subforums?! --><table style='width:100%' cellspacing=\"0\"><tr><td style='padding-left:0px' width=\"60%\">";
+			echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/".$fseo."/'>$ftitle</a></div><!-- Bgin subforums?! --><table style='width:100%' cellspacing=\"0\"><tr><td style='padding-left:0px' width=\"60%\">";
 			//paginate here!
 			$requestedLimit = $this->reqLimit;
 			$requestedLimit = $requestedLimit+0;
@@ -63,7 +63,7 @@ class AFTWForumView {
 				$allowed = $row['fid'];
 				if ($allowed ==''){}
 				else {
-					echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//i.animeftw.tv/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
+					echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//animeftw.tv/images/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
 				}
 			}
 			echo "</td></tr></table>";

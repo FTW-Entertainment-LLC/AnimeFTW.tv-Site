@@ -58,14 +58,14 @@
 <a class='side' href='/anime/blade-dance-of-the-elementalers/' onmouseover="ajax_showTooltip(window.event,'/scripts.php?view=profiles&amp;show=tooltips&amp;id=1191',this);return false" onmouseout="ajax_hideTooltip()">Blade Dance of the Elementalers</a>
 <br />
 </td>
-<td class='footer-mascot' valign='top'><img src='//i.animeftw.tv/birthday/AnimeFTW_FooterFolks_Party.jpg' alt='footer-mascot' border='0' style='position:relative;z-index:1;' /></td>
+<td class='footer-mascot' valign='top'><img src='//animeftw.tv/images/birthday/AnimeFTW_FooterFolks_Party.jpg' alt='footer-mascot' border='0' style='position:relative;z-index:1;' /></td>
 </tr>
 </table>
 <table align='left' cellpadding='0' cellspacing='0' width='100%'>
 <tr>
 <td class='copyright'>
 Powered by <a href='http://www.ftwentertainment.com/' title='FTW Entertainment LLC'>FTW</a> engine v4.0 copyright &copy; 2008 - 2014 by FTW Entertainment LLC.<br />Theme designed by <a href='http://www.animeftw.tv/user/falcon' title='Falcon of aGXTHEMES.com'>Falcon</a><div align='left' style='padding-top:5px;'>
-<a href='http://ipv6-test.com/validate.php?url=referer'><img src='//i.animeftw.tv/button-ipv6-80x15.png' alt='ipv6 ready' title='AnimeFTW.tv ipv6 ready' border='0' /></a></div></tr>
+<a href='http://ipv6-test.com/validate.php?url=referer'><img src='//animeftw.tv/images/button-ipv6-80x15.png' alt='ipv6 ready' title='AnimeFTW.tv ipv6 ready' border='0' /></a></div></tr>
 </table>
 </td>
 </tr>

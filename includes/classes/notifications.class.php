@@ -216,7 +216,7 @@ class AFTWNotifications extends Config {
 					<a href="/anime/'.$row['seoname'].'/ep-'.$row['epnumber'].'"><b>Watch this Episode Now</b></a>
 				</div>
 				<div class="notif_time">
-					'.$this->BuildDate($date).'<img src="//i.animeftw.tv/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
+					'.$this->BuildDate($date).'<img src="//animeftw.tv/images/new-icons/clock_new.png" width="12px" alt="" style="padding:0 3px 0 3px;" />
 				</div>' . $endTag;
 		}
 		else

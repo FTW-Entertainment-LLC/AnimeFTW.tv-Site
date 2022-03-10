@@ -37,17 +37,17 @@ class Footer extends Config {
 		$output .= "<td class='footer-mascot' valign='top'>";
 		if($this->UserArray[8] == 1)
 		{
-			$output .= "<img src='//i.animeftw.tv/holiday/christmas/footer-mascot.png' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
+			$output .= "<img src='//animeftw.tv/images/holiday/christmas/footer-mascot.png' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
 		}
 		else
 		{
-			$output .= "<img src='//i.animeftw.tv/birthday/AnimeFTW_FooterFolks_Party.jpg' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
+			$output .= "<img src='//animeftw.tv/images/birthday/AnimeFTW_FooterFolks_Party.jpg' alt='footer-mascot' border='0' style='position:relative;z-index:1;' />";
 		}
 		$output .= "</td>\n";
 		$output .= "</tr>\n</table>\n";
 		$output .= "<table align='left' cellpadding='0' cellspacing='0' width='100%'>\n<tr>\n";
 		$output .= "<td class='copyright'>\n";
-		$output .= "Powered by <a href='https://www.ftwentertainment.com/' title='FTW Entertainment LLC'>FTW</a> engine v4.0 copyright &copy; 2008 - ".date("Y")." by FTW Entertainment LLC.<br />Theme designed by <a href='https://www.animeftw.tv/user/falcon' title='Falcon of aGXTHEMES.com'>Falcon</a><div align='left' style='padding-top:5px;'><a href='http://ipv6-test.com/validate.php?url=referer'><img src='//i.animeftw.tv/button-ipv6-80x15.png' alt='ipv6 ready' title='AnimeFTW.tv ipv6 ready' border='0' /></a></div>";
+		$output .= "Powered by <a href='https://www.ftwentertainment.com/' title='FTW Entertainment LLC'>FTW</a> engine v4.0 copyright &copy; 2008 - ".date("Y")." by FTW Entertainment LLC.<br />Theme designed by <a href='https://www.animeftw.tv/user/falcon' title='Falcon of aGXTHEMES.com'>Falcon</a><div align='left' style='padding-top:5px;'><a href='http://ipv6-test.com/validate.php?url=referer'><img src='//animeftw.tv/images/button-ipv6-80x15.png' alt='ipv6 ready' title='AnimeFTW.tv ipv6 ready' border='0' /></a></div>";
 		$output .= "</tr>\n</table>\n";
 		$output .= "</td>\n";
 		$output .= "</tr>\n</table>\n";

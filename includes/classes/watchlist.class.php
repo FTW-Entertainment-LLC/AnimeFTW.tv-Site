@@ -62,7 +62,7 @@ class AFTWWatchlist extends Config {
 
 					// here
 					$this->SubProfileView(TRUE);
-					//echo '<img src="//i.animeftw.tv/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="/user">In My WatchList</a>';
+					//echo '<img src="//animeftw.tv/images/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="/user">In My WatchList</a>';
 				}
 				else { // it's not in their watchlist, give them the option to do so
 					echo '<img src="' . $this->Host . '/add_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="#" onClick="$(\'#watchlistseries\').load(\'/scripts.php?view=watchlist&node=seriesview&id='.$sid.'&stage=after\'); return false;">Add to My WatchList</a>';
@@ -72,7 +72,7 @@ class AFTWWatchlist extends Config {
 				$result  = mysqli_query($conn, "SELECT id FROM watchlist WHERE uid = '".$this->UserArray[1]."' AND sid = '".mysqli_real_escape_string($conn, $sid)."'");
 				$watchlist_total = mysqli_num_rows($result);
 				if($watchlist_total == 1){ // we have them now, give them the DENIED access!
-					//echo '<img src="//i.animeftw.tv/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="/user">In My WatchList</a>';
+					//echo '<img src="//animeftw.tv/images/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="/user">In My WatchList</a>';
 					$this->SubProfileView(TRUE);
 
 					// here
@@ -81,7 +81,7 @@ class AFTWWatchlist extends Config {
 				else { // it's not in their watchlist, so lets add it!
 					$query = "INSERT INTO watchlist (`uid`, `date`, `update`, `sid`, `tracker`, `round`) VALUES ('".$this->UserArray[1]."', '".time()."', '".time()."', '".mysqli_real_escape_string($conn, $sid)."', '0', '0')";
 					mysqli_query($conn, $query) or die(mysqli_error());
-					//echo '<img src="//i.animeftw.tv/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="#" onClick="return false;">Added to My WatchList</a>';
+					//echo '<img src="//animeftw.tv/images/added_tracker.png" alt="" style="float:left;padding-top:1px;padding-right:3px;" /> <a href="#" onClick="return false;">Added to My WatchList</a>';
 					$this->SubProfileView(TRUE);
 
 					// here
@@ -171,7 +171,7 @@ class AFTWWatchlist extends Config {
 		$seriesImage = $this->Host . '/seriesimages/'.$row['id'].'.jpg';
 		if($comment == ''){$comment = '';}else{$comment = 'Comment: '.$comment.'<br />';}
 		if($this->UserArray[1] == $CurrentUser || ($this->UserArray[2] == 1 || $this->UserArray[2] == 2)){
-			$editor = '<div id="whitelist_more" class="whitelist_more"><a href="#" onClick="return false;" class="watchlist-element-icon" id="wl-'.$id.'" title="Edit this My WatchList Entry!"><img src="//i.animeftw.tv/page_edit.png" alt="" /></a>&nbsp;<a href="#" onClick="$(\'#'.$divid.'\').load(\''.$link.'&del='.$id.'\'); return false;"><img src="//i.animeftw.tv/tinyicons/cancel.png" alt="" title="Delete this My WatchList entry!" /></a></div>';
+			$editor = '<div id="whitelist_more" class="whitelist_more"><a href="#" onClick="return false;" class="watchlist-element-icon" id="wl-'.$id.'" title="Edit this My WatchList Entry!"><img src="//animeftw.tv/images/page_edit.png" alt="" /></a>&nbsp;<a href="#" onClick="$(\'#'.$divid.'\').load(\''.$link.'&del='.$id.'\'); return false;"><img src="//animeftw.tv/images/tinyicons/cancel.png" alt="" title="Delete this My WatchList entry!" /></a></div>';
 			$DropDownInfo = '<br /><br /><br /><div id="wl-'.$id.'-ed" class="watchlist-element-ub" style="display:none;">Loading..</div>';
 		}
 		else {$editor = '';$DropDownInfo = '';}

@@ -34,11 +34,11 @@ class AFTWUser extends Config{
 		if($port == 443)
 		{
 			//$this->ImageHost = 'https://d206m0dw9i4jjv.cloudfront.net';
-			$this->ImageHost = 'https://i.animeftw.tv';
+			$this->ImageHost = 'https://animeftw.tv/images';
 		}
 		else
 		{
-			$this->ImageHost = 'http://i.animeftw.tv';
+			$this->ImageHost = 'http://animeftw.tv/images';
 		}
 	}
 
@@ -179,7 +179,7 @@ class AFTWUser extends Config{
 		$today = date("dm");
 		if($today == ($bd.$bm))
 		{
-			$addon = '&nbsp;<img src="//i.animeftw.tv/birthdaycake.png" title="It`s My Birthday!" alt="birthday cake" style="height:14px;" />';
+			$addon = '&nbsp;<img src="//animeftw.tv/images/birthdaycake.png" title="It`s My Birthday!" alt="birthday cake" style="height:14px;" />';
 		}
 		else
 		{
@@ -344,12 +344,12 @@ class AFTWUser extends Config{
 		{
 			$se = $row['Alias'];
 		}
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//i.animeftw.tv/profile-images/mail.png" alt="" title="Email" /><div>&nbsp;'.$se.'</div></div></div>';
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//i.animeftw.tv/profile-images/msn_butterfly.png" alt="" title="MSN Address" /><div>&nbsp;'.$sm.'</div></div></div>';
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//i.animeftw.tv/profile-images/aim.png" alt="" title="AIM" /><div>&nbsp;'.$sa.'</div></div></div>';
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//i.animeftw.tv/profile-images/yahoo.png" alt="" title="YIM" /><div>&nbsp;'.$sy.'</div></div></div>';
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//i.animeftw.tv/profile-images/skype.png" alt="" title="Skype" /><div>&nbsp;'.$ss.'</div></div></div>';
-		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//i.animeftw.tv/profile-images/15_icq.png" alt="" title="ICQ" /><div>&nbsp;'.$si.'</div></div></div>';
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//animeftw.tv/images/profile-images/mail.png" alt="" title="Email" /><div>&nbsp;'.$se.'</div></div></div>';
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//animeftw.tv/images/profile-images/msn_butterfly.png" alt="" title="MSN Address" /><div>&nbsp;'.$sm.'</div></div></div>';
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//animeftw.tv/images/profile-images/aim.png" alt="" title="AIM" /><div>&nbsp;'.$sa.'</div></div></div>';
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//animeftw.tv/images/profile-images/yahoo.png" alt="" title="YIM" /><div>&nbsp;'.$sy.'</div></div></div>';
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//animeftw.tv/images/profile-images/skype.png" alt="" title="Skype" /><div>&nbsp;'.$ss.'</div></div></div>';
+		echo '<div style="padding-bottom:5px;"><div class="conout"><img src="//animeftw.tv/images/profile-images/15_icq.png" alt="" title="ICQ" /><div>&nbsp;'.$si.'</div></div></div>';
 
 	}
 
@@ -596,87 +596,87 @@ class AFTWUser extends Config{
 				<dd>
 					<div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-white-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-white.png" alt="" /></label></div>
+							<div><label for="advanced-white-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-white.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-white" id="advanced-white-img"'; if($advanceImage == 'advanced-white' || $advanceImage == 'default'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-black-img" style="padding-left:6px;""><img src="//i.animeftw.tv/advancedimages/advanced-black.png" alt="" /></label></div>
+							<div><label for="advanced-black-img" style="padding-left:6px;""><img src="//animeftw.tv/images/advancedimages/advanced-black.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-black" id="advanced-black-img"'; if($advanceImage == 'advanced-black'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-salmon-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-salmon.png" alt="" /></label></div>
+							<div><label for="advanced-salmon-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-salmon.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-salmon" id="advanced-salmon-img"'; if($advanceImage == 'advanced-salmon'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-pink-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-pink.png" alt="" /></label></div>
+							<div><label for="advanced-pink-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-pink.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-pink" id="advanced-pink-img"'; if($advanceImage == 'advanced-pink'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-violet-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-violet.png" alt="" /></label></div>
+							<div><label for="advanced-violet-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-violet.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-violet" id="advanced-violet-img"'; if($advanceImage == 'advanced-violet'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-purple-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-purple.png" alt="" /></label></div>
+							<div><label for="advanced-purple-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-purple.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-purple" id="advanced-purple-img"'; if($advanceImage == 'advanced-purple'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-blue-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-blue.png" alt="" /></label></div>
+							<div><label for="advanced-blue-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-blue.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-blue" id="advanced-blue-img"'; if($advanceImage == 'advanced-blue'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-cyan-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-cyan.png" alt="" /></label></div>
+							<div><label for="advanced-cyan-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-cyan.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-cyan" id="advanced-cyan-img"'; if($advanceImage == 'advanced-cyan'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-green-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-green.png" alt="" /></label></div>
+							<div><label for="advanced-green-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-green.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-green" id="advanced-green-img"'; if($advanceImage == 'advanced-green'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 					</div>
 					<div style="padding-top:10px;">
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-limegreen-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-limegreen.png" alt="" /></label></div>
+							<div><label for="advanced-limegreen-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-limegreen.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-limegreen" id="advanced-limegreen-img"'; if($advanceImage == 'advanced-limegreen'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-orange-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-orange.png" alt="" /></label></div>
+							<div><label for="advanced-orange-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-orange.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-orange" id="advanced-orange-img"'; if($advanceImage == 'advanced-orange'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-red-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-red.png" alt="" /></label></div>
+							<div><label for="advanced-red-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-red.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-red" id="advanced-red-img"'; if($advanceImage == 'advanced-red'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="advanced-yellow-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/advanced-yellow.png" alt="" /></label></div>
+							<div><label for="advanced-yellow-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/advanced-yellow.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="advanced-yellow" id="advanced-yellow-img"'; if($advanceImage == 'advanced-yellow'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="green-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/green.png" alt="" /></label></div>
+							<div><label for="green-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/green.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="green" id="green-img"'; if($advanceImage == 'green'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="robins-egg-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/robins-egg.png" alt="" /></label></div>
+							<div><label for="robins-egg-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/robins-egg.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="robins-egg" id="robins-egg-img"'; if($advanceImage == 'robins-egg'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="blue-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/blue.png" alt="" /></label></div>
+							<div><label for="blue-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/blue.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="blue" id="blue-img"'; if($advanceImage == 'blue'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="pink-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/pink.png" alt="" /></label></div>
+							<div><label for="pink-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/pink.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="pink" id="pink-img"'; if($advanceImage == 'pink'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="red-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/red.png" alt="" /></label></div>
+							<div><label for="red-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/red.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="red" id="red-img"'; if($advanceImage == 'red'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 					</div>
 					<div style="padding-top:10px;">
 						<div style="display:inline-block;width:30px;">
-							<div><label for="yellow-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/yellow.png" alt="" /></label></div>
+							<div><label for="yellow-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/yellow.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="yellow" id="yellow-img"'; if($advanceImage == 'yellow'){echo ' checked="checked"';} echo ' /></div>
 						</div>
 						<div style="display:inline-block;width:30px;">
-							<div><label for="purple-img" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/purple.png" alt="" /></label></div>
+							<div><label for="purple-img" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/purple.png" alt="" /></label></div>
 							<div align="center"><input type="radio" name="preffix" value="purple" id="purple-img"'; if($advanceImage == 'purple'){echo ' checked="checked"';} echo ' /></div>
 						</div>';
 						// Advance Members for life
@@ -684,7 +684,7 @@ class AFTWUser extends Config{
 						{
 							echo '
 							<div style="display:inline-block;width:30px;">
-								<div><label for="advanced-AMplus" style="padding-left:6px;"><img src="//i.animeftw.tv/advancedimages/AMplus.png" alt="" /></label></div>
+								<div><label for="advanced-AMplus" style="padding-left:6px;"><img src="//animeftw.tv/images/advancedimages/AMplus.png" alt="" /></label></div>
 								<div align="center"><input type="radio" name="preffix" value="AMplus" id="advanced-AMplus"'; if($advanceImage == 'AMplus'){echo ' checked="checked"';} echo ' /></div>
 							</div>';
 						}
@@ -1565,7 +1565,7 @@ class AFTWUser extends Config{
 			$result = mysqli_query($conn, $query);
 			while(list($ID,$Username,$avatarActivate,$avatarExtension,$cid,$comments,$ip,$dated) = mysqli_fetch_array($result)){
 				if($uid == $this->id){
-					$topd = '<div id="pcommod"><div class="pcommodtxt"><a href="#" id="dico'.$cid.'" onClick="javascript:moddel(\''.$cid.'\',\''.$this->id.'\',\''.md5($this->id).'\'); return false;" title="Delete Comment"><img src="//i.animeftw.tv/tinyicons/cancel.png" alt="" border="0"></a>&nbsp;<a id="uico'.$cid.'" href="/user/'.$Username.'" title="Reply to Comment"><img src="//i.animeftw.tv/tinyicons/reply_go.png" alt="" border="0"></a></div><div id="c-'.$cid.'" style="display:none;" align="center"><a href="#" onClick="javascript:modundel(\''.$cid.'\',\''.$this->id.'\',\''.md5($this->id).'\'); return false;">Click Here to un-delete this comment.</a></div>';
+					$topd = '<div id="pcommod"><div class="pcommodtxt"><a href="#" id="dico'.$cid.'" onClick="javascript:moddel(\''.$cid.'\',\''.$this->id.'\',\''.md5($this->id).'\'); return false;" title="Delete Comment"><img src="//animeftw.tv/images/tinyicons/cancel.png" alt="" border="0"></a>&nbsp;<a id="uico'.$cid.'" href="/user/'.$Username.'" title="Reply to Comment"><img src="//animeftw.tv/images/tinyicons/reply_go.png" alt="" border="0"></a></div><div id="c-'.$cid.'" style="display:none;" align="center"><a href="#" onClick="javascript:modundel(\''.$cid.'\',\''.$this->id.'\',\''.md5($this->id).'\'); return false;">Click Here to un-delete this comment.</a></div>';
 					$bottomd = '</div>';
 				}
 				else {$topd = '';$bottomd = '';}
@@ -1653,7 +1653,7 @@ class AFTWUser extends Config{
 					</div>
 					<div style="display:inline-block;width:55%;" align="center">
 						<div class="form_results" style="display:none;">
-							<img src="//i.animeftw.tv/loading-mini.gif" alt="loading" /> Loading
+							<img src="//animeftw.tv/images/loading-mini.gif" alt="loading" /> Loading
 						</div>
 					</div>
 				</div>
@@ -1701,7 +1701,7 @@ class AFTWUser extends Config{
 					</div>
 					<div style="display:inline-block;width:55%;" align="center">
 						<div class="form_results_password" style="display:none;">
-							<img src="//i.animeftw.tv/loading-mini.gif" alt="loading" /> Loading
+							<img src="//animeftw.tv/images/loading-mini.gif" alt="loading" /> Loading
 						</div>
 					</div>
 				</div>
@@ -1749,7 +1749,7 @@ class AFTWUser extends Config{
 	{
 		if($profileArray[0] == 0)
 		{
-			echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Login to Add Friends</span></a>";
+			echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>Login to Add Friends</span></a>";
 		}
 		else {
 			// scripts.php?view=profile&subview=friendbutton&id=$id&add=before
@@ -1771,24 +1771,24 @@ class AFTWUser extends Config{
 					if($onlyFriendships == 1){
 						$permGranted = $row['permGranted'];
 						if($permGranted == 'yes'){
-							echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
+							echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
 						}
 						else {
-							echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
+							echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>Already a Friend</span></a>";
 						}
 					}
 					else if ($profileArray[1] == $uid){
-						echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>This is You</span></a>";
+						echo "<a href=\"#\" onclick=\"return false;\" title=\"\" id=\"tablink5\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>This is You</span></a>";
 					}
 					else {
 						$query  = "SELECT id FROM friends WHERE Asker='".$profileArray[1]."'";
 						$result = mysqli_query($conn, $query);
 						$numberoffriends = mysqli_num_rows($result);
 						if($numberoffriends < $allowedFriends){
-							echo "<a href=\"#\" onclick=\"$(this).load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
+							echo "<a href=\"#\" onclick=\"$(this).load('/scripts.php?view=profile&subview=friendbutton&id=".$uid."&add=after'); return false;\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>Add as a Friend</span></a>";
 						}
 						else {
-							echo "<a href=\"#\" onclick=\"return false;\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Friends Maxed out.</span></a>";
+							echo "<a href=\"#\" onclick=\"return false;\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>Friends Maxed out.</span></a>";
 						}
 					}
 				}
@@ -1815,7 +1815,7 @@ class AFTWUser extends Config{
 						mysqli_real_escape_string($conn, '1'),
 						mysqli_real_escape_string($conn, $row1['id']));
 					mysqli_query($conn, $query) or die('Could not connect, way to go retard:' . mysqli_error());
-					echo "<a href=\"#\" onclick=\"return false;\"><img src='//i.animeftw.tv/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
+					echo "<a href=\"#\" onclick=\"return false;\"><img src='//animeftw.tv/images/adduserv2.png' alt='' /><span>Added to Friends!</span></a>";
 				}
 				else {
 					echo "Error";

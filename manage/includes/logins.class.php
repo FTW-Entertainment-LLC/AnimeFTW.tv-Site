@@ -77,7 +77,7 @@ class Logins extends Config {
 		$Data = '
 		<div id="body-wrapper2">
 			<div id="welcome-wrapper">
-				<div style="margin:auto;float:left;position:absolute;z-index;-1;margin:-140px 0 0 -290px;"><img src="//i.animeftw.tv/fay-maid.png" alt="" /></div>
+				<div style="margin:auto;float:left;position:absolute;z-index;-1;margin:-140px 0 0 -290px;"><img src="//animeftw.tv/images/fay-maid.png" alt="" /></div>
 				<form id="welcome-form" autocomplete="off">';
 				if(isset($_GET['create']) && $_GET['create'] == 'yes')
 				{

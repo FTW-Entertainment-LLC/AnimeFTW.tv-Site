@@ -231,7 +231,7 @@ class Store extends Config {
 				echo "<span class='poster'>&nbsp;</span><br />\n";
 				echo '<div class="tbl" style="font-size:14px;">
 					<div>
-						<div style="float:left;width:355px;vertical-align:top;padding-right:3px;" id="primary-item-image-wrapper"><a href="#" onClick="window.open($(\'#primary-item-image\').attr(\'src\')); return false;"><img src="//i.animeftw.tv/storeimages/item' . $row['id'] . '-0.' . $row['picturetype'] . '" id="primary-item-image" style="width:350px;border:1px solid #021a40;" /></a></div>
+						<div style="float:left;width:355px;vertical-align:top;padding-right:3px;" id="primary-item-image-wrapper"><a href="#" onClick="window.open($(\'#primary-item-image\').attr(\'src\')); return false;"><img src="//animeftw.tv/images/storeimages/item' . $row['id'] . '-0.' . $row['picturetype'] . '" id="primary-item-image" style="width:350px;border:1px solid #021a40;" /></a></div>
 						<div style="vertical-align:top;">
 							<span style="font-weight:bold;padding-bottom:2px;">Category: </span> <a href="/store/' . strtolower($this->CatArray[$this->options[0]]['name']) . '/">' . $this->CatArray[$this->options[0]]['name'] . '</a><br />
 							<span style="font-weight:bold;padding-bottom:2px;">Price: </span> $' . $row['price'] . ' USD<br />
@@ -245,7 +245,7 @@ class Store extends Config {
 					$i = 0;
 					while($i <= ($row['pictures']-1))
 					{
-						$image = '//i.animeftw.tv/storeimages/item' . $row['id'] . '-' . $i . '.' . $row['picturetype'];
+						$image = '//animeftw.tv/images/storeimages/item' . $row['id'] . '-' . $i . '.' . $row['picturetype'];
 						echo '<a href="' . $image . '" onClick="$(\'#primary-item-image\').attr(\'src\',\'' . $image . '\'); return false;">
 							<img src="' . $image . '" style="width:100px;border:1px solid #021a40;" alt="" />
 						</a>';
@@ -614,7 +614,7 @@ class Store extends Config {
 				}
 				echo '
 				<div class="cart-row-wrapper" style="' . $rowstyle . '">
-					<div style="display:inline-block;"><a href="#" id="cart-id-' . $cart_id . '" class="button-showing-order"><img src="//i.animeftw.tv/storeimages/shopping-cart-icon.png" alt="" style="height:14px;" title="View the Cart Details for this order" /></a></div>
+					<div style="display:inline-block;"><a href="#" id="cart-id-' . $cart_id . '" class="button-showing-order"><img src="//animeftw.tv/images/storeimages/shopping-cart-icon.png" alt="" style="height:14px;" title="View the Cart Details for this order" /></a></div>
 					<div style="display:inline-block;width:100px;" class="order-column-row">' . str_pad($id, 8, '0', STR_PAD_LEFT) . '</div>
 					<div style="display:inline-block;width:100px;" class="order-column-row">$' . $total_price . '</div>
 					<div style="display:inline-block;width:100px;" class="order-column-row">' . date('m/d/Y',$date_submitted) . '</div>

@@ -196,7 +196,7 @@ class AFTWpage{
 		$row = mysqli_fetch_array($query);
 		$ttitle = stripslashes($row['ttitle']);
 		$ttitle = htmlspecialchars($ttitle);
-		echo "<a href=\"/forums/".$row['fseo']."/topic-".$row['tid']."/s-0\"><img src=\"//i.animeftw.tv/latest-news.png\" alt=\"\" title=\"Posted on: ".date("M j Y, h:i A",$row['tdate'])."\" /></a><span class=\"search-text-pre\">News: </span><span class=\"search-text-post\" title=\"$ttitle\">";
+		echo "<a href=\"/forums/".$row['fseo']."/topic-".$row['tid']."/s-0\"><img src=\"//animeftw.tv/images/latest-news.png\" alt=\"\" title=\"Posted on: ".date("M j Y, h:i A",$row['tdate'])."\" /></a><span class=\"search-text-pre\">News: </span><span class=\"search-text-post\" title=\"$ttitle\">";
 		if(strlen($ttitle) <= 45){
 			echo $ttitle;
 		}
@@ -206,4 +206,3 @@ class AFTWpage{
 		echo "</span>";
 	}
 }
-?>

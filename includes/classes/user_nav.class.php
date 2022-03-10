@@ -49,7 +49,7 @@ class AFTWUserNav extends Config {
             if($this->UserArray[1] == 7){
                 echo '<div class="aftwNot">' . $this->CheckAdvancedStatus() . '</div>';
             }
-            echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/pm"><img src="//i.animeftw.tv/new-icons/pm_new.png" alt="" title="View your Personal Messages" /><span class="JewelNotif'.$display.'" id="requestJewelNotif">'.$this->Messages($this->UserArray[1]).'</span></a>
+            echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/pm"><img src="//animeftw.tv/images/new-icons/pm_new.png" alt="" title="View your Personal Messages" /><span class="JewelNotif'.$display.'" id="requestJewelNotif">'.$this->Messages($this->UserArray[1]).'</span></a>
             </div>';
             echo '<div class="dropdown">';
 
@@ -57,9 +57,9 @@ class AFTWUserNav extends Config {
             $N = new AFTWNotifications();
             $N->connectProfile($this->UserArray);
             echo '
-                       <a href="#" id="linkglobal"><img src="//i.animeftw.tv/new-icons/notifications_new.png" alt="" title="View your Site Notifications" height="18px" /><span id="notesprite">' . $N->ShowSprite() . '</span></a>
+                       <a href="#" id="linkglobal"><img src="//animeftw.tv/images/new-icons/notifications_new.png" alt="" title="View your Site Notifications" height="18px" /><span id="notesprite">' . $N->ShowSprite() . '</span></a>
                             <ul style="display: none;" id="ulglobal">
-                                <img src="//i.animeftw.tv/new-icons/trangle-sprite.png" alt="" style="float:right;margin:-20px 123px 0 0;" />
+                                <img src="//animeftw.tv/images/new-icons/trangle-sprite.png" alt="" style="float:right;margin:-20px 123px 0 0;" />
                                 <div class="usernotes" id="usernotes"><div style="white-space:nowrap;padding:2px;">Loading your Notifications...</div></div>
                           </ul>';
             echo '</div>';
@@ -75,9 +75,9 @@ class AFTWUserNav extends Config {
                     }
                 }
                 else {$display2 = "";$CountUpdated = "0";}
-                echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/manage/"><img src="//i.animeftw.tv/new-icons/uploads_new.png" alt="" /><span class="JewelNotif'.$display2.'" id="requestJewelNotif">'.$CountUpdated.'</span></a></div>';
+                echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/manage/"><img src="//animeftw.tv/images/new-icons/uploads_new.png" alt="" /><span class="JewelNotif'.$display2.'" id="requestJewelNotif">'.$CountUpdated.'</span></a></div>';
             }
-            echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/logout"><img src="//i.animeftw.tv/new-icons/logout_new.png" alt="" title="Log off your AnimeFTW.tv Account" /></a></div>';
+            echo '<div class="aftwNot"><a href="https://' . $_SERVER['HTTP_HOST'] . '/logout"><img src="//animeftw.tv/images/new-icons/logout_new.png" alt="" title="Log off your AnimeFTW.tv Account" /></a></div>';
             echo '
             <div id="user-enhanced-bar" style="display:none;">';
             if ($this->UserArray[2] == 7) {
@@ -156,11 +156,11 @@ class AFTWUserNav extends Config {
     private function CheckAdvancedStatus(){
         if($this->UserArray[13] == 'yes')
         {
-            return '<img src="//i.animeftw.tv/green_checkmark_rounded_40x40.png" alt="" title="Your Advanced Membership is Active!" />';
+            return '<img src="//animeftw.tv/images/green_checkmark_rounded_40x40.png" alt="" title="Your Advanced Membership is Active!" />';
         }
         else
         {
-            return '<img src="//i.animeftw.tv/red_x_rounded_40x40.png" alt="" title="Your Advanced Membership is Inactive!" />';
+            return '<img src="//animeftw.tv/images/red_x_rounded_40x40.png" alt="" title="Your Advanced Membership is Inactive!" />';
         }
     }
 

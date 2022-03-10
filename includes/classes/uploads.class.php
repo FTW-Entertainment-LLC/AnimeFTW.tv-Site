@@ -214,7 +214,7 @@ class Uploads extends Config {
 				}
 				if($row[7] == $this->UserArray[1])
 				{
-					$MyEntry = '<img src="//i.animeftw.tv/myentry-star.png" alt="" />';
+					$MyEntry = '<img src="//animeftw.tv/images/myentry-star.png" alt="" />';
 				}
 				else
 				{

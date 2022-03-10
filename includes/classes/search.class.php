@@ -112,7 +112,7 @@ class Search extends Config {
 	{
 		if($type == 'anime')
 		{
-			$returnUrl = '//i.animeftw.tv/resize/anime/s-small/' . $uid . '.jpg';
+			$returnUrl = '//animeftw.tv/images/resize/anime/s-small/' . $uid . '.jpg';
 		}
 		else {
 			$query   = "SELECT avatarActivate, avatarExtension FROM users WHERE ID='".$uid."'";
@@ -132,10 +132,10 @@ class Search extends Config {
 			else {
 				if($avatarActivate == 'no')
 				{
-					$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/default.gif';
+					$returnUrl = '//animeftw.tv/images/resize/user/'.$size.'/default.gif';
 				}
 				else {
-					$returnUrl = '//i.animeftw.tv/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
+					$returnUrl = '//animeftw.tv/images/resize/user/'.$size.'/user'.$uid.'.'.$row['avatarExtension'];
 				}
 			}
 		}

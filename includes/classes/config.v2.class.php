@@ -39,12 +39,12 @@ class Config {
         if($port == 443)
         {
             //$this->Host = 'https://d206m0dw9i4jjv.cloudfront.net';
-            $this->ImageHost = 'https://i.animeftw.tv';
+            $this->ImageHost = 'https://animeftw.tv/images';
         }
         else
         {
             //$this->Host = 'http://d206m0dw9i4jjv.cloudfront.net';
-            $this->ImageHost = 'https://i.animeftw.tv';
+            $this->ImageHost = 'https://animeftw.tv/images';
         }
 
         // build the site default settings..
@@ -398,20 +398,20 @@ class Config {
                     }
                     if($Level_access == 1)
                     {
-                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        $fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/admin-icon.png" alt="Admin of AnimeFTW.tv" title="AnimeFTW.tv Administrator" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else if($Level_access == 2)
                     {
-                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        $fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/manager-icon.png" alt="Group manager of AnimeFTW.tv" title="AnimeFTW.tv Staff Manager" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else if($Level_access == 4 || $Level_access == 5 || $Level_access == 6)
                     {
-                        // //i.animeftw.tv/staff-icon.png
-                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        // //animeftw.tv/images/staff-icon.png
+                        $fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/staff-icon.png" alt="Staff Member of AnimeFTW.tv" title="AnimeFTW.tv Staff Member" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else if($Level_access == 7)
                     {
-                        $fixedUsername = $spanbefore . '<img src="//i.animeftw.tv/advancedimages/' . $advanceImage . '.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
+                        $fixedUsername = $spanbefore . '<img src="//animeftw.tv/images/advancedimages/' . $advanceImage . '.png" title="AnimeFTW.tv Advanced Member" alt="Advanced User Title" style="vertical-align:middle;" border="0" />' . $link . $display_name . '</a>' . $spanafter;
                     }
                     else
                     {

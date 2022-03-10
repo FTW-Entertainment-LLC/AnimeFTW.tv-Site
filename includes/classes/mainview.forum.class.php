@@ -21,7 +21,7 @@ class AFTWForumMain extends Config {
 	}
 
 	public function MainDisplay(){
-		echo "<div id='navstrip'><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums/'>AnimeFTW.TV Forums</a></div><br />";
+		echo "<div id='navstrip'><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums/'>AnimeFTW.TV Forums</a></div><br />";
 		$query1 = "SELECT cid, ctitle, cpermission, cseo FROM forums_categories WHERE cpermission LIKE '%".$this->perms."%' ORDER BY corder ";
 		mysqli_query($conn, "SET NAMES 'utf8'");
 		$result1 = mysqli_query($conn, $query1);
@@ -36,7 +36,7 @@ class AFTWForumMain extends Config {
 			$result200 = mysqli_query($conn, $query200);
 			while(list($fid,$fpermission,$ftitle,$fdescription,$ficon,$fcid,$fseo) = mysqli_fetch_array($result200)) {
 				$fdescription = stripslashes($fdescription);
-				$fim = "<img src='//i.animeftw.tv/forumimages/bf_new.png' border='0'  alt='Posts!' />";
+				$fim = "<img src='//animeftw.tv/images/forumimages/bf_new.png' border='0'  alt='Posts!' />";
 				echo "<tr>\n";
 				echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>$fim</td>\n";
 				echo "<td class='tbl1 forum_name' valign='top'><!--forum_name--><a href='/forums/".$fseo."/'>".$ftitle."</a><br />\n";
@@ -52,7 +52,7 @@ class AFTWForumMain extends Config {
 				$ptitle = $row5['ttitle'];
 				$pdate = $row5['pdate'];
 				$pdate2 = $this->timeZoneChange($pdate,$this->timezone);
-				if ($pdate2 == ''){$pdate1 = '';$ptitle1 = '';$GetLastPost = "<img src='//i.animeftw.tv/forumimages/lastpost.gif' border='0'  alt='Last Post' />";$Username = '';
+				if ($pdate2 == ''){$pdate1 = '';$ptitle1 = '';$GetLastPost = "<img src='//animeftw.tv/images/forumimages/lastpost.gif' border='0'  alt='Last Post' />";$Username = '';
 			  	}
 				else {
 					$pdate1 = date("M j Y, h:i A",$pdate2);
@@ -62,7 +62,7 @@ class AFTWForumMain extends Config {
 					else {
 						$ptitle = substr($ptitle,0,18).'&hellip;';
 					}
-					$GetLastPost = "<a href='/forums/$fseo/topic-$ptid/showlastpost' title='Go to the last post'><img src='//i.animeftw.tv/forumimages/lastpost.gif' border='0' alt='Last Post' /></a>";
+					$GetLastPost = "<a href='/forums/$fseo/topic-$ptid/showlastpost' title='Go to the last post'><img src='//animeftw.tv/images/forumimages/lastpost.gif' border='0' alt='Last Post' /></a>";
 				}
 				$first_unread = "<a href='/forums/$fseo/topic-$ptid/showlastpost' title='Go to the first unread post: $ptitle'>$ptitle</a>";
 				echo "</td>\n";
@@ -79,7 +79,7 @@ class AFTWForumMain extends Config {
 		echo "<td align='left' width='1%' class='forum-caption' style='white-space:nowrap'>Site &amp; Board Statistics</td>\n";
 		echo "</tr></table>\n";
 		echo "<table cellpadding='0' cellspacing='1' width='100%'>\n<tr>\n";
-		echo "<td class='tbl2' width='1%' style='white-space: no-wrap;' rowspan='4'><center><img src='//i.animeftw.tv/forumimages/user.png' border='0' alt='Active Users' /></center></td>\n";
+		echo "<td class='tbl2' width='1%' style='white-space: no-wrap;' rowspan='4'><center><img src='//animeftw.tv/images/forumimages/user.png' border='0' alt='Active Users' /></center></td>\n";
 		echo "</tr>\n<tr>\n";
 		$FinalDate3 = time()-900;
 		$ou24h = mysqli_query($conn, "SELECT COUNT(ID) FROM users WHERE lastActivity>='$FinalDate3'");
@@ -91,10 +91,10 @@ class AFTWForumMain extends Config {
 		echo $this->LatestActivity($FinalDate3);
 		echo "</td>\n";
 		echo "</tr>\n<tr>\n";
-		echo "<td class='tbl2'><img src='//i.animeftw.tv/adminbadge.gif' alt='Admin of Animeftw' style='vertical-align:middle;' /><a href=\"/staff/\">Admin</a> | <a href=\"/staff\">Moderator</a> | <a href=\"/staff/\">Site Staff</a> | <img src='//i.animeftw.tv/advancedimages/default.gif' alt='Advanced User Title' style='vertical-align:middle;' /><a href='/advanced'>Advanced Member</a> | <a href='/user/'>Basic Member</a></td>\n";
+		echo "<td class='tbl2'><img src='//animeftw.tv/images/adminbadge.gif' alt='Admin of Animeftw' style='vertical-align:middle;' /><a href=\"/staff/\">Admin</a> | <a href=\"/staff\">Moderator</a> | <a href=\"/staff/\">Site Staff</a> | <img src='//animeftw.tv/images/advancedimages/default.gif' alt='Advanced User Title' style='vertical-align:middle;' /><a href='/advanced'>Advanced Member</a> | <a href='/user/'>Basic Member</a></td>\n";
 		echo "</tr>\n<tr>\n";
 		//Board Statistics
-		echo "<td class='tbl2' width='1%' style='white-space: no-wrap;' rowspan='4'><center><img src='//i.animeftw.tv/forumimages/stats.png' border='0' alt='Board Stats' /></center></td>\n";
+		echo "<td class='tbl2' width='1%' style='white-space: no-wrap;' rowspan='4'><center><img src='//animeftw.tv/images/forumimages/stats.png' border='0' alt='Board Stats' /></center></td>\n";
 		echo "</tr>\n<tr>\n";
 		echo $this->SimpleStats();
 		echo "</tr>\n</table>\n";

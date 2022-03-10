@@ -217,19 +217,19 @@ class Comment extends Config {
                     if($row['Voted'] == 0)
                     {
                         // it means they have not voted yet
-                        $actionbar .= '<a id="cid-up-' . $cid . '" class="vote-up linkopacity" style="cursor:pointer;" title="Vote Up this Comment!"><img src="//i.animeftw.tv/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
-                        $actionbar .= '<a id="cid-dw-' . $cid . '" class="vote-down linkopacity" style="cursor:pointer;" title="Vote Down this Comment!"><img src="//i.animeftw.tv/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a id="cid-up-' . $cid . '" class="vote-up linkopacity" style="cursor:pointer;" title="Vote Up this Comment!"><img src="//animeftw.tv/images/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a id="cid-dw-' . $cid . '" class="vote-down linkopacity" style="cursor:pointer;" title="Vote Down this Comment!"><img src="//animeftw.tv/images/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
                     }
                     else
                     {
                         // it means they already voted this up or down.
-                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="//i.animeftw.tv/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
-                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="//i.animeftw.tv/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="//animeftw.tv/images/tinyicons/thumb_up.png" alt="" border="0"></a>&nbsp;';
+                        $actionbar .= '<a class="linkopacity" title="You have already voted on this comment!"><img src="//animeftw.tv/images/tinyicons/thumb_down.png" alt="" border="0"></a>&nbsp;';
                     }
                 }
-                $actionbar .= '<a href="/pm/compose/' . $uid . '" title="Will open in a new Tab" target="_blank" class="linkopacity"><img src="//i.animeftw.tv/tinyicons/email.png" alt="" border="0"></a>&nbsp;';
-                $actionbar .= '<a href="javascript:void(0)" class="linkopacity" title="Report Comment" onclick="alert(\'Feature coming soon!\');"><img src="//i.animeftw.tv/tinyicons/exclamation.png" alt="" border="0"></a>&nbsp;';
-                $actionbar .= '<a href="/user/' . $row['Username'] . '" class="linkopacity" title="View User\'s Profile" target="_blank"><img src="//i.animeftw.tv/tinyicons/user.png" alt="" border="0"></a>';
+                $actionbar .= '<a href="/pm/compose/' . $uid . '" title="Will open in a new Tab" target="_blank" class="linkopacity"><img src="//animeftw.tv/images/tinyicons/email.png" alt="" border="0"></a>&nbsp;';
+                $actionbar .= '<a href="javascript:void(0)" class="linkopacity" title="Report Comment" onclick="alert(\'Feature coming soon!\');"><img src="//animeftw.tv/images/tinyicons/exclamation.png" alt="" border="0"></a>&nbsp;';
+                $actionbar .= '<a href="/user/' . $row['Username'] . '" class="linkopacity" title="View User\'s Profile" target="_blank"><img src="//animeftw.tv/images/tinyicons/user.png" alt="" border="0"></a>';
 
                 echo '
                     <div class="single-comment-wrapper" style="margin:20px 0 20px 10px;">

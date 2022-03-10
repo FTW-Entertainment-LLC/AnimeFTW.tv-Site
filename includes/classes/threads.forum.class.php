@@ -44,7 +44,7 @@ class AFTWThreads extends Config {
 			if($hidden == 1)
 			{
 				// Hidden topic
-				$thread_image = "<img src='//i.animeftw.tv/forumimages/f_closed.gif' border='0' alt='Closed Topic' title='Topic is Hidden!' />";
+				$thread_image = "<img src='//animeftw.tv/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' title='Topic is Hidden!' />";
 				$subjectPreffix = '<span style="color:gray;">Hidden:</span> ';
 				echo '<tr style="background-color:gray;">'."\n";
 			}
@@ -53,11 +53,11 @@ class AFTWThreads extends Config {
 				echo "<tr>\n";
 				if ($tclosed == 1)
 				{
-		    			$thread_image = "<img src='//i.animeftw.tv/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
+		    			$thread_image = "<img src='//animeftw.tv/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
 		  		}
 				else
 				{
-		   			$thread_image = "<img src='//i.animeftw.tv/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
+		   			$thread_image = "<img src='//animeftw.tv/images/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
 		  		}
 
 			}
@@ -115,9 +115,9 @@ class AFTWThreads extends Config {
 					echo "<tr>\n";
 					echo "<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>\n";
 					if ($tclosed == 1) {
-						echo "<img src='//i.animeftw.tv/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
+						echo "<img src='//animeftw.tv/images/forumimages/f_closed.gif' border='0' alt='Closed Topic' />";
 					} else {
-						echo "<img src='//i.animeftw.tv/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
+						echo "<img src='//animeftw.tv/images/forumimages/f_norm_no_dot.gif' border='0' alt='Open Topic' />";
 					}
 					echo "</td>\n";
 					echo "<td width='100%' class='tbl1'><span id='tid-span-$tid'><font color='red'>Read First: </font><a id=\"topic-$tid\" href=\"/forums/".$this->fseo."/topic-$tid/s-0\" >$ttitle</a></span></td>\n";

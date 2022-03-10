@@ -73,7 +73,7 @@ class Comments extends Config {
 							{
 								if ($see_me == 1)
 								{
-									echo "<a href=\"#\"><img src='//i.animeftw.tv/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
+									echo "<a href=\"#\"><img src='//animeftw.tv/images/editor/magnify3.gif' width='16' height='15' alt='show in full' border='0'/></a>";
 								}
 								else
 								{

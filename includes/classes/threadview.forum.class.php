@@ -34,7 +34,7 @@ class AFTWThreadView extends Forum{
 		$ttitle = $row7['ttitle'];
 		$topicid = $row7['tid'];
 		if ($fseo != $this->fseo){
-		echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
+		echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 			echo "<div class='errorwrap'>
 							<h4>The error returned was:</h4>
 							<p>Sorry, the link that brought you to this page seems to be out of date or broken. E=1</p>
@@ -44,7 +44,7 @@ class AFTWThreadView extends Forum{
 			$query009 = mysqli_query($conn, "SELECT COUNT(fid) FROM forums_forum WHERE fid='$fid' AND fpermission LIKE '%".$this->profileArray[2]."%'");
 			$total_forum = mysqli_result($query009, 0);
 			if ($total_forum == 0){
-				echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
+				echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 				echo "<div class='errorwrap'>
 						<h4>The error returned was:</h4>
 						<p>Sorry, the link that brought you to this page seems to be out of date or broken. E=2</p>
@@ -52,7 +52,7 @@ class AFTWThreadView extends Forum{
 			}
 			else {
 				echo $this->addTopicView($topicid);
-				echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/$fseo/'>$ftitle</a>&nbsp;&gt;&nbsp;$ttitle</div><br />";
+				echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/$fseo/'>$ftitle</a>&nbsp;&gt;&nbsp;$ttitle</div><br />";
 				echo "<table style='width:100%' cellspacing='0'>
 				<tr>
 				<td style='padding-left:0px' width='40%' valign='middle' nowrap='nowrap'><div>";
@@ -77,7 +77,7 @@ class AFTWThreadView extends Forum{
 					<table width='100%' style='padding:0px' cellspacing='0' cellpadding='0'>";
 					//begin title
 				echo "<tr>
-						 <td width='100%' class='darkrow1' style='word-wrap:break-word; padding: 0;' align='center'><div><img src='//i.animeftw.tv/forumimages/nav_m.gif' border='0'  alt='&gt;' width='8' height='8' />&nbsp;<span class='topictitle'>$ttitle</span></div></td>
+						 <td width='100%' class='darkrow1' style='word-wrap:break-word; padding: 0;' align='center'><div><img src='//animeftw.tv/images/forumimages/nav_m.gif' border='0'  alt='&gt;' width='8' height='8' />&nbsp;<span class='topictitle'>$ttitle</span></div></td>
 					</tr>
 					</table>
 					<div class=\"borderwrap\">";
@@ -117,9 +117,9 @@ class AFTWThreadView extends Forum{
 	  				}
 
 					if ($row003['gender'] == '') {
-						$gender003 = "<img src='//i.animeftw.tv/gender-unknown.png' alt='gender' border='0' />&nbsp;\n";
+						$gender003 = "<img src='//animeftw.tv/images/gender-unknown.png' alt='gender' border='0' />&nbsp;\n";
 					} else {
-						$gender003 = "<img src='//i.animeftw.tv/".$row003['gender'].".gif' alt='gender' border='0' />&nbsp;\n";
+						$gender003 = "<img src='//animeftw.tv/images/".$row003['gender'].".gif' alt='gender' border='0' />&nbsp;\n";
 					}
 
 					if ($row003['country'] == '') {
@@ -161,7 +161,7 @@ class AFTWThreadView extends Forum{
 						echo "<a href='/forums/edit/post-".$pid."'>Edit user post</a>\n";
 					  } else { echo "&nbsp;"; }
 						echo "</div>\n";
-						echo "<div style='float: right;'><img src='//i.animeftw.tv/forumimages/to_post_off.gif' alt='on' border='0' style='padding-bottom:2px' /> ".$pdate1." &bull; ".$IpAddress1." Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$c."</a> &bull; <a href='javascript:scroll(0,0);'>Top</a></div>\n";
+						echo "<div style='float: right;'><img src='//animeftw.tv/images/forumimages/to_post_off.gif' alt='on' border='0' style='padding-bottom:2px' /> ".$pdate1." &bull; ".$IpAddress1." Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$c."</a> &bull; <a href='javascript:scroll(0,0);'>Top</a></div>\n";
 						echo "</td>\n";
 
 						echo "</tr>\n<tr>\n";
@@ -171,7 +171,7 @@ class AFTWThreadView extends Forum{
 						echo $this->formatAvatar($puid,'self',FALSE);
 						echo "<span class='small'>";
 						if($memberTitle003 == 'none') { }
-						else {echo "<img src='//i.animeftw.tv/stafficons/".$memberTitle003.".png' alt='Member Title' border='0' /><br />\n";}
+						else {echo "<img src='//animeftw.tv/images/stafficons/".$memberTitle003.".png' alt='Member Title' border='0' /><br />\n";}
 						if ($personalMsg003 != '') { echo $personalMsg003."<br />\n";}
 						echo "</span><br /><br />\n";
 						echo "</div>\n";
@@ -205,7 +205,7 @@ class AFTWThreadView extends Forum{
 						echo "<table cellpadding='0' cellspacing='0' width='100%' class='tbl2' style='margin-bottom:10px'>\n<tr>\n";
 
 						echo "<td class='tbl2' style='padding-left: 20px; padding-right: 30px;'>\n";
-						echo "<div style='float: left;'><a href='javascript:scroll(0,0);'>Top</a> &bull; Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$c."</a> &bull; ".$IpAddress1." <img src='//i.animeftw.tv/forumimages/to_post_off.gif' alt='On' border='0' style='padding-bottom:2px' /> ".$pdate1."</div>\n";
+						echo "<div style='float: left;'><a href='javascript:scroll(0,0);'>Top</a> &bull; Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$c."</a> &bull; ".$IpAddress1." <img src='//animeftw.tv/images/forumimages/to_post_off.gif' alt='On' border='0' style='padding-bottom:2px' /> ".$pdate1."</div>\n";
 						echo "<div style='float: right;'>\n";
 						if($puid == $this->profileArray[1]) {
 						echo "<a href='/forums/edit/post-".$pid."'>Edit your post</a>\n";
@@ -242,7 +242,7 @@ class AFTWThreadView extends Forum{
 						echo $this->formatAvatar($puid,'self',FALSE);
 						echo "<span class='small'>";
 						if($memberTitle003 == 'none') { }
-						else {echo "<img src='//i.animeftw.tv/stafficons/".$memberTitle003.".png' alt='Member Title' border='0' /><br />\n";}
+						else {echo "<img src='//animeftw.tv/images/stafficons/".$memberTitle003.".png' alt='Member Title' border='0' /><br />\n";}
 						if ($personalMsg003 != '') { echo $personalMsg003."<br />\n";} 						
 						echo "</span><br /><br />\n";
 						echo "</div>\n";

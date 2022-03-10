@@ -555,11 +555,11 @@ if (isset($_GET['rf'])){
 		echo '<div align="center">';
 		if($profileArray[0] == 1)
 		{
-			echo '<a href="/scripts.php?view=cart&KeepThis=true&TB_iframe=true&height=400&width=780" title="Your Current Basket" class="thickbox"><img src="//i.animeftw.tv/storeimages/shopping_basket.png" alt="" title="View your current Basket" /></a>';
-			echo '<a href="/store/account"><img src="//i.animeftw.tv/storeimages/history.png" alt="" title="View past orders" /></a>';
+			echo '<a href="/scripts.php?view=cart&KeepThis=true&TB_iframe=true&height=400&width=780" title="Your Current Basket" class="thickbox"><img src="//animeftw.tv/images/storeimages/shopping_basket.png" alt="" title="View your current Basket" /></a>';
+			echo '<a href="/store/account"><img src="//animeftw.tv/images/storeimages/history.png" alt="" title="View past orders" /></a>';
 			if($profileArray[2] == 1)
 			{
-				echo '<a href="/store/admin"><img src="//i.animeftw.tv/storeimages/workflow.png" alt="" title="Manage the Store" /></a>';
+				echo '<a href="/store/admin"><img src="//animeftw.tv/images/storeimages/workflow.png" alt="" title="Manage the Store" /></a>';
 			}
 		}
 		else
@@ -602,7 +602,7 @@ if (isset($_GET['rf'])){
         echo "<br /><a href='//www.animeftw.tv/forums/xbmc-plugin-support/topic-4730/s-0' target='_blank'><img src='" . $Config->Host . "/themes/default/kodi-image.png' alt='Kodi Logo' border='0' width='225px' /></a><br />";
         echo "<br /><a href='//www.animeftw.tv/forums/roku-channel-support/' tager='_blank'><img src='" . $Config->Host . "/themes/default/roku-logo.png' alt='Roku TV logo' border='0' /></a><br />";
     }
-	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"//i.animeftw.tv/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
+	echo "<a href=\"http://www.animeftw.tv/download/AnimeFTW.tv.apk\"><img src=\"//animeftw.tv/images/android_logo.jpg\" alt=\"\" width=\"225px\" /></a><br />";
 	echo "</div></div>\n";
 	$stats->get_zone($profileArray[3]);
 //	$stats->LatestSeries();

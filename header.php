@@ -51,7 +51,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	<meta name="description" content="AnimeFTW.tv free high quality streaming anime in html5. View on the web, android, ios, windows phone, roku and kodi devices.">
     <meta name="application-name" content="AnimeFTW.tv">
     <meta name="msapplication-TileColor" content="#5bdaff">
-    <meta name="msapplication-TileImage" content="//i.animeftw.tv/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png">
+    <meta name="msapplication-TileImage" content="//animeftw.tv/images/aa92a33a-f2fa-4ace-b5b7-5a7a11b89770.png">
     <meta property="og:title" content="<?=$PageTitle;?> - Watch anime online in HD">
     <meta property="og:description" content="AnimeFTW.tv free high quality streaming anime in html5. View on the web, android, ios, windows phone, roku and kodi devices.">
     <meta property="og:url" content="https://www.animeftw.tv<?=$_SERVER['REQUEST_URI'];?>">
@@ -128,8 +128,8 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	 ?>
 	<link rel="icon" href="/favicon.ico" />
 	<link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="//i.animeftw.tv/apple-touch-icon.png"/>
-    <link rel="apple-touch-icon-precomposed" href="//i.animeftw.tv/apple-touch-icon-precomposed.png"/>
+    <link rel="apple-touch-icon" href="//animeftw.tv/images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon-precomposed" href="//animeftw.tv/images/apple-touch-icon-precomposed.png"/>
 	<!--[if IE]>  <link rel="stylesheet" type="text/css" href="/iestyle.css?v=4002" />  <![endif]-->
 	<script type="text/javascript" src="/scripts/jquery.min.js?v=2.1.1"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
@@ -300,7 +300,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	?>
     <style type="text/css">
 body {
-	background-image: url("//i.animeftw.tv/uploads/background_user1.png");
+	background-image: url("//animeftw.tv/images/uploads/background_user1.png");
 
 			background-position:center;
 			background-attachment: fixed;
@@ -314,7 +314,7 @@ body {
 	if($_SERVER['REQUEST_URI'] == '/donate'){
 		echo '<style type="text/css">
 		body {
-			background-image: url("//i.animeftw.tv/uploads/background_donate.png");
+			background-image: url("//animeftw.tv/images/uploads/background_donate.png");
 
 					background-position:center;
 					background-attachment: fixed;

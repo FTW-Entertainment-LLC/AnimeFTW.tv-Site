@@ -135,7 +135,7 @@ class Series extends Config {
 						<b>Total Episodes:</b> '.$CountEpisodes.'<br />
 						<b>Number of Movies:</b> '.$Movies.'<br />
 						<b>Genres:</b> '.$finalizedCategories.'<br />
-						<b>Rating:</b><br /><img src="//i.animeftw.tv/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
+						<b>Rating:</b><br /><img src="//animeftw.tv/images/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
 						'.$gvar.'
 						</div>
 
@@ -695,10 +695,10 @@ class Series extends Config {
 						<div class="series-form-row">
 							<div class="series-form-left"><b><i>Series Rating</i></b><br /><i>Choose the rating that goes with the series.</i></div>
 							<div class="series-form-right">
-								<div align="center" style="display:inline-block;"><img src="//i.animeftw.tv/ratings/e.jpg" alt="Everyone" /><br /><input type="radio" name="ratingLink" value="e.jpg" '; if($ratingLink == 'e.jpg'){echo 'checked="checked"';} echo ' /></div>
-								<div align="center" style="display:inline-block;"><img src="//i.animeftw.tv/ratings/12+.jpg" alt="12+" /><br /><input type="radio" name="ratingLink" value="12+.jpg" '; if($ratingLink == '12+.jpg'){echo 'checked="checked"';} echo '  /></div>
-								<div align="center" style="display:inline-block;"><img src="//i.animeftw.tv/ratings/15+.jpg" alt="15+" /><br /><input type="radio" name="ratingLink" value="15+.jpg" '; if($ratingLink == '15+.jpg'){echo 'checked="checked"';} echo '  /></div>
-								<div align="center" style="display:inline-block;"><img src="//i.animeftw.tv/ratings/18+.jpg" alt="18+" /><br /><input type="radio" name="ratingLink" value="18+.jpg" '; if($ratingLink == '18+.jpg'){echo 'checked="checked"';} echo '  /></div>
+								<div align="center" style="display:inline-block;"><img src="//animeftw.tv/images/ratings/e.jpg" alt="Everyone" /><br /><input type="radio" name="ratingLink" value="e.jpg" '; if($ratingLink == 'e.jpg'){echo 'checked="checked"';} echo ' /></div>
+								<div align="center" style="display:inline-block;"><img src="//animeftw.tv/images/ratings/12+.jpg" alt="12+" /><br /><input type="radio" name="ratingLink" value="12+.jpg" '; if($ratingLink == '12+.jpg'){echo 'checked="checked"';} echo '  /></div>
+								<div align="center" style="display:inline-block;"><img src="//animeftw.tv/images/ratings/15+.jpg" alt="15+" /><br /><input type="radio" name="ratingLink" value="15+.jpg" '; if($ratingLink == '15+.jpg'){echo 'checked="checked"';} echo '  /></div>
+								<div align="center" style="display:inline-block;"><img src="//animeftw.tv/images/ratings/18+.jpg" alt="18+" /><br /><input type="radio" name="ratingLink" value="18+.jpg" '; if($ratingLink == '18+.jpg'){echo 'checked="checked"';} echo '  /></div>
 							</div>
 						</div>
 						<div class="series-form-row">
@@ -1018,7 +1018,7 @@ class Series extends Config {
 					<b>Total Episodes:</b> '.$CountEpisodes.'<br />
 					<b>Number of Movies:</b> '.$Movies.'<br />
 					<b>Genres:</b> '.$finalizedCategories.'<br />
-					<b>Rating:</b><br /><img src="//i.animeftw.tv/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
+					<b>Rating:</b><br /><img src="//animeftw.tv/images/ratings/' . $ratingLink . '" alt="" title="This series\'s rating" />
 					'.$gvar.'
 					</div>
 

@@ -281,7 +281,7 @@ class AFTWDonate
                     <input name="shopping-cart.items.item-1.digital-content.key.is-encrypted" type="hidden" value="true"/>
                     <input name="shopping-cart.items.item-1.digital-content.url" type="hidden" value="http://www.aniemftw.tv"/>
                     <input name="_charset_" type="hidden" value="utf-8"/>
-                    <input alt="" src="//i.animeftw.tv/google-wallet.png" type="image"/>
+                    <input alt="" src="//animeftw.tv/images/google-wallet.png" type="image"/>
                 </form>
                 </div>
                 </td>

@@ -425,7 +425,7 @@ class Uploads extends Config {
                     if ($row[11] == 1) {
 				        $ChangedEntry = 'background-color:#2ed51c';
                         //the settings for the mod action, this allows for a mod to mark a series as having been addressed.
-                        $ModActionChange .= '<a href="#" class="remove-notification" onClick="RemoveNotification(' . $row[0] . '); return false;" title="Click here to remove the notification for this entry."><img src="//i.animeftw.tv/management/accept.png" alt="" style="padding-left:9px;width:13px;padding-top:1px;" /></a>';
+                        $ModActionChange .= '<a href="#" class="remove-notification" onClick="RemoveNotification(' . $row[0] . '); return false;" title="Click here to remove the notification for this entry."><img src="//animeftw.tv/images/management/accept.png" alt="" style="padding-left:9px;width:13px;padding-top:1px;" /></a>';
                     }
                     $ModActionChange .= '</div>';
 
@@ -433,7 +433,7 @@ class Uploads extends Config {
 
                 $extrastyle = $i % 2 ? 'background-color:#99e6ff;' : 'background-color:#e8e8e8;';
                 $AniDBLink = $row[9] == 0 ? '<span style="color:#dddbdb;" title="No AniDB Link at this time">AniDB</span>' : '<a title="Clicking this link will open a new Tab/Window" href="http://anidb.net/perl-bin/animedb.pl?show=anime&aid=' . $row[9] . '" target="_blank">AniDB</a>';
-			    $MyEntry = $row[7] == $this->UserArray[1] ? '<img src="//i.animeftw.tv/myentry-star.png" alt="" style="height:14px;" />' : '';
+			    $MyEntry = $row[7] == $this->UserArray[1] ? '<img src="//animeftw.tv/images/myentry-star.png" alt="" style="height:14px;" />' : '';
 
 				echo '<div style="' . $extrastyle . '" id="uploads-' . $row[0] . '">';
 				echo '<div class="uploads-row-wrapper" style="width:870px;padding:5px 0 0 0;' . $ChangedEntry . '" id="sub-uploads-' . $row[0] . '">';

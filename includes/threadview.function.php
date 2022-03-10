@@ -48,7 +48,7 @@ $row9 = mysqli_fetch_array($result9);
 $tclosed = $row9['tclosed'];
 $thidden = $row9['hidden'];
 if ($fseo != $requestedForum){
-echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
+echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 	echo "<div class='errorwrap'>
 					<h4>The error returned was:</h4>
 					<p>Sorry, the link that brought you to this page seems to be out of date or broken. E=1</p>
@@ -58,7 +58,7 @@ else {
 	$query009 = mysqli_query($conn, "SELECT COUNT(fid) FROM forums_forum WHERE fid='$tfid' AND fpermission LIKE '%".$profileArray[2]."%'");
 	$total_forum = mysqli_result($query009, 0);
 	if ($total_forum == 0){
-		echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
+		echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a></div><br />";
 		echo "<div class='errorwrap'>
 				<h4>The error returned was:</h4>
 				<p>Sorry, the link that brought you to this page seems to be out of date or broken. E=2</p>
@@ -69,7 +69,7 @@ else {
 		else {
 			echo addTopicView($tid);
 		}
-		echo "<div id=\"navstrip\"><img src='//i.animeftw.tv/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/$fseo/'>$ftitle</a>&nbsp;&gt;&nbsp;$ttitle</div><br />";
+		echo "<div id=\"navstrip\"><img src='//animeftw.tv/images/forumimages/nav.gif' border='0'  alt='&gt;' />&nbsp;<a href='/forums'>AnimeFTW.TV Forums</a>&nbsp;&gt;&nbsp;<a href='/forums/$fseo/'>$ftitle</a>&nbsp;&gt;&nbsp;$ttitle</div><br />";
 		echo "<table style='width:100%' cellspacing='0'>
 				<tr>
 					<td style='padding-left:0px' width='40%' valign='middle' nowrap='nowrap'><div>";
@@ -107,10 +107,10 @@ else {
 							else if ($tclosed == 1){
 								if ($profileArray[2] == 1 || $profileArray[2] == 2)
 								{
-								echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//i.animeftw.tv/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
+								echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//animeftw.tv/images/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 								}
 								else {
-									echo "<span class='forumbottons'><img align='middle' src='//i.animeftw.tv/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></span>&nbsp;&nbsp;";
+									echo "<span class='forumbottons'><img align='middle' src='//animeftw.tv/images/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></span>&nbsp;&nbsp;";
 								}
 								$query = "SELECT fid FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$profileArray[2]%'";
 								$result = mysqli_query($conn, $query);
@@ -119,11 +119,11 @@ else {
 								if ($allowedToMakeNewTopic2 ==''){}
 								else
 								{
-								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//i.animeftw.tv/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
+								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//animeftw.tv/images/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
 								}
 							}
 							else {
-							echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//i.animeftw.tv/forumimages/postreply.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
+							echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//animeftw.tv/images/forumimages/postreply.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 								$query = "SELECT fid FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$profileArray[2]%'";
 								$result = mysqli_query($conn, $query);
 								$row = mysqli_fetch_array($result);
@@ -131,7 +131,7 @@ else {
 								if ($allowedToMakeNewTopic2 ==''){}
 								else
 								{
-								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//i.animeftw.tv/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>";
+								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//animeftw.tv/images/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>";
 								}
 							}
 							echo "</td>
@@ -141,7 +141,7 @@ else {
 					//begin title
 
 						echo "<tr>
-						 <td width='100%' class='darkrow1' style='word-wrap:break-word; padding: 0;' align='center'><div><img src='//i.animeftw.tv/forumimages/nav_m.gif' border='0'  alt='&gt;' width='8' height='8' />&nbsp;<span class='topictitle'>$ttitle</span></div></td>
+						 <td width='100%' class='darkrow1' style='word-wrap:break-word; padding: 0;' align='center'><div><img src='//animeftw.tv/images/forumimages/nav_m.gif' border='0'  alt='&gt;' width='8' height='8' />&nbsp;<span class='topictitle'>$ttitle</span></div></td>
 
 						</tr>
 					  </table>
@@ -179,11 +179,11 @@ else {
 										<span class=\"normalname\">";
 										if ($gender002 == '')
 										{
-											echo "<img src='//i.animeftw.tv/gender-unknown.png' alt='' border='0' title='gender unknown' />&nbsp;";
+											echo "<img src='//animeftw.tv/images/gender-unknown.png' alt='' border='0' title='gender unknown' />&nbsp;";
 										}
 										else
 										{
-											echo "<img src='//i.animeftw.tv/$gender002.gif' alt='' border='0' />&nbsp;";
+											echo "<img src='//animeftw.tv/images/$gender002.gif' alt='' border='0' />&nbsp;";
 										}
 										echo checkUserName($Username002);
 						echo "</span>
@@ -194,7 +194,7 @@ else {
 								<div style=\"float: left;\">";
 								//thread date section
 										$tdate1 = date("M j Y, h:i A",$tdate);
-									echo "<span class=\"postdetails\"> <img src='//i.animeftw.tv/forumimages/to_post_off.gif' alt='post' border='0' style='padding-bottom:2px' /> $tdate1</span>";
+									echo "<span class=\"postdetails\"> <img src='//animeftw.tv/images/forumimages/to_post_off.gif' alt='post' border='0' style='padding-bottom:2px' /> $tdate1</span>";
 									if($profileArray[2] == 1 || $profileArray[2] == 2)
 									{
 										$IpAddress = 'IP: <i><a href="http://ip-lookup.net?ip='.$tpip.'" target="_blank">'.$tpip.'</a></i>';
@@ -226,10 +226,10 @@ else {
 										<a href=\"/profile/$Username002\" title=\"View Member Profile\">";
 										if($avatarActivate002 == 'yes')
 										{
-											echo '<img src="//i.animeftw.tv/avatars/user'.$tpid.'.'.$avatarExtension002.'" alt="" />';
+											echo '<img src="//animeftw.tv/images/avatars/user'.$tpid.'.'.$avatarExtension002.'" alt="" />';
 										}
 										else {
-											echo '<img src="//i.animeftw.tv/avatars/default.gif" alt="" />';
+											echo '<img src="//animeftw.tv/images/avatars/default.gif" alt="" />';
 										}
 										echo "</a><br /><br />";
 									if ($memberTitle002 != 'none')
@@ -240,7 +240,7 @@ else {
 										}
 										else {
 										}
-										echo '<img src="//i.animeftw.tv/'.$memberTitle002.'.jpg" alt="" border="0" /><br />';
+										echo '<img src="//animeftw.tv/images/'.$memberTitle002.'.jpg" alt="" border="0" /><br />';
 									}
 									else
 									{
@@ -292,12 +292,12 @@ else {
 			<td class='formbuttonrow'>";
 			if($tpid == $profileArray[1])
 			{
-				echo "<div align='right'><span class='forumbottons'><a href='/forums/edit/post-$pid'><img align='middle' src='//i.animeftw.tv/forumimages/useredit.jpg' alt='Edit your post' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;</div>";
+				echo "<div align='right'><span class='forumbottons'><a href='/forums/edit/post-$pid'><img align='middle' src='//animeftw.tv/images/forumimages/useredit.jpg' alt='Edit your post' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;</div>";
 
 			}
 			else if ($profileArray[2] == 1 || $profileArray[2] == 2)
 			{
-			echo "<div align='right'><span class='forumbottons'><a href='/forums/edit/post-$pid'><img align='middle' src='//i.animeftw.tv/forumimages/adminedit.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;</div>";
+			echo "<div align='right'><span class='forumbottons'><a href='/forums/edit/post-$pid'><img align='middle' src='//animeftw.tv/images/forumimages/adminedit.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;</div>";
 			}
 			else {
 			echo "&nbsp;";
@@ -351,9 +351,9 @@ else {
 	  }
 
 	if ($row003['gender'] == '') {
-	    $gender003 = "<img src='//i.animeftw.tv/gender-unknown.png' alt='gender' border='0' />&nbsp;\n";
+	    $gender003 = "<img src='//animeftw.tv/images/gender-unknown.png' alt='gender' border='0' />&nbsp;\n";
 	  } else {
-	    $gender003 = "<img src='//i.animeftw.tv/".$row003['gender'].".gif' alt='gender' border='0' />&nbsp;\n";
+	    $gender003 = "<img src='//animeftw.tv/images/".$row003['gender'].".gif' alt='gender' border='0' />&nbsp;\n";
 	  }
 
 	if ($row003['country'] == '') {
@@ -396,7 +396,7 @@ if($puid == $profileArray[1]) {
 	echo "<a href='/forums/edit/post-".$pid."'>Edit user post</a>\n";
   } else { echo "&nbsp;"; }
     echo "</div>\n";
-	echo "<div style='float: right;'><img src='//i.animeftw.tv/forumimages/to_post_off.gif' alt='on' border='0' style='padding-bottom:2px' /> ".$pdate1." &bull; ".$IpAddress1." Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$ptispost."</a> &bull; <a href='javascript:scroll(0,0);'>Top</a></div>\n";
+	echo "<div style='float: right;'><img src='//animeftw.tv/images/forumimages/to_post_off.gif' alt='on' border='0' style='padding-bottom:2px' /> ".$pdate1." &bull; ".$IpAddress1." Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$ptispost."</a> &bull; <a href='javascript:scroll(0,0);'>Top</a></div>\n";
 	echo "</td>\n";
 
 	echo "</tr>\n<tr>\n";
@@ -404,14 +404,14 @@ if($puid == $profileArray[1]) {
 	echo "<td valign='top' class='tbl2' style='width:160px;'>\n";
 	echo "<div align='center'>\n";
 if($avatarActivate003 == yes) {
-    echo "<img src='//i.animeftw.tv/avatars/user".$puid.'.'.$avatarExtension003."' alt='User Avatar' /><br /><br />\n";
+    echo "<img src='//animeftw.tv/images/avatars/user".$puid.'.'.$avatarExtension003."' alt='User Avatar' /><br /><br />\n";
   } else {
-    echo "<img src='//i.animeftw.tv/avatars/default.gif' alt='User Avatar' /><br /><br />\n";
+    echo "<img src='//animeftw.tv/images/avatars/default.gif' alt='User Avatar' /><br /><br />\n";
   }
     echo "<span class='small'>";
 if ($memberTitle003 == 'none') { }
     elseif ($personalMsg003 != '') { echo $personalMsg003."<br />\n<br />"; }
-	else { echo "<img src='//i.animeftw.tv/".$memberTitle003.".jpg' alt='Member Title' border='0' />\n"; }
+	else { echo "<img src='//animeftw.tv/images/".$memberTitle003.".jpg' alt='Member Title' border='0' />\n"; }
     echo "</span><br /><br />\n";
 	echo "</div>\n";
 	echo "<div align='left'>\n";
@@ -444,7 +444,7 @@ if ($signatureActive003 == yes && $Level_access003 != 3) {
 	echo "<table cellpadding='0' cellspacing='0' width='100%' class='tbl2' style='margin-bottom:10px'>\n<tr>\n";
 
 	echo "<td class='tbl2' style='padding-left: 20px; padding-right: 30px;'>\n";
-	echo "<div style='float: left;'><a href='javascript:scroll(0,0);'>Top</a> &bull; Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$ptispost."</a> &bull; ".$IpAddress1." <img src='//i.animeftw.tv/forumimages/to_post_off.gif' alt='On' border='0' style='padding-bottom:2px' /> ".$pdate1."</div>\n";
+	echo "<div style='float: left;'><a href='javascript:scroll(0,0);'>Top</a> &bull; Post <a href='#' onclick='link_to_post($pid); return false;' title='Show the link to this post'>#".$ptispost."</a> &bull; ".$IpAddress1." <img src='//animeftw.tv/images/forumimages/to_post_off.gif' alt='On' border='0' style='padding-bottom:2px' /> ".$pdate1."</div>\n";
 	echo "<div style='float: right;'>\n";
 	if($puid == $profileArray[1]) {
 	echo "<a href='/forums/edit/post-".$pid."'>Edit your post</a>\n";
@@ -479,14 +479,14 @@ if ($signatureActive003 == yes && $Level_access003 != 3) {
 	echo "<td valign='top' class='tbl2' style='width:160px; padding-left:10px;'>\n";
 	echo "<div align='center'>\n";
 if($avatarActivate003 == yes) {
-    echo "<img src='//i.animeftw.tv/avatars/user".$puid.'.'.$avatarExtension003."' alt='User Avatar' /><br /><br />\n";
+    echo "<img src='//animeftw.tv/images/avatars/user".$puid.'.'.$avatarExtension003."' alt='User Avatar' /><br /><br />\n";
   } else {
-    echo "<img src='//i.animeftw.tv/avatars/default.gif' alt='User Avatar' /><br /><br />\n";
+    echo "<img src='//animeftw.tv/images/avatars/default.gif' alt='User Avatar' /><br /><br />\n";
   }
     echo "<span class='small'>";
 if ($memberTitle003 == 'none') { }
     elseif ($personalMsg003 != '') { echo $personalMsg003."<br />\n<br />"; }
-	else { echo "<img src='//i.animeftw.tv/".$memberTitle003.".jpg' alt='Member Title' border='0' />\n"; }
+	else { echo "<img src='//animeftw.tv/images/".$memberTitle003.".jpg' alt='Member Title' border='0' />\n"; }
     echo "</span><br /><br />\n";
 	echo "</div>\n";
 	echo "<div align='left'>\n";
@@ -523,11 +523,11 @@ $initialPost2++;
 								if ($profileArray[2] == 1)
 								{
 								echo "
-								<span class='forumbottons'><a href='javascript:toggle_visibility(\"QuickReply\");'><img align='middle' src='//i.animeftw.tv/forumimages/fastreply.jpg' alt='quick reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
-								echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//i.animeftw.tv/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
+								<span class='forumbottons'><a href='javascript:toggle_visibility(\"QuickReply\");'><img align='middle' src='//animeftw.tv/images/forumimages/fastreply.jpg' alt='quick reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
+								echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//animeftw.tv/images/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 								}
 								else {
-									echo "<span class='forumbottons'><img align='middle' src='//i.animeftw.tv/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></span>&nbsp;&nbsp;";
+									echo "<span class='forumbottons'><img align='middle' src='//animeftw.tv/images/forumimages/closed.jpg' alt='post reply' style='margin-bottom:5px;' /></span>&nbsp;&nbsp;";
 								}
 								$query = "SELECT * FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$PermissionLevelAdvanced%'";
 								$result = mysqli_query($conn, $query);
@@ -538,12 +538,12 @@ $initialPost2++;
 								}
 								else
 								{
-								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//i.animeftw.tv/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
+								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//animeftw.tv/images/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>&nbsp;";
 								}
 							}
 							else {
-							echo"<span class='forumbottons'><a href='javascript:toggle_visibility(\"QuickReply\");'><img align='middle' src='//i.animeftw.tv/forumimages/fastreply.jpg' alt='quick reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
-							echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//i.animeftw.tv/forumimages/postreply.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
+							echo"<span class='forumbottons'><a href='javascript:toggle_visibility(\"QuickReply\");'><img align='middle' src='//animeftw.tv/images/forumimages/fastreply.jpg' alt='quick reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
+							echo "<span class='forumbottons'><a href='/forums/post/reply-$tid'><img align='middle' src='//animeftw.tv/images/forumimages/postreply.jpg' alt='post reply' style='margin-bottom:5px;' /></a></span>&nbsp;&nbsp;";
 								$query = "SELECT * FROM forums_forum WHERE fid='$requestedForum' AND fpermpost LIKE '%$PermissionLevelAdvanced%'";
 								$result = mysqli_query($conn, $query);
 								$row = mysqli_fetch_array($result);
@@ -553,7 +553,7 @@ $initialPost2++;
 								}
 								else
 								{
-								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//i.animeftw.tv/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>";
+								echo "<span class='forumbottons'><a href='/forums/post/topic-$fid'><img align='middle' src='//animeftw.tv/images/forumimages/posttopic.jpg' alt='topic start' style='margin-bottom:5px;' /></a></span>";
 								}
 							}
 							echo "</td>
