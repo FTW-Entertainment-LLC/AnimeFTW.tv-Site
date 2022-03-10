@@ -73,7 +73,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 		echo '<link rel="stylesheet" href="/christmas.css?v=4003" type="text/css" />';
 	}
 	else {
-		echo '<link rel="stylesheet" href="/aftw.css?v=4007" type="text/css" />';
+		echo '<link rel="stylesheet" href="/aftw.css?v=4008" type="text/css" />';
 	}
 	if($_SERVER['PHP_SELF'] == '/videos.php' && ($profileArray[2] != 0))
 	{
@@ -130,7 +130,7 @@ if($_SERVER['PHP_SELF'] == '/request.php')
 	<link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="//animeftw.tv/images/apple-touch-icon.png"/>
     <link rel="apple-touch-icon-precomposed" href="//animeftw.tv/images/apple-touch-icon-precomposed.png"/>
-	<!--[if IE]>  <link rel="stylesheet" type="text/css" href="/iestyle.css?v=4002" />  <![endif]-->
+	<!--[if IE]>  <link rel="stylesheet" type="text/css" href="/iestyle.css?v=4003" />  <![endif]-->
 	<script type="text/javascript" src="/scripts/jquery.min.js?v=2.1.1"></script>
 	<script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery.qtip.js"></script>
